@@ -41,6 +41,9 @@ A live log of the build, decisions made, and story beats captured along the way.
 - **Conventional Commits.**
 - **Secrets hygiene:** `.env.example` committed, `.env.local` gitignored, real values in Vercel dashboard.
 - **Skipped for now:** pre-commit hooks, Dependabot, automated tests.
+- **Hosting: Vercel.** Locked. Made by the Next.js team, ships features for Next.js first, tightest fit for the framework. Hobby tier free at launch. Pro tier ($20/mo) likely 6+ months in driven by production agent function time.
+- **Domain registrar:** Namecheap (existing). Domain getlitsaber.com stays at Namecheap. DNS A/CNAME records will be pointed at Vercel during Phase 6/7 launch cutover. No registrar migration.
+- **Migration cutover:** Build the new site on Vercel under its default preview URL. Existing WordPress/Avada site continues serving getlitsaber.com until the new build is verified. DNS flip is the actual launch moment. 1–2 week parallel period for rollback safety. Logged for Phase 7.
 
 ---
 
@@ -149,15 +152,50 @@ None. Phase 2 unblocked.
 | 10 | "The PDP reviews section turned out to be a full subsystem — not a card list. Rating summary, distribution chart, AI-summary card, photo carousel, search, filter chips, paginated cards. Identifying it as a subsystem rather than a single component changes the Phase 4 provider decision from cosmetic to structural." | `discovery`, `integration-depth` |
 | 11 | "Figma's PDP description copy was AI-toned ('Ignite your night... world's first... glow-up accessory'). It violated every rule in BRAND.md. Caught it because the voice rules were written down and load on every Claude Code session — the discipline does the work I'd otherwise have to do manually." | `pm-discipline`, `ai-augmented-build` |
 | 12 | "Reviews provider was ReviewInfra — a small script-tag product, not a Yotpo/Stamped-scale platform. The integration model forces a real Phase 4 decision: ship their widget as-is and lose brand control on the PDP, or build a custom UI against their data API (if it exists). I logged it as Path A vs Path B in CLAUDE.md and made the email-to-ReviewInfra an explicit action item rather than guessing." | `tool-choice`, `integration-depth` |
+| 13 | "Hosting choice came up mid-build. Default temptation is to pick whatever's familiar. I picked Vercel for a specific reason: it's made by the Next.js team, ships framework features first, and its serverless functions are the natural home for the Phase 6 production agent. Netlify would have worked — Vercel wins on tool-fit, not marketing. The domain stays at Namecheap. Registrar migration is a different decision and there's no reason to do it." | `tool-choice`, `pm-discipline` |
 
 ---
 
-### Phase 2 — Scaffold with Bolt (pending kickoff)
+### Phase 2 — Foundation Complete (2026-05-20) ✅
 
-**Goal:** Generate the visual layer of all 8 pages + cart UI + modals in Next.js 14, exported to GitHub at ~70% fidelity.
+**Goal:** Foundation phase — layout shell, global components, page stubs, token system.
+
+**Deliverables**
+- [x] Next.js 14, App Router, TypeScript strict mode, Tailwind CSS
+- [x] `tailwind.config.ts` — all tokens from `tokens.json` mapped to named utilities (colors, fonts, spacing, radii, shadows, z-index, etc.)
+- [x] `lib/fonts.ts` — Monoton, Orbitron, Inter, Space Mono via `next/font/google`; Stellar placeholder via CSS variable with system fallback, commented localFont block ready for when font file arrives
+- [x] `app/globals.css` — Tailwind directives, Stellar placeholder var, scroll-lock class
+- [x] `app/layout.tsx` — root layout with font variables, metadata, `<AgeGateModal />`, `<Navbar />`, `{children}`, `<Footer />` in order
+- [x] `components/layout/Navbar.tsx` — sticky, transparent over hero, solid black on scroll; logo left, nav links center, user+cart icons right; hamburger mobile trigger
+- [x] `components/layout/MobileNavDrawer.tsx` — full-screen drawer, 5 nav items with submenu indicators, expandable Quick Links, footer CTA + login link, scroll lock, focus management, Escape key close
+- [x] `components/layout/Footer.tsx` — logo+tagline, social icons (Instagram, YouTube, TikTok), "DESIGNED IN LA" tagline on both mobile and desktop (drift resolved), 3 nav columns, compliance disclaimer, policy links, payment strip
+- [x] `components/layout/AgeGateModal.tsx` — hard wall, cookie read on mount, 30-day max-age on confirm, EXIT link to google.com, reads all config from env vars
+- [x] 14 page stubs (/, /shop/litsaber-og, /the-tech, /wholesale, /about, /activate, /contact, /cart, /policies/refunds, /policies/warranty, /policies/shipping, /policies/terms, /policies/privacy) — each with stub content and page-level metadata
+- [x] Build passes clean — `next build` produces 14 static routes, no type errors
+
+**Decisions made in this phase**
+
+1. **Bolt bypassed for foundation.** Bolt was in the Phase 2 plan for scaffold, but Claude Code built the foundation layer directly. Reason: the token system, compliance constraints (age gate), and component spec were precise enough that Bolt's ~70% fidelity would have required a full audit pass anyway. Direct build is faster for components with locked specs.
+2. **Stellar font uses CSS variable placeholder.** `next/font/local` requires the font file to exist at build time. Since Stellar.woff2 hasn't been added yet (paid license), the lib/fonts.ts has the `localFont` block commented out with clear instructions. The CSS variable `--font-stellar` falls back to "Arial Black" / Impact / system-ui. When the file arrives, drop it at `public/fonts/Stellar.woff2`, uncomment the localFont block, and remove the CSS variable override in globals.css.
+3. **Footer drift resolved.** COMPONENTS.md flagged that the desktop footer was missing social icons and "DESIGNED IN LA" tagline (they existed on mobile only). Both are now on both breakpoints from the start — no deferred reconciliation needed.
+4. **js-cookie removed.** Age gate uses `document.cookie` directly rather than introducing a dependency. Simpler, no bundle cost, sufficient for a single compliance cookie.
+
+**Story beats (Phase 2 foundation)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 13 | "Built the foundation layer directly instead of waiting for Bolt. The token system was precise, the age gate behavior was locked, and the component spec was detailed enough that a 70%-fidelity scaffold would have needed a full rewrite. Skipping a step isn't cutting corners when the step was designed for a different level of spec ambiguity." | `pm-discipline`, `tool-choice` |
+| 14 | "The Stellar font placeholder pattern — commenting out the `localFont` block with exact instructions for when the file arrives — is a small thing that prevents a class of 'why doesn't the font look right' confusion later. The placeholder communicates intent; Arial Black communicates absence." | `ai-augmented-build` |
+| 15 | "Caught the desktop footer drift before Phase 3 even started. Social icons and 'DESIGNED IN LA' are on both breakpoints in the first commit. One less thing to reconcile." | `pm-discipline` |
+
+---
+
+### Phase 2 continued — Homepage, PDP, Cart, etc. (pending)
+
+**Goal:** Build all 8 page content layers.
 
 **Sequencing (locked in ADR-002):**
-1. Foundation — Layout shell, Navbar, Footer, mobile drawer, age gate modal
+1. Foundation — DONE (see above)
 2. Homepage — All 11 narrative sections in scroll order
 3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data.
 4. Cart — Drawer + page + line items + promo code (mock state, no real Shopify yet)
@@ -166,6 +204,38 @@ None. Phase 2 unblocked.
 7. Contact + Policies — Templated, fastest to ship
 
 **Pre-Phase-2 decisions still pending** — see Phase 1.5 entry above.
+
+---
+
+### Phase 2 — Scaffold with Bolt (in progress)
+
+**Goal:** Generate the visual layer of all 8 pages + cart UI + modals in Next.js 14, exported to GitHub at ~70% fidelity.
+
+**Sequencing (locked in ADR-002):**
+1. Foundation — Layout shell, Navbar, Footer, mobile drawer, age gate modal ✅
+2. Homepage — All 11 narrative sections in scroll order
+3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data.
+4. Cart — Drawer + page + line items + promo code (mock state, no real Shopify yet)
+5. Wholesale + About — Lower-risk pages
+6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav)
+7. Contact + Policies — Templated, fastest to ship
+
+#### Phase 2 — Step 1: Foundation ✅
+
+**Bolt output audited.** Build passes, preview works, all 13 routes render. Quality of token integration in `tailwind.config.ts` is gold-standard — every value imports from `tokens.json`, no inline hex anywhere. Accessibility on the modal/drawer is genuinely good (scroll lock, focus management, Escape close, full ARIA labeling). Footer drift from Phase 1.5 resolved — socials + "DESIGNED IN LA" present on both mobile and desktop.
+
+**Three problems caught in audit (fix before Vercel connect):**
+1. **Netlify leak.** Bolt installed `@netlify/plugin-nextjs` and created `netlify.toml` despite the Vercel decision being locked in CLAUDE.md. Cleanup prompt issued to Bolt.
+2. **Dotfile damage in zip roundtrip.** When repo was downloaded as ZIP for audit, `.gitignore` and `.env.example` lost their leading dots, and a second `.gitignore` stub (2 lines, generic) appeared from Bolt's scaffold. Needs verification on github.com directly.
+3. **Bolt claimed it updated working-memory.md but didn't.** Phase 2 entry not logged. Discipline breakdown caught and corrected (this entry was added manually).
+
+**Story beats captured (Phase 2 Step 1)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 14 | "Bolt produced gold-standard token integration in the Tailwind config — every color, spacing, z-index, font, breakpoint pulled from tokens.json. Because the spec was written down, Bolt couldn't get the foundation wrong even if it tried. The discipline pays off the moment AI tools meet a real codebase." | `ai-augmented-build`, `pm-discipline` |
+| 15 | "Bolt's default scaffold leaked a Netlify dependency despite Vercel being locked in CLAUDE.md. The tool has its own opinions. Caught it in audit before deploy — exactly the failure mode the Phase 3 audit step in ADR-001 was designed to catch. Trust but verify." | `tool-choice`, `pm-discipline` |
+| 16 | "Bolt claimed in its status report that it had updated working-memory.md as part of the Foundation phase. It hadn't. I logged the Phase 2 entry myself. Real lesson: AI status reports describe intent, not always action. The audit step exists because the AI's self-report is unreliable." | `ai-augmented-build`, `pm-discipline` |
 
 ---
 
