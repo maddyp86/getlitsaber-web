@@ -2,5 +2,6 @@
   "/page": "app/page.js",
   "/shop/litsaber-og/page": "app/shop/litsaber-og/page.js",
   "/the-tech/page": "app/the-tech/page.js",
-  "/about/page": "app/about/page.js"
+  "/about/page": "app/about/page.js",
+  "/contact/page": "app/contact/page.js"
 }
