@@ -220,14 +220,21 @@ None. Phase 2 unblocked.
 6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav)
 7. Contact + Policies — Templated, fastest to ship
 
-#### Phase 2 — Step 1: Foundation ✅
+#### Phase 2 — Step 1: Foundation ✅ (deployed to Vercel)
 
 **Bolt output audited.** Build passes, preview works, all 13 routes render. Quality of token integration in `tailwind.config.ts` is gold-standard — every value imports from `tokens.json`, no inline hex anywhere. Accessibility on the modal/drawer is genuinely good (scroll lock, focus management, Escape close, full ARIA labeling). Footer drift from Phase 1.5 resolved — socials + "DESIGNED IN LA" present on both mobile and desktop.
 
-**Three problems caught in audit (fix before Vercel connect):**
-1. **Netlify leak.** Bolt installed `@netlify/plugin-nextjs` and created `netlify.toml` despite the Vercel decision being locked in CLAUDE.md. Cleanup prompt issued to Bolt.
-2. **Dotfile damage in zip roundtrip.** When repo was downloaded as ZIP for audit, `.gitignore` and `.env.example` lost their leading dots, and a second `.gitignore` stub (2 lines, generic) appeared from Bolt's scaffold. Needs verification on github.com directly.
-3. **Bolt claimed it updated working-memory.md but didn't.** Phase 2 entry not logged. Discipline breakdown caught and corrected (this entry was added manually).
+**Three problems caught in audit and fixed:**
+1. **Netlify leak resolved.** Bolt installed `@netlify/plugin-nextjs` and created `netlify.toml` despite the Vercel decision being locked in CLAUDE.md. Removed via cleanup prompt.
+2. **Dotfile damage fixed.** `.gitignore` had been overwritten by a 2-line Bolt stub, leaving the real 59-line version under a no-dot filename Git was ignoring. `env.example` had also lost its leading dot. Both restored via GitHub web editor.
+3. **Working memory restored.** Bolt claimed it had updated `working-memory.md` but hadn't. Logged manually.
+
+**Vercel deploy complete.**
+- Repo connected to Vercel via Hobby plan
+- Auto-deploy from `main` branch configured
+- Three age gate env vars set (`NEXT_PUBLIC_AGE_GATE_COOKIE_NAME`, `..._MAX_AGE_DAYS`, `..._EXIT_URL`)
+- Live preview URL responsive to all 5 verification tests: Age Gate appears, dismisses on confirm, persists across refresh, all 5 nav routes work, mobile drawer opens with full nav
+- From here forward, every push to `main` auto-deploys; every PR gets a unique preview URL
 
 **Story beats captured (Phase 2 Step 1)**
 
@@ -236,6 +243,7 @@ None. Phase 2 unblocked.
 | 14 | "Bolt produced gold-standard token integration in the Tailwind config — every color, spacing, z-index, font, breakpoint pulled from tokens.json. Because the spec was written down, Bolt couldn't get the foundation wrong even if it tried. The discipline pays off the moment AI tools meet a real codebase." | `ai-augmented-build`, `pm-discipline` |
 | 15 | "Bolt's default scaffold leaked a Netlify dependency despite Vercel being locked in CLAUDE.md. The tool has its own opinions. Caught it in audit before deploy — exactly the failure mode the Phase 3 audit step in ADR-001 was designed to catch. Trust but verify." | `tool-choice`, `pm-discipline` |
 | 16 | "Bolt claimed in its status report that it had updated working-memory.md as part of the Foundation phase. It hadn't. I logged the Phase 2 entry myself. Real lesson: AI status reports describe intent, not always action. The audit step exists because the AI's self-report is unreliable." | `ai-augmented-build`, `pm-discipline` |
+| 17 | "Foundation phase shipped to production-grade infrastructure: GitHub repo, auto-deploying Vercel pipeline, env vars wired, Age Gate compliant and working on the live URL. The bar is no longer 'does it work in Bolt's preview' — it's 'does it work on the actual production CDN.' Three weeks from Figma file to working pipeline." | `pm-discipline` |
 
 ---
 
