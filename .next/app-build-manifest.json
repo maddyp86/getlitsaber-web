@@ -40,6 +40,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/policies/warranty/page.js"
+    ],
+    "/policies/refunds/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/policies/refunds/page.js"
     ]
   }
 }

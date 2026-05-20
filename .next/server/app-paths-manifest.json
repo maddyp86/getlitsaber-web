@@ -5,5 +5,6 @@
   "/wholesale/page": "app/wholesale/page.js",
   "/the-tech/page": "app/the-tech/page.js",
   "/shop/litsaber-og/page": "app/shop/litsaber-og/page.js",
-  "/policies/warranty/page": "app/policies/warranty/page.js"
+  "/policies/warranty/page": "app/policies/warranty/page.js",
+  "/policies/refunds/page": "app/policies/refunds/page.js"
 }
