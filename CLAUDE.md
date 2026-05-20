@@ -20,8 +20,19 @@ Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. 
 - **Analytics:** PostHog (product), Vercel Analytics (performance), Supabase (events mirror for the agent)
 - **Forms:** HubSpot embedded forms (newsletter, wholesale, contact)
 - **Deployment:** Vercel — preview per PR, production on merge to `main`
+- **Hosting:** Vercel (Hobby tier at launch; Pro tier likely 6+ months in driven by production agent function time)
+- **Domain registrar:** Namecheap (existing). Domain getlitsaber.com stays at Namecheap; DNS A/CNAME records point at Vercel.
 - **Package manager:** pnpm
 
+---
+
+## Deployment topology
+
+- Bolt generates code and pushes to GitHub during Phase 2. Bolt is done after Phase 2.
+- GitHub holds the source of truth. Every push to main triggers a Vercel production deploy.
+- Vercel auto-deploys every PR to a unique preview URL. Production deploys on merge to main.
+- Namecheap is the domain registrar. DNS records will be pointed at Vercel in Phase 6/7 during launch cutover. Until then, the live site getlitsaber.com continues running on the existing WordPress/Avada install while the new build is verified on the Vercel-provided preview URL (getlitsaber-web.vercel.app or similar).
+- Migration cutover is deliberate, late-phase, and reversible. Do not touch Namecheap DNS without explicit user approval.
 ---
 
 ## Conventions
