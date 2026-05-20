@@ -152,12 +152,46 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 2 — Scaffold with Bolt (pending kickoff)
+### Phase 2 — Foundation Complete (2026-05-20) ✅
 
-**Goal:** Generate the visual layer of all 8 pages + cart UI + modals in Next.js 14, exported to GitHub at ~70% fidelity.
+**Goal:** Foundation phase — layout shell, global components, page stubs, token system.
+
+**Deliverables**
+- [x] Next.js 14, App Router, TypeScript strict mode, Tailwind CSS
+- [x] `tailwind.config.ts` — all tokens from `tokens.json` mapped to named utilities (colors, fonts, spacing, radii, shadows, z-index, etc.)
+- [x] `lib/fonts.ts` — Monoton, Orbitron, Inter, Space Mono via `next/font/google`; Stellar placeholder via CSS variable with system fallback, commented localFont block ready for when font file arrives
+- [x] `app/globals.css` — Tailwind directives, Stellar placeholder var, scroll-lock class
+- [x] `app/layout.tsx` — root layout with font variables, metadata, `<AgeGateModal />`, `<Navbar />`, `{children}`, `<Footer />` in order
+- [x] `components/layout/Navbar.tsx` — sticky, transparent over hero, solid black on scroll; logo left, nav links center, user+cart icons right; hamburger mobile trigger
+- [x] `components/layout/MobileNavDrawer.tsx` — full-screen drawer, 5 nav items with submenu indicators, expandable Quick Links, footer CTA + login link, scroll lock, focus management, Escape key close
+- [x] `components/layout/Footer.tsx` — logo+tagline, social icons (Instagram, YouTube, TikTok), "DESIGNED IN LA" tagline on both mobile and desktop (drift resolved), 3 nav columns, compliance disclaimer, policy links, payment strip
+- [x] `components/layout/AgeGateModal.tsx` — hard wall, cookie read on mount, 30-day max-age on confirm, EXIT link to google.com, reads all config from env vars
+- [x] 14 page stubs (/, /shop/litsaber-og, /the-tech, /wholesale, /about, /activate, /contact, /cart, /policies/refunds, /policies/warranty, /policies/shipping, /policies/terms, /policies/privacy) — each with stub content and page-level metadata
+- [x] Build passes clean — `next build` produces 14 static routes, no type errors
+
+**Decisions made in this phase**
+
+1. **Bolt bypassed for foundation.** Bolt was in the Phase 2 plan for scaffold, but Claude Code built the foundation layer directly. Reason: the token system, compliance constraints (age gate), and component spec were precise enough that Bolt's ~70% fidelity would have required a full audit pass anyway. Direct build is faster for components with locked specs.
+2. **Stellar font uses CSS variable placeholder.** `next/font/local` requires the font file to exist at build time. Since Stellar.woff2 hasn't been added yet (paid license), the lib/fonts.ts has the `localFont` block commented out with clear instructions. The CSS variable `--font-stellar` falls back to "Arial Black" / Impact / system-ui. When the file arrives, drop it at `public/fonts/Stellar.woff2`, uncomment the localFont block, and remove the CSS variable override in globals.css.
+3. **Footer drift resolved.** COMPONENTS.md flagged that the desktop footer was missing social icons and "DESIGNED IN LA" tagline (they existed on mobile only). Both are now on both breakpoints from the start — no deferred reconciliation needed.
+4. **js-cookie removed.** Age gate uses `document.cookie` directly rather than introducing a dependency. Simpler, no bundle cost, sufficient for a single compliance cookie.
+
+**Story beats (Phase 2 foundation)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 13 | "Built the foundation layer directly instead of waiting for Bolt. The token system was precise, the age gate behavior was locked, and the component spec was detailed enough that a 70%-fidelity scaffold would have needed a full rewrite. Skipping a step isn't cutting corners when the step was designed for a different level of spec ambiguity." | `pm-discipline`, `tool-choice` |
+| 14 | "The Stellar font placeholder pattern — commenting out the `localFont` block with exact instructions for when the file arrives — is a small thing that prevents a class of 'why doesn't the font look right' confusion later. The placeholder communicates intent; Arial Black communicates absence." | `ai-augmented-build` |
+| 15 | "Caught the desktop footer drift before Phase 3 even started. Social icons and 'DESIGNED IN LA' are on both breakpoints in the first commit. One less thing to reconcile." | `pm-discipline` |
+
+---
+
+### Phase 2 continued — Homepage, PDP, Cart, etc. (pending)
+
+**Goal:** Build all 8 page content layers.
 
 **Sequencing (locked in ADR-002):**
-1. Foundation — Layout shell, Navbar, Footer, mobile drawer, age gate modal
+1. Foundation — DONE (see above)
 2. Homepage — All 11 narrative sections in scroll order
 3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data.
 4. Cart — Drawer + page + line items + promo code (mock state, no real Shopify yet)
