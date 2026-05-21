@@ -8,9 +8,7 @@ Persistent operational context for Claude Code. Read this first on every session
 
 The getlitsaber.com replatform — a Next.js 14 + App Router storefront on Shopify, instrumented with a production AI agent for weekly conversion analysis.
 
-Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. Design tokens live in `tokens.json`. Motion and interaction system lives in `MOTION.md`. Architecture decisions live in `docs/decisions/`.
-
-**Palette is v0.3.0 (hybrid).** Deep purple-black canvas `#0A0518`, three decorative accents (cyan `#00E5FF`, magenta `#FF00E5`, purple `#9D5FFF`), and a dedicated CTA/conversion color, pink `#EC5793`, which is also the endpoint of the purple→pink gradient. This supersedes the earlier pure-black two-accent palette. Any component built before v0.3.0 (the Foundation phase: Navbar, Footer, AgeGate) automatically inherits the new hex values through the token system — but verify CTAs now use the pink `cta` token, not cyan, where conversion is the intent.
+Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. Design tokens live in `tokens.json`. Architecture decisions live in `docs/decisions/`.
 
 ---
 
@@ -19,77 +17,22 @@ Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. 
 - **Framework:** Next.js 14, App Router, TypeScript strict mode
 - **Styling:** Tailwind CSS with tokens mapped from `tokens.json` into `tailwind.config.ts`
 - **Commerce:** Shopify Storefront API (GraphQL), hosted checkout via `checkoutUrl`
-- **Reviews:** ReviewInfra (script-tag widget integration)
 - **Analytics:** PostHog (product), Vercel Analytics (performance), Supabase (events mirror for the agent)
 - **Forms:** HubSpot embedded forms (newsletter, wholesale, contact)
+- **Deployment:** Vercel — preview per PR, production on merge to `main`
 - **Hosting:** Vercel (Hobby tier at launch; Pro tier likely 6+ months in driven by production agent function time)
-- **Domain registrar:** Namecheap (existing). Domain `getlitsaber.com` stays at Namecheap; DNS A/CNAME records point at Vercel.
+- **Domain registrar:** Namecheap (existing). Domain getlitsaber.com stays at Namecheap; DNS A/CNAME records point at Vercel.
 - **Package manager:** pnpm
 
 ---
 
 ## Deployment topology
 
-- **Bolt** generates code and pushes to GitHub during Phase 2. Bolt is done after Phase 2.
-- **GitHub** holds the source of truth. Every push to `main` triggers a Vercel production deploy.
-- **Vercel** auto-deploys every PR to a unique preview URL. Production deploys on merge to `main`.
-- **Namecheap** is the domain registrar. DNS records will be pointed at Vercel in Phase 6/7 during launch cutover. Until then, the live site `getlitsaber.com` continues running on the existing WordPress/Avada install while the new build is verified on the Vercel-provided preview URL (`getlitsaber-web.vercel.app` or similar).
-- **Migration cutover** is deliberate, late-phase, and reversible. Do not touch Namecheap DNS without explicit user approval.
-
----
-
-## Source precedence (Figma vs. spec docs)
-
-When Figma and the spec docs disagree, the spec docs win. Always.
-
-- **`BRAND.md` overrides Figma copy.** If Figma shows "TWELVE WAYS" or "$80" or "MOQ 25" — those are stale. The spec is the resolved truth.
-- **`tokens.json` overrides Figma values.** Do not inline a hex Figma shows if a named token exists. Same for spacing, fonts, radii, z-index.
-- **`COMPONENTS.md` overrides Figma layer structure.** Render the components the spec describes, not whatever ad-hoc nesting Figma uses.
-- **Use Figma for:** layout proportions, spacing intent, imagery placement, visual hierarchy
-- **Ignore Figma's:** hidden frames, debug guides, variant prototyping artifacts, inconsistent copy, the empty "Section 6" placeholder frame
-
-**Figma file reference:** `cuBHq4i5XibiqCyleuZFHO`. Key nodes:
-- Desktop homepage: `3216:33`
-- Mobile homepage: `3760:5314`, `3760:8705`
-- Desktop PDP: `3367:320`
-- Mobile PDP: `3760:5949`, `3760:9139`
-- Other page nodes listed in `COMPONENTS.md`
-
----
-
-## Asset convention
-
-All static visual assets live under `public/` with a category-based folder structure:
-
-```
-public/
-└── images/
-    ├── hero/         # Homepage hero, page hero backgrounds
-    ├── product/      # Product renders, exploded views, color variants
-    ├── venues/       # Festivals / Raves / House Parties / Events
-    ├── reviews/      # Customer photos from reviews
-    ├── about/        # Founder photos, behind-the-scenes
-    ├── activate/     # Product-in-use shots for the Activate page
-    └── icons/        # Custom icons not covered by inline SVG
-```
-
-**Rules:**
-- Image filenames are lowercase, hyphenated: `hero-main.jpg`, not `Hero Main.JPG`
-- Prefer WebP for photos, SVG for icons/logos, MP4 for video
-- Always render via `next/image` with explicit `width` and `height` props (no layout shift)
-- Always provide meaningful `alt` text — never `alt=""` unless the image is purely decorative
-- If an asset doesn't exist yet, reference its intended path (e.g., `/images/hero/hero-main.jpg`) and add `{/* TODO: replace placeholder */}` above the `<Image>` tag
-- Do NOT invent asset filenames not in this convention. Do NOT download images from Figma during a build pass — asset replacement is a deliberate, separate pass after layout is locked.
-
-**Where assets live in production:**
-- During Phase 2/3: assets live in `public/` and ship with the repo
-- Phase 6/7 migration: large assets (real product photography, video) move to Vercel Blob storage; references in code update from `/images/...` to `https://blob.vercel-storage.com/...`. This keeps the repo lean and the CDN clean.
-
-**Video specifically:**
-- Never commit video files to the repo (`.mp4`, `.mov`, `.webm`). Even short clips bloat Git history permanently.
-- Phase 2/3 video placeholder: render a `<VideoPlaceholder />` component (static thumbnail + play icon overlay) referencing an asset path that doesn't exist yet. Add a TODO.
-- Phase 5+ migration to a real video host (Vercel Blob for small files, Mux for product videos, or Cloudflare Stream as an alternative).
-
+- Bolt generates code and pushes to GitHub during Phase 2. Bolt is done after Phase 2.
+- GitHub holds the source of truth. Every push to main triggers a Vercel production deploy.
+- Vercel auto-deploys every PR to a unique preview URL. Production deploys on merge to main.
+- Namecheap is the domain registrar. DNS records will be pointed at Vercel in Phase 6/7 during launch cutover. Until then, the live site getlitsaber.com continues running on the existing WordPress/Avada install while the new build is verified on the Vercel-provided preview URL (getlitsaber-web.vercel.app or similar).
+- Migration cutover is deliberate, late-phase, and reversible. Do not touch Namecheap DNS without explicit user approval.
 ---
 
 ## Conventions

@@ -250,44 +250,6 @@ Five-column stat strip directly under the hero.
 - **Each card:** Review text, attribution, source (TikTok handle or platform)
 - **Note:** This is the homepage *summary* of reviews. The full reviews subsystem lives on the PDP.
 
-### `<HomepageBuySection />`
-The homepage has its **own full buy section** (not just a link to the PDP). Section anchor `id="shop"` is taken by routing conventions — use `id="buy"` for the homepage anchor to avoid collision with the `/shop/litsaber-og` route.
-
-This section reuses several PDP components but is a self-contained purchase experience on the homepage. Structurally based on the earlier `BuySection.tsx` prototype, **with all stale data corrected to locked spec.**
-
-- **Layout (desktop):** Two-column. Left: sticky product carousel. Right: buy panel.
-- **Layout (mobile):** Single column, carousel on top, buy panel below.
-- **Atmospheric:** `<SectionStarfield />` behind the section content (denser/colorful variant per MOTION.md Part 5). Optional `<GlowOrb />` purple pool. Section is `position: relative; overflow: hidden` so the starfield is clipped to the section.
-
-**Left column — product carousel (`<ProductCarousel />`):**
-- Sticky main image (square aspect, rounded, glass-card treatment) with fade transition between images (300ms per MOTION.md)
-- Left/right nav arrows (appear on hover, desktop)
-- 4-thumbnail strip below; active thumbnail has cyan border, inactive are dimmed
-- Images from `public/images/product/`
-
-**Right column — buy panel:**
-- Title "LITSABER" (Orbitron) + subtitle "The Interactive 510 Battery" (Inter)
-- Price display (Orbitron, large) — reflects selected bundle. Uses the pink `cta` color treatment, not magenta.
-- **Style selector (`<StyleSelector />`):** two options
-  - Silver — "In stock · Ships 24h" — selectable, cyan ring when active
-  - Gold Edition — "Limited drop · Waitlist" — when selected, swaps the buy panel for a waitlist email-capture form (Gold is not purchasable yet, "COMING SOON")
-- **Bundle selector (`<BundleSelector />`):** **TWO bundles only (locked — no 3-pack):**
-  - Single — $59.99, no savings badge
-  - 2-Pack — $99.99, "SAVE $20" badge ("For the lightshow. For the partner. For the never-without")
-  - Radio-style selection; active bundle has cyan border + cyan tint background + glow
-  - Selecting a bundle updates the price display and the Add to Cart quantity logic (bundle = quantity discount on the single SKU, per locked Shopify strategy)
-- **Urgency line:** "SHIPS IN 24 HOURS · ORDER BY 3PM PT" pill. When 2-Pack selected, show "FREE SHIPPING UNLOCKED" (free shipping threshold TBD — confirm against actual policy).
-- **Add to Cart button:** primary CTA, pink `cta` color, "powers up" glow on hover per MOTION.md. Adds selected bundle/style to cart (Shopify Cart API in Phase 4; mock in Phase 2).
-- **Accordions (`<ProductAccordion />`):** Product Features, Tech Specs, Warranty, Shipping. **Warranty copy must be reconciled** — the prototype said "30-day guarantee" but the policies page specifies a 6-month limited warranty. Use the correct figure; do not reproduce the prototype's 30-day text blindly.
-
-**Data corrections from the prototype (do NOT carry over the stale values):**
-- Single is **$59.99**, not $60
-- 2-Pack is **$99.99 / SAVE $20**, not $110 / save $10
-- **No 3-Pack** (prototype had one at $150 — remove)
-- Spec pills say **"10 Colors"**, not "12 Colors"
-- Warranty: reconcile 30-day vs 6-month (flagged open question)
-- Bundle implementation: quantity discount on single SKU, not separate products
-
 ---
 
 ## Product Detail Page (PDP)
@@ -298,7 +260,6 @@ Main image + thumbnail strip.
 - **Layout (desktop):** Vertical thumbnail strip (left) + main image (right)
 - **Layout (mobile):** Main image + horizontal-swipe thumbnail strip below
 - **States:** Default, loading, zoom-on-hover (desktop)
-- **Note:** Shares carousel behavior with `<ProductCarousel />` on the homepage buy section. Consider a shared underlying component with PDP and homepage variants.
 
 ### `<ProductInfo />`
 Container for title, price, features, CTA. Right column on desktop, full-width on mobile.
@@ -591,22 +552,6 @@ Date stamp showing when the policy was last revised.
 ### `<SocialIconRow />`
 - **Use:** Instagram + YouTube + TikTok icons in footer (mobile) — needs desktop addition
 
-### `<SectionStarfield />`
-- **Use:** Section-scoped drifting starfield behind atmospheric sections (homepage buy section primarily). See MOTION.md Part 5 for full technique.
-- **Behavior:** Canvas, `position: absolute` filling a `position: relative` parent, low z-index, `pointer-events: none`, `mix-blend-mode: screen`, ~60% opacity. Stars drift upward and respawn at bottom. IntersectionObserver pauses the loop off-screen. `prefers-reduced-motion` renders a static field.
-- **Props:** `density` (~0.00018), `accentRatio` (~0.18 cyan/magenta fraction), `maxSpeed` (~0.4)
-- **Colors from tokens:** white `#F0F0F5`, cyan `#00E5FF`, magenta `#FF00E5`. Do NOT hardcode — pull from token values.
-- **Note:** Re-implemented fresh in Next.js. The prototype `SectionStarfield.tsx` is reference for technique only.
-
-### `<GlowOrb />`
-- **Use:** Blurred background glow circles for "pools of color in the darkness" (e.g. behind the FAQ grid). See MOTION.md Part 5.
-- **Visual:** Solid accent color div, `border-radius: 50%`, heavy blur (`blur-3xl`+), low opacity (10–25%), low z-index, `pointer-events: none`. Positioned off-center / partially off-screen.
-- **Props:** `color` (purple default, cyan/pink options), `size`, `blur`, `opacity`, position offsets
-- **Note:** Static. Often two overlapping orbs of different accents create a multi-color pool.
-
-### A global atmospheric layer
-Per MOTION.md, the site also has a **global** faint starfield + **film grain overlay** (SVG noise, 4–6% opacity, fixed, `mix-blend-mode: overlay`, `pointer-events: none`). These wrap the whole app (in `app/layout.tsx` or a client wrapper), distinct from the section-scoped `<SectionStarfield />`. Film grain is the single most important atmospheric element — implement it early.
-
 ---
 
 ## Component Inventory Summary
@@ -616,7 +561,7 @@ Per MOTION.md, the site also has a **global** faint starfield + **film grain ove
 | Global / shared | 6 |
 | Modals | 2 |
 | Cart system | 5 |
-| Homepage sections | 12 (added HomepageBuySection) |
+| Homepage sections | 11 |
 | PDP (incl. reviews subsystem) | 15 |
 | Engineering | 3 |
 | Wholesale | 6 |
@@ -624,8 +569,8 @@ Per MOTION.md, the site also has a **global** faint starfield + **film grain ove
 | Activate | 7 |
 | Contact | 4 |
 | Policies | 4 |
-| Primitives + atmospheric | 13 |
-| **Total** | **~82 components** |
+| Primitives | 10 |
+| **Total** | **~78 components** |
 
 ---
 
@@ -633,8 +578,6 @@ Per MOTION.md, the site also has a **global** faint starfield + **film grain ove
 
 - **ReviewInfra integration path:** Path A (use widget as-is) or Path B (use data API, render our own UI)? Action item: email ReviewInfra to confirm if a read API exists.
 - **AI Summary feature:** Is it built into ReviewInfra, or do we build it ourselves with a Claude API endpoint, or skip for v1?
-- **Warranty period:** 30-day guarantee (homepage buy section + Figma) vs 6-month limited warranty (policies page). These conflict. Lock one figure and apply everywhere.
-- **Free shipping threshold:** Homepage buy section shows "FREE SHIPPING UNLOCKED" on 2-Pack. Confirm the actual threshold (the old prototype used $100; with 2-Pack at $99.99 that's a near-miss — intentional or should the threshold be lower?).
 - **PDP title:** Is "LITSABER OG +" the intentional product name, or is the `+` a typo?
 - **2-Pack savings:** Shows "SAVE $20" but math is $19.99 — round up the label or keep?
 - **Engineering kinetic animation:** Detailed spec needed; existing implementation reference or fresh pass?
