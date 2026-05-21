@@ -59,36 +59,44 @@ When Figma and the spec docs disagree, the spec docs win. Always.
 
 ## Asset convention
 
-All static visual assets live under `public/` with a category-based folder structure:
+All static visual assets live under `public/images/` with a **page-based** folder structure (this is what's actually in the repo — reconciled from the original category-based plan):
 
 ```
 public/
 └── images/
-    ├── hero/         # Homepage hero, page hero backgrounds
-    ├── product/      # Product renders, exploded views, color variants
-    ├── venues/       # Festivals / Raves / House Parties / Events
+    ├── home/         # Homepage assets — hero-lifestyle.png, litsaber-hero-image.png, section imagery
+    ├── product/      # PDP product renders, exploded views, color variants
+    ├── venues/       # Festivals / Raves / House Parties / Events (Where It Lives section)
     ├── reviews/      # Customer photos from reviews
     ├── about/        # Founder photos, behind-the-scenes
     ├── activate/     # Product-in-use shots for the Activate page
     └── icons/        # Custom icons not covered by inline SVG
 ```
 
+**Known homepage hero assets (confirmed in repo):**
+- `public/images/home/hero-lifestyle.png` — hero background lifestyle/scene image
+- `public/images/home/litsaber-hero-image.png` — Litsaber device render, layered over the background
+
 **Rules:**
-- Image filenames are lowercase, hyphenated: `hero-main.jpg`, not `Hero Main.JPG`
-- Prefer WebP for photos, SVG for icons/logos, MP4 for video
-- Always render via `next/image` with explicit `width` and `height` props (no layout shift)
-- Always provide meaningful `alt` text — never `alt=""` unless the image is purely decorative
-- If an asset doesn't exist yet, reference its intended path (e.g., `/images/hero/hero-main.jpg`) and add `{/* TODO: replace placeholder */}` above the `<Image>` tag
-- Do NOT invent asset filenames not in this convention. Do NOT download images from Figma during a build pass — asset replacement is a deliberate, separate pass after layout is locked.
+- Image filenames are lowercase, hyphenated: `hero-lifestyle.png`, not `Hero Lifestyle.PNG`
+- Prefer WebP for photos where possible, SVG for icons/logos, MP4 for video. PNG is acceptable for renders with transparency (e.g. device cutouts).
+- Always render via `next/image` with explicit `width`/`height` (or `fill` with a sized container) — no layout shift
+- Always provide meaningful `alt` text — never `alt=""` unless purely decorative
+- If an asset doesn't exist yet, reference its intended path and add `{/* TODO: replace placeholder */}` above the `<Image>` tag
+- Do NOT invent asset filenames. Verify the real path in `public/images/<page>/` before referencing — the folder is page-based (`home/`), NOT a `hero/` category folder. (A Phase 2 build initially failed because it assumed `public/images/hero/`; the real path is `public/images/home/`.)
+
+**Critical workflow rule — single write path to the repo:**
+- Assets and files must enter the repo through ONE source at a time. During Phase 2, that source is **Bolt**. Do NOT add files directly via GitHub web/Desktop while Bolt is the active editor — Bolt's next sync can delete files it doesn't know about. (This happened once: a Bolt merge dropped the entire `public/images/` folder; recovered from git history via `git checkout <commit> -- public/`.)
+- After Phase 2 handoff to Claude Code, the single write path becomes the local repo + Claude Code.
 
 **Where assets live in production:**
 - During Phase 2/3: assets live in `public/` and ship with the repo
-- Phase 6/7 migration: large assets (real product photography, video) move to Vercel Blob storage; references in code update from `/images/...` to `https://blob.vercel-storage.com/...`. This keeps the repo lean and the CDN clean.
+- Phase 6/7 migration: large assets (real product photography, video) move to Vercel Blob; references update from `/images/...` to the Blob URL. Keeps the repo lean.
 
 **Video specifically:**
-- Never commit video files to the repo (`.mp4`, `.mov`, `.webm`). Even short clips bloat Git history permanently.
-- Phase 2/3 video placeholder: render a `<VideoPlaceholder />` component (static thumbnail + play icon overlay) referencing an asset path that doesn't exist yet. Add a TODO.
-- Phase 5+ migration to a real video host (Vercel Blob for small files, Mux for product videos, or Cloudflare Stream as an alternative).
+- Never commit video files to the repo (`.mp4`, `.mov`, `.webm`). Even short clips bloat git history permanently.
+- Phase 2/3 video placeholder: render a `<VideoPlaceholder />` component (static thumbnail + play icon overlay) with a TODO.
+- Phase 5+ migration to a real video host (Vercel Blob for small files, Mux for product videos, Cloudflare Stream as alternative).
 
 ---
 

@@ -167,10 +167,13 @@ Reusable +/- counter.
 ### `<Hero />`
 Full-bleed hero — 1440×1460 desktop, 375×750 mobile.
 
-- **Composition:** Background image with bottom-fade gradient, headline ("HIGHLIGHT THE NIGHT" with "NIGHT" in Monoton cyan), sub-headline, two CTAs, glow tagline below the fold, spec pills row
-- **CTAs:** Primary ("GET YOURS — $59.99") and secondary ("SEE IT IN MOTION")
+- **Composition (corrected to match current Figma):** Background image with bottom-fade gradient, headline ("HIGHLIGHT THE NIGHT" with "NIGHT" in Monoton cyan), sub-headline, two CTAs, **large-display glow tagline**, **product render of the device**, spec pills row
+- **Product render:** The hero shows the Litsaber device (Figma confirmed). May be a separate cutout asset layered over the background scene, or part of the background image — depends on the asset structure. Positioned per Figma (typically right side on desktop, below content on mobile).
+- **CTAs:** Primary ("GET YOURS — $59.99", pink `cta` treatment) and secondary ("SEE IT IN MOTION", cyan outline)
+- **Glow tagline:** "Glowstick meets 510 battery. This is Litsaber." Rendered as a **large display statement** (Figma confirmed) — bigger than body, sized as a secondary headline, with cyan glow. NOT a small eyebrow label. This is the repositioning thesis line; it earns visual weight.
 - **Spec pills:** `41 LEDS · 10 Colors · 3 Modes · 800 mAh · USB-C · 510 Thread`
-- **Mobile behavior:** CTAs stack vertically; spec pills become a 2×3 grid; headline scales down
+- **Mobile behavior:** CTAs stack vertically; spec pills become a 2×3 grid; headline scales down; product render moves below the text content
+- **Note:** This entry was corrected after a Phase 2 build discrepancy — the original Phase 1.5 spec omitted the product render and under-sized the tagline. Figma was the correct source on both.
 
 ### `<StatBar />`
 Five-column stat strip directly under the hero.

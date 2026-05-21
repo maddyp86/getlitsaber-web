@@ -278,44 +278,41 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 2 — Step 2: Hero Section (2026-05-21) ✅
+#### Phase 2 — Step 2: Hero section (built, corrected)
 
-**Goal:** Build `<Hero />` — the homepage hero section only. First content component of the homepage build.
+**Built hero-first** (broke the homepage into per-section chunks rather than the original two-pass split). Bolt produced `<Hero />` plus reusable `<Reveal>` and `<SpecPill>` primitives. The hero is the most-judged component and sets the motion/color patterns for every later section, so it earned its own pass.
 
-**Deliverables**
-- [x] `framer-motion` installed as a dependency
-- [x] `tailwind.config.ts` extended with previously missing tokens: `background.raised`, full `accent.purple/magenta` family, `cta` color ramp, `border.cta`, `surface.tint-cta/tint-purple`, `shadow.glow-purple/glow-cta/glow-cta-hover`, `backgroundImage.gradient-cta` + `gradient-cta-radial`
-- [x] `components/primitives/SpecPill.tsx` — `rounded-pill`, `border-border-pill`, `font-label`, `text-accent-cyan`, reusable for homepage and Engineering page
-- [x] `components/primitives/Reveal.tsx` — reusable Framer Motion reveal wrapper used by Hero; signature easing `cubic-bezier(0.16, 1, 0.3, 1)`, 800ms duration, `delay` prop for stagger, `useReducedMotion` kills translate + stagger (opacity stays instant)
-- [x] `components/home/Hero.tsx` — full-bleed `min-h-screen`, background image with fallback glow pool, headline, sub-headline, primary + secondary CTAs, glow tagline, spec pills row
-- [x] `app/page.tsx` updated — Homepage stub replaced; `<Hero />` is the first and only rendered component
-- [x] `next build` passes clean — 16 static routes, 0 type errors
+**Bolt flagged three Figma discrepancies — all resolved:**
+1. Hero image not found → turned out the entire `public/` folder had been wiped (see incident below). Real path is `public/images/home/`, not `public/images/hero/`.
+2. Figma shows a product render in the hero; the Phase 1.5 spec omitted it → **Figma was right.** COMPONENTS.md hero spec corrected to include the device render. Locked: hero shows the device.
+3. Figma shows the "Glowstick meets 510 battery" tagline at large display size; spec said small eyebrow → **Figma was right.** It's the repositioning thesis line; it earns weight. COMPONENTS.md corrected. Locked: large display statement with cyan glow.
 
-**Headline note:** Spec says "HIGHLIGHT THE NIGHT" — "HIGHLIGHT THE" in Stellar (font-display), "NIGHT" in Monoton (font-accent) cyan. Figma Figma desktop hero shows the same headline copy and structure. No discrepancy — they match. Copy was followed per spec.
+**Hero assets (confirmed in repo):**
+- `public/images/home/hero-lifestyle.png` — background scene
+- `public/images/home/litsaber-hero-image.png` — device render, layered on top
 
-**Figma discrepancies observed:**
-- Hero image: `/images/hero/hero-main.jpg` does not exist yet. Component uses a fallback atmospheric glow pool (`gradient-cta-radial` + two blurred `GlowOrb`-style divs). Hero image path is reserved; flip `HERO_IMAGE_EXISTS = true` when the file is added. TODO comment in component.
-- Hero layout in Figma shows spec pills at the very bottom edge of the frame, below a product render visual. The spec (COMPONENTS.md) does not include a product render inside the Hero section — it lists pills as the last element. Followed the spec, not Figma. The product render likely belongs to a subsequent section.
-- Figma shows the glow tagline ("Glowstick meets 510 battery. This is Litsaber.") in larger display type, almost full-width. Spec calls for `font-label` + eyebrow size. Followed spec sizing; visual weight adjusted via `drop-shadow` glow.
+**Corrective prompt issued** to wire real images, add the product render, resize the tagline — as a patch to existing `<Hero />`, not a rebuild.
 
-**CTA note:** Primary CTA uses `border-border-cta` (pink) + `bg-surface-tint-cta` (pink alpha-10) + white text. This is the CTA pink token treatment per CLAUDE.md v0.3.0 palette note ("primary CTA uses the pink cta token, not cyan"). Secondary CTA uses cyan outline, transparent fill, hover reveals `surface-tint-cyan`.
+#### Phase 2 — INCIDENT: public/ folder wiped by Bolt sync
 
-**What was punted:**
-- `<GlowOrb />` is not yet a standalone primitive — the two fallback glow circles in Hero are inline divs. Will extract as a primitive when other sections need it (multiple consumers justify the abstraction).
-- No parallax on the hero image — placeholder fallback has no image to parallax; will add when real image is present.
-- Film grain overlay (MOTION.md Part 5) not yet added — it's a global atmospheric layer. Will be added to `app/layout.tsx` or `globals.css` in a separate pass once a few sections are in place, so it's tuned against real content.
+**What happened:** The entire `public/images/` folder (uploaded across 3 commits ~17–19h prior) disappeared from the repo. Root cause: two-sources-of-truth collision. Images were added directly via GitHub/GitHub Desktop; Bolt's workspace never had them; a Bolt sync produced a `Merge branch 'main'` commit that dropped `public/` because Bolt's view didn't include it.
 
-**Story beats (Phase 2 Step 2)**
+**Recovery:** Images were still in git history (commit `319096d`). Restored via `git checkout 319096d -- public/` → commit → push. No data lost. (Alternative paths considered: GitHub Desktop revert, ZIP-download-and-re-upload.)
+
+**Prevention (now locked in CLAUDE.md):** Single write path to the repo. During Phase 2, all files enter through Bolt. No direct GitHub edits while Bolt is the active editor. This is the second Bolt collision (first was the Netlify dependency leak in Step 1) — both are arguments for the Claude Code handoff after the homepage scaffold.
+
+**Story beats captured (Phase 2 Step 2 + incident)**
 
 | # | Beat | Tag |
 |---|------|-----|
-| 20 | "The token system investment paid its first real dividend. Extending the Tailwind config to cover the v0.3.0 palette tokens was a surgical 30-line edit — every glow shadow, CTA color, surface tint, gradient is now named and available. The Hero component has zero inline hex values. That discipline started in Phase 1." | `pm-discipline`, `ai-augmented-build` |
-| 21 | "Built the Reveal component as a reusable primitive with `useReducedMotion` baked in, not as an afterthought. Every subsequent homepage section can wrap content in `<Reveal delay={0.1}>` and get the signature easing curve for free. One implementation, zero repeat." | `tool-choice` |
-| 22 | "The hero image doesn't exist yet. Rather than blocking on asset delivery, the component has a proper fallback — atmospheric glow pool using gradient-cta-radial and blurred accent divs, with a `HERO_IMAGE_EXISTS` flag at the top of the file. Swap the flag, the image loads. The feature ships; the asset follows." | `pm-discipline` |
+| 20 | "Broke the homepage into per-section chunks instead of building it in big passes. Started with the hero alone — most-judged component, sets every downstream pattern. Smaller chunks meant tighter review and less rework. Scoping the unit of work is a PM call, not a coding one." | `pm-discipline` |
+| 21 | "Bolt flagged three places where Figma and my spec disagreed. On two of them — product render in the hero, tagline size — Figma was right and my Phase 1.5 spec was stale. The discipline that mattered wasn't 'spec always wins'; it was building the prompt so Bolt surfaces the conflict instead of silently picking. Then a human decides." | `pm-discipline`, `ai-augmented-build` |
+| 22 | "Lost the entire image folder to a Bolt sync collision — Bolt merged its view of main over mine and dropped files it never knew about. Recovered in two minutes from git history (`git checkout <commit> -- public/`). The real lesson wasn't the recovery, it was the root cause: two write paths to one repo will always eventually collide. Locked a single-write-path rule and accelerated the plan to drop Bolt for Claude Code. Version control turned a 'lost a day of work' into a 'lost two minutes.'" | `integration-depth`, `pm-discipline` |
 
 ---
 
 ### Phase 3 — Claude Code Audit & Structural Fixes (pending)
+
 Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMPONENTS.md`, and tokens. Fix component composition, type safety, routing, accessibility. Mobile responsiveness verified or built where Bolt fell short.
 
 ---
