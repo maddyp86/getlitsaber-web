@@ -13,6 +13,7 @@ const config: Config = {
         background: {
           primary: tokens.color.background.primary.value,
           elevated: tokens.color.background.elevated.value,
+          raised: tokens.color.background.raised.value,
           overlay: tokens.color.background.overlay.value,
         },
         accent: {
@@ -20,6 +21,16 @@ const config: Config = {
           "cyan-alpha-10": tokens.color.accent["cyan-alpha-10"].value,
           "cyan-alpha-50": tokens.color.accent["cyan-alpha-50"].value,
           magenta: tokens.color.accent.magenta.value,
+          "magenta-alpha-10": tokens.color.accent["magenta-alpha-10"].value,
+          purple: tokens.color.accent.purple.value,
+          "purple-alpha-10": tokens.color.accent["purple-alpha-10"].value,
+          "purple-alpha-50": tokens.color.accent["purple-alpha-50"].value,
+        },
+        cta: {
+          DEFAULT: tokens.color.cta.DEFAULT.value,
+          "alpha-10": tokens.color.cta["alpha-10"].value,
+          "alpha-40": tokens.color.cta["alpha-40"].value,
+          "alpha-70": tokens.color.cta["alpha-70"].value,
         },
         text: {
           primary: tokens.color.text.primary.value,
@@ -30,10 +41,13 @@ const config: Config = {
         border: {
           default: tokens.color.border.default.value,
           accent: tokens.color.border.accent.value,
+          cta: tokens.color.border.cta.value,
           pill: tokens.color.border.pill.value,
         },
         surface: {
           "tint-cyan": tokens.color.surface["tint-cyan"].value,
+          "tint-cta": tokens.color.surface["tint-cta"].value,
+          "tint-purple": tokens.color.surface["tint-purple"].value,
           "tint-white": tokens.color.surface["tint-white"].value,
           card: tokens.color.surface.card.value,
         },
@@ -87,11 +101,16 @@ const config: Config = {
       boxShadow: {
         "glow-white": tokens.shadow["glow-white"].value,
         "glow-cyan": tokens.shadow["glow-cyan"].value,
+        "glow-purple": tokens.shadow["glow-purple"].value,
+        "glow-cta": tokens.shadow["glow-cta"].value,
+        "glow-cta-hover": tokens.shadow["glow-cta-hover"].value,
         modal: tokens.shadow.modal.value,
         drawer: tokens.shadow.drawer.value,
       },
       backgroundImage: {
         "hero-fade": tokens.gradient["hero-fade"].value,
+        "gradient-cta": tokens.gradient.cta.value,
+        "gradient-cta-radial": tokens.gradient["cta-radial"].value,
       },
       height: {
         navbar: tokens.component["navbar-height"].value,
