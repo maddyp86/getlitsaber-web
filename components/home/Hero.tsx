@@ -34,7 +34,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative w-full min-h-screen lg:min-h-[1700px] flex flex-col items-center overflow-hidden bg-background-primary pt-section-y-mobile lg:pt-0"
+      className="relative w-full min-h-screen lg:min-h-[1800px] flex flex-col items-center overflow-hidden bg-background-primary pt-section-y-mobile lg:pt-0"
       aria-label="Hero"
     >
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
@@ -53,7 +53,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom background — starfield + horizontal device render */}
-      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[760px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
+      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[860px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
         <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
           <Image
             src="/images/home/litsaber-hero-image.png"
@@ -153,10 +153,10 @@ export default function Hero() {
       <motion.p
         className="
           relative z-20 text-center px-container-mobile mt-xl mb-xl
-          font-subhead font-bold text-h3 lg:text-h2 uppercase
+          font-subhead font-bold text-h3 lg:text-h2 uppercase leading-tight
           text-text-primary max-w-[1200px]
           drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-          lg:px-0 lg:mt-0 lg:mb-0
+          lg:px-0 lg:mt-0 lg:mb-[100px]
         "
         variants={variants}
         initial="hidden"
