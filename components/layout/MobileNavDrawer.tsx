@@ -103,7 +103,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto px-container-mobile py-lg">
+        <div className="flex-1 overflow-y-auto no-scrollbar px-container-mobile pt-sm pb-lg">
           {/* Primary nav */}
           <nav aria-label="Main navigation">
             <ul className="space-y-0">
