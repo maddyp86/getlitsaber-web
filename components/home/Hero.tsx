@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
+import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 
 const SPEC_PILLS = [
   "41 LEDS",
@@ -37,14 +38,13 @@ export default function Hero() {
       aria-label="Hero"
     >
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
-      <div className="absolute inset-x-0 top-0 h-[300px] lg:h-[585px] z-0">
-        <Image
-          src="/images/home/hero-lifestyle.jpg"
+      <div className="absolute inset-x-0 top-0 aspect-[41/69] lg:aspect-auto lg:h-[585px] z-0">
+        <ResponsiveImage
+          mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
+          desktopSrc="/images/home/hero-lifestyle.jpg"
           alt="Litsaber lighting up a festival crowd at night"
-          fill
+          breakpoint="1024px"
           priority
-          sizes="100vw"
-          className="object-cover object-center"
         />
         <div
           className="absolute inset-0 bg-hero-fade pointer-events-none"
@@ -53,7 +53,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom background — starfield + horizontal device render */}
-      <div className="absolute inset-x-0 top-[296px] lg:top-[581px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
+      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[581px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
         <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
           <Image
             src="/images/home/litsaber-hero-image.png"
@@ -70,7 +70,7 @@ export default function Hero() {
       <motion.h1
         className="
           relative z-20 text-center px-container-mobile mb-md w-full
-          font-display text-h2 sm:text-h1 text-text-primary
+          font-display font-bold text-h2 sm:text-h1 text-text-primary
           leading-none tracking-tight
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
           lg:mt-[225px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px]
@@ -81,7 +81,7 @@ export default function Hero() {
         custom={0}
       >
         HIGHLIGHT THE{" "}
-        <span className="font-accent text-accent-cyan lg:text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
+        <span className="font-accent font-normal text-accent-cyan lg:text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
           NIGHT
         </span>
       </motion.h1>
