@@ -10,7 +10,7 @@ export const stellar = localFont({
   ],
   variable: "--font-stellar",
   display: "swap",
-  fallback: ["Arial Black", "system-ui", "sans-serif"],
+  fallback: ["Arial", "system-ui", "sans-serif"],
 });
 
 export const monoton = Monoton({
