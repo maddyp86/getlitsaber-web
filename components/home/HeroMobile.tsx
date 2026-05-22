@@ -107,54 +107,65 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         </motion.div>
       </div>
 
-      {/* Below this point: solid black canvas, no background image */}
-
-      {/* Tagline */}
-      <motion.p
-        className="
-          relative z-20 text-center px-container-mobile mt-xl
-          font-subhead font-bold text-h3 uppercase leading-tight
-          text-text-primary w-full
-          drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-        "
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        custom={0.3}
+      {/* Anchor zone — stacked flex column, black background, fixed dimensions per spec */}
+      <div
+        style={{
+          display: "flex",
+          width: "375px",
+          height: "679px",
+          padding: "50px 20px",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "39px",
+          flexShrink: 0,
+          background: "#000",
+        }}
       >
-        {TAGLINE}
-      </motion.p>
+        <motion.p
+          className="
+            text-center
+            font-subhead font-bold text-h3 uppercase leading-tight
+            text-text-primary w-full
+            drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
+          "
+          variants={variants}
+          initial="hidden"
+          animate="visible"
+          custom={0.3}
+        >
+          {TAGLINE}
+        </motion.p>
 
-      {/* Product image — constrained 375×227 per spec */}
-      <motion.div
-        className="relative w-full max-w-[375px] mx-auto mt-md"
-        style={{ aspectRatio: "375/227" }}
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        custom={0.35}
-      >
-        <Image
-          src="/images/home/litsaber-hero-image.png"
-          alt="Litsaber device"
-          fill
-          sizes="375px"
-          className="object-cover object-center"
-        />
-      </motion.div>
+        <motion.div
+          className="relative w-full"
+          style={{ aspectRatio: "375/227" }}
+          variants={variants}
+          initial="hidden"
+          animate="visible"
+          custom={0.35}
+        >
+          <Image
+            src="/images/home/litsaber-hero-image.png"
+            alt="Litsaber device"
+            fill
+            sizes="335px"
+            className="object-contain object-center"
+          />
+        </motion.div>
 
-      {/* Spec pills — 3×2 grid */}
-      <motion.div
-        className="grid grid-cols-3 gap-sm px-container-mobile pb-section-y-mobile mt-md"
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        custom={0.4}
-      >
-        {SPEC_PILLS.map((label) => (
-          <SpecPill key={label} label={label} />
-        ))}
-      </motion.div>
+        <motion.div
+          className="grid grid-cols-3 gap-sm w-full"
+          variants={variants}
+          initial="hidden"
+          animate="visible"
+          custom={0.4}
+        >
+          {SPEC_PILLS.map((label) => (
+            <SpecPill key={label} label={label} />
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 }

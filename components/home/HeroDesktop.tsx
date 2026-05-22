@@ -133,36 +133,46 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         </motion.div>
       </div>
 
-      {/* Product window — open space that reveals the device render in the background */}
-      <div className="flex-1 min-h-[400px]" aria-hidden="true" />
+      {/* Anchor zone — inline grid; 500px row-gap creates the empty middle where the device render shows through */}
+      <div className="relative z-20 w-full flex justify-center">
+        <div
+          style={{
+            display: "inline-grid",
+            width: "1440px",
+            padding: "100px",
+            rowGap: "500px",
+            gridTemplateRows: "repeat(2, fit-content(100%))",
+            gridTemplateColumns: "repeat(1, fit-content(100%))",
+          }}
+        >
+          <motion.p
+            className="
+              text-center
+              font-subhead font-bold text-h2 uppercase leading-tight
+              text-text-primary
+              drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
+            "
+            variants={variants}
+            initial="hidden"
+            animate="visible"
+            custom={0.3}
+          >
+            {TAGLINE}
+          </motion.p>
 
-      {/* Tagline + pills — anchor zone at the bottom of the section */}
-      <motion.p
-        className="
-          relative z-20 text-center px-container
-          font-subhead font-bold text-h2 uppercase leading-tight
-          text-text-primary w-full max-w-[1200px]
-          drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-        "
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        custom={0.3}
-      >
-        {TAGLINE}
-      </motion.p>
-
-      <motion.div
-        className="relative z-20 flex flex-row gap-md justify-center pb-section-y mt-[20px]"
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        custom={0.4}
-      >
-        {SPEC_PILLS.map((label) => (
-          <SpecPill key={label} label={label} />
-        ))}
-      </motion.div>
+          <motion.div
+            className="flex flex-row gap-md justify-center pb-section-y"
+            variants={variants}
+            initial="hidden"
+            animate="visible"
+            custom={0.4}
+          >
+            {SPEC_PILLS.map((label) => (
+              <SpecPill key={label} label={label} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }
