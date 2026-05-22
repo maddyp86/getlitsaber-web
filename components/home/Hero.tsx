@@ -34,7 +34,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative w-full min-h-screen lg:min-h-[1460px] flex flex-col items-center overflow-hidden bg-background-primary pt-section-y-mobile lg:pt-0"
+      className="relative w-full min-h-screen lg:min-h-[1700px] flex flex-col items-center overflow-hidden bg-background-primary pt-section-y-mobile lg:pt-0"
       aria-label="Hero"
     >
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
@@ -53,7 +53,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom background — starfield + horizontal device render */}
-      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[581px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
+      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[760px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
         <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
           <Image
             src="/images/home/litsaber-hero-image.png"
@@ -171,7 +171,7 @@ export default function Hero() {
         className="
           relative z-20 grid grid-cols-3 sm:grid-cols-6 gap-sm justify-center
           px-container-mobile sm:px-0 mt-xl
-          lg:flex lg:gap-md lg:mt-[480px]
+          lg:flex lg:gap-md lg:mt-[660px]
         "
         variants={variants}
         initial="hidden"
