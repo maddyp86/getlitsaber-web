@@ -14,7 +14,7 @@ const SPEC_PILLS = [
   "510 Thread",
 ];
 
-const HERO_IMAGE_EXISTS = false; // TODO: set to true once /images/hero/hero-main.jpg is added
+const HERO_IMAGE_EXISTS = true; // TODO: set to true once /images/hero/hero-main.jpg is added
 
 function useRevealVariants(prefersReduced: boolean | null) {
   return {
@@ -43,7 +43,7 @@ export default function Hero() {
         <div className="absolute inset-0 z-0">
           {/* TODO: replace placeholder */}
           <Image
-            src="/images/hero/hero-main.jpg"
+            src="/images/hero/hero-lifestyle.png"
             alt="Litsaber glowing at a festival"
             fill
             priority
