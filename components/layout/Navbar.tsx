@@ -80,7 +80,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right icons — user (desktop only) + cart + hamburger spacer balance */}
-          <div className="flex items-center justify-end gap-4 lg:w-40">
+          <div className="flex items-center justify-end gap-2 lg:w-40">
             {/* User icon — desktop only */}
             <button
               aria-label="Account"
@@ -139,16 +139,12 @@ function UserIcon() {
 
 function CartIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <svg width="18" height="20" viewBox="0 0 28 32" fill="none" aria-hidden="true">
       <path
-        d="M2 2h1.5l1.8 9h9.4l1.5-6H5.5"
+        d="M7.78253 10.5774V6.70645C7.78253 5.16649 8.39038 3.68959 9.47232 2.60067C10.5543 1.51175 12.0217 0.900002 13.5518 0.900002C15.0819 0.900002 16.5493 1.51175 17.6312 2.60067C18.7131 3.68959 19.321 5.16649 19.321 6.70645V10.5774M1.05176 10.5774H26.0518L23.1671 28.9645C23.1671 29.4778 22.9645 29.9701 22.6039 30.3331C22.2432 30.6961 21.7541 30.9 21.2441 30.9H5.85945C5.34942 30.9 4.8603 30.6961 4.49966 30.3331C4.13901 29.9701 3.93637 29.4778 3.93637 28.9645L1.05176 10.5774Z"
         stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        strokeWidth="1.8"
       />
-      <circle cx="8" cy="16.5" r="1.5" fill="currentColor" />
-      <circle cx="14" cy="16.5" r="1.5" fill="currentColor" />
     </svg>
   );
 }
