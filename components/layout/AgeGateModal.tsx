@@ -53,25 +53,50 @@ export default function AgeGateModal() {
       aria-modal="true"
       aria-labelledby="age-gate-title"
       aria-describedby="age-gate-body"
-      className="fixed inset-0 z-age-gate flex items-center justify-center p-container-mobile"
+      className="fixed inset-0 z-age-gate flex items-center justify-center lg:p-container-mobile"
       style={{ backgroundColor: "rgba(5, 5, 16, 0.80)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
     >
-      {/* Modal panel */}
-      <div
-        className="relative w-full flex flex-col items-center text-center rounded-card"
+      {/* Modal panel — full screen on mobile, card on desktop */}
+      <div className="age-gate-panel relative w-full flex flex-col items-center justify-center text-center lg:rounded-card"
         style={{
-          maxWidth: "448px",
-          background: "rgba(5, 5, 16, 0.60)",
-          border: "1px solid rgba(0, 229, 255, 0.20)",
-          boxShadow: "0 0 20px 0 rgba(0, 229, 255, 0.05) inset",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
           paddingTop: "50px",
           paddingBottom: "40px",
           paddingLeft: "33px",
           paddingRight: "33px",
         }}
       >
+        <style>{`
+          @media (min-width: 1024px) {
+            .age-gate-panel {
+              max-width: 448px;
+              background: rgba(5, 5, 16, 0.60);
+              border: 1px solid rgba(0, 229, 255, 0.20);
+              box-shadow: 0 0 20px 0 rgba(0, 229, 255, 0.05) inset;
+              backdrop-filter: blur(6px);
+              -webkit-backdrop-filter: blur(6px);
+            }
+          }
+          .age-gate-confirm {
+            background: #050510;
+            border: 1px solid #00E5FF;
+            color: #00E5FF;
+            transition: background 0.2s ease, color 0.2s ease;
+          }
+          .age-gate-confirm:hover {
+            background: #00E5FF;
+            color: #050510;
+          }
+          .age-gate-exit {
+            background: transparent;
+            border: 1px solid rgba(240, 240, 245, 0.20);
+            color: #F0F0F5;
+            transition: border-color 0.2s ease;
+          }
+          .age-gate-exit:hover {
+            border-color: rgba(240, 240, 245, 1);
+          }
+        `}</style>
+
         {/* Logo */}
         <div className="mb-md">
           <Image
@@ -109,9 +134,9 @@ export default function AgeGateModal() {
         {/* Confirm button */}
         <button
           onClick={handleConfirm}
-          className="age-gate-confirm font-label tracking-widest uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan mb-md"
+          className="age-gate-confirm w-full font-label tracking-widest uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan mb-md"
           style={{
-            width: "382px",
+            maxWidth: "382px",
             height: "58px",
             borderRadius: "4px",
             fontSize: "14px",
@@ -124,9 +149,9 @@ export default function AgeGateModal() {
         {/* Exit button */}
         <button
           onClick={handleExit}
-          className="age-gate-exit font-label tracking-widest uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
+          className="age-gate-exit w-full font-label tracking-widest uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
           style={{
-            width: "382px",
+            maxWidth: "382px",
             height: "58px",
             borderRadius: "4px",
             fontSize: "14px",
@@ -134,28 +159,6 @@ export default function AgeGateModal() {
         >
           EXIT
         </button>
-
-        <style>{`
-          .age-gate-confirm {
-            background: #050510;
-            border: 1px solid #00E5FF;
-            color: #00E5FF;
-            transition: background 0.2s ease, color 0.2s ease;
-          }
-          .age-gate-confirm:hover {
-            background: #00E5FF;
-            color: #050510;
-          }
-          .age-gate-exit {
-            background: transparent;
-            border: 1px solid rgba(240, 240, 245, 0.20);
-            color: #F0F0F5;
-            transition: border-color 0.2s ease;
-          }
-          .age-gate-exit:hover {
-            border-color: rgba(240, 240, 245, 1);
-          }
-        `}</style>
       </div>
     </div>
   );
