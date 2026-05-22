@@ -60,7 +60,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         </motion.h1>
 
         <motion.p
-          className="text-center font-body text-body text-text-secondary max-w-xl"
+          className="text-center font-body text-body text-text-secondary max-w-xl mb-6"
           variants={variants}
           initial="hidden"
           animate="visible"
