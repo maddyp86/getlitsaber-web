@@ -155,7 +155,7 @@ export default function Hero() {
       {/* Glow tagline — sits over the starfield half */}
       <motion.p
         className="
-          relative z-20 text-center px-container-mobile mt-xl mb-xl
+          relative z-20 text-center mx-auto px-container-mobile mt-xl mb-xl
           font-subhead font-bold text-h3 lg:text-h2 uppercase leading-tight
           text-text-primary w-full max-w-[1200px]
           drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
