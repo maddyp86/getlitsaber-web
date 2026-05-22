@@ -43,7 +43,7 @@ export default function Hero() {
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
       <div className="absolute inset-x-0 top-0 h-[300px] lg:h-[585px] z-0">
         <Image
-          src="/images/home/hero-lifestyle.png"
+          src="/images/home/hero-lifestyle.jpg"
           alt="Litsaber lighting up a festival crowd at night"
           fill
           priority
