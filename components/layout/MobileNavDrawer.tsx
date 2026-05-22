@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -26,14 +25,11 @@ const QUICK_LINKS = [
 
 export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
   const [quickLinksOpen, setQuickLinksOpen] = useState(false);
-  const drawerRef = useRef<HTMLDivElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   // Lock body scroll while open
   useEffect(() => {
     if (open) {
       document.body.classList.add("scroll-locked");
-      closeButtonRef.current?.focus();
     } else {
       document.body.classList.remove("scroll-locked");
       setQuickLinksOpen(false);
@@ -67,41 +63,15 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
       {/* Drawer panel */}
       <div
         id="mobile-nav-drawer"
-        ref={drawerRef}
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
         className={[
-          "fixed inset-0 z-drawer bg-background-primary flex flex-col lg:hidden",
+          "fixed top-navbar inset-x-0 bottom-0 z-drawer flex flex-col lg:hidden bg-[#000000]",
           "transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
       >
-        {/* Drawer header */}
-        <div className="flex items-center justify-between px-container-mobile py-md border-b border-surface-tint-white">
-          <Link
-            href="/"
-            onClick={onClose}
-            aria-label="Litsaber — go to homepage"
-          >
-            <Image
-              src="/images/global/litsaber-logo-white-cyan.png"
-              alt="Litsaber"
-              width={140}
-              height={40}
-              className="h-8 w-auto"
-            />
-          </Link>
-          <button
-            ref={closeButtonRef}
-            aria-label="Close navigation menu"
-            onClick={onClose}
-            className="flex items-center justify-center w-8 h-8 text-text-primary hover:text-accent-cyan transition-colors duration-200"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto no-scrollbar px-container-mobile pt-sm pb-lg">
           {/* Primary nav */}
@@ -188,14 +158,6 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
         </div>
       </div>
     </>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
   );
 }
 
