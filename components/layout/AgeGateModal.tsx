@@ -54,7 +54,7 @@ export default function AgeGateModal() {
       aria-labelledby="age-gate-title"
       aria-describedby="age-gate-body"
       className="fixed inset-0 z-age-gate flex items-center justify-center p-container-mobile"
-      style={{ backgroundColor: "rgba(10, 5, 24, 0.85)" }}
+      style={{ backgroundColor: "rgba(5, 5, 16, 0.80)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
     >
       {/* Modal panel */}
       <div
@@ -109,12 +109,10 @@ export default function AgeGateModal() {
         {/* Confirm button */}
         <button
           onClick={handleConfirm}
-          className="font-label tracking-widest uppercase text-accent-cyan transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan mb-md"
+          className="age-gate-confirm font-label tracking-widest uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan mb-md"
           style={{
             width: "382px",
             height: "58px",
-            background: "#050510",
-            border: "1px solid #00E5FF",
             borderRadius: "4px",
             fontSize: "14px",
           }}
@@ -126,18 +124,38 @@ export default function AgeGateModal() {
         {/* Exit button */}
         <button
           onClick={handleExit}
-          className="font-label tracking-widest uppercase text-text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
+          className="age-gate-exit font-label tracking-widest uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
           style={{
             width: "382px",
             height: "58px",
-            background: "transparent",
-            border: "1px solid rgba(240, 240, 245, 0.20)",
             borderRadius: "4px",
             fontSize: "14px",
           }}
         >
           EXIT
         </button>
+
+        <style>{`
+          .age-gate-confirm {
+            background: #050510;
+            border: 1px solid #00E5FF;
+            color: #00E5FF;
+            transition: background 0.2s ease, color 0.2s ease;
+          }
+          .age-gate-confirm:hover {
+            background: #00E5FF;
+            color: #050510;
+          }
+          .age-gate-exit {
+            background: transparent;
+            border: 1px solid rgba(240, 240, 245, 0.20);
+            color: #F0F0F5;
+            transition: border-color 0.2s ease;
+          }
+          .age-gate-exit:hover {
+            border-color: rgba(240, 240, 245, 1);
+          }
+        `}</style>
       </div>
     </div>
   );
