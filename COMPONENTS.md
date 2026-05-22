@@ -560,6 +560,12 @@ Date stamp showing when the policy was last revised.
 - **Sizes:** `lg` (329×70 — hero CTAs), `md` (default), `sm`
 - **States:** default, hover (intensify cyan glow on primary), focus (visible ring), disabled, loading
 
+### `<ResponsiveImage />`
+- **Use:** Art-directed images where mobile and desktop are different files/crops — hero background, venue cards, section backgrounds, product lifestyle shots
+- **Props:** `mobileSrc`, `desktopSrc`, `alt`, `breakpoint` (default `"1024px"` matching `lg` token), `className` (default fills container with `object-cover`), `priority` (sets `fetchpriority="high"` + `loading="eager"` + `decoding="sync"`)
+- **Renders:** Native `<picture>` with one `<source media="(min-width: {breakpoint})">` for desktop and `<img>` fallback for mobile. Browser preload scanner respects `<picture>` media queries, so mobile devices never fetch the desktop file.
+- **Trade-off:** No Next.js automatic WebP conversion. Pre-optimize source files before committing.
+
 ### `<SpecPill />`
 - **Use:** Spec callouts under hero, feature pills on PDP
 - **Visual:** Rounded-full, deep-purple border, cyan Space Mono text

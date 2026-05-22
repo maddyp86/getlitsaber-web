@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
+import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 
 const SPEC_PILLS = [
   "41 LEDS",
@@ -38,13 +39,12 @@ export default function Hero() {
     >
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
       <div className="absolute inset-x-0 top-0 h-[300px] lg:h-[585px] z-0">
-        <Image
-          src="/images/home/hero-lifestyle.jpg"
+        <ResponsiveImage
+          mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
+          desktopSrc="/images/home/hero-lifestyle.jpg"
           alt="Litsaber lighting up a festival crowd at night"
-          fill
+          breakpoint="1024px"
           priority
-          sizes="100vw"
-          className="object-cover object-center"
         />
         <div
           className="absolute inset-0 bg-hero-fade pointer-events-none"
