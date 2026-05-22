@@ -113,7 +113,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="font-subhead text-h4 font-bold text-text-primary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
+                      className="font-subhead text-lg font-bold text-text-primary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
                     >
                       {item.label}
                     </Link>
