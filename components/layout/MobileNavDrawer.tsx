@@ -127,7 +127,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
           </nav>
 
           {/* Quick Links expandable section */}
-          <di className="mt-2">
+          <div className="mt-2">
             <button
               aria-expanded={quickLinksOpen}
               aria-controls="quick-links-panel"
