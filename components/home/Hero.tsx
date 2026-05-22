@@ -37,32 +37,35 @@ export default function Hero() {
       className="relative w-full min-h-screen lg:min-h-[1800px] flex flex-col items-center overflow-hidden bg-background-primary pt-section-y-mobile lg:pt-0"
       aria-label="Hero"
     >
-      {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
-      <div className="absolute inset-x-0 top-0 aspect-[41/69] lg:aspect-auto lg:h-[585px] z-0">
-        <ResponsiveImage
-          mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
-          desktopSrc="/images/home/hero-lifestyle.jpg"
-          alt="Litsaber lighting up a festival crowd at night"
-          breakpoint="1024px"
-          priority
-        />
-        <div
-          className="absolute inset-0 bg-hero-fade pointer-events-none"
-          aria-hidden="true"
-        />
-      </div>
-
-      {/* Bottom background — starfield + horizontal device render */}
-      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[860px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
-        <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
-          <Image
-            src="/images/home/litsaber-hero-image.png"
-            alt="Litsaber device floating against a starfield"
-            fill
+      {/* Background stack — lifestyle scene flows directly into device/starfield render, no gap */}
+      <div className="absolute inset-x-0 top-0 z-0">
+        {/* Lifestyle scene — top portion */}
+        <div className="relative w-full aspect-[41/69] lg:aspect-auto lg:h-[585px]">
+          <ResponsiveImage
+            mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
+            desktopSrc="/images/home/hero-lifestyle.jpg"
+            alt="Litsaber lighting up a festival crowd at night"
+            breakpoint="1024px"
             priority
-            sizes="(min-width: 1024px) 112vw, 100vw"
-            className="object-cover object-center"
           />
+          <div
+            className="absolute inset-0 bg-hero-fade pointer-events-none"
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Device + starfield — immediately below lifestyle scene */}
+        <div className="relative w-full h-[600px] lg:h-[879px] overflow-hidden">
+          <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
+            <Image
+              src="/images/home/litsaber-hero-image.png"
+              alt="Litsaber device floating against a starfield"
+              fill
+              priority
+              sizes="(min-width: 1024px) 112vw, 100vw"
+              className="object-cover object-center"
+            />
+          </div>
         </div>
       </div>
 
@@ -71,9 +74,9 @@ export default function Hero() {
         className="
           relative z-20 text-center px-container-mobile mb-md w-full
           font-display font-bold text-h2 sm:text-h1 text-text-primary
-          leading-none tracking-tight
+          leading-none tracking-tight whitespace-nowrap
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
-          lg:mt-[225px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px]
+          lg:mt-[140px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px]
         "
         variants={variants}
         initial="hidden"
