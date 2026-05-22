@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { monoton, orbitron, inter, spaceMono } from "@/lib/fonts";
+import { stellar, monoton, orbitron, inter, spaceMono } from "@/lib/fonts";
 import AgeGateModal from "@/components/layout/AgeGateModal";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -31,6 +31,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={[
+        stellar.variable,
         monoton.variable,
         orbitron.variable,
         inter.variable,

@@ -14,10 +14,6 @@ const SPEC_PILLS = [
   "510 Thread",
 ];
 
-// Pixel offsets pulled from Figma node 3218:1628 (1440×1460 desktop hero).
-// The hero is the only pixel-perfect layout on the site, so these values
-// live inline rather than in tokens.json.
-
 function useRevealVariants(prefersReduced: boolean | null) {
   return {
     hidden: prefersReduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 },
@@ -73,13 +69,11 @@ export default function Hero() {
       {/* Headline */}
       <motion.h1
         className="
-          relative z-20 text-center px-container-mobile mb-md
+          relative z-20 text-center px-container-mobile mb-md w-full
           font-display text-h2 sm:text-h1 text-text-primary
           leading-none tracking-tight
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
-          lg:absolute lg:left-1/2 lg:top-[250px]
-          lg:-translate-x-1/2 lg:-translate-y-1/2
-          lg:text-display-lg lg:px-0 lg:w-[1118px] lg:mb-0
+          lg:mt-[225px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px]
         "
         variants={variants}
         initial="hidden"
@@ -97,10 +91,7 @@ export default function Hero() {
         className="
           relative z-20 text-center px-container-mobile mb-lg
           font-body text-body lg:text-subhead text-text-secondary
-          max-w-xl lg:max-w-[736px]
-          lg:absolute lg:left-1/2 lg:top-[372.5px]
-          lg:-translate-x-1/2 lg:-translate-y-1/2
-          lg:px-0 lg:mb-0
+          max-w-xl lg:max-w-[736px] lg:px-0 lg:mb-lg
         "
         variants={variants}
         initial="hidden"
@@ -116,7 +107,7 @@ export default function Hero() {
         className="
           relative z-20 flex flex-col sm:flex-row gap-md sm:gap-xl mb-xl
           w-full sm:w-auto px-container-mobile sm:px-0
-          lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-[457px] lg:mb-0
+          lg:flex-row lg:justify-center lg:mb-xl lg:px-0
         "
         variants={variants}
         initial="hidden"
@@ -155,6 +146,9 @@ export default function Hero() {
         </Link>
       </motion.div>
 
+      {/* Spacer to push glow tagline down into the starfield area on desktop */}
+      <div className="hidden lg:block lg:h-[180px]" aria-hidden="true" />
+
       {/* Glow tagline — sits over the starfield half */}
       <motion.p
         className="
@@ -162,8 +156,6 @@ export default function Hero() {
           font-subhead font-bold text-h3 lg:text-h2 uppercase
           text-text-primary max-w-[1200px]
           drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-          lg:absolute lg:left-1/2 lg:top-[720px]
-          lg:-translate-x-1/2 lg:-translate-y-1/2
           lg:px-0 lg:mt-0 lg:mb-0
         "
         variants={variants}
@@ -179,8 +171,7 @@ export default function Hero() {
         className="
           relative z-20 grid grid-cols-3 sm:grid-cols-6 gap-sm justify-center
           px-container-mobile sm:px-0 mt-xl
-          lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-[1344px]
-          lg:flex lg:gap-md lg:mt-0
+          lg:flex lg:gap-md lg:mt-[480px]
         "
         variants={variants}
         initial="hidden"
