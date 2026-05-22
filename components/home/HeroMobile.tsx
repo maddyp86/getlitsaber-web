@@ -28,7 +28,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
       aria-label="Hero"
     >
       {/* Lifestyle scene — absolute background, covers only the top zone */}
-      <div className="absolute inset-x-0 top-0 z-0 h-[520px] overflow-hidden">
+      <div className="absolute inset-x-0 top-0 z-0 h-[600px] overflow-hidden">
         <ResponsiveImage
           mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
           desktopSrc="/images/home/hero-lifestyle.jpg"
