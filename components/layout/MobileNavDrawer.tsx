@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface MobileNavDrawerProps {
@@ -81,10 +82,15 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
           <Link
             href="/"
             onClick={onClose}
-            className="font-subhead font-bold text-text-primary tracking-widest text-lg"
             aria-label="Litsaber — go to homepage"
           >
-            LITSABER
+            <Image
+              src="/images/global/litsaber-logo-white-cyan.png"
+              alt="Litsaber"
+              width={140}
+              height={40}
+              className="h-8 w-auto"
+            />
           </Link>
           <button
             ref={closeButtonRef}
