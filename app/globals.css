@@ -16,12 +16,6 @@
   html {
     background-color: #000000;
     color: #ffffff;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  html::-webkit-scrollbar {
-    display: none;
   }
 
   body {
