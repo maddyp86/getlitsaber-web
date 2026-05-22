@@ -79,7 +79,7 @@ export default function Hero() {
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
           lg:absolute lg:left-1/2 lg:top-[250px]
           lg:-translate-x-1/2 lg:-translate-y-1/2
-          lg:text-display-lg lg:px-0 lg:w-[1118px] lg:mb-0
+          lg:text-display-lg lg:px-0 lg:w-[min(1118px,90vw)] lg:mb-0
         "
         variants={variants}
         initial="hidden"
@@ -97,7 +97,7 @@ export default function Hero() {
         className="
           relative z-20 text-center px-container-mobile mb-lg
           font-body text-body lg:text-subhead text-text-secondary
-          max-w-xl lg:max-w-[736px]
+          max-w-xl lg:w-[736px] lg:max-w-[736px]
           lg:absolute lg:left-1/2 lg:top-[372.5px]
           lg:-translate-x-1/2 lg:-translate-y-1/2
           lg:px-0 lg:mb-0
@@ -116,7 +116,7 @@ export default function Hero() {
         className="
           relative z-20 flex flex-col sm:flex-row gap-md sm:gap-xl mb-xl
           w-full sm:w-auto px-container-mobile sm:px-0
-          lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-[457px] lg:mb-0
+          lg:w-[736px] lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:top-[457px] lg:mb-0 lg:px-0
         "
         variants={variants}
         initial="hidden"
