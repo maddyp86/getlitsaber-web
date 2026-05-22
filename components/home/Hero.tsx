@@ -156,7 +156,7 @@ export default function Hero() {
           font-subhead font-bold text-h3 uppercase leading-tight
           text-text-primary w-full max-w-[1200px]
           drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-          lg:absolute lg:text-h2 lg:inset-x-0 lg:top-[980px] lg:px-container lg:mt-0 lg:mb-0
+          lg:absolute lg:text-h2 lg:inset-x-0 lg:top-[620px] lg:px-container lg:mt-0 lg:mb-0
         "
         variants={variants}
         initial="hidden"
