@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* Stellar font placeholder — override with real font once Stellar.woff2 is added */
-  :root {
-    --font-stellar: "Arial Black", "Impact", system-ui, sans-serif;
-  }
-
   html {
     background-color: #000000;
     color: #ffffff;

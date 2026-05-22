@@ -1,16 +1,17 @@
+import localFont from "next/font/local";
 import { Monoton, Orbitron, Inter, Space_Mono } from "next/font/google";
 
-// Stellar (display font) — paid license held by Innovape
-// Drop the file at public/fonts/Stellar.woff2, uncomment the localFont block below,
-// and remove the CSS variable override in globals.css.
-//
-// import localFont from "next/font/local";
-// export const stellar = localFont({
-//   src: "../public/fonts/Stellar.woff2",
-//   variable: "--font-stellar",
-//   display: "swap",
-//   fallback: ["system-ui", "Arial Black", "sans-serif"],
-// });
+export const stellar = localFont({
+  src: [
+    { path: "../public/fonts/Stellar-light.otf", weight: "300", style: "normal" },
+    { path: "../public/fonts/Stellar-Regular.otf", weight: "400", style: "normal" },
+    { path: "../public/fonts/Stellar-Medium.otf", weight: "500", style: "normal" },
+    { path: "../public/fonts/Stellar-Bold.otf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-stellar",
+  display: "swap",
+  fallback: ["Arial Black", "system-ui", "sans-serif"],
+});
 
 export const monoton = Monoton({
   weight: "400",
