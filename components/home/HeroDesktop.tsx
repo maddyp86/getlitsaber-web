@@ -24,7 +24,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
 
   return (
     <section
-      className={`relative w-full min-h-[1400px] flex flex-col items-center bg-background-primary${className ? ` ${className}` : ""}`}
+      className={`relative w-full min-h-[1400px] flex flex-col items-center bg-background-primary -mt-navbar${className ? ` ${className}` : ""}`}
       aria-label="Hero"
     >
       {/* Full-bleed background — lifestyle scene flowing into device/starfield render */}
