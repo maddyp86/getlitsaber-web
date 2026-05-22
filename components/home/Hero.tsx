@@ -70,7 +70,7 @@ export default function Hero() {
       <motion.h1
         className="
           relative z-20 text-center px-container-mobile mb-md w-full
-          font-display text-h2 sm:text-h1 text-text-primary
+          font-display font-bold text-h2 sm:text-h1 text-text-primary
           leading-none tracking-tight
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
           lg:mt-[225px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px]
