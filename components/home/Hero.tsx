@@ -34,11 +34,11 @@ export default function Hero() {
 
   return (
     <section
-      className="relative w-full min-h-screen lg:min-h-[1800px] flex flex-col items-center overflow-hidden bg-background-primary pt-section-y-mobile lg:pt-0"
+      className="relative w-full min-h-screen lg:min-h-[1800px] flex flex-col items-center bg-background-primary pt-section-y-mobile lg:pt-0"
       aria-label="Hero"
     >
       {/* Background stack — lifestyle scene flows directly into device/starfield render, no gap */}
-      <div className="absolute inset-x-0 top-0 z-0">
+      <div className="absolute inset-x-0 top-0 z-0 overflow-hidden">
         {/* Lifestyle scene — top portion */}
         <div className="relative w-full aspect-[41/69] lg:aspect-auto lg:h-[585px]">
           <ResponsiveImage
@@ -174,7 +174,7 @@ export default function Hero() {
         className="
           relative z-20 grid grid-cols-3 sm:grid-cols-6 gap-sm justify-center
           px-container-mobile sm:px-0 mt-xl
-          lg:absolute lg:flex lg:gap-md lg:top-[1374px] lg:left-1/2 lg:-translate-x-1/2 lg:px-0 lg:mt-0
+          lg:absolute lg:flex lg:gap-md lg:top-[1374px] lg:inset-x-0 lg:justify-center lg:px-container lg:mt-0
         "
         variants={variants}
         initial="hidden"
