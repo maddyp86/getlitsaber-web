@@ -31,25 +31,43 @@ export default function Navbar() {
           scrolled ? "bg-background-primary" : "bg-transparent",
         ].join(" ")}
       >
-        <div className="mx-auto max-w-container h-full px-container-mobile lg:px-container flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="shrink-0"
-            aria-label="Litsaber — go to homepage"
-          >
-            <Image
-              src="/images/global/litsaber-logo-white-cyan.png"
-              alt="Litsaber"
-              width={140}
-              height={40}
-              className="h-8 w-auto"
-              priority
-            />
-          </Link>
+        <div className="mx-auto max-w-container h-full px-container-mobile lg:px-container flex items-center">
+
+          {/* ── Mobile: three-column grid ── Desktop: standard flex row ── */}
+
+          {/* Left zone — hamburger/close (mobile) | empty spacer (desktop, handled by nav below) */}
+          <div className="flex items-center lg:hidden w-8">
+            <button
+              aria-label={drawerOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={drawerOpen}
+              aria-controls="mobile-nav-drawer"
+              className="flex items-center justify-center w-8 h-8 text-text-primary hover:text-accent-cyan transition-colors duration-200"
+              onClick={() => setDrawerOpen(!drawerOpen)}
+            >
+              {drawerOpen ? <CloseIcon /> : <HamburgerIcon />}
+            </button>
+          </div>
+
+          {/* Logo — centered on mobile via flex-1 + flex justify-center; left-aligned on desktop */}
+          <div className="flex-1 flex items-center lg:justify-start justify-center">
+            <Link
+              href="/"
+              className="shrink-0"
+              aria-label="Litsaber — go to homepage"
+            >
+              <Image
+                src="/images/global/litsaber-logo-white-cyan.png"
+                alt="Litsaber"
+                width={140}
+                height={40}
+                className="h-8 w-auto"
+                priority
+              />
+            </Link>
+          </div>
 
           {/* Desktop nav links */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-8 mx-auto" aria-label="Main navigation">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -61,12 +79,20 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Right icons */}
+          {/* Right icons — user (desktop only) + cart + hamburger spacer balance */}
           <div className="flex items-center gap-4">
-            {/* User icon */}
+            {/* User icon — desktop only */}
             <button
               aria-label="Account"
               className="hidden lg:flex items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+            >
+              <UserIcon />
+            </button>
+
+            {/* User icon — mobile only */}
+            <button
+              aria-label="Account"
+              className="flex lg:hidden items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
             </button>
@@ -77,26 +103,15 @@ export default function Navbar() {
               className="relative flex items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <CartIcon />
-              {/* Cart count badge — wired to cart context in Phase 4 */}
               <span
-                className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 rounded-full bg-accent-cyan text-background-primary font-label font-bold text-[10px] leading-none"
+                className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 rounded-full bg-cta text-text-primary font-label font-bold text-[10px] leading-none"
                 aria-hidden="true"
               >
                 0
               </span>
             </button>
-
-            {/* Hamburger — mobile only */}
-            <button
-              aria-label="Open navigation menu"
-              aria-expanded={drawerOpen}
-              aria-controls="mobile-nav-drawer"
-              className="lg:hidden flex items-center justify-center w-8 h-8 text-text-primary hover:text-accent-cyan transition-colors duration-200"
-              onClick={() => setDrawerOpen(true)}
-            >
-              <HamburgerIcon />
-            </button>
           </div>
+
         </div>
       </header>
 
@@ -142,6 +157,14 @@ function HamburgerIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
       <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M4 4l14 14M18 4L4 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
