@@ -43,7 +43,7 @@ export default function Hero() {
         <div className="absolute inset-0 z-0">
           {/* TODO: replace placeholder */}
           <Image
-            src="/images/hero/hero-lifestyle.png"
+            src="public/images/home/hero-lifestyle.png"
             alt="Litsaber glowing at a festival"
             fill
             priority
