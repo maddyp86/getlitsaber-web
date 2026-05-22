@@ -97,6 +97,7 @@ const config: Config = {
         "section-y-mobile": tokens.spacing["section-y-mobile"].value,
         container: tokens.spacing.container.value,
         "container-mobile": tokens.spacing["container-mobile"].value,
+        navbar: tokens.component["navbar-height"].value,
       },
       boxShadow: {
         "glow-white": tokens.shadow["glow-white"].value,

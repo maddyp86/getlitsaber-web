@@ -278,6 +278,22 @@ None. Phase 2 unblocked.
 
 ---
 
+#### Phase 2 — Hero navbar clearance pattern (locked)
+
+**Problem:** The hero image was not filling edge-to-edge to the top of the viewport. A dark band appeared between the fixed navbar and the start of the lifestyle image.
+
+**Root cause:** The Tailwind `navbar` token was defined only in `theme.extend.height`, not in `theme.extend.spacing`. This meant `pt-navbar` and `-mt-navbar` generated no CSS. When the token was added to the spacing scale, both classes activated — but the architecture was wrong: `<main>` had `pt-navbar` pushing all content down 90px, and the hero used `-mt-navbar` to fight it back. Both hacks were canceling each other.
+
+**Fix (locked pattern):**
+- `<main>` in `layout.tsx` has NO top padding. Fixed navbar takes no flow space — no padding needed.
+- The hero section has no top margin/offset. It starts at y=0 (viewport top). Background images are `absolute top-0` and fill edge-to-edge behind the transparent navbar.
+- The content group inside the hero uses `pt-navbar mt-xl` (90px + 50px = 140px total) so the headline clears the navbar without a magic number. All on the token scale.
+- Inner pages add `pt-navbar` directly on their own top-level wrapper. They cannot rely on `<main>` for it.
+
+**Note for Phase 3:** Inner pages currently clear the navbar via individual `pt-navbar` on each page's wrapper div. When these pages are fully built out, consider a shared `<PageContent>` wrapper component that provides this padding automatically, so it doesn't need to be remembered on every new page. Do not build this wrapper until there are at least two fully-built pages to validate the abstraction.
+
+---
+
 #### Phase 2 — Step 2: Hero section (built, corrected)
 
 **Built hero-first** (broke the homepage into per-section chunks rather than the original two-pass split). Bolt produced `<Hero />` plus reusable `<Reveal>` and `<SpecPill>` primitives. The hero is the most-judged component and sets the motion/color patterns for every later section, so it earned its own pass.
