@@ -157,9 +157,9 @@ export default function Hero() {
         className="
           relative z-20 text-center px-container-mobile mt-xl mb-xl
           font-subhead font-bold text-h3 lg:text-h2 uppercase leading-tight
-          text-text-primary max-w-[1200px]
+          text-text-primary w-full max-w-[1200px]
           drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-          lg:px-0 lg:mt-0 lg:mb-[100px]
+          lg:px-container lg:mt-0 lg:mb-[100px]
         "
         variants={variants}
         initial="hidden"
