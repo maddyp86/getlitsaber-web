@@ -44,18 +44,51 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           />
         </div>
 
-        {/* Device + starfield — immediately below, fills the rest */}
-        <div className="relative w-full h-[900px] overflow-hidden">
-          {/* 112% bleed fills wide viewports without cropping the device render */}
-          <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
-            <Image
-              src="/images/home/litsaber-hero-image.png"
-              alt="Litsaber device floating against a starfield"
-              fill
-              priority
-              sizes="112vw"
-              className="object-cover object-center"
-            />
+        {/* Device + starfield — spec: 1440×879, aspect-ratio 77/47 */}
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ maxWidth: "1440px", height: "879px", aspectRatio: "77/47", margin: "0 auto" }}
+        >
+          <Image
+            src="/images/home/litsaber-hero-image.png"
+            alt="Litsaber device floating against a starfield"
+            fill
+            priority
+            sizes="1440px"
+            className="object-cover object-center"
+          />
+
+          {/* Anchor zone — absolutely overlaid on the starfield; tagline at top, pills pinned to bottom */}
+          <div
+            className="absolute inset-0 z-10 flex flex-col justify-between items-center"
+            style={{ padding: "100px" }}
+          >
+            <motion.p
+              className="
+                text-center w-full
+                font-subhead font-bold text-h2 uppercase leading-tight
+                text-text-primary
+                drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
+              "
+              variants={variants}
+              initial="hidden"
+              animate="visible"
+              custom={0.3}
+            >
+              {TAGLINE}
+            </motion.p>
+
+            <motion.div
+              className="flex flex-row gap-md justify-center w-full"
+              variants={variants}
+              initial="hidden"
+              animate="visible"
+              custom={0.4}
+            >
+              {SPEC_PILLS.map((label) => (
+                <SpecPill key={label} label={label} />
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>
@@ -131,47 +164,6 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             {CTA_SECONDARY.label}
           </Link>
         </motion.div>
-      </div>
-
-      {/* Anchor zone — inline grid; 500px row-gap creates the empty middle where the device render shows through */}
-      <div className="relative z-20 w-full flex justify-center">
-        <div
-          style={{
-            display: "inline-grid",
-            width: "1440px",
-            padding: "100px",
-            rowGap: "500px",
-            gridTemplateRows: "repeat(2, fit-content(100%))",
-            gridTemplateColumns: "repeat(1, fit-content(100%))",
-          }}
-        >
-          <motion.p
-            className="
-              text-center
-              font-subhead font-bold text-h2 uppercase leading-tight
-              text-text-primary
-              drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-            "
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            custom={0.3}
-          >
-            {TAGLINE}
-          </motion.p>
-
-          <motion.div
-            className="flex flex-row gap-md justify-center pb-section-y"
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            custom={0.4}
-          >
-            {SPEC_PILLS.map((label) => (
-              <SpecPill key={label} label={label} />
-            ))}
-          </motion.div>
-        </div>
       </div>
     </section>
   );
