@@ -81,7 +81,7 @@ export default function Hero() {
         custom={0}
       >
         HIGHLIGHT THE{" "}
-        <span className="font-accent text-accent-cyan lg:text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
+        <span className="font-accent font-normal text-accent-cyan lg:text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
           NIGHT
         </span>
       </motion.h1>
