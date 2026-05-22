@@ -43,7 +43,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
       </div>
 
       {/* Content group — navbar height + xl breathing room = ~140px, close to Figma 150px */}
-      <div className="relative z-20 pt-navbar mt-20 flex flex-col items-center gap-[20px] w-full px-md">
+      <div className="relative z-20 pt-navbar mt-20 flex flex-col items-center gap-[20px] w-full">
         <motion.h1
           className="text-center w-full"
           variants={variants}
