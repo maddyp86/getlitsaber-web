@@ -1,6 +1,6 @@
 export const HEADLINE_DESKTOP = {
-  white: "HIGHLIGHT THE",
-  cyan: "NIGHT",
+  white: "HIGHLIGHT",
+  cyan: "THE NIGHT",
 };
 
 export const HEADLINE_MOBILE = {

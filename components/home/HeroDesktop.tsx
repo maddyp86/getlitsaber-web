@@ -24,15 +24,15 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
 
   return (
     <section
-      className={`relative w-full min-h-[1400px] flex flex-col items-center bg-background-primary${className ? ` ${className}` : ""}`}
+      className={`relative w-full min-h-screen flex flex-col items-center justify-center bg-background-primary${className ? ` ${className}` : ""}`}
       aria-label="Hero"
     >
-      {/* Full-bleed background — lifestyle scene flowing into device/starfield render */}
+      {/* Full-bleed background — lifestyle scene fills the full viewport, device/starfield below */}
       <div className="absolute inset-x-0 top-0 z-0 overflow-hidden">
-        {/* Lifestyle scene — spec: 1440×650, aspect-ratio 144/65 */}
+        {/* Lifestyle scene — fills full viewport height so crowd fills screen behind content */}
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "650px", aspectRatio: "144/65" }}
+          style={{ height: "100vh" }}
         >
           <ResponsiveImage
             mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
@@ -40,6 +40,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             alt="Litsaber lighting up a festival crowd at night"
             breakpoint="1024px"
             priority
+            className="absolute inset-0 object-cover object-top w-full h-full"
           />
           <div
             className="absolute inset-0 bg-hero-fade pointer-events-none"
@@ -96,14 +97,12 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         </div>
       </div>
 
-      {/* Content group — navbar height + xl breathing room = ~140px, close to Figma 150px */}
-      <div className="relative z-20 pt-navbar mt-xl flex flex-col items-center gap-[20px] w-full">
+      {/* Content group — vertically centered by parent justify-center; mt-navbar keeps it clear of the fixed bar */}
+      <div className="relative z-20 mt-navbar flex flex-col items-center gap-[20px] w-full">
         <motion.h1
           className="
             text-center px-container w-full
-            font-display font-bold text-display-lg text-text-primary
-            leading-none tracking-tight whitespace-nowrap
-            drop-shadow-[0_0_100px_rgba(240,240,245,1)]
+            leading-none tracking-tight
             max-w-[1118px]
           "
           variants={variants}
@@ -111,8 +110,10 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           animate="visible"
           custom={0}
         >
-          {HEADLINE_DESKTOP.white}{" "}
-          <span className="font-accent font-normal text-accent-cyan text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
+          <span className="block font-display font-bold text-display-lg text-text-primary drop-shadow-[0_0_100px_rgba(240,240,245,1)]">
+            {HEADLINE_DESKTOP.white}
+          </span>
+          <span className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
             {HEADLINE_DESKTOP.cyan}
           </span>
         </motion.h1>
