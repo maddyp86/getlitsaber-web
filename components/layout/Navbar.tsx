@@ -48,8 +48,8 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Logo — centered on mobile via flex-1 + flex justify-center; left-aligned on desktop */}
-          <div className="flex-1 flex items-center lg:justify-start justify-center">
+          {/* Logo — centered on mobile via flex-1 + flex justify-center; fixed width on desktop to balance right icons zone */}
+          <div className="flex-1 lg:flex-none lg:w-40 flex items-center lg:justify-start justify-center">
             <Link
               href="/"
               className="shrink-0"
@@ -80,7 +80,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right icons — user (desktop only) + cart + hamburger spacer balance */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-end gap-4 lg:w-40">
             {/* User icon — desktop only */}
             <button
               aria-label="Account"
