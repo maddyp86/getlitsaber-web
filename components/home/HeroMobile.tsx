@@ -125,7 +125,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         <motion.p
           className="
             text-center
-            font-subhead font-bold text-h3 uppercase leading-tight
+            font-subhead font-bold text-h4 uppercase leading-tight
             text-text-primary w-full
             drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
           "
