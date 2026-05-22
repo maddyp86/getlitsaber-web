@@ -76,7 +76,7 @@ export default function Hero() {
           font-display font-bold text-h2 sm:text-h1 md:text-h1 text-text-primary
           leading-none tracking-tight
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
-          lg:mt-[140px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px] lg:mx-auto
+          lg:mt-[140px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px] lg:mx-auto lg:whitespace-nowrap
         "
         variants={variants}
         initial="hidden"
@@ -149,17 +149,14 @@ export default function Hero() {
         </Link>
       </motion.div>
 
-      {/* Spacer to push glow tagline down into the starfield area on desktop */}
-      <div className="hidden lg:block lg:h-[180px]" aria-hidden="true" />
-
-      {/* Glow tagline — sits over the starfield half */}
+      {/* Glow tagline — absolutely positioned over the starfield on desktop, in-flow on mobile */}
       <motion.p
         className="
           relative z-20 text-center px-container-mobile mt-xl mb-xl
-          font-subhead font-bold text-h3 lg:text-h2 uppercase leading-tight
+          font-subhead font-bold text-h3 uppercase leading-tight
           text-text-primary w-full max-w-[1200px]
           drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-          lg:px-container lg:mt-0 lg:mb-[100px]
+          lg:absolute lg:text-h2 lg:inset-x-0 lg:top-[980px] lg:px-container lg:mt-0 lg:mb-0
         "
         variants={variants}
         initial="hidden"
