@@ -174,7 +174,7 @@ export default function Hero() {
         className="
           relative z-20 grid grid-cols-3 sm:grid-cols-6 gap-sm justify-center
           px-container-mobile sm:px-0 mt-xl
-          lg:absolute lg:flex lg:gap-md lg:top-[1374px] lg:inset-x-0 lg:justify-center lg:px-container lg:mt-0
+          lg:absolute lg:flex lg:gap-md lg:top-[1324px] lg:inset-x-0 lg:justify-center lg:px-container lg:mt-0
         "
         variants={variants}
         initial="hidden"
