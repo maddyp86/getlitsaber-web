@@ -134,7 +134,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
               onClick={() => setQuickLinksOpen((v) => !v)}
               className="flex items-center justify-between w-full py-sm text-left"
             >
-              <span className="font-label text-label text-text-muted tracking-widest uppercase">
+              <span className="font-subhead text-lg font-bold text-text-primary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase">
                 Quick Links
               </span>
               <ChevronDownIcon
