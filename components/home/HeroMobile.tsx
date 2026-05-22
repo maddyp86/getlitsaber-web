@@ -155,14 +155,22 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-3 gap-sm w-full"
+          className="flex flex-col w-full"
+          style={{ gap: "20px", alignSelf: "stretch" }}
           variants={variants}
           initial="hidden"
           animate="visible"
           custom={0.4}
         >
-          {SPEC_PILLS.map((label) => (
-            <SpecPill key={label} label={label} />
+          {[SPEC_PILLS.slice(0, 3), SPEC_PILLS.slice(3)].map((row, i) => (
+            <div
+              key={i}
+              style={{ display: "flex", alignItems: "center", gap: "20px", alignSelf: "stretch" }}
+            >
+              {row.map((label) => (
+                <SpecPill key={label} label={label} />
+              ))}
+            </div>
           ))}
         </motion.div>
       </div>
