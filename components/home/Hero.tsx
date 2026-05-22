@@ -14,13 +14,9 @@ const SPEC_PILLS = [
   "510 Thread",
 ];
 
-<<<<<<< HEAD
 // Pixel offsets pulled from Figma node 3218:1628 (1440×1460 desktop hero).
 // The hero is the only pixel-perfect layout on the site, so these values
 // live inline rather than in tokens.json.
-=======
-const HERO_IMAGE_EXISTS = true; // TODO: set to true once /images/hero/hero-main.jpg is added
->>>>>>> c2ccf4f2d36c3dd777fa121d3f8beb433a89512f
 
 function useRevealVariants(prefersReduced: boolean | null) {
   return {
@@ -47,7 +43,7 @@ export default function Hero() {
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
       <div className="absolute inset-x-0 top-0 h-[300px] lg:h-[585px] z-0">
         <Image
-          src="/images/home/hero-lifestyle.png"
+          src="/images/home/hero-lifestyle.jpg"
           alt="Litsaber lighting up a festival crowd at night"
           fill
           priority
@@ -64,13 +60,8 @@ export default function Hero() {
       <div className="absolute inset-x-0 top-[296px] lg:top-[581px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
         <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
           <Image
-<<<<<<< HEAD
             src="/images/home/litsaber-hero-image.png"
             alt="Litsaber device floating against a starfield"
-=======
-            src="/images/home/hero-lifestyle.png"
-            alt="Litsaber glowing at a festival"
->>>>>>> c2ccf4f2d36c3dd777fa121d3f8beb433a89512f
             fill
             priority
             sizes="(min-width: 1024px) 112vw, 100vw"
