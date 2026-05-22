@@ -72,7 +72,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
         aria-modal="true"
         aria-label="Navigation menu"
         className={[
-          "fixed inset-0 z-drawer bg-background-primary flex flex-col lg:hidden",
+          "fixed inset-0 z-drawer bg-[#000000] flex flex-col lg:hidden",
           "transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
