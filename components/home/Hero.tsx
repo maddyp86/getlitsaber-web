@@ -34,7 +34,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative w-full min-h-screen lg:min-h-[1800px] flex flex-col items-center bg-background-primary pt-section-y-mobile lg:pt-0"
+      className="relative w-full min-h-screen lg:min-h-[1800px] flex flex-col items-center bg-background-primary pt-section-y-mobile lg:pt-0 overflow-x-hidden"
       aria-label="Hero"
     >
       {/* Background stack — lifestyle scene flows directly into device/starfield render, no gap */}
@@ -73,10 +73,10 @@ export default function Hero() {
       <motion.h1
         className="
           relative z-20 text-center px-container-mobile mb-md w-full
-          font-display font-bold text-h2 sm:text-h1 text-text-primary
-          leading-none tracking-tight whitespace-nowrap
+          font-display font-bold text-h2 sm:text-h1 md:text-h1 text-text-primary
+          leading-none tracking-tight
           drop-shadow-[0_0_100px_rgba(240,240,245,1)]
-          lg:mt-[140px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px]
+          lg:mt-[140px] lg:mb-md lg:px-8 lg:text-display-lg lg:max-w-[1118px] lg:mx-auto
         "
         variants={variants}
         initial="hidden"
@@ -84,7 +84,7 @@ export default function Hero() {
         custom={0}
       >
         HIGHLIGHT THE{" "}
-        <span className="font-accent font-normal text-accent-cyan lg:text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
+        <span className="font-accent font-normal text-accent-cyan lg:text-display-accent drop-shadow-[0_0_50px_rgba(0,229,255,0.5)] inline-block">
           NIGHT
         </span>
       </motion.h1>
