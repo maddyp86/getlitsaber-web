@@ -45,8 +45,7 @@ export default function RootLayout({
         {/* Navbar sits at z-navbar (50) */}
         <Navbar />
 
-        {/* Page content — pad top to clear fixed navbar */}
-        <main className="pt-navbar">{children}</main>
+        <main>{children}</main>
 
         <Footer />
       </body>

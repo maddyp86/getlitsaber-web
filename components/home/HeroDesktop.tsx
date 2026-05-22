@@ -24,7 +24,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
 
   return (
     <section
-      className={`relative w-full min-h-[1400px] flex flex-col items-center bg-background-primary -mt-navbar${className ? ` ${className}` : ""}`}
+      className={`relative w-full min-h-[1400px] flex flex-col items-center bg-background-primary${className ? ` ${className}` : ""}`}
       aria-label="Hero"
     >
       {/* Full-bleed background — lifestyle scene flowing into device/starfield render */}
@@ -96,8 +96,8 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         </div>
       </div>
 
-      {/* Content group — 150px from top, flex-col gap-[20px], matches Figma spec */}
-      <div className="relative z-20 mt-[150px] flex flex-col items-center gap-[20px] w-full">
+      {/* Content group — navbar height + xl breathing room = ~140px, close to Figma 150px */}
+      <div className="relative z-20 pt-navbar mt-xl flex flex-col items-center gap-[20px] w-full">
         <motion.h1
           className="
             text-center px-container w-full
