@@ -38,7 +38,7 @@ export default function Hero() {
       aria-label="Hero"
     >
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
-      <div className="absolute inset-x-0 top-0 h-[300px] lg:h-[585px] z-0">
+      <div className="absolute inset-x-0 top-0 aspect-[41/69] lg:aspect-auto lg:h-[585px] z-0">
         <ResponsiveImage
           mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
           desktopSrc="/images/home/hero-lifestyle.jpg"
@@ -53,7 +53,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom background — starfield + horizontal device render */}
-      <div className="absolute inset-x-0 top-[296px] lg:top-[581px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
+      <div className="absolute inset-x-0 top-[calc(100vw*69/41)] lg:top-[581px] h-[600px] lg:h-[879px] z-0 overflow-hidden">
         <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
           <Image
             src="/images/home/litsaber-hero-image.png"

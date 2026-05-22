@@ -12,11 +12,11 @@ export default function ResponsiveImage({
   desktopSrc,
   alt,
   breakpoint = "1024px",
-  className = "object-cover object-center w-full h-full",
+  className = "absolute inset-0 object-cover object-center w-full h-full",
   priority = false,
 }: ResponsiveImageProps) {
   return (
-    <picture className="absolute inset-0">
+    <picture className="absolute inset-0 block">
       <source media={`(min-width: ${breakpoint})`} srcSet={desktopSrc} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
