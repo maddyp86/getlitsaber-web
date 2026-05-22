@@ -12,6 +12,7 @@ export default function SpecPill({ label }: SpecPillProps) {
         border: "1px solid #2D1C53",
         flex: "1 0 0",
         alignSelf: "stretch",
+        width: "auto"
       }}
     >
       {label}
