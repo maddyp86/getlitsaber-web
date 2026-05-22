@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const EXPLORE_LINKS = [
   { label: "Home", href: "/" },
@@ -27,10 +28,16 @@ export default function Footer() {
           <div className="lg:max-w-xs shrink-0">
             <Link
               href="/"
-              className="font-subhead font-bold text-text-primary tracking-widest text-xl block mb-md"
+              className="block mb-md"
               aria-label="Litsaber — go to homepage"
             >
-              LITSABER
+              <Image
+                src="/images/global/litsaber-logo-white-cyan.png"
+                alt="Litsaber"
+                width={140}
+                height={40}
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="font-body text-body text-text-secondary leading-relaxed mb-lg">
               An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.

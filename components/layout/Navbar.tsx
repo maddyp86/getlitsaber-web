@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import MobileNavDrawer from "./MobileNavDrawer";
 
@@ -34,10 +35,17 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-subhead font-bold text-text-primary tracking-widest text-lg shrink-0"
+            className="shrink-0"
             aria-label="Litsaber — go to homepage"
           >
-            LITSABER
+            <Image
+              src="/images/global/litsaber-logo-white-cyan.png"
+              alt="Litsaber"
+              width={140}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop nav links */}
