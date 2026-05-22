@@ -29,8 +29,11 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
     >
       {/* Full-bleed background — lifestyle scene flowing into device/starfield render */}
       <div className="absolute inset-x-0 top-0 z-0 overflow-hidden">
-        {/* Lifestyle scene — ~55% viewport */}
-        <div className="relative w-full h-[55vh]">
+        {/* Lifestyle scene — spec: 1440×650, aspect-ratio 144/65 */}
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ height: "650px", aspectRatio: "144/65" }}
+        >
           <ResponsiveImage
             mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
             desktopSrc="/images/home/hero-lifestyle.jpg"
@@ -47,7 +50,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         {/* Device + starfield — spec: 1440×879, aspect-ratio 77/47 */}
         <div
           className="relative w-full overflow-hidden"
-          style={{ maxWidth: "1440px", height: "879px", aspectRatio: "77/47", margin: "0 auto" }}
+          style={{ height: "879px", aspectRatio: "77/47" }}
         >
           <Image
             src="/images/home/litsaber-hero-image.png"
