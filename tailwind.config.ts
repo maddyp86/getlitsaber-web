@@ -124,6 +124,15 @@ const config: Config = {
         "modal-age-gate": tokens.component["modal-age-gate-width"].value,
         "modal-promo": tokens.component["modal-promo-width"].value,
       },
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to:   { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 45s linear infinite",
+      },
       zIndex: {
         base: String(tokens["z-index"].base.value),
         sticky: String(tokens["z-index"].sticky.value),
