@@ -91,7 +91,7 @@ export default function Hero() {
         className="
           relative z-20 text-center px-container-mobile mb-lg
           font-body text-body lg:text-subhead text-text-secondary
-          max-w-xl lg:max-w-[736px] lg:px-0 lg:mb-lg
+          max-w-xl lg:max-w-[736px] lg:px-0 lg:mb-2xl
         "
         variants={variants}
         initial="hidden"
