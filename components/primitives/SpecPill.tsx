@@ -4,7 +4,16 @@ interface SpecPillProps {
 
 export default function SpecPill({ label }: SpecPillProps) {
   return (
-    <span className="inline-flex items-center px-md py-xs rounded-pill border border-border-pill font-label text-eyebrow text-accent-cyan tracking-widest uppercase whitespace-nowrap w-auto">
+    <span
+      className="flex justify-center items-center gap-[10px] font-label text-eyebrow text-accent-cyan tracking-widest uppercase"
+      style={{
+        padding: "5px 10px",
+        borderRadius: "20px",
+        border: "1px solid #2D1C53",
+        flex: "1 0 0",
+        alignSelf: "stretch",
+      }}
+    >
       {label}
     </span>
   );
