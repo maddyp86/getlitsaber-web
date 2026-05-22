@@ -24,12 +24,12 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
 
   return (
     <section
-      className={`relative w-full flex flex-col items-center bg-background-primary${className ? ` ${className}` : ""}`}
+      className={`relative w-full min-h-[1400px] flex flex-col items-center bg-background-primary${className ? ` ${className}` : ""}`}
       aria-label="Hero"
     >
-      {/* Two-layer background — flows sequentially, no hardcoded pixel seam */}
+      {/* Full-bleed background — lifestyle scene flowing into device/starfield render */}
       <div className="absolute inset-x-0 top-0 z-0 overflow-hidden">
-        {/* Lifestyle scene — ~55% viewport keeps the fade seam in the upper half */}
+        {/* Lifestyle scene — ~55% viewport */}
         <div className="relative w-full h-[55vh]">
           <ResponsiveImage
             mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
@@ -44,9 +44,9 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           />
         </div>
 
-        {/* Device + starfield — immediately below lifestyle scene, grows with content */}
-        <div className="relative w-full min-h-[60vh] overflow-hidden">
-          {/* intentional 112% bleed to fill wide viewports without cropping the device render */}
+        {/* Device + starfield — immediately below, fills the rest */}
+        <div className="relative w-full h-[900px] overflow-hidden">
+          {/* 112% bleed fills wide viewports without cropping the device render */}
           <div className="absolute inset-0 w-[112%] left-1/2 -translate-x-1/2">
             <Image
               src="/images/home/litsaber-hero-image.png"
@@ -60,12 +60,11 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         </div>
       </div>
 
-      {/* Content column */}
-      <div className="relative z-20 flex flex-col items-center w-full pt-2xl">
-        {/* Headline */}
+      {/* Content group — 150px from top, flex-col gap-[20px], matches Figma spec */}
+      <div className="relative z-20 mt-[150px] flex flex-col items-center gap-[20px] w-full">
         <motion.h1
           className="
-            text-center px-container mb-md w-full
+            text-center px-container w-full
             font-display font-bold text-display-lg text-text-primary
             leading-none tracking-tight whitespace-nowrap
             drop-shadow-[0_0_100px_rgba(240,240,245,1)]
@@ -82,10 +81,9 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           </span>
         </motion.h1>
 
-        {/* Sub-headline */}
         <motion.p
           className="
-            text-center px-container mb-2xl
+            text-center px-container
             font-body text-subhead text-text-secondary
             max-w-[736px]
           "
@@ -97,9 +95,8 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           {SUBHEADLINE}
         </motion.p>
 
-        {/* CTAs */}
         <motion.div
-          className="flex flex-row gap-xl mb-xl justify-center"
+          className="flex flex-row gap-[20px] justify-center"
           variants={variants}
           initial="hidden"
           animate="visible"
@@ -134,36 +131,38 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             {CTA_SECONDARY.label}
           </Link>
         </motion.div>
-
-        {/* Tagline — sits over the starfield half */}
-        <motion.p
-          className="
-            text-center mx-auto px-container mt-2xl mb-section-y
-            font-subhead font-bold text-h2 uppercase leading-tight
-            text-text-primary w-full max-w-[1200px]
-            drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
-          "
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.3}
-        >
-          {TAGLINE}
-        </motion.p>
-
-        {/* Spec pills — flows naturally at bottom of column */}
-        <motion.div
-          className="flex flex-row gap-md justify-center pb-section-y"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.4}
-        >
-          {SPEC_PILLS.map((label) => (
-            <SpecPill key={label} label={label} />
-          ))}
-        </motion.div>
       </div>
+
+      {/* Product window — open space that reveals the device render in the background */}
+      <div className="flex-1 min-h-[400px]" aria-hidden="true" />
+
+      {/* Tagline + pills — anchor zone at the bottom of the section */}
+      <motion.p
+        className="
+          relative z-20 text-center px-container
+          font-subhead font-bold text-h2 uppercase leading-tight
+          text-text-primary w-full max-w-[1200px]
+          drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
+        "
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        custom={0.3}
+      >
+        {TAGLINE}
+      </motion.p>
+
+      <motion.div
+        className="relative z-20 flex flex-row gap-md justify-center pb-section-y mt-[20px]"
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        custom={0.4}
+      >
+        {SPEC_PILLS.map((label) => (
+          <SpecPill key={label} label={label} />
+        ))}
+      </motion.div>
     </section>
   );
 }
