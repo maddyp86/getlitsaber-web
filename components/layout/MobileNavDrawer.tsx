@@ -174,7 +174,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
           <Link
             href="/shop/litsaber-og"
             onClick={onClose}
-            className="block w-full py-sm text-center font-label text-label tracking-widest uppercase border border-accent-cyan text-accent-cyan bg-accent-cyan-alpha-10 rounded-md hover:bg-accent-cyan hover:text-background-primary transition-colors duration-200"
+            className="block w-full py-md text-center font-label text-label tracking-widest uppercase border border-accent-cyan text-accent-cyan bg-accent-cyan-alpha-10 rounded-md hover:bg-accent-cyan hover:text-background-primary transition-colors duration-200"
           >
             GET YOURS — $59.99
           </Link>
