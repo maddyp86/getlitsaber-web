@@ -115,7 +115,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         </motion.h1>
 
         <motion.p
-          className="text-center w-full font-body text-subhead text-text-secondary mb-2"
+          className="text-center w-full font-body text-subhead text-text-secondary mb-4"
           variants={variants}
           initial="hidden"
           animate="visible"
