@@ -38,7 +38,7 @@ export default function Hero() {
       aria-label="Hero"
     >
       {/* Top background — lifestyle scene, gradient-fades to dark at the seam */}
-      <div className="absolute inset-x-0 top-0 aspect-[41/69] lg:aspect-auto lg:h-[900px] z-0">
+      <div className="absolute inset-x-0 top-0 aspect-[41/69] lg:aspect-auto lg:h-[585px] z-0">
         <ResponsiveImage
           mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
           desktopSrc="/images/home/hero-lifestyle.jpg"
@@ -48,12 +48,6 @@ export default function Hero() {
         />
         <div
           className="absolute inset-0 bg-hero-fade pointer-events-none"
-          aria-hidden="true"
-        />
-        {/* Extra fade at the bottom so lifestyle blends into the starfield */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-[300px] pointer-events-none"
-          style={{ background: "linear-gradient(to bottom, transparent, #0A0518)" }}
           aria-hidden="true"
         />
       </div>
