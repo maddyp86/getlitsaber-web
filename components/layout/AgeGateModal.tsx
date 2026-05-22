@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const COOKIE_NAME =
   process.env.NEXT_PUBLIC_AGE_GATE_COOKIE_NAME ?? "litsaber_age_verified";
@@ -53,53 +54,87 @@ export default function AgeGateModal() {
       aria-labelledby="age-gate-title"
       aria-describedby="age-gate-body"
       className="fixed inset-0 z-age-gate flex items-center justify-center p-container-mobile"
-      style={{ backgroundColor: "rgba(0,0,0,0.9)" }}
+      style={{ backgroundColor: "rgba(10, 5, 24, 0.85)" }}
     >
       {/* Modal panel */}
       <div
-        className="relative w-full bg-background-elevated rounded-card shadow-modal flex flex-col items-center text-center px-xl py-2xl"
-        style={{ maxWidth: "448px" }}
+        className="relative w-full flex flex-col items-center text-center rounded-card"
+        style={{
+          maxWidth: "448px",
+          background: "rgba(5, 5, 16, 0.60)",
+          border: "1px solid rgba(0, 229, 255, 0.20)",
+          boxShadow: "0 0 20px 0 rgba(0, 229, 255, 0.05) inset",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          paddingTop: "50px",
+          paddingBottom: "40px",
+          paddingLeft: "33px",
+          paddingRight: "33px",
+        }}
       >
-        {/* Logo mark */}
-        <div className="mb-lg">
-          <span
-            className="font-subhead font-bold text-text-primary tracking-widest text-xl"
-            aria-hidden="true"
-          >
-            LITSABER
-          </span>
+        {/* Logo */}
+        <div className="mb-md">
+          <Image
+            src="/images/global/litsaber-blue.png"
+            alt="Litsaber"
+            width={125}
+            height={40}
+            style={{ width: "125px", height: "auto" }}
+          />
         </div>
 
         {/* Headline */}
         <h1
           id="age-gate-title"
-          className="font-subhead font-bold text-h3 text-text-primary tracking-wider uppercase mb-md"
+          className="font-display font-bold text-text-primary uppercase mb-md"
+          style={{ fontSize: "35px", lineHeight: "36px" }}
         >
-          You must be 21+ to enter
+          You must be 21+<br />to enter
         </h1>
 
         {/* Body */}
         <p
           id="age-gate-body"
-          className="font-body text-body text-text-secondary leading-relaxed mb-2xl"
+          className="font-body mb-lg"
+          style={{
+            color: "rgba(240, 240, 245, 0.70)",
+            fontSize: "14px",
+            lineHeight: "20px",
+          }}
         >
-          This website contains products intended for adults only. By entering,
-          you confirm you are of legal age.
+          This website contains products intended for adults only.<br />
+          By entering, you confirm you are of legal age.
         </p>
 
         {/* Confirm button */}
         <button
           onClick={handleConfirm}
-          className="w-full py-sm mb-md font-label text-label tracking-widest uppercase border border-accent-cyan text-accent-cyan bg-accent-cyan-alpha-10 rounded-md hover:bg-accent-cyan hover:text-background-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan"
+          className="font-label tracking-widest uppercase text-accent-cyan transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan mb-md"
+          style={{
+            width: "382px",
+            height: "58px",
+            background: "#050510",
+            border: "1px solid #00E5FF",
+            borderRadius: "4px",
+            fontSize: "14px",
+          }}
           autoFocus
         >
           I AM 21+
         </button>
 
-        {/* Exit link */}
+        {/* Exit button */}
         <button
           onClick={handleExit}
-          className="font-label text-eyebrow text-text-muted hover:text-text-secondary transition-colors duration-200 tracking-widest uppercase underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-muted rounded"
+          className="font-label tracking-widest uppercase text-text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-text-muted"
+          style={{
+            width: "382px",
+            height: "58px",
+            background: "transparent",
+            border: "1px solid rgba(240, 240, 245, 0.20)",
+            borderRadius: "4px",
+            fontSize: "14px",
+          }}
         >
           EXIT
         </button>
