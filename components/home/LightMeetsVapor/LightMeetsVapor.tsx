@@ -69,9 +69,9 @@ export default function LightMeetsVapor() {
           <motion.p
             className="font-body text-text-primary"
             style={{
-              fontSize: "clamp(15px, 1.5vw, 22px)",
+              fontSize: "clamp(16px, 1.5vw, 22px)",
               lineHeight: "1.55",
-              maxWidth: "500px",
+              maxWidth: "600px",
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
