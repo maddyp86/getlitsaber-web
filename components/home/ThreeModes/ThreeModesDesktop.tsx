@@ -176,7 +176,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Inner content — centered column, 280px from top */}
         <div
           className="absolute"
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "1240px", top: "153px", left: "100px", gap: "100px", zIndex: 10 }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center",  left: "50%", width: "100%", top: "153px", left: "100px", gap: "100px", zIndex: 10 }}
         >
           {/* "Pick Your Energy" heading group */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center" }}>
