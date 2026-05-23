@@ -202,8 +202,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: "auto",
-    maxWidth: "1400px",
+    width: "100%",
+    maxWidth: "1250px",
     left: "50%",                    // ← ADD THIS
     transform: "translateX(-50%)",  // ← ADD THIS
              paddingLeft: "50px",    // ← ADD THIS
