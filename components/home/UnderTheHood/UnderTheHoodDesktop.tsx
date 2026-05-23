@@ -204,7 +204,7 @@ export default function UnderTheHoodDesktop({ className }: UnderTheHoodDesktopPr
 
           <motion.p
             className="font-body text-text-secondary"
-            style={{ fontSize: "18px", lineHeight: "1.6", maxWidth: "560px" }}
+            style={{ fontSize: "22px", lineHeight: "normal", fontWeight: 400, }}
             initial={{ opacity: 0, y: 20 }}
             animate={headVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
