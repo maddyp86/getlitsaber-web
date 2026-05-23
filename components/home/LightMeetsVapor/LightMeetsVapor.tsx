@@ -27,7 +27,7 @@ export default function LightMeetsVapor() {
     <section
       id="light-meets-vapor"
       className="relative w-full overflow-hidden"
-      style={{ width:auto , aspectRatio: "375 / 600" }}
+      style={{ width:"auto" , aspectRatio: "375 / 600" }}
       aria-label="Where Light and Vapor Meet"
     >
       {/* Full-bleed background image — desktop / mobile swap */}
