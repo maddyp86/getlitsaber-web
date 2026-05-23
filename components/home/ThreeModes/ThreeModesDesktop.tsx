@@ -61,12 +61,12 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       aria-label="Pick Your Energy — Three Modes"
     >
       {/* ── TOP BAND ────────────────────────────────────────────────────── */}
-      <div className="relative w-full" style={{ paddingTop: "80px", paddingBottom: "0" }}>
+      <div className="relative w-full" style={{ minHeight: "1200px", paddingTop: "80px", paddingBottom: "100px" }}>
 
         {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
           ref={lightstreakRef}
-          style={{ width: "1440px", height: "725px", aspectRatio: "143 / 72", overflow: "hidden", position: "absolute", top: "318px", left: 0, zIndex: 0 }}
+          style={{ width: "1440px", height: "671px", overflow: "hidden", position: "absolute", top: "462px", left: 0, zIndex: 0 }}
         >
           {reducedMotion ? (
             <img
