@@ -10,6 +10,8 @@ interface ThreeModesDesktopProps {
   className?: string;
 }
 
+const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const CONTENT_FADE = {
@@ -208,13 +210,15 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 role="button"
                 tabIndex={0}
                 onClick={() => setMode(0)}
+                onMouseEnter={() => setHoveredCard(0)}
+                onMouseLeave={() => setHoveredCard(null)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
                 aria-label="Activate Litsaber Mode"
                 style={{
                   ...cardBorder(0),
                   display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
                   padding: "30px",
-                  background: "#100B25",
+                  background: hoveredCard === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",  // Cyan tint on hover
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                 }}
