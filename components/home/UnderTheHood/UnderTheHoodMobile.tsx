@@ -140,7 +140,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
                   flexDirection: "column",
                   gap: "10px",
                   padding: "20px",
-                  background: "#110826",
+                  background: "#100B25",
                   borderTop: `1px solid #2D1C53`,
                   borderRight: `1px solid #2D1C53`,
                   borderBottom: `1px solid #2D1C53`,
@@ -150,7 +150,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
               >
                 <h3
                   className="font-label tracking-widest uppercase"
-                  style={{ fontSize: "13px", color: accentColor, letterSpacing: "0.1em" }}
+                  style={{ fontSize: "20px", color: accentColor, fontWeight:700, lineHeight:"normal" }}
                 >
                   {card.title}
                 </h3>
