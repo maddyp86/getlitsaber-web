@@ -150,7 +150,7 @@ export default function BeSeenDesktop({ className }: BeSeenDesktopProps) {
               <motion.p
                 key={`body-${activeStage}`}
                 className="font-body text-text-secondary"
-                style={{ fontSize: "22px" }}
+                style={{ fontSize: "18px" }}
                 variants={FADE}
                 initial="hidden"
                 animate="visible"
