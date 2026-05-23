@@ -125,7 +125,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             aria-label="Activate Litsaber Mode"
             style={{ ...cardBorder(0), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
           >
-            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
               <h4
                 className="font-subhead font-bold"
                 style={{
