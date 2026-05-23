@@ -152,7 +152,7 @@ export default function UnderTheHoodDesktop({ className }: UnderTheHoodDesktopPr
   return (
     <section
       id="under-the-hood"
-      className={`w-full bg-background-primary overflow-hidden${className ? ` ${className}` : ""}`}
+      className={`w-full bg-[linear-gradient(180deg,#0F0824_0%,#030923_97.64%)] overflow-hidden${className ? ` ${className}` : ""}`}
       aria-label="Under The Hood — Engineering"
     >
       {/* Atmospheric glow orb */}
