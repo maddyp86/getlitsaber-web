@@ -61,31 +61,26 @@ export default function LightMeetsVapor() {
           {/* Headline — Monoton (accent font), two lines */}
           <div>
             <motion.h2
-              className="font-accent text-text-primary block"
-              style={{
-                fontSize: "clamp(38px, 6.5vw, 94px)",
-                lineHeight: "1.05",
-                fontWeight: 400,
-              }}
-              initial={{ opacity: 0, y: 28 }}
-              animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-              transition={{ duration: 0.8, ease: EASE }}
-            >
-              WHERE LIGHT
-            </motion.h2>
-            <motion.h2
-              className="font-accent text-text-primary block"
-              style={{
-                fontSize: "clamp(38px, 6.5vw, 94px)",
-                lineHeight: "1.05",
-                fontWeight: 400,
-              }}
-              initial={{ opacity: 0, y: 28 }}
-              animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-              transition={{ duration: 0.8, delay: 0.08, ease: EASE }}
-            >
-              AND VAPOR MEET
-            </motion.h2>
+  className="font-accent uppercase"
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    width: "790px",
+    height: "178px",
+    color: "#FFF",
+    fontFamily: "Monoton",
+    fontSize: "75px",
+    fontWeight: 400,
+    lineHeight: "100px",
+    textShadow: "0 0 40px rgba(255, 0, 229, 0.75)",
+  }}
+  initial={{ opacity: 0, y: 28 }}
+  animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+  transition={{ duration: 0.8, ease: EASE }}
+>
+  WHERE LIGHT<br />AND VAPOR MEET
+</motion.h2>
           </div>
 
           {/* Body copy */}
