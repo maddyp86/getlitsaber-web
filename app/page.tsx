@@ -3,6 +3,7 @@ import Hero from "@/components/home/Hero";
 import StatBar from "@/components/home/StatBar";
 import BeSeen from "@/components/home/BeSeen/BeSeen";
 import ThreeModes from "@/components/home/ThreeModes/ThreeModes";
+import UnderTheHood from "@/components/home/UnderTheHood/UnderTheHood";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -15,6 +16,7 @@ export default function HomePage() {
       <StatBar />
       <BeSeen />
       <ThreeModes />
+      <UnderTheHood />
     </>
   );
 }
