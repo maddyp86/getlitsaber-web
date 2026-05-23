@@ -50,7 +50,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
 
   const cardBorder = (i: number): React.CSSProperties =>
     activeMode === i
-      ? { borderTop: "6px solid #00E5FF", borderRight: "1px solid #00E5FF", borderBottom: "1px solid #00E5FF", borderLeft: "1px solid #00E5FF", borderRadius: "20px" }
+      ? { border: "1px solid #00E5FF", borderRadius: "20px" }
       : { border: "1px solid #303030", borderRadius: "20px" };
 
   return (
