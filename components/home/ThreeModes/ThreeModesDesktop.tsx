@@ -100,9 +100,9 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           className="relative"
           style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
         >
-          <div style={{ display: "flex", width: "auto", padding: "0 100px;", alignItems: "center", gap: "45px", justifyContent: "space-between" }}>
+         <div style={{ display: "flex", width: "100%", maxWidth: "1240px", alignItems: "center", gap: "45px", justifyContent: "flex-start" }}>
             {/* Headline block — 450px */}
-            <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", flex: "0 0 auto", justifyContent: "center", gap: 0 }}>
               <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
                 INTERACTIVE LIGHTS
               </p>
@@ -125,7 +125,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             {/* Body text — 554px */}
             <p
               className="font-body text-text-secondary"
-              style={{ flex: "1 0 0", fontSize: "1.2em", lineHeight: "normal" }}
+             style={{ flex: "0 0 auto", fontSize: "25px", lineHeight: "normal" }}>
             >
               41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
             </p>
