@@ -95,42 +95,33 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           aria-hidden="true"
         />
 
-        {/* Text row — headline block LEFT, body RIGHT */}
-<div
-  className="relative"
-  style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
->
-  <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "45px", justifyContent: "space-between" }}>
-    {/* Headline block */}
-    <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: "19px" }}>
-      <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
-        INTERACTIVE LIGHTS
-      </p>
-      <div>
-        <span
-          className="font-display font-bold text-text-primary block"
-          style={{ fontSize: "80px", lineHeight: "90px" }}
+        {/* Text row — headline block LEFT, body RIGHT, inline-flex gap-45 */}
+        <div
+          className="relative"
+          style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
         >
-          TEN WAYS TO
-        </span>
-        <span
-          className="font-accent text-accent-cyan block"
-          style={{ fontSize: "80px", lineHeight: "90px", fontWeight: 400 }}
-        >
-          BE SEEN
-        </span>
-      </div>
-    </div>
+         <div style={{ display: "flex", width: "100%", maxWidth: "auto", alignItems: "center", gap: "45px", justifyContent: "flex-start" }}>
+            {/* Headline block — 450px */}
+            <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: 0 }}>
+              <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
+                INTERACTIVE LIGHTS
+              </p>
+              <div>
+                <span
+                  className="font-display font-bold text-text-primary block"
+                  style={{ fontSize: "80px", lineHeight: "80px" }}
+                >
+                  TEN WAYS TO
+                </span>
+                <span
+                  className="font-accent text-accent-cyan block"
+                  style={{ fontSize: "80px", lineHeight: "80px", fontWeight: 400 }}
+                >
+                  BE SEEN
+                </span>
+              </div>
+            </div>
 
-    {/* Body text */}
-    <p
-      className="font-body"
-      style={{ flex: "1 0 0", fontSize: "25px", lineHeight: "normal", color: "#D3D3D3" }}
-    >
-      41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
-    </p>
-  </div>
-</div>
             {/* Body text — 554px */}
 <p
   className="font-body text-text-secondary"
