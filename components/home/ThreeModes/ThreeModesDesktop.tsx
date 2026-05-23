@@ -100,9 +100,9 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           className="relative"
           style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
         >
-          <div style={{ display: "flex", width: "auto", padding: "0 100px;", alignItems: "center", gap: "45px" }}>
+          <div style={{ display: "flex", width: "auto", padding: "0 100px;", alignItems: "center", gap: "45px", justifyContent: "space-between" }}>
             {/* Headline block — 450px */}
-            <div style={{ display: "flex", flexDirection: "column", width: "450px", height: "168px", justifyContent: "center", gap: 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: 0 }}>
               <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
                 INTERACTIVE LIGHTS
               </p>
