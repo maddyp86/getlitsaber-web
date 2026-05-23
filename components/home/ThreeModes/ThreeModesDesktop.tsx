@@ -123,12 +123,12 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             </div>
 
             {/* Body text — 554px */}
-            <p
-              className="font-body text-text-secondary"
-              style={{ flex: "1 0 0", fontSize: "1.2em", lineHeight: "normal" }}
-            >
-              41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
-            </p>
+<p
+  className="font-body text-text-secondary"
+  style={{ flex: "1 0 0", fontSize: "25px", lineHeight: "normal", color: "#D3D3D3" }}
+>
+  41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
+</p>
           </div>
         </div>
       </div>
