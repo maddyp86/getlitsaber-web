@@ -120,7 +120,7 @@ function SpecTileItem({
         flexDirection: "column",
         gap: "10px",
         padding: "24px",
-        background: "#110826",
+
         border: `1px solid ${hovered ? "#00E5FF" : "#2D1C53"}`,
         borderRadius: "16px",
         transition: "border-color 0.25s ease, transform 0.25s ease",
