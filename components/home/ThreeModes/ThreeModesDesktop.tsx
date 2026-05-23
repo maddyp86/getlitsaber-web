@@ -61,7 +61,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       aria-label="Pick Your Energy — Three Modes"
     >
       {/* ── TOP BAND ────────────────────────────────────────────────────── */}
-     <div className="relative w-full overflow-hidden" style={{ minHeight: "1200px", paddingTop: "80px", paddingBottom: "100px" }}>
+     <div className="relative w-full overflow-hidden" style={{ minHeight: "1200px", paddingTop: "80px", paddingBottom: "100px",maxWidth: "100vw" }}>
 
         {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
