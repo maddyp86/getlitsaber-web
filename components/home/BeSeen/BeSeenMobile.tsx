@@ -78,7 +78,7 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
       aria-label="Be Seen Across The Crowd"
     >
       {/* Sticky viewport-height container */}
-      <div className="sticky top-navbar w-full overflow-hidden" style={{ height: "100vh" }}>
+      <div className="sticky w-full overflow-hidden" style={{ top: "90px", height: "calc(100vh - 90px)" }}>
         {/* Stage images — crossfade layer, full-bleed behind everything */}
         <div className="absolute inset-0">
           <AnimatePresence mode="sync">
