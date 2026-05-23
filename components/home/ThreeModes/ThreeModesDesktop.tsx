@@ -222,7 +222,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <h3
                   className="font-subhead font-bold"
                   style={{
-                    fontSize: "35px",
+                    fontSize: "25px",
                     color: activeMode === 0 ? "#F0F0F5" : "#BABABA",
                     textShadow: activeMode === 0 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
@@ -232,7 +232,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 </h3>
 
                 {/* Toggles — THE PULL / THE BUILD */}
-                <div style={{ display: "flex", gap: "30px", width: "100%" }}>
+                <div style={{ display: "flex", gap: "20px", width: "100%" }}>
                   {PULL_BUILD.map((pb, i) => {
                     const isActive = activePullBuild === i;
                     return (
@@ -348,7 +348,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             {/* Right — mode image */}
             <div
               style={{
-                width: "576px", height: "688px",
+                width: "576px", height: "100%",
                 flex: "1 0 0",
                 alignSelf: "stretch",
                 borderRadius: "10px",
