@@ -15,13 +15,13 @@ export const MODES: Mode[] = [
   {
     title: "GLOWSTICK MODE",
     titleColor: "muted",
-    body: "Turn up the party. The LED ring holds a steady, vivid glow — no pulse, no pattern, just pure color. Your device becomes a light source.",
+    body: "Turn up the party and turn your vape into a glowstick. Use the Litsaber and give someone a light show or even find things in the dark.",
     image: "/images/home/mode-placeholder.jpg",
   },
   {
     title: "STEALTH MODE",
     titleColor: "muted",
-    body: "When daylight comes, go dark. LEDs off. Device active. Same battery, same draw — no light, no attention.",
+    body: "When daylight comes give your eyes and battery a break. Turn off the lights to save power and vape discreetly throughout day.",
     image: "/images/home/mode-placeholder.jpg",
   },
 ];
