@@ -24,13 +24,13 @@ const IMAGE_FADE = {
   exit:   { opacity: 0, transition: { duration: 0.2 } },
 };
 
-const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
 export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps) {
   const { activeMode, activePullBuild, setMode, togglePullBuild } = useModesState();
   const [reducedMotion, setReducedMotion] = useState(false);
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
