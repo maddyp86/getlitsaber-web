@@ -102,7 +102,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         >
           <div style={{ display: "flex", width: "auto", padding: "0 100px;", alignItems: "center", gap: "45px" }}>
             {/* Headline block — 450px */}
-            <div style={{ display: "flex", flexDirection: "column", width: "450px", height: "168px", justifyContent: "center", gap: 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "168px", justifyContent: "center", gap: 0 }}>
               <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
                 INTERACTIVE LIGHTS
               </p>
