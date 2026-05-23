@@ -84,7 +84,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   return (
     <section
       id="three-modes"
-      className={`w-full bg-background-primary overflow-hidden${className ? ` ${className}` : ""}`}
+      className={`w-full bg-black overflow-hidden${className ? ` ${className}` : ""}`}
       aria-label="Pick Your Energy — Three Modes"
     >
       {/* ── TOP BAND ────────────────────────────────────────────────────── */}
