@@ -48,10 +48,14 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
     return () => observer.disconnect();
   }, []);
 
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
   const cardBorder = (i: number): React.CSSProperties =>
     activeMode === i
       ? { borderTop: "6px solid #00E5FF", borderRight: "1px solid #00E5FF", borderBottom: "1px solid #00E5FF", borderLeft: "1px solid #00E5FF", borderRadius: "20px" }
-      : { border: "1px solid #303030", borderRadius: "20px" };
+      : hoveredCard === i
+        ? { border: "1px solid #00E5FF", borderRadius: "20px" }
+        : { border: "1px solid #303030", borderRadius: "20px" };
 
   return (
     <section
@@ -121,6 +125,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             role="button"
             tabIndex={0}
             onClick={() => setMode(0)}
+            onMouseEnter={() => setHoveredCard(0)}
+            onMouseLeave={() => setHoveredCard(null)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
             aria-label="Activate Litsaber Mode"
             style={{ ...cardBorder(0), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
@@ -209,6 +215,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             role="button"
             tabIndex={0}
             onClick={() => setMode(1)}
+            onMouseEnter={() => setHoveredCard(1)}
+            onMouseLeave={() => setHoveredCard(null)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
             aria-label="Activate Glowstick Mode"
             style={{ ...cardBorder(1), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
@@ -246,6 +254,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             role="button"
             tabIndex={0}
             onClick={() => setMode(2)}
+            onMouseEnter={() => setHoveredCard(2)}
+            onMouseLeave={() => setHoveredCard(null)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
             aria-label="Activate Stealth Mode"
             style={{ ...cardBorder(2), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
