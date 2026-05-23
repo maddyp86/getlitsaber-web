@@ -272,7 +272,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                       animate="visible"
                       exit="exit"
                       className="font-body"
-                      style={{ fontSize: "20px", color: "#F0F0F5" }}
+                      style={{ fontSize: "16px", color: "#F0F0F5" }}
                     >
                       {PULL_BUILD[activePullBuild].description}
                     </motion.p>
