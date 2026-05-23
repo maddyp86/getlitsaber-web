@@ -67,7 +67,7 @@ export default function WhereItLives() {
         style={{
           width: "375px",
           height: "500px",
-          background: "rgba(0, 153, 170, 0.39)",
+          background: "rgba(0, 153, 170, 0.25)",
           filter: "blur(150px)",
           zIndex: 0,
         }}
