@@ -172,7 +172,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
           animate={statsVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.8, ease: EASE }}
           style={{
-            background: "linear-gradient(135deg, #040923 0%, #20093E 100%)",
+            background: "linear-gradient(135deg, #2EF1EB 0%, #3B37A5 100%)",
             borderRadius: "16px",
             padding: "32px 24px",
             display: "grid",
