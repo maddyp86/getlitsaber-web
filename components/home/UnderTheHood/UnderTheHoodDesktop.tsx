@@ -187,7 +187,14 @@ export default function UnderTheHoodDesktop({ className }: UnderTheHoodDesktopPr
 
           <motion.h2
             className="font-display font-bold text-text-primary"
-            style={{ fontSize: "75px", lineHeight: "1", letterSpacing: "-0.01em", maxWidth: "900px" }}
+          style={{
+    color: "#FFF",
+    fontFamily: "Stellar",
+    fontSize: "75px",
+    fontWeight: 700,
+    lineHeight: "normal",
+    textShadow: "0 0 50px rgba(0, 229, 255, 0.75)",
+  }}
             initial={{ opacity: 0, y: 28 }}
             animate={headVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
