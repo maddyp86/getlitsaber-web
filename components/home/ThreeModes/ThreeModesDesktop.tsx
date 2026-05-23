@@ -10,8 +10,6 @@ interface ThreeModesDesktopProps {
   className?: string;
 }
 
-const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const CONTENT_FADE = {
@@ -25,6 +23,8 @@ const IMAGE_FADE = {
   visible: { opacity: 1, transition: { duration: 0.35, ease: EASE } },
   exit:   { opacity: 0, transition: { duration: 0.2 } },
 };
+
+const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
 export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps) {
   const { activeMode, activePullBuild, setMode, togglePullBuild } = useModesState();
