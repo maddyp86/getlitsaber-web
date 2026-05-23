@@ -71,7 +71,7 @@ export default function LightMeetsVapor() {
             style={{
               fontSize: "clamp(16px, 2.5vw, 25px)",
               lineHeight: "normal",
-              fontweight: 500,
+              fontWeight: 500,
               maxWidth: "600px",
             }}
             initial={{ opacity: 0, y: 20 }}

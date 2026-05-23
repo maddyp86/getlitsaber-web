@@ -134,6 +134,7 @@ const config: Config = {
       },
       animation: {
         marquee: "marquee 15s linear infinite",
+        "marquee-slow": "marquee 40s linear infinite",
       },
       zIndex: {
         base: String(tokens["z-index"].base.value),

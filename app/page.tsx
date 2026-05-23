@@ -5,6 +5,7 @@ import BeSeen from "@/components/home/BeSeen/BeSeen";
 import ThreeModes from "@/components/home/ThreeModes/ThreeModes";
 import UnderTheHood from "@/components/home/UnderTheHood/UnderTheHood";
 import LightMeetsVapor from "@/components/home/LightMeetsVapor/LightMeetsVapor";
+import WhereItLives from "@/components/home/WhereItLives/WhereItLives";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -19,6 +20,7 @@ export default function HomePage() {
       <ThreeModes />
       <UnderTheHood />
       <LightMeetsVapor />
+      <WhereItLives />
     </>
   );
 }
