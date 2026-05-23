@@ -351,6 +351,41 @@ Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMP
 
 ---
 
+#### Phase 2 — Common Questions section (2026-05-23) ✅
+
+**What was built:** 4-file CommonQuestions section following the established split-component pattern from ADR-003.
+
+**Files:**
+- `components/home/CommonQuestions/commonquestions.content.ts` — eyebrow, headline, 6 FAQ items with number/question/answer shape
+- `components/home/CommonQuestions/CommonQuestionsDesktop.tsx` — 2-column grid layout, centered header
+- `components/home/CommonQuestions/CommonQuestionsMobile.tsx` — single-column stack, left-aligned header
+- `components/home/CommonQuestions/CommonQuestions.tsx` — CSS-toggle wrapper (`hidden lg:block` / `lg:hidden`)
+
+**Design decisions:**
+- Static, always-expanded cards — no accordion (confirmed with user; Figma shows all answers visible)
+- Question font: Orbitron bold 18px (`font-subhead`) per user spec
+- Answer font: Inter regular 16px `#CCC` per user spec
+- Number label: Space Mono cyan (`font-label`, `text-text-accent`)
+- Card background: `#110826` (`bg-background-elevated`), `border-border-pill`, `rounded-card` (16px)
+- Desktop grid: 2-column, `gap-5`, `max-width: 1100px` centered — matches UnderTheHood feature card pattern
+- Background glow orb desktop: `800×800px`, purple radial gradient (`rgba(30,0,77,0.40)` → `rgba(54,0,140,0.40)` → `rgba(16,8,35,0.40)`), `blur(150px)`, centered
+- Background glow orb mobile: `375×375px`, `rgba(30, 0, 77, 0.75)`, `blur(150px)`, centered
+
+**Motion:** MOTION.md signature easing `cubic-bezier(0.16, 1, 0.3, 1)` at 700–800ms. Desktop cards stagger in reading order (row×200ms + col×100ms). Mobile cards cascade 80ms apart. Header eyebrow reveals first, headline 100ms later. One-shot IntersectionObserver. `prefers-reduced-motion` collapses all to instant.
+
+**FAQ #3 copy resolved:** Figma had placeholder text for "How long does the battery last?" User supplied production answer: 800mAh cobalt cell, USB-C under 75 minutes, 300+ recharge cycles.
+
+**Wired into:** `app/page.tsx` after `<WhereItLives />`. Build passes clean — 16 static routes.
+
+**Story beats captured**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 27 | "The FAQ section design called for no accordion — all six answers permanently visible. Most implementations default to collapse-on-load to save space. Here the right call was the obvious one: trust the Figma. The designer knew buyers approaching a purchase decision need to scan all six answers fast, not click-to-reveal them one at a time. Reading the design intent before reaching for a pattern." | `pm-discipline` |
+| 28 | "FAQ #3 had placeholder copy in Figma ('Most 510 batteries are designed to disappear in your pocket...') — the same text as Q1, copy-pasted. Caught it in the content file, flagged it, user supplied the real production answer. Another case where having the content layer separated from the component layer makes inconsistencies visible before they ship." | `pm-discipline`, `discovery` |
+
+---
+
 ### Editions + Commerce section — build-phasing plan (2026-05-23, planning)
 
 The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inline PDP-style product display, Figma node `3312:2`). This is the frame previously logged as the empty "Section 6" open question — now resolved as this feature. Planned the build before writing any code because it bundles UI, cart state, form capture, and a payment integration that, done in one pass, would produce something that looks right and breaks on real commerce data.
