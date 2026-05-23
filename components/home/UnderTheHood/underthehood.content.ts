@@ -6,7 +6,7 @@ export const SUBHEADLINE =
   "A one of a kind interactive battery product packed with state of the art. Six components. Zero compromises. Every choice made so it earns the price.";
 
 export const EXPLODED_IMAGE = {
-  src: "/images/home/litsaber-exploded-view.jpg",
+  src: "/images/home/exploded-transparent.png",
   alt: "Litsaber device exploded view showing all six components",
 };
 
