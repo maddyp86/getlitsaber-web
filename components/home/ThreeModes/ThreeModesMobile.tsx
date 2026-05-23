@@ -116,16 +116,16 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
         {/* Mode cards stacked */}
         <div className="flex flex-col gap-[30px]">
 
-          {/* Litsaber Mode card */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => setMode(0)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
-            aria-label="Activate Litsaber Mode"
-            style={{ ...cardBorder(0), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden"  }}
-          >
-            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
+          {/* Litsaber Mode */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setMode(0)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
+              aria-label="Activate Litsaber Mode"
+              style={{ ...cardBorder(0), background: activeMode === 0 ? "rgba(0,229,255,0.08)" : "#100B25", cursor: "pointer", transition: "all 0.3s ease", padding: "20px", display: "flex", flexDirection: "column", gap: "15px" }}
+            >
               <h4
                 className="font-subhead font-bold"
                 style={{
@@ -187,33 +187,34 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
               </div>
             </div>
 
-            {/* Mode image inside card — always shown, swaps on mode change */}
-            <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670" }}>
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={`mode-img-mobile-${activeMode}`}
-                  src={MODES[activeMode].image}
-                  alt={MODES[activeMode].title}
-                  variants={IMAGE_FADE}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </AnimatePresence>
-            </div>
+            {activeMode === 0 && (
+              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`mode-img-mobile-${activeMode}`}
+                    src={MODES[0].image}
+                    alt={MODES[0].title}
+                    variants={IMAGE_FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </AnimatePresence>
+              </div>
+            )}
           </div>
 
-          {/* Glowstick Mode card */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => setMode(1)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
-            aria-label="Activate Glowstick Mode"
-            style={{ ...cardBorder(1), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
-          >
-            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          {/* Glowstick Mode */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setMode(1)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
+              aria-label="Activate Glowstick Mode"
+              style={{ ...cardBorder(1), background: activeMode === 1 ? "rgba(0,229,255,0.08)" : "#100B25", cursor: "pointer", transition: "all 0.3s ease", padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}
+            >
               <h4
                 className="font-subhead font-bold"
                 style={{
@@ -231,26 +232,29 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             </div>
 
             {activeMode === 1 && (
-              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670" }}>
-                <img
+              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
+                <motion.img
                   src={MODES[1].image}
                   alt={MODES[1].title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  variants={IMAGE_FADE}
+                  initial="hidden"
+                  animate="visible"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
             )}
           </div>
 
-          {/* Stealth Mode card */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => setMode(2)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
-            aria-label="Activate Stealth Mode"
-            style={{ ...cardBorder(2), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
-          >
-            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          {/* Stealth Mode */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setMode(2)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
+              aria-label="Activate Stealth Mode"
+              style={{ ...cardBorder(2), background: activeMode === 2 ? "rgba(0,229,255,0.08)" : "#100B25", cursor: "pointer", transition: "all 0.3s ease", padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}
+            >
               <h4
                 className="font-subhead font-bold"
                 style={{
@@ -268,11 +272,14 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             </div>
 
             {activeMode === 2 && (
-              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670" }}>
-                <img
+              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
+                <motion.img
                   src={MODES[2].image}
                   alt={MODES[2].title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  variants={IMAGE_FADE}
+                  initial="hidden"
+                  animate="visible"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
             )}
