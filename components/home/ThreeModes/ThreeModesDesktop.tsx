@@ -43,7 +43,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setLightstreakVisible(true); observer.disconnect(); } },
-      { threshold: 0.1 }
+      { threshold: 0.3, rootMargin: "0px 0px -100px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -61,26 +61,26 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       aria-label="Pick Your Energy — Three Modes"
     >
       {/* ── TOP BAND ────────────────────────────────────────────────────── */}
-      <div ref={lightstreakRef} className="relative w-full" style={{ paddingTop: "80px", paddingBottom: "0" }}>
+      <div className="relative w-full" style={{ paddingTop: "80px", paddingBottom: "0" }}>
 
-        {/* Lightstreak — absolute, slides LEFT to RIGHT on scroll */}
+        {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
-          className="absolute overflow-hidden"
-          style={{ top: "318px", left: 0, width: "1440px", height: "725px", zIndex: 0 }}
+          ref={lightstreakRef}
+          style={{ width: "1440px", height: "725px", aspectRatio: "143 / 72", overflow: "hidden", position: "absolute", top: "318px", left: 0, zIndex: 0 }}
         >
           {reducedMotion ? (
             <img
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
             />
           ) : (
             <motion.img
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
               initial={{ x: "-100%" }}
               animate={lightstreakVisible ? { x: 0 } : { x: "-100%" }}
               transition={{ duration: 0.8, ease: EASE }}
