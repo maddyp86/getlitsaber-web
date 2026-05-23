@@ -43,7 +43,7 @@ export default function LightMeetsVapor() {
         ref={ref}
         className="absolute inset-0 flex flex-col justify-start lg:justify-center px-[20px] lg:px-[70px] pt-[40px]"
       >
-        <div className="w-full lg:max-w-[700px] lg:-translate-y-16" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div className="w-full lg:max-w-[800px] lg:-translate-y-16" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
           {/* Headline — Monoton (accent font), two lines */}
           <div>
