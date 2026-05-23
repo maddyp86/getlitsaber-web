@@ -55,7 +55,18 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   const isActive = activeMode === i;
   const isHovered = hoveredCard === i;
   
-  if (isActive || isHovered) {
+  if (isActive) {
+    return {
+      borderTop: "1px solid #00E5FF",
+      borderRight: "1px solid #00E5FF",
+      borderBottom: "1px solid #00E5FF",
+      borderLeft: "6px solid #00E5FF",
+      borderRadius: "20px",
+      transition: "all 0.3s ease",
+    };
+  }
+
+  if (isHovered) {
     return {
       border: "1px solid #00E5FF",
       borderRadius: "20px",
@@ -236,7 +247,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         flex: "1 0 0",
         alignSelf: "stretch",
         padding: "30px",
-        background: "#100B25",
+        background: activeMode === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
         cursor: "pointer",
         transition: "all 0.3s ease",
       }}
@@ -318,7 +329,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         flex: "1 0 0",
         alignSelf: "stretch",
         padding: "30px",
-        background: "#100B25",
+        background: activeMode === 1 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
         cursor: "pointer",
         transition: "all 0.3s ease",
       }}
@@ -356,7 +367,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         flex: "1 0 0",
         alignSelf: "stretch",
         padding: "30px",
-        background: "#100B25",
+        background: activeMode === 2 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
         cursor: "pointer",
         transition: "all 0.3s ease",
       }}
