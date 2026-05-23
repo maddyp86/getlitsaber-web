@@ -84,7 +84,8 @@ function FeatureCardItem({
         style={{
           fontSize: "25px",
           color: accentColor,
-          letterSpacing: "0.12em",
+    fontWeight: 700,
+          lineHeight: normal
         }}
       >
         {card.title}
