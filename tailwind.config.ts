@@ -113,6 +113,7 @@ const config: Config = {
         "hero-fade": tokens.gradient["hero-fade"].value,
         "gradient-cta": tokens.gradient.cta.value,
         "gradient-cta-radial": tokens.gradient["cta-radial"].value,
+        "gradient-stats-banner": tokens.gradient["stats-banner"].value,
       },
       height: {
         navbar: tokens.component["navbar-height"].value,
