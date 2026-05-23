@@ -61,7 +61,7 @@ export default function LightMeetsVapor() {
               animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
               transition={{ duration: 0.8, ease: EASE }}
             >
-              WHERE LIGHT AND <br/> VAPOR MEET
+              WHERE LIGHT <br/> AND VAPOR MEET
             </motion.h2>
           </div>
 
