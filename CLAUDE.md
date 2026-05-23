@@ -50,10 +50,12 @@ When Figma and the spec docs disagree, the spec docs win. Always.
 
 **Figma file reference:** `cuBHq4i5XibiqCyleuZFHO`. Key nodes:
 - Desktop homepage: `3216:33`
-- Mobile homepage: `3760:5314`, `3760:8705`
+- Mobile homepage variants: `3760:5314`, `3760:8705`
 - Desktop PDP: `3367:320`
 - Mobile PDP: `3760:5949`, `3760:9139`
 - Other page nodes listed in `COMPONENTS.md`
+
+**Figma structure reality (important):** The file has ONE page ("Desktop Website") — there is no separate mobile page or mobile design system. Mobile layouts exist as individual variant frames *within* that page for some sections (e.g. the hero and the Be Seen scrollytelling section have dedicated mobile nodes), but NOT for every section. When a section has a mobile variant frame, pull it and match exactly. When it does NOT, mobile is **derived** from the desktop spec using the token scale and responsive rules (narrow the column, scale type down a step, add `px-container-mobile` gutters, restack) — not extracted. Always check whether a mobile node exists before assuming; if the user can supply mobile specs, use those as authoritative. Per-section mobile type scales (e.g. a 75px desktop headline becoming 45px on mobile) live in the component, not in `tokens.json`, since they're section-specific.
 
 ---
 
@@ -85,9 +87,15 @@ public/
 - If an asset doesn't exist yet, reference its intended path and add `{/* TODO: replace placeholder */}` above the `<Image>` tag
 - Do NOT invent asset filenames. Verify the real path in `public/images/<page>/` before referencing — the folder is page-based (`home/`), NOT a `hero/` category folder. (A Phase 2 build initially failed because it assumed `public/images/hero/`; the real path is `public/images/home/`.)
 
+**Responsive images (mobile vs desktop assets) — standard pattern:**
+- Many images have separate mobile and desktop files — different filenames, often different dimensions AND different formats (e.g. `hero-lifestyle.png` desktop / `hero-lifestyle-mobile.jpg` mobile).
+- ALWAYS use the `<ResponsiveImage />` primitive (see COMPONENTS.md) for these — never hand-roll two `<Image>` tags with `hidden`/`lg:block`. The primitive uses `<picture>` so the browser downloads ONLY the needed asset; this matters most for `priority` above-the-fold images where a phone must not fetch the large desktop file.
+- Breakpoint switch defaults to `lg` (1024px). Mobile asset below, desktop at/above.
+- Paired-asset naming: desktop is the base name (`hero-lifestyle.png`), mobile appends `-mobile` (`hero-lifestyle-mobile.jpg`). Formats may differ between the two — that's expected and fine.
+
 **Critical workflow rule — single write path to the repo:**
-- Assets and files must enter the repo through ONE source at a time. During Phase 2, that source is **Bolt**. Do NOT add files directly via GitHub web/Desktop while Bolt is the active editor — Bolt's next sync can delete files it doesn't know about. (This happened once: a Bolt merge dropped the entire `public/images/` folder; recovered from git history via `git checkout <commit> -- public/`.)
-- After Phase 2 handoff to Claude Code, the single write path becomes the local repo + Claude Code.
+- The repo has ONE write path: the local clone + Claude Code + git. Files enter the repo locally (Finder for assets, Claude Code for code), then commit + push. (Bolt has been retired — it caused repeated sync collisions: a Netlify dependency leak, then a merge that dropped the entire `public/images/` folder, recovered via `git checkout <commit> -- public/`. The handoff to a single local write path eliminated that class of problem.)
+- Do NOT add files via the GitHub web UI or any second tool while working locally — that recreates the two-source divergence that caused the collisions.
 
 **Where assets live in production:**
 - During Phase 2/3: assets live in `public/` and ship with the repo
