@@ -41,9 +41,9 @@ export default function LightMeetsVapor() {
       {/* Text block — top-aligned on mobile (content starts near top), centered on desktop */}
       <div
         ref={ref}
-        className="absolute inset-0 flex flex-col justify-start lg:justify-center px-[20px] lg:px-[70px] pt-[40px] lg:pt-[0px]"
+        className="absolute inset-0 flex flex-col justify-start lg:justify-center px-[20px] lg:px-[70px] pt-[40px]"
       >
-        <div className="w-full lg:max-w-[600px]" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div className="w-full lg:max-w-[600px] lg:-translate-y-16" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
           {/* Headline — Monoton (accent font), two lines */}
           <div>
