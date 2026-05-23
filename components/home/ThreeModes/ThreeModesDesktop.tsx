@@ -299,7 +299,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <h3
                   className="font-subhead font-bold"
                   style={{
-                    fontSize: "35px",
+                    fontSize: "25px",
                     color: activeMode === 1 ? "#F0F0F5" : "#BABABA",
                     textShadow: activeMode === 1 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
@@ -307,7 +307,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 >
                   GLOWSTICK MODE
                 </h3>
-                <p className="font-body" style={{ fontSize: "20px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
+                <p className="font-body" style={{ fontSize: "16px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
                   {MODES[1].body}
                 </p>
               </div>
@@ -331,7 +331,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <h3
                   className="font-subhead font-bold"
                   style={{
-                    fontSize: "35px",
+                    fontSize: "25px",
                     color: activeMode === 2 ? "#F0F0F5" : "#BABABA",
                     textShadow: activeMode === 2 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
@@ -339,7 +339,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 >
                   STEALTH MODE
                 </h3>
-                <p className="font-body" style={{ fontSize: "20px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
+                <p className="font-body" style={{ fontSize: "16px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
                   {MODES[2].body}
                 </p>
               </div>
