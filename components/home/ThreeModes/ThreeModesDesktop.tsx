@@ -51,10 +51,27 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     return () => observer.disconnect();
   }, []);
 
-  const cardBorder = (i: number): React.CSSProperties =>
-    activeMode === i
-      ? { borderTop: "1px solid #00E5FF", borderRight: "1px solid #00E5FF", borderBottom: "1px solid #00E5FF", borderLeft: "6px solid #00E5FF", borderRadius: "20px" }
-      : { border: "1px solid #303030", borderRadius: "20px" };
+  const cardBorder = (i: number): React.CSSProperties => {
+  const isActive = activeMode === i;
+  const isHovered = hoveredCard === i;
+  
+  if (isActive || isHovered) {
+    return {
+      borderTop: "1px solid #00E5FF",
+      borderRight: "1px solid #00E5FF",
+      borderBottom: "1px solid #00E5FF",
+      borderLeft: "6px solid #00E5FF",
+      borderRadius: "20px",
+      transition: "all 0.3s ease",
+    };
+  }
+  
+  return {
+    border: "1px solid #303030",
+    borderRadius: "20px",
+    transition: "all 0.3s ease",
+  };
+};
 
   return (
     <section
