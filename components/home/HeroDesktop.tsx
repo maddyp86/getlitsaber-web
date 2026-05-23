@@ -38,26 +38,15 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           priority
           className="absolute inset-0 object-cover object-top w-full h-full"
         />
-
-{/* TOP fade — starts black at 0%, fades to transparent by ~30% */}
+  {/* SINGLE seamless gradient — top to bottom */}
   <div
-    className="absolute inset-x-0 top-0 pointer-events-none"
+    className="absolute inset-0 pointer-events-none"
     style={{ 
-      height: "300px", 
-      background: "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)" 
+      background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, #000 100%)" 
     }}
     aria-hidden="true"
   />
-
-
-        
-        {/* Bottom-seam fade only — starts transparent at 50%, fades to black at 100% */}
-        <div
-          className="absolute inset-x-0 bottom-0 pointer-events-none"
-          style={{ height: "350px", background: "linear-gradient(180deg, transparent 0%, #000 100%)" }}
-          aria-hidden="true"
-        />
-      </div>
+</div>
 
       {/* Device + starfield — begins at y=634, overlapping the lifestyle fade by ~66px */}
       <div
