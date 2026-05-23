@@ -36,19 +36,7 @@ export default function LightMeetsVapor() {
         alt=""
       />
 
-      {/* Gradient overlay — full bleed dark on mobile, left-fade on desktop */}
-      <div
-        className="absolute inset-0 pointer-events-none lg:hidden"
-        style={{ background: "rgba(0,0,0,0.45)" }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 pointer-events-none hidden lg:block"
-        style={{
-          background: "linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 45%, transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
+     
 
       {/* Text block — top-aligned on mobile (content starts near top), centered on desktop */}
       <div
