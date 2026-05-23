@@ -142,11 +142,11 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         <div
           className="absolute pointer-events-none"
           style={{
-            width: "800px", height: "800px",
+            width: "auto", height: "800px",
             borderRadius: "800px",
             background: "rgba(30, 0, 77, 0.50)",
             filter: "blur(150px)",
-            top: "0px", left: "320px",
+            top: "0px", left: "0px",
             zIndex: 0,
           }}
           aria-hidden="true"
