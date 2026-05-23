@@ -61,12 +61,25 @@ export default function WhereItLives() {
       className="relative w-full overflow-hidden bg-background-primary py-section-y-mobile lg:py-section-y"
       aria-label="Where It Lives"
     >
-      {/* Background glow orb */}
+      {/* Background glow orb — mobile */}
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
         style={{
           width: "375px",
           height: "851px",
+          background: "rgba(0, 153, 170, 0.39)",
+          filter: "blur(150px)",
+          zIndex: 0,
+        }}
+        aria-hidden="true"
+      />
+      {/* Background glow orb — desktop */}
+      <div
+        className="hidden lg:block absolute left-1/2 -translate-x-1/2 pointer-events-none"
+        style={{
+          width: "1442px",
+          height: "402px",
+          top: "500px",
           background: "rgba(0, 153, 170, 0.39)",
           filter: "blur(150px)",
           zIndex: 0,
