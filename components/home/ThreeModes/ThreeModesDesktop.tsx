@@ -288,13 +288,15 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 role="button"
                 tabIndex={0}
                 onClick={() => setMode(1)}
+                 onMouseEnter={() => setHoveredCard(0)}
+                onMouseLeave={() => setHoveredCard(null)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
                 aria-label="Activate Glowstick Mode"
                 style={{
                   ...cardBorder(1),
                   display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
                   padding: "30px",
-                  background: "#100B25",
+                   background: hoveredCard === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",  // Cyan tint on hover
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                 }}
@@ -320,13 +322,15 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 role="button"
                 tabIndex={0}
                 onClick={() => setMode(2)}
+                 onMouseEnter={() => setHoveredCard(0)}
+                onMouseLeave={() => setHoveredCard(null)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
                 aria-label="Activate Stealth Mode"
                 style={{
                   ...cardBorder(2),
                   display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
                   padding: "30px",
-                  background: "#100B25",
+                  background: hoveredCard === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",  // Cyan tint on hover
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                 }}
