@@ -82,7 +82,7 @@ function FeatureCardItem({
       <h3
         className="font-label tracking-widest uppercase"
         style={{
-          fontSize: "30px",
+          fontSize: "25px",
           color: accentColor,
           letterSpacing: "0.12em",
         }}
