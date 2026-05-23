@@ -52,7 +52,7 @@ export default function LightMeetsVapor() {
               style={{
                 color: "#FFF",
                 fontFamily: "var(--font-monoton)",
-                fontSize: "clamp(36px, 6.5vw, 94px)",
+                fontSize: "clamp(45px, 6.5vw, 75px)",
                 fontWeight: 400,
                 lineHeight: "1.1",
                 textShadow: "0 0 40px rgba(255, 0, 229, 0.75)",
