@@ -66,7 +66,7 @@ export default function WhereItLives() {
         className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
         style={{
           width: "375px",
-          height: "851px",
+          height: "500px",
           background: "rgba(0, 153, 170, 0.39)",
           filter: "blur(150px)",
           zIndex: 0,
