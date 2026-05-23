@@ -409,34 +409,4 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   </div>
 </div>
 
-            {/* Right — mode image */}
-            <div
-              style={{
-                width: "576px", height: "auto",
-                flex: "1 0 0",
-                alignSelf: "stretch",
-                borderRadius: "10px",
-                border: "1px solid #4B2F81",
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={`mode-image-${activeMode}`}
-                  src={MODES[activeMode].image}
-                  alt={MODES[activeMode].title}
-                  variants={IMAGE_FADE}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+       
