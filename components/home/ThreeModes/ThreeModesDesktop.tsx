@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
@@ -9,18 +10,18 @@ interface ThreeModesDesktopProps {
   className?: string;
 }
 
-const SLIDE_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const CONTENT_FADE = {
   hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: SLIDE_EASE } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.2 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } },
+  exit:   { opacity: 0, y: -4, transition: { duration: 0.2 } },
 };
 
 const IMAGE_FADE = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.35, ease: SLIDE_EASE } },
-  exit: { opacity: 0, transition: { duration: 0.2 } },
+  visible: { opacity: 1, transition: { duration: 0.35, ease: EASE } },
+  exit:   { opacity: 0, transition: { duration: 0.2 } },
 };
 
 export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps) {
@@ -41,147 +42,216 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     const el = lightstreakRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setLightstreakVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
+      ([entry]) => { if (entry.isIntersecting) { setLightstreakVisible(true); observer.disconnect(); } },
+      { threshold: 0.3, rootMargin: "0px 0px -100px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  const cardBorderClass = (index: number) =>
-    activeMode === index
-      ? index === 0
-        ? "border-t border-r border-b border-accent-cyan border-l-[6px] border-l-accent-cyan shadow-glow-cyan"
-        : "border border-accent-cyan shadow-glow-cyan"
-      : "border border-border-default";
+  const cardBorder = (i: number): React.CSSProperties =>
+    activeMode === i
+      ? { borderTop: "1px solid #00E5FF", borderRight: "1px solid #00E5FF", borderBottom: "1px solid #00E5FF", borderLeft: "6px solid #00E5FF", borderRadius: "20px" }
+      : { border: "1px solid #303030", borderRadius: "20px" };
 
   return (
     <section
+      id="three-modes"
       className={`w-full bg-background-primary overflow-hidden${className ? ` ${className}` : ""}`}
       aria-label="Pick Your Energy — Three Modes"
     >
-      {/* TOP BAND: eyebrow + headline + lightstreak image */}
-      <div ref={lightstreakRef} className="relative w-full" style={{ minHeight: "500px" }}>
-        {/* Lightstreak image — full width, slides in from right */}
-        {reducedMotion ? (
-          <div className="absolute inset-0 z-0" style={{ top: "318px" }}>
-            <img
-              src="/images/home/litsaber-lightstreaks.jpg"
-              alt=""
-              aria-hidden="true"
-              className="w-full object-cover"
-              style={{ height: "725px" }}
-            />
-          </div>
-        ) : (
-          <motion.div
-            className="absolute z-0 w-full"
-            style={{ top: "318px" }}
-            initial={{ x: "100%" }}
-            animate={lightstreakVisible ? { x: 0 } : { x: "100%" }}
-            transition={{ duration: 0.8, ease: SLIDE_EASE }}
-          >
-            <img
-              src="/images/home/litsaber-lightstreaks.jpg"
-              alt=""
-              aria-hidden="true"
-              className="w-full object-cover"
-              style={{ height: "725px" }}
-            />
-          </motion.div>
-        )}
+      {/* ── TOP BAND ────────────────────────────────────────────────────── */}
+      <div className="relative w-full" style={{ paddingTop: "80px", paddingBottom: "0" }}>
 
-        {/* Left-to-right scrim so text stays readable */}
+        {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to right, #0A0518 0%, rgba(10,5,24,0.85) 40%, transparent 70%)" }}
+          ref={lightstreakRef}
+          style={{ width: "1440px", height: "725px", aspectRatio: "143 / 72", overflow: "hidden", position: "absolute", top: "318px", left: 0, zIndex: 0 }}
+        >
+          {reducedMotion ? (
+            <img
+              src="/images/home/litsaber-lightstreaks.jpg"
+              alt=""
+              aria-hidden="true"
+              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
+            />
+          ) : (
+            <motion.img
+              src="/images/home/litsaber-lightstreaks.jpg"
+              alt=""
+              aria-hidden="true"
+              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
+              initial={{ x: "-100%" }}
+              animate={lightstreakVisible ? { x: 0 } : { x: "-100%" }}
+              transition={{ duration: 0.8, ease: EASE }}
+            />
+          )}
+        </div>
+
+        {/* Scrim — left edge readable, fades toward center */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 1, background: "linear-gradient(to right, #0A0518 0%, rgba(10,5,24,0.9) 35%, rgba(10,5,24,0.4) 60%, transparent 80%)" }}
           aria-hidden="true"
         />
 
-        {/* Text group */}
-        <div className="relative z-20 flex flex-col gap-[20px] pt-[80px]" style={{ maxWidth: "650px", paddingLeft: "100px" }}>
-          <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
-            INTERACTIVE LIGHTS
-          </p>
-          <h2 className="font-display font-bold leading-none text-text-primary" style={{ fontSize: "80px" }}>
-            TEN WAYS TO{" "}
-            <span className="font-accent text-accent-cyan" style={{ fontSize: "80px" }}>
-              BE SEEN
-            </span>
-          </h2>
-          <p className="font-body text-text-secondary" style={{ fontSize: "25px" }}>
-            41 individually-addressable LEDs. Ten light patterns, three behaviors, zero restraint.
-          </p>
+        {/* Text row — headline block LEFT, body RIGHT, inline-flex gap-45 */}
+        <div
+          className="relative"
+          style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
+        >
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "45px" }}>
+            {/* Headline block — 450px */}
+            <div style={{ display: "flex", flexDirection: "column", width: "450px", height: "168px", justifyContent: "center", gap: 0 }}>
+              <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
+                INTERACTIVE LIGHTS
+              </p>
+              <div>
+                <span
+                  className="font-display font-bold text-text-primary block"
+                  style={{ fontSize: "80px", lineHeight: "100px" }}
+                >
+                  TEN WAYS TO
+                </span>
+                <span
+                  className="font-accent text-accent-cyan block"
+                  style={{ fontSize: "80px", lineHeight: "100px", fontWeight: 400 }}
+                >
+                  BE SEEN
+                </span>
+              </div>
+            </div>
+
+            {/* Body text — 554px */}
+            <p
+              className="font-body text-text-secondary"
+              style={{ width: "554px", height: "143px", fontSize: "25px", lineHeight: "normal" }}
+            >
+              41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* BOTTOM CONTENT: three modes cards + image */}
-      <div className="relative" style={{ paddingLeft: "100px", paddingBottom: "120px", paddingTop: "60px" }}>
-        <div className="flex gap-[65px]" style={{ maxWidth: "1240px" }}>
+      {/* ── BOTTOM SECTION ──────────────────────────────────────────────── */}
+      <div
+        className="relative overflow-hidden"
+        style={{ width: "1440px", minHeight: "1550px", background: "#0A0518" }}
+      >
+        {/* Ellipse glow */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: "800px", height: "800px",
+            borderRadius: "800px",
+            background: "rgba(30, 0, 77, 0.50)",
+            filter: "blur(150px)",
+            top: "240px", left: "320px",
+            zIndex: 0,
+          }}
+          aria-hidden="true"
+        />
 
-          {/* LEFT: text group + mode cards */}
-          <div className="flex flex-col" style={{ width: "614px" }}>
-            {/* Sub-section heading group */}
-            <div className="flex flex-col gap-[16px] mb-[50px]">
-              <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
-                THREE MODES
-              </p>
-              <h3 className="font-display font-bold leading-none text-text-primary" style={{ fontSize: "75px" }}>
-                PICK YOUR ENERGY
-              </h3>
-              <p className="font-body text-text-secondary" style={{ fontSize: "22px" }}>
-                Three lighting behaviors built into every device. Switch between them with a five-click sequence. No app required.
-              </p>
-            </div>
+        {/* Geometric shape #1 — top-right */}
+        <div
+          className="absolute pointer-events-none"
+          style={{ width: "540px", height: "451px", top: 0, left: "900px", opacity: 0.4, zIndex: 1 }}
+          aria-hidden="true"
+        >
+          <Image src="/images/home/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+        </div>
 
-            {/* Mode cards stacked */}
-            <div className="flex flex-col" style={{ gap: "35px" }}>
+        {/* Geometric shape #2 — bottom-left */}
+        <div
+          className="absolute pointer-events-none"
+          style={{ width: "378px", height: "481px", top: "1072px", left: 0, opacity: 0.4, zIndex: 1 }}
+          aria-hidden="true"
+        >
+          <Image src="/images/home/geometric-shape.png" alt="" fill sizes="378px" style={{ objectFit: "contain" }} />
+        </div>
+
+        {/* Inner content — centered column, 280px from top */}
+        <div
+          className="absolute"
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "1240px", top: "280px", left: "100px", gap: "100px", zIndex: 10 }}
+        >
+          {/* "Pick Your Energy" heading group */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center" }}>
+            <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
+              THREE MODES
+            </p>
+            <h2
+              className="font-display font-bold text-text-primary"
+              style={{ fontSize: "75px", lineHeight: "100px", textShadow: "0px 0px 50px rgba(255,255,255,0.75)" }}
+            >
+              PICK YOUR ENERGY
+            </h2>
+            <p
+              className="font-body"
+              style={{ fontSize: "22px", lineHeight: "normal", color: "#CCCCCC", width: "751px", textAlign: "center" }}
+            >
+              Three lighting behaviors built into the device designed to be as dynamic as your social life. Whether you&apos;re at a festival, a party, or just chilling with friends, adapts to every vibe you bring.
+            </p>
+          </div>
+
+          {/* Modes row: cards LEFT, image RIGHT */}
+          <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "flex-start", justifyContent: "space-between" }}>
+
+            {/* Left — mode cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "35px", width: "614px" }}>
 
               {/* Litsaber Mode card */}
               <div
                 role="button"
                 tabIndex={0}
-                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated cursor-pointer ${cardBorderClass(0)}`}
                 onClick={() => setMode(0)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
                 aria-label="Activate Litsaber Mode"
+                style={{
+                  ...cardBorder(0),
+                  display: "flex", flexDirection: "column", gap: "20px",
+                  padding: "30px",
+                  background: "#100B25",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
               >
-                <h4
-                  className="font-subhead font-bold text-text-primary mb-[20px]"
+                <h3
+                  className="font-subhead font-bold"
                   style={{
                     fontSize: "35px",
-                    textShadow: activeMode === 0 ? "0 0 20px rgba(0,229,255,0.6)" : "none",
+                    color: activeMode === 0 ? "#F0F0F5" : "#BABABA",
+                    textShadow: activeMode === 0 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
+                    transition: "color 0.3s, text-shadow 0.3s",
                   }}
                 >
                   LITSABER MODE
-                </h4>
+                </h3>
 
-                {/* Toggle buttons — only interactive when this mode is active */}
-                <div className="flex gap-[12px] mb-[20px]">
+                {/* Toggles — THE PULL / THE BUILD */}
+                <div style={{ display: "flex", gap: "30px", width: "100%" }}>
                   {PULL_BUILD.map((pb, i) => {
                     const isActive = activePullBuild === i;
                     return (
                       <button
                         key={pb.label}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (activeMode !== 0) return;
-                          if (!isActive) togglePullBuild();
-                        }}
-                        disabled={activeMode !== 0}
+                        onClick={(e) => { e.stopPropagation(); if (!isActive) togglePullBuild(); }}
                         aria-pressed={isActive}
-                        className={`font-label text-eyebrow tracking-widest uppercase px-[16px] py-[8px] rounded-sm border transition-all duration-200 ${
-                          activeMode === 0 && isActive
-                            ? "bg-accent-cyan text-background-primary border-accent-cyan shadow-glow-cyan"
-                            : activeMode === 0
-                            ? "bg-transparent text-text-muted border-border-default hover:border-accent-cyan hover:text-text-primary"
-                            : "bg-transparent text-text-muted border-border-default opacity-50 cursor-default"
-                        }`}
+                        style={{
+                          flex: 1,
+                          padding: "10px",
+                          height: "38px",
+                          background: isActive ? "rgba(0,229,255,0.20)" : "transparent",
+                          border: isActive ? "1px solid #00E5FF" : "1px solid #CCCCCC",
+                          borderRadius: "2px",
+                          color: isActive ? "#00E5FF" : "#CCCCCC",
+                          fontFamily: "var(--font-space-mono), monospace",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                          letterSpacing: "0.1em",
+                        }}
                       >
                         {pb.label}
                       </button>
@@ -189,7 +259,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                   })}
                 </div>
 
-                {/* Description — swaps with AnimatePresence */}
+                {/* Description — fades per toggle */}
                 <div style={{ minHeight: "80px" }}>
                   <AnimatePresence mode="wait">
                     <motion.p
@@ -198,8 +268,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="font-body text-text-secondary"
-                      style={{ fontSize: "20px" }}
+                      className="font-body"
+                      style={{ fontSize: "20px", color: "#F0F0F5" }}
                     >
                       {PULL_BUILD[activePullBuild].description}
                     </motion.p>
@@ -211,23 +281,30 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
               <div
                 role="button"
                 tabIndex={0}
-                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated cursor-pointer ${cardBorderClass(1)}`}
                 onClick={() => setMode(1)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
                 aria-label="Activate Glowstick Mode"
+                style={{
+                  ...cardBorder(1),
+                  display: "flex", flexDirection: "column", gap: "20px",
+                  padding: "30px",
+                  background: "#100B25",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
               >
-                <h4
-                  className="font-subhead font-bold mb-[16px]"
+                <h3
+                  className="font-subhead font-bold"
                   style={{
                     fontSize: "35px",
-                    color: activeMode === 1 ? "var(--tw-text-text-primary, #F0F0F5)" : "#888888",
-                    textShadow: activeMode === 1 ? "0 0 20px rgba(0,229,255,0.6)" : "none",
+                    color: activeMode === 1 ? "#F0F0F5" : "#BABABA",
+                    textShadow: activeMode === 1 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
                   }}
                 >
                   GLOWSTICK MODE
-                </h4>
-                <p className="font-body text-text-secondary" style={{ fontSize: "20px" }}>
+                </h3>
+                <p className="font-body" style={{ fontSize: "20px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
                   {MODES[1].body}
                 </p>
               </div>
@@ -236,35 +313,47 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
               <div
                 role="button"
                 tabIndex={0}
-                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated cursor-pointer ${cardBorderClass(2)}`}
                 onClick={() => setMode(2)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
                 aria-label="Activate Stealth Mode"
+                style={{
+                  ...cardBorder(2),
+                  display: "flex", flexDirection: "column", gap: "20px",
+                  padding: "30px",
+                  background: "#100B25",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
               >
-                <h4
-                  className="font-subhead font-bold mb-[16px]"
+                <h3
+                  className="font-subhead font-bold"
                   style={{
                     fontSize: "35px",
-                    color: activeMode === 2 ? "var(--tw-text-text-primary, #F0F0F5)" : "#888888",
-                    textShadow: activeMode === 2 ? "0 0 20px rgba(0,229,255,0.6)" : "none",
+                    color: activeMode === 2 ? "#F0F0F5" : "#BABABA",
+                    textShadow: activeMode === 2 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
                   }}
                 >
                   STEALTH MODE
-                </h4>
-                <p className="font-body text-text-secondary" style={{ fontSize: "20px" }}>
+                </h3>
+                <p className="font-body" style={{ fontSize: "20px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
                   {MODES[2].body}
                 </p>
               </div>
             </div>
-          </div>
 
-          {/* RIGHT: mode image */}
-          <div
-            className="flex-shrink-0 rounded-md overflow-hidden border border-background-raised"
-            style={{ width: "576px", height: "688px", alignSelf: "flex-end" }}
-          >
-            <div className="relative w-full h-full">
+            {/* Right — mode image */}
+            <div
+              style={{
+                width: "576px", height: "688px",
+                flex: "1 0 0",
+                alignSelf: "stretch",
+                borderRadius: "10px",
+                border: "1px solid #4B2F81",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
               <AnimatePresence mode="wait">
                 <motion.img
                   key={`mode-image-${activeMode}`}
@@ -274,7 +363,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </AnimatePresence>
             </div>

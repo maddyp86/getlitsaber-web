@@ -9,18 +9,18 @@ interface ThreeModesMobileProps {
   className?: string;
 }
 
-const SLIDE_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const CONTENT_FADE = {
   hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: SLIDE_EASE } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.2 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } },
+  exit:   { opacity: 0, y: -4, transition: { duration: 0.2 } },
 };
 
 const IMAGE_FADE = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.35, ease: SLIDE_EASE } },
-  exit: { opacity: 0, transition: { duration: 0.2 } },
+  visible: { opacity: 1, transition: { duration: 0.35, ease: EASE } },
+  exit:   { opacity: 0, transition: { duration: 0.2 } },
 };
 
 export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
@@ -41,47 +41,42 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
     const el = lightstreakRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setLightstreakVisible(true);
-          observer.disconnect();
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) { setLightstreakVisible(true); observer.disconnect(); } },
       { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  const activeCardBorder = (index: number) =>
-    activeMode === index
-      ? index === 0
-        ? "border-t-[6px] border-t-accent-cyan border-x border-b border-accent-cyan shadow-glow-cyan"
-        : "border border-accent-cyan shadow-glow-cyan"
-      : "border border-border-default";
+  const cardBorder = (i: number): React.CSSProperties =>
+    activeMode === i
+      ? { borderTop: "6px solid #00E5FF", borderRight: "1px solid #00E5FF", borderBottom: "1px solid #00E5FF", borderLeft: "1px solid #00E5FF", borderRadius: "20px" }
+      : { border: "1px solid #303030", borderRadius: "20px" };
 
   return (
     <section
+      id="three-modes"
       className={`w-full bg-background-primary overflow-hidden${className ? ` ${className}` : ""}`}
       aria-label="Pick Your Energy — Three Modes"
     >
-      {/* TOP: eyebrow + headline + body + lightstreak image */}
+      {/* TOP: eyebrow + headline (row) + body */}
       <div className="px-container-mobile pt-[60px]">
         <p className="font-label text-eyebrow text-accent-cyan tracking-widest uppercase mb-[12px]">
           INTERACTIVE LIGHTS
         </p>
         <h2 className="font-display font-bold leading-none text-text-primary mb-[16px]" style={{ fontSize: "45px" }}>
-          TEN WAYS TO{" "}
-          <span className="font-accent text-accent-cyan" style={{ fontSize: "45px" }}>
+          TEN WAYS TO
+          <br />
+          <span className="font-accent text-accent-cyan" style={{ fontSize: "45px", fontWeight: 400 }}>
             BE SEEN
           </span>
         </h2>
         <p className="font-body text-text-secondary mb-[32px]" style={{ fontSize: "16px" }}>
-          41 individually-addressable LEDs. Ten light patterns, three behaviors, zero restraint.
+          41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
         </p>
       </div>
 
-      {/* Lightstreak image — full width, slides in from right */}
+      {/* Lightstreak image — slides LEFT to RIGHT on scroll */}
       <div ref={lightstreakRef} className="relative w-full overflow-hidden mb-[50px]" style={{ height: "258px" }}>
         {reducedMotion ? (
           <img
@@ -96,17 +91,17 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover"
-            initial={{ x: "100%" }}
-            animate={lightstreakVisible ? { x: 0 } : { x: "100%" }}
-            transition={{ duration: 0.8, ease: SLIDE_EASE }}
+            initial={{ x: "-100%" }}
+            animate={lightstreakVisible ? { x: 0 } : { x: "-100%" }}
+            transition={{ duration: 0.8, ease: EASE }}
           />
         )}
       </div>
 
-      {/* BOTTOM: three modes stacked */}
+      {/* BOTTOM: Pick Your Energy + mode cards */}
       <div className="px-container-mobile pb-[80px]">
-        {/* Sub-section heading group */}
-        <div className="flex flex-col gap-[12px] mb-[32px]">
+        {/* Sub-section heading */}
+        <div className="flex flex-col gap-[12px] mb-[40px] text-center items-center">
           <p className="font-label text-eyebrow text-accent-cyan tracking-widest uppercase">
             THREE MODES
           </p>
@@ -114,7 +109,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             PICK YOUR ENERGY
           </h3>
           <p className="font-body text-text-secondary" style={{ fontSize: "18px" }}>
-            Three lighting behaviors built into every device. Switch between them with a five-click sequence.
+            Three lighting behaviors built into the device designed to be as dynamic as your social life. Whether you&apos;re at a festival, a party, or just chilling with friends, adapts to every vibe you bring.
           </p>
         </div>
 
@@ -125,43 +120,48 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
           <div
             role="button"
             tabIndex={0}
-            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated cursor-pointer ${activeCardBorder(0)}`}
             onClick={() => setMode(0)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
             aria-label="Activate Litsaber Mode"
+            style={{ ...cardBorder(0), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
           >
-            <div className="p-[20px]">
+            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
               <h4
-                className="font-subhead font-bold text-text-primary mb-[16px]"
+                className="font-subhead font-bold"
                 style={{
                   fontSize: "24px",
-                  textShadow: activeMode === 0 ? "0 0 20px rgba(0,229,255,0.6)" : "none",
+                  color: activeMode === 0 ? "#F0F0F5" : "#BABABA",
+                  textShadow: activeMode === 0 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
+                  transition: "color 0.3s, text-shadow 0.3s",
                 }}
               >
                 LITSABER MODE
               </h4>
 
               {/* Toggle buttons */}
-              <div className="flex gap-[10px] mb-[16px]">
+              <div style={{ display: "flex", gap: "20px", width: "100%" }}>
                 {PULL_BUILD.map((pb, i) => {
                   const isActive = activePullBuild === i;
                   return (
                     <button
                       key={pb.label}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (activeMode !== 0) return;
-                        if (!isActive) togglePullBuild();
-                      }}
-                      disabled={activeMode !== 0}
+                      onClick={(e) => { e.stopPropagation(); if (!isActive) togglePullBuild(); }}
                       aria-pressed={isActive}
-                      className={`font-label text-eyebrow tracking-widest uppercase px-[12px] py-[6px] rounded-sm border transition-all duration-200 ${
-                        activeMode === 0 && isActive
-                          ? "bg-accent-cyan text-background-primary border-accent-cyan shadow-glow-cyan"
-                          : activeMode === 0
-                          ? "bg-transparent text-text-muted border-border-default hover:border-accent-cyan hover:text-text-primary"
-                          : "bg-transparent text-text-muted border-border-default opacity-50 cursor-default"
-                      }`}
+                      style={{
+                        flex: 1,
+                        padding: "8px 12px",
+                        height: "36px",
+                        background: isActive ? "rgba(0,229,255,0.20)" : "transparent",
+                        border: isActive ? "1px solid #00E5FF" : "1px solid #CCCCCC",
+                        borderRadius: "2px",
+                        color: isActive ? "#00E5FF" : "#CCCCCC",
+                        fontFamily: "var(--font-space-mono), monospace",
+                        fontSize: "13px",
+                        fontWeight: 400,
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        letterSpacing: "0.08em",
+                      }}
                     >
                       {pb.label}
                     </button>
@@ -178,8 +178,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    className="font-body text-text-secondary"
-                    style={{ fontSize: "16px" }}
+                    className="font-body"
+                    style={{ fontSize: "16px", color: "#F0F0F5" }}
                   >
                     {PULL_BUILD[activePullBuild].description}
                   </motion.p>
@@ -187,8 +187,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
               </div>
             </div>
 
-            {/* Mode image inside card */}
-            <div className="relative w-full" style={{ aspectRatio: "574 / 670" }}>
+            {/* Mode image inside card — always shown, swaps on mode change */}
+            <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670" }}>
               <AnimatePresence mode="wait">
                 <motion.img
                   key={`mode-img-mobile-${activeMode}`}
@@ -198,7 +198,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </AnimatePresence>
             </div>
@@ -208,34 +208,34 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
           <div
             role="button"
             tabIndex={0}
-            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated cursor-pointer ${activeCardBorder(1)}`}
             onClick={() => setMode(1)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
             aria-label="Activate Glowstick Mode"
+            style={{ ...cardBorder(1), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
           >
-            <div className="p-[20px]">
+            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
               <h4
-                className="font-subhead font-bold mb-[12px]"
+                className="font-subhead font-bold"
                 style={{
                   fontSize: "24px",
-                  color: activeMode === 1 ? "#F0F0F5" : "#888888",
-                  textShadow: activeMode === 1 ? "0 0 20px rgba(0,229,255,0.6)" : "none",
+                  color: activeMode === 1 ? "#F0F0F5" : "#BABABA",
+                  textShadow: activeMode === 1 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                   transition: "color 0.3s, text-shadow 0.3s",
                 }}
               >
                 GLOWSTICK MODE
               </h4>
-              <p className="font-body text-text-secondary" style={{ fontSize: "16px" }}>
+              <p className="font-body" style={{ fontSize: "16px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
                 {MODES[1].body}
               </p>
             </div>
 
             {activeMode === 1 && (
-              <div className="relative w-full" style={{ aspectRatio: "574 / 670" }}>
+              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670" }}>
                 <img
                   src={MODES[1].image}
                   alt={MODES[1].title}
-                  className="w-full h-full object-cover"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />
               </div>
             )}
@@ -245,34 +245,34 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
           <div
             role="button"
             tabIndex={0}
-            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated cursor-pointer ${activeCardBorder(2)}`}
             onClick={() => setMode(2)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
             aria-label="Activate Stealth Mode"
+            style={{ ...cardBorder(2), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
           >
-            <div className="p-[20px]">
+            <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "12px" }}>
               <h4
-                className="font-subhead font-bold mb-[12px]"
+                className="font-subhead font-bold"
                 style={{
                   fontSize: "24px",
-                  color: activeMode === 2 ? "#F0F0F5" : "#888888",
-                  textShadow: activeMode === 2 ? "0 0 20px rgba(0,229,255,0.6)" : "none",
+                  color: activeMode === 2 ? "#F0F0F5" : "#BABABA",
+                  textShadow: activeMode === 2 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                   transition: "color 0.3s, text-shadow 0.3s",
                 }}
               >
                 STEALTH MODE
               </h4>
-              <p className="font-body text-text-secondary" style={{ fontSize: "16px" }}>
+              <p className="font-body" style={{ fontSize: "16px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
                 {MODES[2].body}
               </p>
             </div>
 
             {activeMode === 2 && (
-              <div className="relative w-full" style={{ aspectRatio: "574 / 670" }}>
+              <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670" }}>
                 <img
                   src={MODES[2].image}
                   alt={MODES[2].title}
-                  className="w-full h-full object-cover"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />
               </div>
             )}
