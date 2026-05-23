@@ -206,6 +206,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     maxWidth: "100%",
     left: "50%",                    // ← ADD THIS
     transform: "translateX(-50%)",  // ← ADD THIS
+             paddingLeft: "50px",    // ← ADD THIS
+  paddingRight: "50px",   // ← ADD THIS
     top: "150px",
     gap: "100px",
     zIndex: 10,
