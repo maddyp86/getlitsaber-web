@@ -203,7 +203,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     flexDirection: "column",
     alignItems: "center",
     width: "auto",
-    maxWidth: "1250px",
+    maxWidth: "100%",
     left: "50%",                    // ← ADD THIS
     transform: "translateX(-50%)",  // ← ADD THIS
     top: "150px",
