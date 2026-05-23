@@ -409,4 +409,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   </div>
 </div>
 
-       
+ </div>
+      </div>
+    </section>
+  );
+}       
