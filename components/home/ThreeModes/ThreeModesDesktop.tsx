@@ -164,7 +164,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Geometric shape #2 — bottom-left */}
         <div
           className="absolute pointer-events-none"
-          style={{ width: "378px", height: "481px", top: "1200px", left: -50, opacity: 0.4, zIndex: 1 }}
+          style={{ width: "400px", height: "509px", top: "1200px", left: -50, opacity: 0.4, zIndex: 1 }}
           aria-hidden="true"
         >
           <Image src="/images/home/geometric-shape.png" alt="" fill sizes="378px" style={{ objectFit: "contain" }} />
