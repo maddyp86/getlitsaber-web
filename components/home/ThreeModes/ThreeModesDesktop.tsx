@@ -66,7 +66,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
           ref={lightstreakRef}
-          style={{ width: "1440px", height: "671px", overflow: "hidden", position: "absolute", top: "462px", left: 0, zIndex: 0 }}
+          style={{ width: "auto", height: "671px", overflow: "hidden", position: "absolute", top: "462px", left: 0, zIndex: 0 }}
         >
           {reducedMotion ? (
             <img
