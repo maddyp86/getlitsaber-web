@@ -98,7 +98,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Text row — headline block LEFT, body RIGHT, inline-flex gap-45 */}
         <div
   className="relative"
-  style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
+  style={{ zIndex: 2, paddingLeft: "100px", paddingRight: "100px", paddingBottom: "440px" }}
 >
   <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "45px", justifyContent: "space-between" }}>
     {/* Headline block */}
