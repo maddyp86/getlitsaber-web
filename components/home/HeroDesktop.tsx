@@ -38,6 +38,19 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           priority
           className="absolute inset-0 object-cover object-top w-full h-full"
         />
+
+{/* TOP fade — starts black at 0%, fades to transparent by ~30% */}
+  <div
+    className="absolute inset-x-0 top-0 pointer-events-none"
+    style={{ 
+      height: "300px", 
+      background: "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)" 
+    }}
+    aria-hidden="true"
+  />
+
+
+        
         {/* Bottom-seam fade only — starts transparent at 50%, fades to black at 100% */}
         <div
           className="absolute inset-x-0 bottom-0 pointer-events-none"
