@@ -100,7 +100,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           className="relative"
           style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
         >
-         <div style={{ display: "flex", width: "100%", maxWidth: "1240px", alignItems: "center", gap: "45px", justifyContent: "flex-start" }}>
+         <div style={{ display: "flex", width: "100%", maxWidth: "auto", alignItems: "center", gap: "45px", justifyContent: "flex-start" }}>
             {/* Headline block — 450px */}
             <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: 0 }}>
               <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
