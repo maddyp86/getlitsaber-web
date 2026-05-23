@@ -348,7 +348,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             {/* Right — mode image */}
             <div
               style={{
-                width: "576px", height: "auto,
+                width: "576px", height: "auto",
                 flex: "1 0 0",
                 alignSelf: "stretch",
                 borderRadius: "10px",
