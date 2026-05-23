@@ -49,14 +49,10 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     return () => observer.disconnect();
   }, []);
 
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
   const cardBorder = (i: number): React.CSSProperties =>
     activeMode === i
       ? { borderTop: "1px solid #00E5FF", borderRight: "1px solid #00E5FF", borderBottom: "1px solid #00E5FF", borderLeft: "6px solid #00E5FF", borderRadius: "20px" }
-      : hoveredCard === i
-        ? { border: "1px solid #00E5FF", borderRadius: "20px" }
-        : { border: "1px solid #303030", borderRadius: "20px" };
+      : { border: "1px solid #303030", borderRadius: "20px" };
 
   return (
     <section
@@ -65,26 +61,26 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       aria-label="Pick Your Energy — Three Modes"
     >
       {/* ── TOP BAND ────────────────────────────────────────────────────── */}
-     <div className="relative w-full overflow-hidden" style={{ minHeight: "1000px", paddingTop: "80px", paddingBottom: "50px",maxWidth: "100vw" }}>
+      <div className="relative w-full" style={{ paddingTop: "80px", paddingBottom: "0" }}>
 
         {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
           ref={lightstreakRef}
-          style={{ width: "100%", aspectRatio: "143 / 72", overflow: "hidden", position: "absolute", top: "318px", left: 0, zIndex: 0 }}
+          style={{ width: "1440px", height: "725px", aspectRatio: "143 / 72", overflow: "hidden", position: "absolute", top: "318px", left: 0, zIndex: 0 }}
         >
           {reducedMotion ? (
             <img
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
             />
           ) : (
             <motion.img
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
               initial={{ x: "-100%" }}
               animate={lightstreakVisible ? { x: 0 } : { x: "-100%" }}
               transition={{ duration: 0.8, ease: EASE }}
@@ -101,25 +97,25 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
 
         {/* Text row — headline block LEFT, body RIGHT, inline-flex gap-45 */}
         <div
-  className="relative"
-  style={{ zIndex: 2, paddingLeft: "100px", paddingRight: "100px", paddingBottom: "440px" }}
->
-  <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "45px", justifyContent: "space-between" }}>
-    {/* Headline block */}
-    <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: "19px" }}>
-      <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
-        INTERACTIVE LIGHTS
-      </p>
+          className="relative"
+          style={{ zIndex: 2, paddingLeft: "100px", paddingBottom: "440px" }}
+        >
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "45px" }}>
+            {/* Headline block — 450px */}
+            <div style={{ display: "flex", flexDirection: "column", width: "450px", height: "168px", justifyContent: "center", gap: 0 }}>
+              <p className="font-label text-label text-accent-cyan tracking-widest uppercase mb-[8px]">
+                INTERACTIVE LIGHTS
+              </p>
               <div>
                 <span
                   className="font-display font-bold text-text-primary block"
-                  style={{ fontSize: "80px", lineHeight: "80px" }}
+                  style={{ fontSize: "80px", lineHeight: "100px" }}
                 >
                   TEN WAYS TO
                 </span>
                 <span
                   className="font-accent text-accent-cyan block"
-                  style={{ fontSize: "80px", lineHeight: "80px", fontWeight: 400 }}
+                  style={{ fontSize: "80px", lineHeight: "100px", fontWeight: 400 }}
                 >
                   BE SEEN
                 </span>
@@ -127,12 +123,12 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             </div>
 
             {/* Body text — 554px */}
-<p
-      className="font-body"
-      style={{ flex: "1 0 0", fontSize: "25px", lineHeight: "normal", color: "#D3D3D3" }}
-    >
-      41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
-    </p>
+            <p
+              className="font-body text-text-secondary"
+              style={{ width: "554px", height: "143px", fontSize: "25px", lineHeight: "normal" }}
+            >
+              41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
+            </p>
           </div>
         </div>
       </div>
@@ -140,22 +136,19 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       {/* ── BOTTOM SECTION ──────────────────────────────────────────────── */}
       <div
         className="relative overflow-hidden"
-        style={{ width: "100%", minHeight: "1350px", background: "#000000" }}
+        style={{ width: "1440px", minHeight: "1550px", background: "#0A0518" }}
       >
         {/* Ellipse glow */}
         <div
           className="absolute pointer-events-none"
-         style={{
-  width: "800px",
-  height: "800px",
-  borderRadius: "800px",
-  background: "rgba(30, 0, 77, 0.50)",
-  filter: "blur(150px)",
-  top: "240px",      // Changed from 0px
-  left: "320px",     // Changed from 0px
-  zIndex: 0,
-  position: "absolute"
-}}
+          style={{
+            width: "800px", height: "800px",
+            borderRadius: "800px",
+            background: "rgba(30, 0, 77, 0.50)",
+            filter: "blur(150px)",
+            top: "240px", left: "320px",
+            zIndex: 0,
+          }}
           aria-hidden="true"
         />
 
@@ -171,7 +164,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Geometric shape #2 — bottom-left */}
         <div
           className="absolute pointer-events-none"
-          style={{ width: "378px", height: "481px", top: "500px", left: "300px", opacity: 0.4, zIndex: 1 }}
+          style={{ width: "378px", height: "481px", top: "1072px", left: 0, opacity: 0.4, zIndex: 1 }}
           aria-hidden="true"
         >
           <Image src="/images/home/geometric-shape.png" alt="" fill sizes="378px" style={{ objectFit: "contain" }} />
@@ -180,7 +173,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Inner content — centered column, 280px from top */}
         <div
           className="absolute"
-          style={{ display: "flex", flexDirection: "column",  alignItems: "center", width: "auto", maxWidth:"1250px", top: "150px", gap: "100px", zIndex: 10 }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "1240px", top: "280px", left: "100px", gap: "100px", zIndex: 10 }}
         >
           {/* "Pick Your Energy" heading group */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center" }}>
@@ -202,23 +195,21 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           </div>
 
           {/* Modes row: cards LEFT, image RIGHT */}
-          <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "flex-start", justifyContent: "space-between" }}>
 
             {/* Left — mode cards */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "20px", flex: "1 0 0", alignSelf: "stretch" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "35px", width: "614px" }}>
 
               {/* Litsaber Mode card */}
               <div
                 role="button"
                 tabIndex={0}
                 onClick={() => setMode(0)}
-                onMouseEnter={() => setHoveredCard(0)}
-                onMouseLeave={() => setHoveredCard(null)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
                 aria-label="Activate Litsaber Mode"
                 style={{
                   ...cardBorder(0),
-                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
+                  display: "flex", flexDirection: "column", gap: "20px",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
@@ -228,7 +219,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <h3
                   className="font-subhead font-bold"
                   style={{
-                    fontSize: "25px",
+                    fontSize: "35px",
                     color: activeMode === 0 ? "#F0F0F5" : "#BABABA",
                     textShadow: activeMode === 0 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
@@ -238,7 +229,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 </h3>
 
                 {/* Toggles — THE PULL / THE BUILD */}
-                <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+                <div style={{ display: "flex", gap: "30px", width: "100%" }}>
                   {PULL_BUILD.map((pb, i) => {
                     const isActive = activePullBuild === i;
                     return (
@@ -249,6 +240,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                         style={{
                           flex: 1,
                           padding: "10px",
+                          height: "38px",
                           background: isActive ? "rgba(0,229,255,0.20)" : "transparent",
                           border: isActive ? "1px solid #00E5FF" : "1px solid #CCCCCC",
                           borderRadius: "2px",
@@ -277,7 +269,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                       animate="visible"
                       exit="exit"
                       className="font-body"
-                      style={{ fontSize: "16px", color: "#F0F0F5" }}
+                      style={{ fontSize: "20px", color: "#F0F0F5" }}
                     >
                       {PULL_BUILD[activePullBuild].description}
                     </motion.p>
@@ -290,13 +282,11 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 role="button"
                 tabIndex={0}
                 onClick={() => setMode(1)}
-                onMouseEnter={() => setHoveredCard(1)}
-                onMouseLeave={() => setHoveredCard(null)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
                 aria-label="Activate Glowstick Mode"
                 style={{
                   ...cardBorder(1),
-                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
+                  display: "flex", flexDirection: "column", gap: "20px",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
@@ -306,7 +296,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <h3
                   className="font-subhead font-bold"
                   style={{
-                    fontSize: "25px",
+                    fontSize: "35px",
                     color: activeMode === 1 ? "#F0F0F5" : "#BABABA",
                     textShadow: activeMode === 1 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
@@ -314,7 +304,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 >
                   GLOWSTICK MODE
                 </h3>
-                <p className="font-body" style={{ fontSize: "16px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
+                <p className="font-body" style={{ fontSize: "20px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
                   {MODES[1].body}
                 </p>
               </div>
@@ -324,13 +314,11 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 role="button"
                 tabIndex={0}
                 onClick={() => setMode(2)}
-                onMouseEnter={() => setHoveredCard(2)}
-                onMouseLeave={() => setHoveredCard(null)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
                 aria-label="Activate Stealth Mode"
                 style={{
                   ...cardBorder(2),
-                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
+                  display: "flex", flexDirection: "column", gap: "20px",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
@@ -340,7 +328,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <h3
                   className="font-subhead font-bold"
                   style={{
-                    fontSize: "25px",
+                    fontSize: "35px",
                     color: activeMode === 2 ? "#F0F0F5" : "#BABABA",
                     textShadow: activeMode === 2 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
                     transition: "color 0.3s, text-shadow 0.3s",
@@ -348,7 +336,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 >
                   STEALTH MODE
                 </h3>
-                <p className="font-body" style={{ fontSize: "16px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
+                <p className="font-body" style={{ fontSize: "20px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
                   {MODES[2].body}
                 </p>
               </div>
@@ -357,7 +345,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             {/* Right — mode image */}
             <div
               style={{
-                width: "576px", height: "auto",
+                width: "576px", height: "688px",
                 flex: "1 0 0",
                 alignSelf: "stretch",
                 borderRadius: "10px",
