@@ -18,7 +18,7 @@ export const CTA_PRIMARY = {
 
 export const CTA_SECONDARY = {
   label: "SEE IT IN MOTION",
-  href: "#three-modes",
+  href: "#be-seen",
 };
 
 export const TAGLINE = "Glowstick meets 510 battery. This is Litsaber.";

@@ -23,6 +23,7 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
   if (reducedMotion) {
     return (
       <section
+        id="be-seen"
         className={`w-full bg-background-primary${className ? ` ${className}` : ""}`}
         aria-label="Be Seen Across The Crowd"
       >
@@ -73,6 +74,7 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
   return (
     <section
       ref={outerRef}
+      id="be-seen"
       className={`w-full bg-background-primary${className ? ` ${className}` : ""}`}
       style={{ height: "300vh" }}
       aria-label="Be Seen Across The Crowd"
