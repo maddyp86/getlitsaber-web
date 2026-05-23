@@ -217,7 +217,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     top: "150px",
     gap: "100px",
     zIndex: 10,
-  }}
+  }}>
             <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
               THREE MODES
             </p>
