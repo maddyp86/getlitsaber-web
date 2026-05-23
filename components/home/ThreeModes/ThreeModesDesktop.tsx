@@ -115,12 +115,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           )}
         </div>
 
-        {/* Scrim — left edge readable, fades toward center */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 1, background: "linear-gradient(to right, #0A0518 0%, rgba(10,5,24,0.9) 35%, rgba(10,5,24,0.4) 60%, transparent 80%)" }}
-          aria-hidden="true"
-        />
+     
 
         {/* Text row — headline block LEFT, body RIGHT, inline-flex gap-45 */}
         <div
