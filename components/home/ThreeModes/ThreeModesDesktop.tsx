@@ -136,7 +136,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       {/* ── BOTTOM SECTION ──────────────────────────────────────────────── */}
       <div
         className="relative overflow-hidden"
-        style={{ width: "1440px", minHeight: "1550px", background: "#0A0518" }}
+        style={{ width: "1440px", minHeight: "1550px", background: "#000000" }}
       >
         {/* Ellipse glow */}
         <div
