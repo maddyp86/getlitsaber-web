@@ -288,7 +288,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 aria-label="Activate Glowstick Mode"
                 style={{
                   ...cardBorder(1),
-                  display: "flex", flexDirection: "column", gap: "20px",
+                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
@@ -320,7 +320,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 aria-label="Activate Stealth Mode"
                 style={{
                   ...cardBorder(2),
-                  display: "flex", flexDirection: "column", gap: "20px",
+                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
