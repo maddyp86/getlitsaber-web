@@ -50,7 +50,7 @@ function FeatureCardItem({
 }) {
   const [hovered, setHovered] = useState(false);
   const isCyan = card.accent === "cyan";
-  const accentColor = isCyan ? "#00E5FF" : "#FF00E5";
+  const accentColor = isCyan ? "#00E5FF" : "#EC5793";
   const borderLeft = `4px solid ${accentColor}`;
   const borderRest = `1px solid ${hovered ? accentColor : "#2D1C53"}`;
 
@@ -75,7 +75,7 @@ function FeatureCardItem({
         transition: "border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
         transform: hovered ? "translateY(-2px)" : "translateY(0)",
         boxShadow: hovered
-          ? `0 8px 30px rgba(${isCyan ? "0,229,255" : "255,0,229"}, 0.12)`
+          ? `0 8px 30px rgba(${isCyan ? "0,229,255" : "236,87,147"}, 0.12)`
           : "none",
       }}
     >

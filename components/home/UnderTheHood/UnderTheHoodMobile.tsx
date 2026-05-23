@@ -48,7 +48,8 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
   return (
     <section
       id="under-the-hood"
-      className={`w-full bg-background-primary overflow-hidden${className ? ` ${className}` : ""}`}
+      className={`w-full overflow-hidden${className ? ` ${className}` : ""}`}
+      style={{ background: "linear-gradient(180deg, #0F0824 0%, #030923 97.64%)" }}
       aria-label="Under The Hood — Engineering"
     >
       {/* Atmospheric glow */}
@@ -126,7 +127,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
         >
           {FEATURE_CARDS.map((card, i) => {
             const isCyan = card.accent === "cyan";
-            const accentColor = isCyan ? "#00E5FF" : "#FF00E5";
+            const accentColor = isCyan ? "#00E5FF" : "#EC5793";
 
             return (
               <motion.div
