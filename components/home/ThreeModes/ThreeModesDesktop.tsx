@@ -109,13 +109,13 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
               <div>
                 <span
                   className="font-display font-bold text-text-primary block"
-                  style={{ fontSize: "80px", lineHeight: "100px" }}
+                  style={{ fontSize: "80px", lineHeight: "80px" }}
                 >
                   TEN WAYS TO
                 </span>
                 <span
                   className="font-accent text-accent-cyan block"
-                  style={{ fontSize: "80px", lineHeight: "100px", fontWeight: 400 }}
+                  style={{ fontSize: "80px", lineHeight: "80px", fontWeight: 400 }}
                 >
                   BE SEEN
                 </span>
