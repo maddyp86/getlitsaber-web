@@ -278,22 +278,6 @@ None. Phase 2 unblocked.
 
 ---
 
-#### Phase 2 — Hero navbar clearance pattern (locked)
-
-**Problem:** The hero image was not filling edge-to-edge to the top of the viewport. A dark band appeared between the fixed navbar and the start of the lifestyle image.
-
-**Root cause:** The Tailwind `navbar` token was defined only in `theme.extend.height`, not in `theme.extend.spacing`. This meant `pt-navbar` and `-mt-navbar` generated no CSS. When the token was added to the spacing scale, both classes activated — but the architecture was wrong: `<main>` had `pt-navbar` pushing all content down 90px, and the hero used `-mt-navbar` to fight it back. Both hacks were canceling each other.
-
-**Fix (locked pattern):**
-- `<main>` in `layout.tsx` has NO top padding. Fixed navbar takes no flow space — no padding needed.
-- The hero section has no top margin/offset. It starts at y=0 (viewport top). Background images are `absolute top-0` and fill edge-to-edge behind the transparent navbar.
-- The content group inside the hero uses `pt-navbar mt-xl` (90px + 50px = 140px total) so the headline clears the navbar without a magic number. All on the token scale.
-- Inner pages add `pt-navbar` directly on their own top-level wrapper. They cannot rely on `<main>` for it.
-
-**Note for Phase 3:** Inner pages currently clear the navbar via individual `pt-navbar` on each page's wrapper div. When these pages are fully built out, consider a shared `<PageContent>` wrapper component that provides this padding automatically, so it doesn't need to be remembered on every new page. Do not build this wrapper until there are at least two fully-built pages to validate the abstraction.
-
----
-
 #### Phase 2 — Step 2: Hero section (built, corrected)
 
 **Built hero-first** (broke the homepage into per-section chunks rather than the original two-pass split). Bolt produced `<Hero />` plus reusable `<Reveal>` and `<SpecPill>` primitives. The hero is the most-judged component and sets the motion/color patterns for every later section, so it earned its own pass.
@@ -345,6 +329,25 @@ Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMP
 |---|------|-----|
 | 23 | "The hero kept fighting me on every spacing tweak because it used absolute pixel offsets coupled across two background layers. Diagnosed it as brittle architecture, not a styling bug. The fix wasn't another tweak — it was recognizing the layout method itself was wrong for the job." | `pm-discipline`, `integration-depth` |
 | 24 | "Pulled the full mobile and desktop Figma frames and saw the divergence was structural, not cosmetic — the hero headline literally regroups which words are cyan between breakpoints. Resisted two easy wrong answers: 'force one responsive component' (would need conditional word-grouping hacks) and 'split everything' (doubles maintenance across the whole site). Landed on a per-section structural-divergence test, documented as ADR-003. The judgment was in the criterion, not the binary." | `pm-discipline` |
+
+---
+
+**Be Seen Across The Crowd — scroll-pinned scrollytelling (building):** The most complex section on the site. Three stages (THE LIFESTYLE / THE INTERACTION / THE ENDURANCE), each a full-bleed image + text block + 3-bar progress indicator. SPLIT per ADR-003 — this is the second confirmed split, and it refined the criterion: desktop and mobile share the SAME interaction (scroll-pin advance through stages, tappable bars) but split on divergent layout, type scale, gradient direction, and image assets. A split doesn't require different interactions, just different enough structure.
+
+**Exact specs both breakpoints (authoritative, from Figma + user):** Desktop (node `3416:3337`) 1440×900, text column 580px left, headline Stellar Bold 75px / body Inter 22px / eyebrow Space Mono 16px, gradient left→dark, image right. Mobile (nodes `3760:8705`/`3760:5351`) 375×650, text 327px / 20px padding, headline 45px / body 18px / eyebrow 14px, gradient bottom→top, image full-bleed. Bars identical: 40×5px, 24px gap, cyan active / `#828282` inactive. Six images: `litsaber-{festival,interaction,endurance}.jpg` (desktop) + `-mobile.jpg` (mobile).
+
+**Mechanism (locked before build):** tall section (300vh, 100vh/stage) + `position: sticky` inner pinned for the scroll duration + Framer Motion `useScroll`/`useTransform` to derive active stage from scroll progress. Explicitly NOT wheel-hijacking — the browser scrolls naturally, the component reacts to position. Progress bars are both indicator and control: clicking scrolls the window to the stage position (not just setting state, which would desync). `prefers-reduced-motion` falls back to stacked stages, no pin. Files: `components/home/BeSeen/{crowd.content.ts, BeSeenDesktop.tsx, BeSeenMobile.tsx, BeSeen.tsx}` + shared scroll hook.
+
+**Figma-structure correction logged to CLAUDE.md:** The file is ONE page ("Desktop Website"), but it DOES contain mobile variant frames for some sections (hero, Be Seen) — not all. Rule: check whether a mobile node exists; if yes match it exactly, if no derive mobile from desktop via tokens. Earlier shorthand ("Figma is desktop-only") was imprecise — corrected.
+
+**StatBar marquee (built between hero and Be Seen):** Continuous horizontal ticker, 5 stats, one responsive component (not split — identical structure both breakpoints, only font size differs; a clean example of "not everything splits"). CSS keyframe animation, not Framer Motion — continuous infinite loops belong in CSS (performance, no dropped frames); Framer is for entrance/scroll reactions. Duplicated-track technique for seamless loop. Standard left-scroll (resolved an ambiguity: "left to right" had two readings; the tool asking saved a build cycle). Reduced-motion = static.
+
+**Story beats captured (architecture, continued)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 25 | "Three times I gave the AI mobile specs from memory or a screenshot, and twice I was wrong about the actual design — I assumed mobile stacked when it actually used the same scroll-pin as desktop. The fix each time was the same: stop describing, pull the actual Figma node and read it. Reading the file directly beat guessing every single time. For pixel-precise work, the source of truth is the source, not my recollection of it." | `pm-discipline`, `ai-augmented-build` |
+| 26 | "Chose the scroll-pin mechanism deliberately: sticky-positioned inner container plus scroll-progress tracking, explicitly NOT wheel-hijacking. Scroll-jacking is the fragile, accessibility-hostile version that fights the user's input device; the sticky approach lets the browser scroll naturally and just reacts to position. Knowing which pattern to reach for — and which superficially-similar one to avoid — is the difference between an effect that feels premium and one that feels broken. Same judgment on the marquee: CSS for continuous loops, Framer for entrance motion." | `integration-depth` |
 
 ---
 

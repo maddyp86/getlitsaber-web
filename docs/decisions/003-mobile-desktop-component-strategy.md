@@ -45,14 +45,14 @@ If none are true → responsive single component (default).
 | Hero | Content regrouping (cyan span), CTA treatment, device placement | **SPLIT** (built) |
 | Be Seen Across The Crowd (scrollytelling) | Different dimensions, type scale (75/22/16px → 45/18/14px), gradient direction (left→dark vs bottom→top), separate image assets per breakpoint. Both share the scroll-pin interaction. | **SPLIT** (building) |
 | Ten Ways To Be Seen | Reflow (text + strip + device rearrange) | Responsive (revisit if messy) |
-| Three Modes / Pick Your Energy | Reflow (cards + video reorder) | Responsive |
+| Three Modes / Pick Your Energy | Two-column side-by-side (desktop) vs fully stacked single-column (mobile); type scales differ (75px → 45px headline); card dimensions differ; shared interaction model (mode/toggle state). | **SPLIT** (building) |
 | Engineered To Stand Out | Reflow (3×2 grid → 1 column, feature reorder) | Responsive — watch the feature-order difference; split if order genuinely changes |
 | Spec grid | Column count only | Responsive |
 | Where It Lives | Row → carousel | Responsive (+ minor JS for carousel) |
 | Homepage Buy Section | Two-column → stacked | Responsive |
 | FAQ | 3×2 → 1 column | Responsive |
 
-Confirmed splits so far: the Hero and the Be Seen scrollytelling section. Note that Be Seen is a refinement of the criterion — its mobile and desktop share the SAME interaction model (scroll-pin advance), so the split is driven purely by divergent layout/type/assets, not by different interaction. Both are legitimate split triggers. Other sections are assessed per-section as built, using the checklist.
+Confirmed splits so far: the Hero, the Be Seen scrollytelling section, and the Three Modes interactive section. Note that Be Seen and Three Modes refine the criterion — both share the SAME interaction model across breakpoints (scroll-pin advance, mode/toggle state respectively), so the split is driven purely by divergent layout/type/assets, not by different interaction. Both are legitimate split triggers. The criterion is: **can the same DOM produce both, or must the structure change?** If structure must change, split.
 
 **Per-breakpoint type scales live in the component, not tokens.json.** When a split section uses different font sizes per breakpoint (e.g. Be Seen's 75px desktop headline → 45px mobile), those are section-specific responsive values applied in the component, not new global tokens. tokens.json holds the shared scale; the component picks which step applies at which breakpoint.
 
