@@ -351,7 +351,30 @@ Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMP
 
 ---
 
-### Phase 4 — Shopify Integration + Reviews Provider (pending)
+### Editions + Commerce section — build-phasing plan (2026-05-23, planning)
+
+The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inline PDP-style product display, Figma node `3312:2`). This is the frame previously logged as the empty "Section 6" open question — now resolved as this feature. Planned the build before writing any code because it bundles UI, cart state, form capture, and a payment integration that, done in one pass, would produce something that looks right and breaks on real commerce data.
+
+**Governing architecture decision:** Decouple UI from commerce. Build all UI against a local cart store (`lib/cart/store.ts`, Zustand + localStorage) exposing a Shopify-shaped interface; swap the store's action bodies to Shopify Storefront API mutations only in the final phase. Components talk to the store, never to Shopify. This isolates integration risk and keeps every builder prompt small. Full spec written into CLAUDE.md ("Commerce build phasing" section).
+
+**Four commercial decisions confirmed by Matt (2026-05-23):**
+- **Two Pack = two single SKUs shipped together (FINAL 2026-05-23).** No physical two-pack box, no separate Shopify variant. Driven by ops/inventory: one inventory pool (no allocation guessing), no 3PL kitting map (pick order is "Silver × 2"), QuickBooks stays single-SKU. Front-end models it as one logical cart line ($99.99); Shopify mechanism deferred to Phase 4 (leaning native Bundles, fallback automatic discount on 2× single). Interim "dedicated variant" call was reversed once it was confirmed no physical two-pack exists.
+- **Authorize.net** already approved for this store; Shopify hosted checkout routes to it. Wired in Phase 4, not before.
+- **HubSpot** handles both new signup flows (Gold waitlist, Future Drops notify) — submit to HubSpot forms, a workflow sends confirmation, contact lands in CRM. No custom backend. Two new forms needed; Matt to create before Phase 3 form wiring.
+- **Variant→behavior:** Silver → add to cart + drawer. Gold → waitlist modal (no cart).
+
+**Build sequence (4 phases, each chunk = one prompt = one commit):** P1 static layout (Editions row + product display, inert). P2 local cart store + selection logic + conditional CTA. P3 drawer + `/cart` page + the two HubSpot modals + wire Editions actions. P4 Shopify (client, swap store actions to cart mutations, `checkoutUrl` redirect) — last and isolated. Desktop + mobile both mocked; one responsive component per chunk per ADR-003, split only if responsive logic gets unmanageable mid-build.
+
+**Story beats captured (commerce planning)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 27 | "Before building the most complex section on the site, I drew a seam: all UI talks to a local cart store with a Shopify-shaped interface, and Shopify itself gets wired in dead last by swapping only the store's internals. The components never change. The point wasn't the tech — it was refusing to let integration risk contaminate four phases of layout work. Sequencing the unknowns to the end is a PM call." | `pm-discipline`, `integration-depth` |
+| 28 | "Reversed my own bundle decision twice and landed where the operations pointed, not where the code was easiest. I first picked a dedicated $99.99 variant because it kept the cart code dumb. Then I asked the real question — what does this do to inventory? — and realized a separate variant splits one physical product into two stock pools, forcing allocation guesses and a 3PL kitting map for a box that doesn't exist. We just ship two units together. So: one SKU, one inventory pool, modeled as a single logical cart line in the UI, with the Shopify mechanism deferred to Phase 4. The lesson: 'simplest code' and 'simplest operations' are different axes, and for a physical-goods business the ops axis wins." | `pm-discipline`, `integration-depth` |
+
+---
+
+
 
 Storefront API client, typed responses, cart via Shopify Cart API (not local state), checkout handoff via `checkoutUrl`, webhook handlers for inventory.
 
@@ -405,13 +428,13 @@ None. Phase 2 unblocked.
 - AI Summary final approach (pending ReviewInfra response)
 - ReviewInfra Path A vs Path B (pending ReviewInfra response)
 - Floating promo trigger logic + frequency cap
-- Section 6 empty frame on homepage — cut, design, or defer
+- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now in build-phasing.
 - Venue card photography sourcing
 - FAQ #3 placeholder copy (homepage)
 - Contact page FAQ body copy (mostly placeholder)
 - "Danksaber" direct competitor mention — keep, reframe, or remove
 - "LITSABER OG +" title — verify `+` is intentional
-- 2-Pack "SAVE $20" badge math reconciliation
+- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-23): Two Pack is a dedicated $99.99 variant; "SAVE $20" is display copy only.
 - Engineering kinetic animation system spec
 
 **Post-launch:**

@@ -30,7 +30,7 @@ Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. 
 
 ## Deployment topology
 
-- **Bolt** generates code and pushes to GitHub during Phase 2. Bolt is done after Phase 2.
+- **Bolt** is the active builder (resumed 2026-05-23). It generates code and pushes to GitHub. It is the single write path right now — see the critical workflow rule below.
 - **GitHub** holds the source of truth. Every push to `main` triggers a Vercel production deploy.
 - **Vercel** auto-deploys every PR to a unique preview URL. Production deploys on merge to `main`.
 - **Namecheap** is the domain registrar. DNS records will be pointed at Vercel in Phase 6/7 during launch cutover. Until then, the live site `getlitsaber.com` continues running on the existing WordPress/Avada install while the new build is verified on the Vercel-provided preview URL (`getlitsaber-web.vercel.app` or similar).
@@ -94,8 +94,9 @@ public/
 - Paired-asset naming: desktop is the base name (`hero-lifestyle.png`), mobile appends `-mobile` (`hero-lifestyle-mobile.jpg`). Formats may differ between the two — that's expected and fine.
 
 **Critical workflow rule — single write path to the repo:**
-- The repo has ONE write path: the local clone + Claude Code + git. Files enter the repo locally (Finder for assets, Claude Code for code), then commit + push. (Bolt has been retired — it caused repeated sync collisions: a Netlify dependency leak, then a merge that dropped the entire `public/images/` folder, recovered via `git checkout <commit> -- public/`. The handoff to a single local write path eliminated that class of problem.)
-- Do NOT add files via the GitHub web UI or any second tool while working locally — that recreates the two-source divergence that caused the collisions.
+- The repo has ONE write path at a time. **As of 2026-05-23 that path is Bolt** (the earlier handoff to local Claude Code was reverted; the team is back on Bolt and not yet on Claude Code). Code enters through Bolt, which pushes to GitHub.
+- The rule that matters is NOT "which tool" — it is "only one tool writes at a time." The past collisions (a Netlify dependency leak, then a merge that dropped the entire `public/images/` folder, recovered via `git checkout <commit> -- public/`) were caused by TWO write paths to one repo, not by Bolt specifically. Whichever tool is active, do not write through a second one concurrently.
+- While Bolt is the active path: do NOT add or edit files via the GitHub web UI, a local clone, or any other tool. That recreates the two-source divergence that caused the collisions. Assets that can't go through Bolt should be added in a deliberate, announced single-tool window, then control handed back to Bolt.
 
 **Where assets live in production:**
 - During Phase 2/3: assets live in `public/` and ship with the repo
@@ -179,6 +180,39 @@ Full version in `BRAND.md`. The non-negotiables:
 
 ---
 
+## Commerce build phasing (Editions section, PDP selector, cart) — READ BEFORE BUILDING
+
+This is the most complex feature in the build. The governing rule: **build all UI against a local cart store first; swap that store's implementation to Shopify last.** Components never talk to Shopify directly — they talk to a store interface. This keeps integration risk isolated to one late phase and keeps every build prompt small.
+
+**The seam (non-negotiable architecture):**
+- A cart store at `lib/cart/store.ts` (Zustand, persisted to localStorage) exposes a Shopify-shaped interface: `items`, `cartId`, `addItem(variantId, qty)`, `removeItem(lineId)`, `updateQty(lineId, qty)`, `clear()`.
+- Line items carry `{ id, variantId, qty, title, price, image }` so the shape doesn't change when Shopify is wired in.
+- **Phases 1–3 back every store action with LOCAL state only — no API calls.** The final phase swaps the action bodies to Shopify Storefront API mutations (`cartCreate`, `cartLinesAdd`, `cartLinesUpdate`, `cartLinesRemove`). The component layer does not change during that swap.
+
+**Variant → behavior mapping (locked):**
+- **Silver** = in stock → add-to-cart flow (opens `<CartDrawer />`). Silver is the only physical SKU; both bundle options (Single / Two Pack) resolve to it.
+- **Gold** = coming soon → does NOT add to cart; opens the **waitlist modal** (same form as the "Gold Edition" Editions box).
+- **Two Pack** = two of the Silver SKU shipped together, modeled as one logical cart line ($99.99). No separate product/variant. See "Bundle SKU strategy" above.
+
+**Editions row — three boxes, three actions:**
+- Box 1 "OG Silver / SHOP NOW" → link to `/shop/litsaber-og`.
+- Box 2 "Gold Edition / JOIN THE WAITLIST" → opens Gold waitlist modal → submits to a **HubSpot form**.
+- Box 3 "Future Drops / GET NOTIFIED" → opens notify modal → submits to a **HubSpot form**.
+
+**Email confirmations route through HubSpot — do NOT build a backend for this.** Both the Gold waitlist and Future Drops signups submit to HubSpot forms; a HubSpot workflow sends the confirmation email and the contact lands in the CRM (portal `244547358`). Two new HubSpot forms are needed (Gold Waitlist, Future Drops) — created/confirmed by Matt before Phase 3 form wiring. Region is `na2`. Existing form IDs (wholesale, contact) are in the stack notes; reuse the same embed pattern.
+
+**Payments — Authorize.net, already approved.** Shopify hosted checkout is configured to route to Authorize.net (Stripe is prohibited for this category). The store is approved for hardware/accessory sales. The headless build redirects to Shopify's `checkoutUrl` for the actual transaction — we do not handle card data in our own UI.
+
+**Build sequence (each bullet = one builder prompt = one commit). Do not collapse phases.**
+1. **Phase 1 — static layout, zero logic.** (1a) Editions CTA row, 3 boxes, responsive, buttons inert. (1b) Product Display: gallery + thumbs, spec pills, variant selector, bundle selector, both CTAs — all static.
+2. **Phase 2 — local cart store + selection logic.** (2a) Build the store (local-backed). (2b) Wire variant/bundle selection + price display to component state. (2c) Conditional CTA: Silver → `addItem`; Gold → waitlist modal.
+3. **Phase 3 — drawers, pages, forms.** (3a) Add-to-cart slide-out drawer (reads store). (3b) `/cart` page (reads store, qty edit + remove). (3c) Gold waitlist + Future Drops modals → HubSpot. (3d) Wire the three Editions box actions.
+4. **Phase 4 — Shopify, last and isolated.** (4a) Storefront API client + env vars, fetch real product/variants. (4b) Swap store action bodies to Shopify cart mutations. (4c) Wire Buy Now / checkout to `checkoutUrl` redirect.
+
+**Figma nodes for this feature** (file `cuBHq4i5XibiqCyleuZFHO`): Editions section `3312:2`; product selector `3703:7914`; add-to-cart drawer `3668:6263`; cart page `3668:5358`. Desktop and mobile mocks both exist — default to one responsive component per chunk per ADR-003; only split out a `*Mobile.tsx` if a chunk's responsive logic becomes unmanageable mid-build. Do not pre-split.
+
+---
+
 ## Reviews provider — ReviewInfra (locked)
 
 The PDP reviews subsystem is powered by **ReviewInfra** (https://reviewinfra.dev).
@@ -232,7 +266,9 @@ If any of these aren't true, the work isn't done — say so and propose what's l
 
 ## Phase 2 decisions (locked)
 
-- **Bundle SKU strategy:** Quantity-based discount on the single Litsaber OG SKU. 2-Pack is *not* a separate Shopify product. Implementation: select bundle → cart adds 2× the single SKU + applies discount. Simpler Shopify config, single inventory pool.
+- **Bundle SKU strategy (FINAL 2026-05-23):** The Two Pack is **two of the single Litsaber OG SKU shipped together** — there is NO physical two-pack box and NO separate Shopify product/variant. One inventory pool. Decision driven by operations: shared inventory means no allocation guessing, no 3PL kitting map (the pick order reads "Litsaber OG Silver × 2" of a SKU the 3PL already knows), and QuickBooks stays single-SKU with COGS auto-computed as qty × $13.33. This reverses an interim "dedicated variant" call once it was clear no physical two-pack exists.
+  - **Front-end (Phases 1–3):** model the Two Pack as a SINGLE logical line item in the local cart store ("Two Pack" title, $99.99, qty handling internal) so the cart UI shows one clean row, not "2× minus $20." "SAVE $20" is display copy only, never a Shopify discount object.
+  - **Shopify mechanism (Phase 4 decision, leaning native Bundles):** the single logical line maps to Shopify via either (a) **Shopify native Bundles** — preferred, gives a clean bundle line that decrements the single's stock, or (b) an automatic discount on 2× the single. Both preserve the one-inventory-pool requirement. A dedicated variant is explicitly OFF the table because it would split inventory for one physical good.
 - **PDP long-form copy:** Approved for rewrite. Current Figma copy ("Ignite your night... world's first... glow-up accessory") violates BRAND.md and must be replaced with copy matching the established voice. Rewrite happens during Phase 2 scaffold; flag for review before commit.
 - **Age gate behavior (locked):**
   - First-visit cookie, **30-day duration** (industry standard for vape)
