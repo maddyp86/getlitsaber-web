@@ -26,8 +26,7 @@ export default function LightMeetsVapor() {
   return (
     <section
       id="light-meets-vapor"
-      className="relative w-full overflow-hidden"
-      style={{ width:"auto" , aspectRatio: "8/5" }}
+      className="relative w-full overflow-hidden [aspect-ratio:375/600] lg:[aspect-ratio:8/5]"
       aria-label="Where Light and Vapor Meet"
     >
       {/* Full-bleed background image — desktop / mobile swap */}
@@ -60,7 +59,22 @@ export default function LightMeetsVapor() {
 
           {/* Headline — Monoton (accent font), two lines */}
           <div>
-            <motion.h2 className="font-accent uppercase text-text-primary block" style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "790px", height: "178px", color: "#FFF", fontFamily: "var(--font-monoton)", fontSize: "75px", fontWeight: 400, lineHeight: "100px", textShadow: "0 0 40px rgba(255, 0, 229, 0.75)", }} initial={{ opacity: 0, y: 28 }} animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }} transition={{ duration: 0.8, ease: EASE }} > WHERE LIGHT<br />AND VAPOR MEET </motion.h2>
+            <motion.h2
+              className="font-accent uppercase text-text-primary block"
+              style={{
+                color: "#FFF",
+                fontFamily: "var(--font-monoton)",
+                fontSize: "clamp(36px, 6.5vw, 94px)",
+                fontWeight: 400,
+                lineHeight: "1.1",
+                textShadow: "0 0 40px rgba(255, 0, 229, 0.75)",
+              }}
+              initial={{ opacity: 0, y: 28 }}
+              animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+              transition={{ duration: 0.8, ease: EASE }}
+            >
+              WHERE LIGHT<br />AND VAPOR MEET
+            </motion.h2>
           </div>
 
           {/* Body copy */}
