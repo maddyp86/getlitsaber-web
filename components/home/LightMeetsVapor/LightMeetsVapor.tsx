@@ -70,7 +70,8 @@ export default function LightMeetsVapor() {
             className="font-body text-text-primary"
             style={{
               fontSize: "clamp(16px, 1.5vw, 22px)",
-              lineHeight: "1.55",
+              lineHeight: "normal",
+              fontweight: 500;
               maxWidth: "600px",
             }}
             initial={{ opacity: 0, y: 20 }}
