@@ -176,7 +176,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Inner content — centered column, 280px from top */}
         <div
           className="absolute"
-          style={{ display: "flex", flexDirection: "column", alignItems: "center",  left: "50%", width: "100%", top: "153px", left: "100px", gap: "100px", zIndex: 10 }}
+          style={{ display: "flex", flexDirection: "column",  maxWidth: "calc(100vw - 200px)", transform: "translateX(-50%)",  alignItems: "center",  left: "50%", width: "100%", top: "153px", left: "100px", gap: "100px", zIndex: 10 }}
         >
           {/* "Pick Your Energy" heading group */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center" }}>
@@ -201,7 +201,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "flex-start", justifyContent: "space-between" }}>
 
             {/* Left — mode cards */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "35px", width: "614px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "614px" }}>
 
               {/* Litsaber Mode card */}
               <div
