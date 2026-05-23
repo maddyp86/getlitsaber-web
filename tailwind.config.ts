@@ -74,6 +74,7 @@ const config: Config = {
         h4: tokens.font.size.h4.value,
         subhead: tokens.font.size.subhead.value,
         body: tokens.font.size.body.value,
+        "body-sm": tokens.font.size["body-sm"].value,
         label: tokens.font.size.label.value,
         eyebrow: tokens.font.size.eyebrow.value,
         "stat-display": tokens.font.size["stat-display"].value,

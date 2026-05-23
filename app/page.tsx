@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import StatBar from "@/components/home/StatBar";
+import BeSeen from "@/components/home/BeSeen/BeSeen";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -11,6 +12,7 @@ export default function HomePage() {
     <>
       <Hero />
       <StatBar />
+      <BeSeen />
     </>
   );
 }
