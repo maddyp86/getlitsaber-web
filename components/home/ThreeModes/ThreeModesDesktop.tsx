@@ -146,7 +146,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             borderRadius: "800px",
             background: "rgba(30, 0, 77, 0.50)",
             filter: "blur(150px)",
-            top: "240px", left: "320px",
+            top: "0px", left: "320px",
             zIndex: 0,
           }}
           aria-hidden="true"
