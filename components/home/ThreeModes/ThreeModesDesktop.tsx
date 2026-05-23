@@ -66,21 +66,21 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {/* Lightstreak — real-space block, clips internally, slides LEFT to RIGHT on scroll */}
         <div
           ref={lightstreakRef}
-          style={{ width: "auto", height: "671px", overflow: "hidden", position: "absolute", top: "462px", left: 0, zIndex: 0 }}
+          style={{ width: "auto", height: "671px", overflow: "hidden", position: "absolute", top: "300px", left: 0, zIndex: 0 }}
         >
           {reducedMotion ? (
             <img
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "auto", height: "725px", objectFit: "cover", display: "block" }}
+              style={{ width: "auto", height: "671px", objectFit: "cover", display: "block" }}
             />
           ) : (
             <motion.img
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "auto", height: "725px", objectFit: "cover", display: "block" }}
+              style={{ width: "auto", height: "671px", objectFit: "cover", display: "block" }}
               initial={{ x: "-100%" }}
               animate={lightstreakVisible ? { x: 0 } : { x: "-100%" }}
               transition={{ duration: 0.8, ease: EASE }}
