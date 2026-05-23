@@ -143,10 +143,13 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             <div className="flex flex-col" style={{ gap: "35px" }}>
 
               {/* Litsaber Mode card */}
-              <button
-                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated ${cardBorderClass(0)}`}
+              <div
+                role="button"
+                tabIndex={0}
+                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated cursor-pointer ${cardBorderClass(0)}`}
                 onClick={() => setMode(0)}
-                aria-pressed={activeMode === 0}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
+                aria-label="Activate Litsaber Mode"
               >
                 <h4
                   className="font-subhead font-bold text-text-primary mb-[20px]"
@@ -202,13 +205,16 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                     </motion.p>
                   </AnimatePresence>
                 </div>
-              </button>
+              </div>
 
               {/* Glowstick Mode card */}
-              <button
-                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated ${cardBorderClass(1)}`}
+              <div
+                role="button"
+                tabIndex={0}
+                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated cursor-pointer ${cardBorderClass(1)}`}
                 onClick={() => setMode(1)}
-                aria-pressed={activeMode === 1}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
+                aria-label="Activate Glowstick Mode"
               >
                 <h4
                   className="font-subhead font-bold mb-[16px]"
@@ -224,13 +230,16 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <p className="font-body text-text-secondary" style={{ fontSize: "20px" }}>
                   {MODES[1].body}
                 </p>
-              </button>
+              </div>
 
               {/* Stealth Mode card */}
-              <button
-                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated ${cardBorderClass(2)}`}
+              <div
+                role="button"
+                tabIndex={0}
+                className={`w-full text-left rounded-md p-[28px] transition-all duration-300 bg-background-elevated cursor-pointer ${cardBorderClass(2)}`}
                 onClick={() => setMode(2)}
-                aria-pressed={activeMode === 2}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
+                aria-label="Activate Stealth Mode"
               >
                 <h4
                   className="font-subhead font-bold mb-[16px]"
@@ -246,7 +255,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 <p className="font-body text-text-secondary" style={{ fontSize: "20px" }}>
                   {MODES[2].body}
                 </p>
-              </button>
+              </div>
             </div>
           </div>
 

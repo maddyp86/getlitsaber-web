@@ -122,10 +122,13 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
         <div className="flex flex-col gap-[24px]">
 
           {/* Litsaber Mode card */}
-          <button
-            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated ${activeCardBorder(0)}`}
+          <div
+            role="button"
+            tabIndex={0}
+            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated cursor-pointer ${activeCardBorder(0)}`}
             onClick={() => setMode(0)}
-            aria-pressed={activeMode === 0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
+            aria-label="Activate Litsaber Mode"
           >
             <div className="p-[20px]">
               <h4
@@ -199,13 +202,16 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                 />
               </AnimatePresence>
             </div>
-          </button>
+          </div>
 
           {/* Glowstick Mode card */}
-          <button
-            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated ${activeCardBorder(1)}`}
+          <div
+            role="button"
+            tabIndex={0}
+            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated cursor-pointer ${activeCardBorder(1)}`}
             onClick={() => setMode(1)}
-            aria-pressed={activeMode === 1}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
+            aria-label="Activate Glowstick Mode"
           >
             <div className="p-[20px]">
               <h4
@@ -233,13 +239,16 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                 />
               </div>
             )}
-          </button>
+          </div>
 
           {/* Stealth Mode card */}
-          <button
-            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated ${activeCardBorder(2)}`}
+          <div
+            role="button"
+            tabIndex={0}
+            className={`w-full text-left rounded-md overflow-hidden transition-all duration-300 bg-background-elevated cursor-pointer ${activeCardBorder(2)}`}
             onClick={() => setMode(2)}
-            aria-pressed={activeMode === 2}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
+            aria-label="Activate Stealth Mode"
           >
             <div className="p-[20px]">
               <h4
@@ -267,7 +276,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                 />
               </div>
             )}
-          </button>
+          </div>
         </div>
       </div>
     </section>
