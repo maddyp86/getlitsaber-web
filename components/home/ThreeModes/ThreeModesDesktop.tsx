@@ -391,7 +391,6 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     </AnimatePresence>
   </div>
 </div>
-            </div>
 
             {/* Right — mode image */}
             <div
