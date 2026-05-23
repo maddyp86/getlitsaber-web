@@ -123,7 +123,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             onClick={() => setMode(0)}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
             aria-label="Activate Litsaber Mode"
-            style={{ ...cardBorder(0), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden" }}
+            style={{ ...cardBorder(0), background: "#100B25", cursor: "pointer", transition: "all 0.3s ease", overflow: "hidden", gap: "15px" }}
           >
             <div style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "15px" }}>
               <h4
