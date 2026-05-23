@@ -7,7 +7,9 @@ import UnderTheHood from "@/components/home/UnderTheHood/UnderTheHood";
 import LightMeetsVapor from "@/components/home/LightMeetsVapor/LightMeetsVapor";
 import WhereItLives from "@/components/home/WhereItLives/WhereItLives";
 import CommonQuestions from "@/components/home/CommonQuestions/CommonQuestions";
-import Editions from "@/components/home/Editions/Editions";
+import Section6 from "@/components/home/Section6/Section6";
+import EditionsSection from "@/components/home/Editions/EditionsSection";
+import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -24,7 +26,10 @@ export default function HomePage() {
       <LightMeetsVapor />
       <WhereItLives />
       <CommonQuestions />
-      <Editions />
+      <Section6>
+        <EditionsSection />
+        <ProductDisplay />
+      </Section6>
     </>
   );
 }
