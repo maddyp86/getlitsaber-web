@@ -1,0 +1,109 @@
+"use client";
+
+import { useRef, useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import ResponsiveImage from "@/components/primitives/ResponsiveImage";
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+export default function LightMeetsVapor() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const prefersReduced = useReducedMotion();
+
+  useEffect(() => {
+    if (prefersReduced) { setVisible(true); return; }
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [prefersReduced]);
+
+  return (
+    <section
+      id="light-meets-vapor"
+      className="relative w-full overflow-hidden"
+      style={{ aspectRatio: "375 / 600" }}
+      aria-label="Where Light and Vapor Meet"
+    >
+      {/* Full-bleed background image — desktop / mobile swap */}
+      <ResponsiveImage
+        desktopSrc="/images/home/light-meets-vapor.jpg"
+        mobileSrc="/images/home/light-meets-vapor-mobile.jpg"
+        alt=""
+      />
+
+      {/* Gradient overlay — full bleed dark on mobile, left-fade on desktop */}
+      <div
+        className="absolute inset-0 pointer-events-none lg:hidden"
+        style={{ background: "rgba(0,0,0,0.45)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 pointer-events-none hidden lg:block"
+        style={{
+          background: "linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 45%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Text block — top-aligned on mobile (content starts near top), centered on desktop */}
+      <div
+        ref={ref}
+        className="absolute inset-0 flex flex-col justify-start lg:justify-center px-[20px] lg:px-[70px] pt-[40px] lg:pt-0"
+      >
+        <div className="w-full lg:max-w-[560px]" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+
+          {/* Headline — Monoton (accent font), two lines */}
+          <div>
+            <motion.h2
+              className="font-accent text-text-primary block"
+              style={{
+                fontSize: "clamp(38px, 6.5vw, 94px)",
+                lineHeight: "1.05",
+                fontWeight: 400,
+              }}
+              initial={{ opacity: 0, y: 28 }}
+              animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+              transition={{ duration: 0.8, ease: EASE }}
+            >
+              WHERE LIGHT
+            </motion.h2>
+            <motion.h2
+              className="font-accent text-text-primary block"
+              style={{
+                fontSize: "clamp(38px, 6.5vw, 94px)",
+                lineHeight: "1.05",
+                fontWeight: 400,
+              }}
+              initial={{ opacity: 0, y: 28 }}
+              animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+              transition={{ duration: 0.8, delay: 0.08, ease: EASE }}
+            >
+              AND VAPOR MEET
+            </motion.h2>
+          </div>
+
+          {/* Body copy */}
+          <motion.p
+            className="font-body text-text-primary"
+            style={{
+              fontSize: "clamp(15px, 1.5vw, 22px)",
+              lineHeight: "1.55",
+              maxWidth: "500px",
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+          >
+            Clean hits. Lit clouds. The lights catch the exhale on its way out, turning every hit into something you can actually see an experience.
+          </motion.p>
+        </div>
+      </div>
+    </section>
+  );
+}
