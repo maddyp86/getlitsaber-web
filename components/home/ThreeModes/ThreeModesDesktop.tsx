@@ -80,7 +80,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
               src="/images/home/litsaber-lightstreaks.jpg"
               alt=""
               aria-hidden="true"
-              style={{ width: "1440px", height: "725px", objectFit: "cover", display: "block" }}
+              style={{ width: "auto", height: "725px", objectFit: "cover", display: "block" }}
               initial={{ x: "-100%" }}
               animate={lightstreakVisible ? { x: 0 } : { x: "-100%" }}
               transition={{ duration: 0.8, ease: EASE }}
