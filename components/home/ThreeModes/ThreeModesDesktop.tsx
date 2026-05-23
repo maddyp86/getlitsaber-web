@@ -201,7 +201,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
 
             {/* Left — mode cards */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "614px" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "20px", flex: "1 0 0", alignSelf: "stretch" }}>
 
               {/* Litsaber Mode card */}
               <div
