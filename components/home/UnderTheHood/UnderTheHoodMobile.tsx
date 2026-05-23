@@ -224,7 +224,6 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
                   flexDirection: "column",
                   gap: "8px",
                   padding: "18px",
-                  background: "#110826",
                   border: "1px solid #2D1C53",
                   borderRadius: "16px",
                   gridColumn: isLastOdd ? "1 / -1" : undefined,
