@@ -318,7 +318,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 aria-label="Activate Stealth Mode"
                 style={{
                   ...cardBorder(2),
-                  display: "flex", flexDirection: "column", gap: "20px",
+                  display: "flex", flexDirection: "column", gap: "10px",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
