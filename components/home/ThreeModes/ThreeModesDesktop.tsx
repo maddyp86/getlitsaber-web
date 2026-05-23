@@ -199,198 +199,158 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             </p>
           </div>
 
-{/* Modes row: cards LEFT, image RIGHT */}
-<div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
+          {/* Modes row: cards LEFT, image RIGHT */}
+          <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
 
-  {/* Left — mode cards */}
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "20px", flex: "1 0 0", alignSelf: "stretch" }}>
+            {/* Left — mode cards */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "20px", flex: "1 0 0", alignSelf: "stretch" }}>
 
-    {/* Litsaber Mode card */}
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={() => setMode(0)}
-      onMouseEnter={() => setHoveredCard(0)}
-      onMouseLeave={() => setHoveredCard(null)}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
-      aria-label="Activate Litsaber Mode"
-      style={{
-        ...cardBorder(0),
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        flex: "1 0 0",
-        alignSelf: "stretch",
-        padding: "30px",
-        background: hoveredCard === 0 || activeMode === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
-        cursor: "pointer",
-        transition: "all 0.3s ease",
-      }}
-    >
-      <h3
-        className="font-subhead font-bold"
-        style={{
-          fontSize: "25px",
-          color: activeMode === 0 ? "#F0F0F5" : "#BABABA",
-          textShadow: activeMode === 0 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
-          transition: "color 0.3s, text-shadow 0.3s",
-        }}
-      >
-        LITSABER MODE
-      </h3>
+              {/* Litsaber Mode card */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => setMode(0)}
+                onMouseEnter={() => setHoveredCard(0)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(0); } }}
+                aria-label="Activate Litsaber Mode"
+                style={{
+                  ...cardBorder(0),
+                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
+                  padding: "30px",
+                  background: hoveredCard === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",  // Cyan tint on hover
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <h3
+                  className="font-subhead font-bold"
+                  style={{
+                    fontSize: "25px",
+                    color: activeMode === 0 ? "#F0F0F5" : "#BABABA",
+                    textShadow: activeMode === 0 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
+                    transition: "color 0.3s, text-shadow 0.3s",
+                  }}
+                >
+                  LITSABER MODE
+                </h3>
 
-      {/* Toggles — THE PULL / THE BUILD */}
-      <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-        {PULL_BUILD.map((pb, i) => {
-          const isActive = activePullBuild === i;
-          return (
-            <button
-              key={pb.label}
-              onClick={(e) => { e.stopPropagation(); if (!isActive) togglePullBuild(); }}
-              aria-pressed={isActive}
-              style={{
-                flex: 1,
-                padding: "10px",
-                background: isActive ? "rgba(0,229,255,0.20)" : "transparent",
-                border: isActive ? "1px solid #00E5FF" : "1px solid #CCCCCC",
-                borderRadius: "2px",
-                color: isActive ? "#00E5FF" : "#CCCCCC",
-                fontFamily: "var(--font-space-mono), monospace",
-                fontSize: "16px",
-                fontWeight: 400,
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                letterSpacing: "0.1em",
-              }}
-            >
-              {pb.label}
-            </button>
-          );
-        })}
-      </div>
+                {/* Toggles — THE PULL / THE BUILD */}
+                <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+                  {PULL_BUILD.map((pb, i) => {
+                    const isActive = activePullBuild === i;
+                    return (
+                      <button
+                        key={pb.label}
+                        onClick={(e) => { e.stopPropagation(); if (!isActive) togglePullBuild(); }}
+                        aria-pressed={isActive}
+                        style={{
+                          flex: 1,
+                          padding: "10px",
+                          background: isActive ? "rgba(0,229,255,0.20)" : "transparent",
+                          border: isActive ? "1px solid #00E5FF" : "1px solid #CCCCCC",
+                          borderRadius: "2px",
+                          color: isActive ? "#00E5FF" : "#CCCCCC",
+                          fontFamily: "var(--font-space-mono), monospace",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                          letterSpacing: "0.1em",
+                        }}
+                      >
+                        {pb.label}
+                      </button>
+                    );
+                  })}
+                </div>
 
-      {/* Description — fades per toggle */}
-      <div style={{ minHeight: "80px" }}>
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={`desc-${activePullBuild}`}
-            variants={CONTENT_FADE}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="font-body"
-            style={{ fontSize: "16px", color: "#F0F0F5" }}
-          >
-            {PULL_BUILD[activePullBuild].description}
-          </motion.p>
-        </AnimatePresence>
-      </div>
-    </div>
+                {/* Description — fades per toggle */}
+                <div style={{ minHeight: "80px" }}>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={`desc-${activePullBuild}`}
+                      variants={CONTENT_FADE}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="font-body"
+                      style={{ fontSize: "16px", color: "#F0F0F5" }}
+                    >
+                      {PULL_BUILD[activePullBuild].description}
+                    </motion.p>
+                  </AnimatePresence>
+                </div>
+              </div>
 
-    {/* Glowstick Mode card */}
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={() => setMode(1)}
-      onMouseEnter={() => setHoveredCard(1)}
-      onMouseLeave={() => setHoveredCard(null)}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
-      aria-label="Activate Glowstick Mode"
-      style={{
-        ...cardBorder(1),
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        flex: "1 0 0",
-        alignSelf: "stretch",
-        padding: "30px",
-        background: hoveredCard === 1 || activeMode === 1 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
-        cursor: "pointer",
-        transition: "all 0.3s ease",
-      }}
-    >
-      <h3
-        className="font-subhead font-bold"
-        style={{
-          fontSize: "25px",
-          color: activeMode === 1 ? "#F0F0F5" : "#BABABA",
-          textShadow: activeMode === 1 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
-          transition: "color 0.3s, text-shadow 0.3s",
-        }}
-      >
-        GLOWSTICK MODE
-      </h3>
-      <p className="font-body" style={{ fontSize: "16px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
-        {MODES[1].body}
-      </p>
-    </div>
+              {/* Glowstick Mode card */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => setMode(1)}
+                 onMouseEnter={() => setHoveredCard(0)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(1); } }}
+                aria-label="Activate Glowstick Mode"
+                style={{
+                  ...cardBorder(1),
+                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
+                  padding: "30px",
+                   background: hoveredCard === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",  // Cyan tint on hover
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <h3
+                  className="font-subhead font-bold"
+                  style={{
+                    fontSize: "25px",
+                    color: activeMode === 1 ? "#F0F0F5" : "#BABABA",
+                    textShadow: activeMode === 1 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
+                    transition: "color 0.3s, text-shadow 0.3s",
+                  }}
+                >
+                  GLOWSTICK MODE
+                </h3>
+                <p className="font-body" style={{ fontSize: "16px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
+                  {MODES[1].body}
+                </p>
+              </div>
 
-    {/* Stealth Mode card */}
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={() => setMode(2)}
-      onMouseEnter={() => setHoveredCard(2)}
-      onMouseLeave={() => setHoveredCard(null)}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
-      aria-label="Activate Stealth Mode"
-      style={{
-        ...cardBorder(2),
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        flex: "1 0 0",
-        alignSelf: "stretch",
-        padding: "30px",
-        background: hoveredCard === 2 || activeMode === 2 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
-        cursor: "pointer",
-        transition: "all 0.3s ease",
-      }}
-    >
-      <h3
-        className="font-subhead font-bold"
-        style={{
-          fontSize: "25px",
-          color: activeMode === 2 ? "#F0F0F5" : "#BABABA",
-          textShadow: activeMode === 2 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
-          transition: "color 0.3s, text-shadow 0.3s",
-        }}
-      >
-        STEALTH MODE
-      </h3>
-      <p className="font-body" style={{ fontSize: "16px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
-        {MODES[2].body}
-      </p>
-    </div>
-  </div>
-
-  {/* Right — mode image */}
-  <div
-    style={{
-      width: "576px",
-      height: "auto",
-      flex: "1 0 0",
-      alignSelf: "stretch",
-      borderRadius: "10px",
-      border: "1px solid #4B2F81",
-      overflow: "hidden",
-      position: "relative",
-    }}
-  >
-    <AnimatePresence mode="wait">
-      <motion.img
-        key={`mode-image-${activeMode}`}
-        src={MODES[activeMode].image}
-        alt={MODES[activeMode].title}
-        variants={IMAGE_FADE}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-      />
-    </AnimatePresence>
-  </div>
-</div>
+              {/* Stealth Mode card */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => setMode(2)}
+                 onMouseEnter={() => setHoveredCard(0)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setMode(2); } }}
+                aria-label="Activate Stealth Mode"
+                style={{
+                  ...cardBorder(2),
+                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
+                  padding: "30px",
+                  background: hoveredCard === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",  // Cyan tint on hover
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <h3
+                  className="font-subhead font-bold"
+                  style={{
+                    fontSize: "25px",
+                    color: activeMode === 2 ? "#F0F0F5" : "#BABABA",
+                    textShadow: activeMode === 2 ? "0px 0px 20px rgba(0,229,255,0.75)" : "none",
+                    transition: "color 0.3s, text-shadow 0.3s",
+                  }}
+                >
+                  STEALTH MODE
+                </h3>
+                <p className="font-body" style={{ fontSize: "16px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
+                  {MODES[2].body}
+                </p>
+              </div>
+            </div>
 
             {/* Right — mode image */}
             <div
