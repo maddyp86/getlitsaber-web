@@ -169,7 +169,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   borderRadius: "800px",
   background: "rgba(30, 0, 77, 0.50)",
   filter: "blur(150px)",
-  top: "240px",      // Changed from 0px
+  top: "150px",      // Changed from 0px
   left: "320px",     // Changed from 0px
   zIndex: 0,
   position: "absolute"
