@@ -69,7 +69,7 @@ export default function LightMeetsVapor() {
           <motion.p
             className="font-body text-text-primary"
             style={{
-              fontSize: "clamp(16px, 1.5vw, 22px)",
+              fontSize: "clamp(16px, 1.5vw, 25px)",
               lineHeight: "normal",
               fontweight: 500,
               maxWidth: "600px",
