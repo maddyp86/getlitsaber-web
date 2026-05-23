@@ -212,7 +212,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 aria-label="Activate Litsaber Mode"
                 style={{
                   ...cardBorder(0),
-                  display: "flex", flexDirection: "column", gap: "20px", flex: "1 0 0", alignSelf: "stretch",
+                  display: "flex", flexDirection: "column", gap: "10px", flex: "1 0 0", alignSelf: "stretch",
                   padding: "30px",
                   background: "#100B25",
                   cursor: "pointer",
@@ -232,7 +232,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                 </h3>
 
                 {/* Toggles — THE PULL / THE BUILD */}
-                <div style={{ display: "flex", gap: "20px", width: "100%" }}>
+                <div style={{ display: "flex", gap: "10px", width: "100%" }}>
                   {PULL_BUILD.map((pb, i) => {
                     const isActive = activePullBuild === i;
                     return (
@@ -243,7 +243,6 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
                         style={{
                           flex: 1,
                           padding: "10px",
-                          height: "38px",
                           background: isActive ? "rgba(0,229,255,0.20)" : "transparent",
                           border: isActive ? "1px solid #00E5FF" : "1px solid #CCCCCC",
                           borderRadius: "2px",
