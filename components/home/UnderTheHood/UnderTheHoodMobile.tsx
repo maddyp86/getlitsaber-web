@@ -49,7 +49,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
     <section
       id="under-the-hood"
       className={`w-full overflow-hidden${className ? ` ${className}` : ""}`}
-      style={{ background: "linear-gradient(180deg, #0F0824 0%, #030923 97.64%)" }}
+      style={{ background: "linear-gradient(180deg, #0F0824 0%, #20093E 97.64%)" }}
       aria-label="Under The Hood — Engineering"
     >
       {/* Atmospheric glow */}
