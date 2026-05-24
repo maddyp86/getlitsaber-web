@@ -76,7 +76,7 @@ export interface GalleryImage {
 
 export const GALLERY_IMAGES: GalleryImage[] = [
   {
-    src: "/images/product/litsaber-packaging-light_off.JPG",
+    src: "/images/product/litsaber-lights-off.jpg",
     alt: "Litsaber OG packaging",
   },
   { src: "/images/product/litsaber-green.JPG", alt: "Litsaber in green" },
