@@ -70,7 +70,7 @@ export default function EditionsSection() {
                 {/* Descriptor line — Inter 16px, #CCC or pink accent */}
                 <p
                   className="font-body text-label font-medium uppercase"
-                  style={{ color: edition.descriptorAccent ? "#EC5793" : "#CCCCCC" }}
+                  style={{ color: edition.descriptorAccent ? "#CCCCCC" : "#CCCCCC" }}
                 >
                   {edition.descriptorLine}
                 </p>
