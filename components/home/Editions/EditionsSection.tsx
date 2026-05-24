@@ -54,7 +54,7 @@ export default function EditionsSection() {
                 {/* Title — Monoton, 35px, white */}
                 <h3
                   className="font-accent text-white uppercase"
-                  style={{ fontSize: "35px", fontWeight: 400, lineHeight: "1.2" }}
+                  style={{ fontSize: "35px", fontWeight: 400, lineHeight: "1" }}
                 >
                   {edition.title}
                 </h3>
