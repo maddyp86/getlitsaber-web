@@ -33,7 +33,7 @@ export default function GalleryBlock() {
         </div>
 
         {/* Main image */}
-        <div className="relative w-full max-w-[500px] aspect-square rounded-card overflow-hidden">
+        <div className="relative w-full w-[500px] h-[500px] aspect-square rounded-card overflow-hidden">
   <Image
     src={mainImage.src}
     alt={mainImage.alt}
