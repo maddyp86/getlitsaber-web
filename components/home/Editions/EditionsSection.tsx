@@ -7,7 +7,7 @@ export default function EditionsSection() {
       <div className="max-w-container mx-auto">
         {/* Header */}
         <div className="text-center mb-10 lg:mb-14">
-          <p className="font-label text-sm text-text-accent tracking-widest mb-3">
+          <p className="font-label text-eyebrow text-text-accent tracking-widest mb-3">
             {EYEBROW}
           </p>
           <h2
