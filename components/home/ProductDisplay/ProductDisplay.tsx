@@ -19,7 +19,7 @@ export default function ProductDisplay() {
               >
               {PRODUCT_TITLE}
             </h1>
-            <p className="font-body text-h4 text-text-secondary">
+            <p className="font-body text-subhead text-text-secondary">
               {PRODUCT_SUBTITLE}
             </p>
             <p
