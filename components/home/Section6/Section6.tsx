@@ -16,7 +16,7 @@ export default function Section6({ children }: Section6Props) {
     >
       {/* TODO: <Starfield /> — section-scoped animated canvas layer, Phase Motion */}
 
-      <div className="flex flex-col gap-section-y-mobile lg:gap-section-y relative z-base">
+      <div className="relative z-base mx-auto flex w-full max-w-[1250px] flex-col gap-section-y-mobile lg:gap-section-y">
         {children}
       </div>
     </section>
