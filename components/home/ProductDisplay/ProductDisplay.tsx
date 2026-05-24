@@ -15,7 +15,7 @@ export default function ProductDisplay() {
           {/* Title + subtitle + price */}
           <div className="flex flex-col gap-2">
             <h1 className="font-display text-h2 text-text-primary uppercase leading-tight" 
-              style={{ fontWeight:700, lineHeight:"1.1px" }}
+              style={{ fontWeight:700, lineHeight:"1.1" }}
               >
               {PRODUCT_TITLE}
             </h1>
