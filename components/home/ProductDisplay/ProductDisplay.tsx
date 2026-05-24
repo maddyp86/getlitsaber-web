@@ -34,7 +34,7 @@ export default function ProductDisplay() {
               <div
                 key={pill}
                 className="font-label text-label text-accent-cyan border border-accent-cyan/20 text-center px-3 flex items-center justify-center"
-                style={{ minHeight: "38px", fontSize:"12px" }}
+                style={{ minHeight: "38px", fontSize:"14px" }}
               >
                 {pill}
               </div>
