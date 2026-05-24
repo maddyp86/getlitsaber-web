@@ -39,7 +39,7 @@ export default function GalleryBlock() {
             alt={mainImage.alt}
             fill
             className="object-cover"
-            sizes="(max-width: 500px) 50vw"
+            sizes="width:100px"
             priority
           />
         </div>
