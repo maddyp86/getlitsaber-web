@@ -116,7 +116,7 @@ export default function CommonQuestionsDesktop() {
       {/* FAQ Grid — 2 columns */}
       <div
         className="relative z-10 grid grid-cols-2 gap-5 mx-auto"
-        style={{ maxWidth: "1100px" }}
+        style={{ maxWidth: "1250px" }}
       >
         {FAQ_ITEMS.map((item, i) => (
           <FaqCard key={item.number} item={item} index={i} visible={visible} />
