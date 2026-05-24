@@ -27,7 +27,7 @@ export default function StyleSelector() {
                 />
               </div>
               <div className="flex flex-col justify-center items-start gap-[5px] flex-1">
-                <span className="font-label font-bold text-[22px] text-text-primary leading-tight">
+                <span className="font-label font-bold text-[18px] text-text-primary leading-tight">
                   {option.label}
                 </span>
                 <span className="font-body text-label text-text-secondary leading-snug">
