@@ -33,7 +33,7 @@ export default function EditionsSection() {
               }}
             >
               {/* Top: text group */}
-              <div className="flex flex-col gap-[20px]">
+              <div className="flex flex-col gap-[15px]">
                 {/* Badge */}
                 <div
                   className="flex items-center justify-center gap-[10px] self-start"
