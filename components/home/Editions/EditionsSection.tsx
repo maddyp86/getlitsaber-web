@@ -36,7 +36,7 @@ export default function EditionsSection() {
               <div className="flex flex-col gap-[10px]">
                 {/* Badge */}
                 <div
-                  className="flex items-center justify-center gap-[20px] self-start"
+                  className="flex items-center justify-center gap-[10px] self-start"
                   style={{
                     height: "37px",
                     padding: "0 20px",
