@@ -18,7 +18,7 @@ export default function BundleAndCTA() {
           >
             <div className="flex flex-col gap-1 flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-label font-bold text-[22px] text-text-primary leading-tight">
+                <span className="font-label font-bold text-[18px] text-text-primary leading-tight">
                   {option.title}
                 </span>
                 {option.saveLabel && (
