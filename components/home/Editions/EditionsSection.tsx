@@ -22,7 +22,7 @@ export default function EditionsSection() {
         </div>
 
         {/* Cards grid — Figma: 1300px wide, gap 50px, height 406px */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-[50px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-[50px]">
           {EDITIONS.map((edition) => (
             <div
               key={edition.id}
