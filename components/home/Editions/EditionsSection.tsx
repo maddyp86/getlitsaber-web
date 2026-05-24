@@ -28,7 +28,6 @@ export default function EditionsSection() {
   return (
     <section
       id="editions"
-      className="py-section-y-mobile lg:py-section-y px-container-mobile lg:px-container"
     >
       <div className="max-w-container mx-auto">
         {/* Header */}
@@ -36,7 +35,10 @@ export default function EditionsSection() {
           <p className="font-label text-eyebrow text-text-accent tracking-widest mb-3">
             {EYEBROW}
           </p>
-          <h2 className="font-display text-h2 lg:text-h1 text-text-primary uppercase leading-none mb-4">
+          <h2
+            className="font-display font-bold text-h1 text-white uppercase text-center mb-4"
+            style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)", lineHeight: "normal" }}
+          >
             {HEADLINE}
           </h2>
           <p className="font-body text-body-sm lg:text-body text-text-secondary max-w-lg mx-auto">
