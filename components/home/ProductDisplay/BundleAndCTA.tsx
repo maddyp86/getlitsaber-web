@@ -12,7 +12,7 @@ export default function BundleAndCTA() {
         {BUNDLE_OPTIONS.map((option) => (
           <div
             key={option.id}
-            className={`bg-surface-card-deep rounded-btn p-5 flex flex-row items-start justify-between gap-4 cursor-default border ${
+            className={`bg-surface-card-deep rounded-selector rounded-btn p-5 flex flex-row items-start justify-between gap-4 cursor-default border ${
               option.active ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
