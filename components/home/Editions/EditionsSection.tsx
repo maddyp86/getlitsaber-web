@@ -83,7 +83,7 @@ export default function EditionsSection() {
               >
                 <span
                   className="font-body text-label font-medium uppercase"
-                  style={{ color: edition.ctaMuted ? "#828282" : "#00E5FF" }}
+                  style={{ color: edition.ctaColor }}
                 >
                   {edition.actionLabel}
                 </span>

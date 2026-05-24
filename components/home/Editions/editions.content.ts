@@ -14,7 +14,7 @@ export interface Edition {
   descriptorLine: string;
   descriptorAccent: boolean;
   actionLabel: string;
-  ctaMuted: boolean;
+  ctaColor: string;
   arrowSrc: string;
 }
 
@@ -30,7 +30,7 @@ export const EDITIONS: Edition[] = [
     descriptorLine: "SHIPS IN 24HRS",
     descriptorAccent: false,
     actionLabel: "SHOP NOW",
-    ctaMuted: false,
+    ctaColor: "#00E5FF",
     arrowSrc: "/images/icons/arrow-right-cyan.png",
   },
   {
@@ -44,7 +44,7 @@ export const EDITIONS: Edition[] = [
     descriptorLine: "FESTIVAL SEASON COLORWAY",
     descriptorAccent: true,
     actionLabel: "JOIN THE WAITLIST",
-    ctaMuted: false,
+    ctaColor: "#EC5793",
     arrowSrc: "/images/icons/arrow-right-pink.png",
   },
   {
@@ -58,7 +58,7 @@ export const EDITIONS: Edition[] = [
     descriptorLine: "LITSABER CONNECT, ALL IN ONE",
     descriptorAccent: true,
     actionLabel: "GET NOTIFIED",
-    ctaMuted: true,
+    ctaColor: "#828282",
     arrowSrc: "/images/icons/arrow-right-grey.png",
   },
 ];
