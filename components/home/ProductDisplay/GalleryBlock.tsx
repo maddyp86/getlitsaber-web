@@ -38,7 +38,7 @@ export default function GalleryBlock() {
     src={mainImage.src}
     alt={mainImage.alt}
     fill
-    className="object-contain"
+    className="object-cover"
     sizes="(min-width: 1024px) 500px, 50vw"
     priority
   />
