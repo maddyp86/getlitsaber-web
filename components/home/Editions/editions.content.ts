@@ -3,44 +3,62 @@ export const HEADLINE = "WHAT WE'RE SHIPPING";
 export const SUBCOPY =
   "See what's available and what's to drop soon in our inventory";
 
-export type AccentColor = "cyan" | "magenta" | "purple";
-
 export interface Edition {
   id: string;
   badge: string;
-  accentColor: AccentColor;
+  badgeBorderColor: string;
+  badgeTextColor: string;
+  cardBorderColor: string;
   title: string;
   editionLine: string;
   descriptorLine: string;
+  descriptorAccent: boolean;
   actionLabel: string;
+  ctaMuted: boolean;
+  arrowSrc: string;
 }
 
 export const EDITIONS: Edition[] = [
   {
     id: "og-silver",
     badge: "/ LIVE NOW",
-    accentColor: "cyan",
+    badgeBorderColor: "#00E5FF",
+    badgeTextColor: "#00E5FF",
+    cardBorderColor: "#00E5FF",
     title: "OG SILVER",
     editionLine: "EDITION 01  |  5,000 UNITS",
     descriptorLine: "SHIPS IN 24HRS",
+    descriptorAccent: false,
     actionLabel: "SHOP NOW",
+    ctaMuted: false,
+    arrowSrc: "/images/icons/arrow-right-cyan.png",
   },
   {
     id: "gold-edition",
     badge: "/ DROPS IN JUNE",
-    accentColor: "magenta",
+    badgeBorderColor: "#EC5793",
+    badgeTextColor: "#00E5FF",
+    cardBorderColor: "#EC5793",
     title: "GOLD EDITION",
     editionLine: "EDITION 02  |  1,000 UNITS",
     descriptorLine: "FESTIVAL SEASON COLORWAY",
+    descriptorAccent: true,
     actionLabel: "JOIN THE WAITLIST",
+    ctaMuted: false,
+    arrowSrc: "/images/icons/arrow-right-pink.png",
   },
   {
     id: "future-drops",
     badge: "/ COMING SOON",
-    accentColor: "purple",
+    badgeBorderColor: "#9764F7",
+    badgeTextColor: "#9764F7",
+    cardBorderColor: "#4B2F81",
     title: "FUTURE DROPS",
     editionLine: "EDITION 03+ TBD",
     descriptorLine: "LITSABER CONNECT, ALL IN ONE",
+    descriptorAccent: true,
     actionLabel: "GET NOTIFIED",
+    ctaMuted: true,
+    arrowSrc: "/images/icons/arrow-right-grey.png",
   },
 ];
