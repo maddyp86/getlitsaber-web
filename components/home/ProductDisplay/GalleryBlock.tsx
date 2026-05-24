@@ -43,6 +43,7 @@ export default function GalleryBlock() {
     priority
   />
 </div>
+      </div>
 
       {/* Mobile: main image on top + horizontal thumb row below */}
       <div className="flex lg:hidden flex-col gap-3">
