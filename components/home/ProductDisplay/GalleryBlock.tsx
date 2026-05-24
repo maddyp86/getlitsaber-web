@@ -33,17 +33,16 @@ export default function GalleryBlock() {
         </div>
 
         {/* Main image */}
-        <div className="relative flex-1 rounded-card overflow-hidden min-h-[500px]">
-          <Image
-            src={mainImage.src}
-            alt={mainImage.alt}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 50vw"
-            priority
-          />
-        </div>
-      </div>
+        <div className="relative w-full max-w-[500px] aspect-square rounded-card overflow-hidden">
+  <Image
+    src={mainImage.src}
+    alt={mainImage.alt}
+    fill
+    className="object-cover"
+    sizes="(min-width: 1024px) 500px, 100vw"
+    priority
+  />
+</div>
 
       {/* Mobile: main image on top + horizontal thumb row below */}
       <div className="flex lg:hidden flex-col gap-3">
