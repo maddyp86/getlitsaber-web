@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Hero from "@/components/home/Hero";
-
-const CartStoreTest = dynamic(() => import("@/components/dev/CartStoreTest"), { ssr: false });
 import StatBar from "@/components/home/StatBar";
 import BeSeen from "@/components/home/BeSeen/BeSeen";
 import ThreeModes from "@/components/home/ThreeModes/ThreeModes";
@@ -21,7 +18,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <CartStoreTest />
       <Hero />
       <StatBar />
       <BeSeen />
