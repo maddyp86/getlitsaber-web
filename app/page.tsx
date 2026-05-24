@@ -7,7 +7,7 @@ import UnderTheHood from "@/components/home/UnderTheHood/UnderTheHood";
 import LightMeetsVapor from "@/components/home/LightMeetsVapor/LightMeetsVapor";
 import WhereItLives from "@/components/home/WhereItLives/WhereItLives";
 import CommonQuestions from "@/components/home/CommonQuestions/CommonQuestions";
-import Section6 from "@/components/home/Section6/Section6";
+import WhatWereShipping from "@/components/home/WhatWereShipping/WhatWereShipping";
 import EditionsSection from "@/components/home/Editions/EditionsSection";
 import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
 
@@ -26,10 +26,10 @@ export default function HomePage() {
       <LightMeetsVapor />
       <WhereItLives />
       <CommonQuestions />
-      <Section6>
+      <WhatWereShipping>
         <EditionsSection />
         <ProductDisplay />
-      </Section6>
+      </WhatWereShipping>
     </>
   );
 }

@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
-interface Section6Props {
+interface WhatWereShippingProps {
   children: ReactNode;
 }
 
-export default function Section6({ children }: Section6Props) {
+export default function WhatWereShipping({ children }: WhatWereShippingProps) {
   return (
     <section
       className="relative py-section-y-mobile lg:py-section-y px-container-mobile lg:px-container"
