@@ -53,7 +53,7 @@ export default function BundleAndCTA() {
 
         <button
           type="button"
-          className="w-full bg-white font-label font-bold text-[22px] text-black rounded-btn py-5 px-5 cursor-default"
+          className="w-full bg-white font-label font-bold text-[22px] text-black rounded-md py-5 px-5 cursor-default"
         >
           BUY NOW
         </button>
