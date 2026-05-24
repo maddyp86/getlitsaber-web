@@ -36,9 +36,9 @@ export const EDITIONS: Edition[] = [
   {
     id: "gold-edition",
     badge: "/ DROPS IN JUNE",
-    badgeBorderColor: "#EC5793",
-    badgeTextColor: "#00E5FF",
-    cardBorderColor: "#EC5793",
+    badgeBorderColor: "#EB3E7C",
+    badgeTextColor: "#EB3E7C",
+    cardBorderColor: "#EB3E7C",
     title: "GOLD EDITION",
     editionLine: "EDITION 02  |  1,000 UNITS",
     descriptorLine: "FESTIVAL SEASON COLORWAY",
