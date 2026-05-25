@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import MobileNavDrawer from "./MobileNavDrawer";
+import { useItemCount } from "@/lib/cart/store";
+import { useCartUIActions } from "@/lib/ui/store";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -16,6 +18,8 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const itemCount = useItemCount();
+  const { openCart } = useCartUIActions();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -99,16 +103,19 @@ export default function Navbar() {
 
             {/* Cart icon */}
             <button
-              aria-label="Cart — 0 items"
+              aria-label={itemCount > 0 ? `Cart — ${itemCount} item${itemCount === 1 ? "" : "s"}` : "Cart"}
+              onClick={openCart}
               className="relative flex items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <CartIcon />
-              <span
-                className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 rounded-full bg-cta text-text-primary font-label font-bold text-[10px] leading-none"
-                aria-hidden="true"
-              >
-                0
-              </span>
+              {itemCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 rounded-full bg-cta text-text-primary font-label font-bold text-[10px] leading-none"
+                  aria-hidden="true"
+                >
+                  {itemCount}
+                </span>
+              )}
             </button>
           </div>
 
