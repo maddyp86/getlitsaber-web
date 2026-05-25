@@ -60,7 +60,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
               </p>
             </div>
 
-            <span className="font-body font-bold text-body text-text-primary flex-shrink-0 text-right">
+            <span className="font-body font-bold text-[16px] text-text-primary flex-shrink-0 text-right">
               {option.price}
             </span>
           </button>
