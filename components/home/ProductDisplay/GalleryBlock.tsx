@@ -68,7 +68,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
             aria-label={img.alt}
             className={`relative aspect-square w-full rounded-md overflow-hidden cursor-pointer transition-all duration-200 ${
               i === activeThumb
-                ? "border-2 border-accent-cyan shadow-glow-cyan brightness-100"
+                ? "border-2 border-accent-cyan brightness-100"
                 : "border border-border-inactive brightness-50 hover:brightness-100"
             }`}
           >
