@@ -13,8 +13,8 @@ export default function WaitlistCard() {
     <div
       className="flex flex-col gap-5 rounded-selector p-6 border"
       style={{
-        background: "#270513",
-        borderColor: "#EC5793",
+        background: "#120F2C",
+        borderColor: "#0E3A56",
       }}
     >
       {/* Header */}
