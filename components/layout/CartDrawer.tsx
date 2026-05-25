@@ -280,12 +280,16 @@ export default function CartDrawer() {
                 + HAVE A PROMO CODE?
               </button>
 
-              {/* View cart link */}
+              {/* View cart button */}
               <Link
                 href="/cart"
                 onClick={closeCart}
-                className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-center uppercase tracking-widest"
-                style={{ fontSize: "12px" }}
+                className="w-full py-4 font-label font-bold text-text-primary text-center uppercase tracking-widest transition-opacity hover:opacity-80 active:opacity-60 rounded-[10px]"
+                style={{
+                  fontSize: "16px",
+                  border: "1px solid rgba(110, 110, 110, 0.20)",
+                  background: "#1E1D1A",
+                }}
               >
                 VIEW CART
               </Link>
