@@ -33,7 +33,7 @@ export default function ProductDisplay() {
               {PRODUCT_SUBTITLE}
             </p>
             <p
-              className="font-label font-bold text-h4 text-text-primary"
+              className="font-label font-bold text-h3 text-text-primary"
               style={{ textShadow: "0 0 10px #EC5793" }}
             >
               {displayPrice}
