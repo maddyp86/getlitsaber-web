@@ -39,7 +39,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
                 <span className="font-label font-bold text-[18px] text-text-primary leading-tight">
                   {option.label}
                 </span>
-                <span className="font-body text-label text-text-secondary leading-snug">
+                <span className="font-body text-[12px] text-text-secondary leading-snug">
                   {option.status}
                 </span>
               </div>
