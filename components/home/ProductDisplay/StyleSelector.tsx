@@ -32,7 +32,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
                   alt={option.swatchAlt}
                   fill
                   className="object-contain"
-                  sizes="35px"
+                  sizes="25px"
                 />
               </div>
               <div className="flex flex-col justify-center items-start gap-[5px] flex-1">
