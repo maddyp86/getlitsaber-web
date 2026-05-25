@@ -54,7 +54,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
       <div className="flex flex-col gap-3">
         <button
           type="button"
-          className="w-full bg-cta font-label font-bold text-[18px] text-text-primary rounded-md py-5 px-5 cursor-default"
+          className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-default"
           style={{ textShadow: "0 0 10px rgba(236, 87, 147, 0.7)" }}
         >
           + ADD TO CART
@@ -62,7 +62,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
 
         <button
           type="button"
-          className="w-full bg-white font-label font-bold text-[18px] text-black rounded-md py-5 px-5 cursor-default"
+          className="w-full bg-white font-label font-bold text-[16px] text-black rounded-md py-4 px-4 cursor-default"
         >
           BUY NOW
         </button>
