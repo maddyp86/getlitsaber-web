@@ -15,7 +15,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
         Available Styles
       </p>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2 flex items-start">
         {STYLE_OPTIONS.map((option) => (
           <button
             key={option.id}
