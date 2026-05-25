@@ -24,7 +24,7 @@ function RadioIndicator({ checked }: { checked: boolean }) {
 export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAndCTAProps) {
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-body font-medium text-[16px] text-text-secondary uppercase">
+      <p className="font-body font-medium text-[14px] text-text-secondary uppercase">
         Select Bundle
       </p>
 
