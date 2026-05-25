@@ -131,3 +131,12 @@ export function useSubtotal(): number {
     (s) => s.items.reduce((acc, i) => acc + i.price * i.qty, 0)
   );
 }
+
+export function useCartActions(): CartActions {
+  return useCartStore((s) => ({
+    addItem: s.addItem,
+    removeItem: s.removeItem,
+    updateQty: s.updateQty,
+    clear: s.clear,
+  }));
+}

@@ -1,11 +1,32 @@
 "use client";
 
+import { useState } from "react";
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
+import { useCartActions } from "@/lib/cart/store";
 
 interface BundleAndCTAProps {
   activeBundle: "single" | "twopack";
   onBundleChange: (id: "single" | "twopack") => void;
 }
+
+const CART_LINE_MAP = {
+  single: {
+    variantId: "silver-single",
+    title: "Litsaber OG — Silver",
+    variantTitle: "Single",
+    price: 59.99,
+    qty: 1,
+    image: "/images/product/litsaber-lights-off.jpg",
+  },
+  twopack: {
+    variantId: "silver-twopack",
+    title: "Litsaber OG — Silver",
+    variantTitle: "Two Pack",
+    price: 99.99,
+    qty: 1,
+    image: "/images/product/litsaber-lights-off.jpg",
+  },
+} as const;
 
 function RadioIndicator({ checked }: { checked: boolean }) {
   return (
@@ -22,10 +43,19 @@ function RadioIndicator({ checked }: { checked: boolean }) {
 }
 
 export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAndCTAProps) {
+  const { addItem } = useCartActions();
+  const [added, setAdded] = useState(false);
+
+  function handleAddToCart() {
+    addItem(CART_LINE_MAP[activeBundle]);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <p className="font-body font-medium text-[14px] text-text-secondary uppercase">
-        Select Bundle
+        SELECT BUNDLE
       </p>
 
       {/* Bundle rows */}
@@ -71,10 +101,11 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
       <div className="flex flex-col gap-3">
         <button
           type="button"
-          className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-default"
+          onClick={handleAddToCart}
+          className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-pointer transition-opacity active:opacity-80"
           style={{ textShadow: "0 0 10px rgba(236, 87, 147, 0.7)" }}
         >
-          + ADD TO CART
+          {added ? "Added to cart" : "+ ADD TO CART"}
         </button>
 
         <button

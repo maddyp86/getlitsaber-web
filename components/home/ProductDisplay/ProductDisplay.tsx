@@ -5,6 +5,7 @@ import { PRODUCT_TITLE, PRODUCT_SUBTITLE, BUNDLE_PRICES, SPEC_PILLS } from "./pr
 import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
+import WaitlistCard from "./WaitlistCard";
 
 export default function ProductDisplay() {
   const [activeThumb, setActiveThumb] = useState(0);
@@ -56,10 +57,8 @@ export default function ProductDisplay() {
           {/* Available Styles */}
           <StyleSelector activeStyle={activeStyle} onStyleChange={setActiveStyle} />
 
-          {/* 2c seam: when Gold is selected, replace BundleAndCTA with WaitlistCard */}
           {activeStyle === "gold" ? (
-            // TODO 2c: swap to <WaitlistCard /> when gold is selected
-            <BundleAndCTA activeBundle={activeBundle} onBundleChange={setActiveBundle} />
+            <WaitlistCard />
           ) : (
             <BundleAndCTA activeBundle={activeBundle} onBundleChange={setActiveBundle} />
           )}
