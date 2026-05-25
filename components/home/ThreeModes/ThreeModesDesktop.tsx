@@ -444,18 +444,15 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
     transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
     style={{
-      width: "517px",
-      height: "auto",
       flex: "1 0 0",
       alignSelf: "stretch",
+      display: "flex",
     }}
   >
   <div
     style={{
-      width: "517px",
-      height: "auto",
-      flex: "1 0 0",
-      alignSelf: "stretch",
+      width: "100%",
+      height: "100%",
       borderRadius: "10px",
       border: "1px solid #4B2F81",
       overflow: "hidden",
