@@ -35,7 +35,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
             key={option.id}
             type="button"
             onClick={() => onBundleChange(option.id)}
-            className={`bg-surface-card-deep rounded-selector rounded-btn p-3 flex flex-row items-start gap-4 cursor-pointer border text-left transition-colors ${
+            className={`bg-surface-card-deep rounded-selector rounded-btn p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors ${
               option.id === activeBundle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
