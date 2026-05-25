@@ -26,7 +26,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
             }`}
           >
             <div className="flex items-start gap-[10px] self-stretch">
-              <div className="relative w-10 h-10 flex-shrink-0">
+              <div className="relative w-8 h-8 flex-shrink-0">
                 <Image
                   src={option.swatchSrc}
                   alt={option.swatchAlt}
