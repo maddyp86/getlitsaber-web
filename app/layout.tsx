@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { stellar, monoton, orbitron, inter, spaceMono } from "@/lib/fonts";
 import AgeGateModal from "@/components/layout/AgeGateModal";
+import CartDrawer from "@/components/layout/CartDrawer";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -48,6 +49,9 @@ export default function RootLayout({
         <main>{children}</main>
 
         <Footer />
+
+        {/* Cart drawer sits at z-drawer, available on every page */}
+        <CartDrawer />
       </body>
     </html>
   );

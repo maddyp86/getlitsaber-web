@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 import { useCartActions } from "@/lib/cart/store";
+import { useCartUIActions } from "@/lib/ui/store";
 
 interface BundleAndCTAProps {
   activeBundle: "single" | "twopack";
@@ -44,12 +44,11 @@ function RadioIndicator({ checked }: { checked: boolean }) {
 
 export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
-  const [added, setAdded] = useState(false);
+  const { openCart } = useCartUIActions();
 
   function handleAddToCart() {
     addItem(CART_LINE_MAP[activeBundle]);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    openCart();
   }
 
   return (
@@ -105,7 +104,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
           className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-pointer transition-opacity active:opacity-80"
           style={{ textShadow: "0 0 10px rgba(236, 87, 147, 0.7)" }}
         >
-          {added ? "Added to cart" : "+ ADD TO CART"}
+          + ADD TO CART
         </button>
 
         <button

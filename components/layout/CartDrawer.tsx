@@ -1,0 +1,311 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  useCartItems,
+  useItemCount,
+  useSubtotal,
+  useCartActions,
+} from "@/lib/cart/store";
+import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
+
+export default function CartDrawer() {
+  const isOpen = useIsCartOpen();
+  const { closeCart } = useCartUIActions();
+  const items = useCartItems();
+  const itemCount = useItemCount();
+  const subtotal = useSubtotal();
+  const { removeItem, updateQty } = useCartActions();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  // Lock body scroll while open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("scroll-locked");
+      closeButtonRef.current?.focus();
+    } else {
+      document.body.classList.remove("scroll-locked");
+    }
+    return () => {
+      document.body.classList.remove("scroll-locked");
+    };
+  }, [isOpen]);
+
+  // Escape key closes drawer
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) closeCart();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, closeCart]);
+
+  const panelVariants = prefersReducedMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 },
+        exit: { opacity: 0 },
+      }
+    : {
+        hidden: { x: "100%" },
+        visible: { x: 0 },
+        exit: { x: "100%" },
+      };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            key="cart-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-drawer"
+            style={{ backgroundColor: "rgba(10, 5, 24, 0.75)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)" }}
+            aria-hidden="true"
+            onClick={closeCart}
+          />
+
+          {/* Drawer panel */}
+          <motion.div
+            key="cart-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Your cart"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={panelVariants}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed top-0 right-0 bottom-0 z-drawer flex flex-col"
+            style={{
+              width: "min(480px, 100vw)",
+              backgroundColor: "#0E0825",
+              borderLeft: "1px solid rgba(157, 95, 255, 0.25)",
+              boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            {/* Header */}
+            <div
+              className="flex-shrink-0 flex items-center justify-between px-6 py-5"
+              style={{ borderBottom: "1px solid rgba(240, 240, 245, 0.08)" }}
+            >
+              <div className="flex items-center gap-3">
+                <h2
+                  className="font-display font-bold text-text-primary uppercase tracking-wider"
+                  style={{ fontSize: "30px", lineHeight: 1 }}
+                >
+                  YOUR CART
+                </h2>
+                <span
+                  className="font-label text-accent-cyan uppercase tracking-widest"
+                  style={{ fontSize: "12px" }}
+                >
+                  {itemCount} {itemCount === 1 ? "ITEM" : "ITEMS"}
+                </span>
+              </div>
+              <button
+                ref={closeButtonRef}
+                onClick={closeCart}
+                aria-label="Close cart"
+                className="flex items-center justify-center w-9 h-9 text-text-muted hover:text-text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan rounded"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+
+            {/* Item list — flex-1 so it fills available space, scrolls internally */}
+            <div className="flex-1 overflow-y-auto">
+              <ul className="divide-y divide-white/[0.08]">
+                {items.map((line) => (
+                  <li key={line.id} className="flex gap-4 px-6 py-5">
+                    {/* Product image */}
+                    <div
+                      className="flex-shrink-0 rounded-md overflow-hidden"
+                      style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
+                    >
+                      <Image
+                        src={line.image}
+                        alt={line.title}
+                        width={100}
+                        height={100}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Details */}
+                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                      <div>
+                        <p
+                          className="font-subhead font-bold text-text-primary leading-tight"
+                          style={{ fontSize: "16px" }}
+                        >
+                          {line.title}
+                        </p>
+                        <p
+                          className="font-label text-text-muted mt-0.5"
+                          style={{ fontSize: "12px" }}
+                        >
+                          {line.variantTitle}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between mt-3">
+                        {/* Qty stepper */}
+                        <div
+                          className="flex items-center gap-0"
+                          style={{
+                            border: "1px solid rgba(240, 240, 245, 0.15)",
+                            borderRadius: "4px",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <button
+                            onClick={() => updateQty(line.id, line.qty - 1)}
+                            aria-label={`Decrease quantity of ${line.title}`}
+                            className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
+                            style={{ fontSize: "18px", lineHeight: 1 }}
+                          >
+                            −
+                          </button>
+                          <span
+                            className="w-8 h-8 flex items-center justify-center font-label text-text-primary"
+                            style={{ fontSize: "14px", borderLeft: "1px solid rgba(240, 240, 245, 0.15)", borderRight: "1px solid rgba(240, 240, 245, 0.15)" }}
+                          >
+                            {line.qty}
+                          </span>
+                          <button
+                            onClick={() => updateQty(line.id, line.qty + 1)}
+                            aria-label={`Increase quantity of ${line.title}`}
+                            className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
+                            style={{ fontSize: "18px", lineHeight: 1 }}
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          {/* Line price */}
+                          <span
+                            className="font-label font-bold text-accent-cyan"
+                            style={{ fontSize: "16px" }}
+                          >
+                            ${(line.price * line.qty).toFixed(2)}
+                          </span>
+                          {/* Remove */}
+                          <button
+                            onClick={() => removeItem(line.id)}
+                            aria-label={`Remove ${line.title} from cart`}
+                            className="font-label text-text-muted hover:text-text-primary underline transition-colors duration-150"
+                            style={{ fontSize: "11px" }}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Footer — non-scrolling sibling, always pinned at bottom */}
+            <div
+              className="flex-shrink-0 px-6 py-5 flex flex-col gap-3"
+              style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
+            >
+              {/* Subtotal */}
+              <div className="flex justify-between items-center">
+                <span className="font-label text-text-muted uppercase tracking-widest" style={{ fontSize: "12px" }}>SUBTOTAL</span>
+                <span className="font-label font-bold text-text-primary" style={{ fontSize: "16px" }}>${subtotal.toFixed(2)}</span>
+              </div>
+
+              {/* Shipping */}
+              <div className="flex justify-between items-center">
+                <span className="font-label text-text-muted uppercase tracking-widest" style={{ fontSize: "12px" }}>SHIPPING</span>
+                <span className="font-label text-text-muted uppercase tracking-wider" style={{ fontSize: "11px" }}>CALCULATED AT CHECKOUT</span>
+              </div>
+
+              {/* Total */}
+              <div
+                className="flex justify-between items-center pt-3"
+                style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
+              >
+                <span className="font-label font-bold text-text-primary uppercase tracking-widest" style={{ fontSize: "14px" }}>TOTAL</span>
+                <span className="font-label font-bold text-text-primary" style={{ fontSize: "20px" }}>${subtotal.toFixed(2)}</span>
+              </div>
+
+              {/* Promo code — inert */}
+              <button
+                type="button"
+                className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-left"
+                style={{ fontSize: "12px" }}
+                tabIndex={0}
+              >
+                + HAVE A PROMO CODE?
+              </button>
+
+              {/* Checkout button */}
+              <button
+                type="button"
+                className="w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80"
+                style={{
+                  fontSize: "16px",
+                  backgroundColor: "#EC5793",
+                  textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
+                  // TODO Phase 4: Shopify checkoutUrl
+                }}
+              >
+                CHECKOUT
+              </button>
+
+              {/* Trust badges */}
+              <div className="flex flex-col items-center gap-1 pt-1">
+                <div className="flex items-center gap-2">
+                  <CardBadge label="VISA" />
+                  <CardBadge label="MC" />
+                  <CardBadge label="AMEX" />
+                  <CardBadge label="DISC" />
+                </div>
+                <p className="font-label text-text-muted text-center" style={{ fontSize: "10px" }}>
+                  Authorize.net · Free 14-day returns
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CardBadge({ label }: { label: string }) {
+  return (
+    <span
+      className="font-label text-text-muted"
+      style={{
+        fontSize: "9px",
+        border: "1px solid rgba(240, 240, 245, 0.15)",
+        borderRadius: "3px",
+        padding: "2px 4px",
+        letterSpacing: "0.05em",
+      }}
+    >
+      {label}
+    </span>
+  );
+}
