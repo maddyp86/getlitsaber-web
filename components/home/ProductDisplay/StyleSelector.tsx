@@ -33,7 +33,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
                   alt={option.swatchAlt}
                   fill
                   className="object-contain"
-                  sizes="32px"
+                  sizes="25px"
                 />
               </div>
               <div className="flex flex-col gap-[4px] min-w-0">
@@ -47,9 +47,9 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
             </div>
 
             {/* Checkmark — takes up reserved space so layout never shifts */}
-            <div className="flex-shrink-0 w-[25px] h-[25px] flex items-center justify-center">
+            <div className="flex-shrink-0 w-[20px] h-[20px] flex items-center justify-center">
               {option.id === activeStyle && (
-                <div className="w-[25px] h-[25px] rounded-full bg-accent-cyan flex items-center justify-center">
+                <div className="w-[20px] h-[20px] rounded-full bg-accent-cyan flex items-center justify-center">
                   <Image
                     src="/images/icons/checkmark-icon.svg"
                     alt="Selected"
