@@ -133,10 +133,9 @@ export function useSubtotal(): number {
 }
 
 export function useCartActions(): CartActions {
-  return useCartStore((s) => ({
-    addItem: s.addItem,
-    removeItem: s.removeItem,
-    updateQty: s.updateQty,
-    clear: s.clear,
-  }));
+  const addItem = useCartStore((s) => s.addItem);
+  const removeItem = useCartStore((s) => s.removeItem);
+  const updateQty = useCartStore((s) => s.updateQty);
+  const clear = useCartStore((s) => s.clear);
+  return { addItem, removeItem, updateQty, clear };
 }
