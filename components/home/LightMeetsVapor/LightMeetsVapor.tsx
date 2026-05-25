@@ -1,19 +1,30 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import ResponsiveImage from "@/components/primitives/ResponsiveImage";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export default function LightMeetsVapor() {
-  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const prefersReduced = useReducedMotion();
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["-15%", "15%"]
+  );
+
   useEffect(() => {
     if (prefersReduced) { setVisible(true); return; }
-    const el = ref.current;
+    const el = textRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
@@ -25,22 +36,32 @@ export default function LightMeetsVapor() {
 
   return (
     <section
+      ref={sectionRef}
       id="light-meets-vapor"
       className="relative w-full overflow-hidden [aspect-ratio:375/600] lg:[aspect-ratio:8/5]"
       aria-label="Where Light and Vapor Meet"
     >
-      {/* Full-bleed background image — desktop / mobile swap */}
-      <ResponsiveImage
-        desktopSrc="/images/home/light-meets-vapor.jpg"
-        mobileSrc="/images/home/light-meets-vapor-mobile.jpg"
-        alt=""
-      />
+      {/* Parallax background image — scaled up so edges don't show during travel */}
+      <motion.div
+        className="absolute inset-0 scale-110"
+        style={{ y }}
+      >
+        <picture className="absolute inset-0 block">
+          <source media="(min-width: 1024px)" srcSet="/images/home/light-meets-vapor.jpg" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/home/light-meets-vapor-mobile.jpg"
+            alt=""
+            className="absolute inset-0 object-cover object-center w-full h-full"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </motion.div>
 
-     
-
-      {/* Text block — top-aligned on mobile (content starts near top), centered on desktop */}
+      {/* Text block — top-aligned on mobile, centered on desktop */}
       <div
-        ref={ref}
+        ref={textRef}
         className="absolute inset-0 flex flex-col justify-start lg:justify-center px-[20px] lg:px-[70px] pt-[40px]"
       >
         <div className="w-full lg:max-w-[750px] lg:-translate-y-24" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
