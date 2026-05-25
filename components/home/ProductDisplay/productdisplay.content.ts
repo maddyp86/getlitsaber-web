@@ -77,8 +77,8 @@ export const GALLERY_IMAGES: GalleryImage[] = [
     src: "/images/product/litsaber-lights-off.jpg",
     alt: "Litsaber OG packaging",
   },
-  { src: "/images/product/litsaber-green.JPG", alt: "Litsaber in green" },
-  { src: "/images/product/litsaber-blue.JPG", alt: "Litsaber in blue" },
-  { src: "/images/product/litsaber-white.JPG", alt: "Litsaber in white" },
-  { src: "/images/product/litsaber-red.JPG", alt: "Litsaber in red" },
+  { src: "/images/product/litsaber-green.jpg", alt: "Litsaber in green" },
+  { src: "/images/product/litsaber-blue.jpg", alt: "Litsaber in blue" },
+  { src: "/images/product/litsaber-white.jpg", alt: "Litsaber in white" },
+  { src: "/images/product/litsaber-red.jpg", alt: "Litsaber in red" },
 ];
