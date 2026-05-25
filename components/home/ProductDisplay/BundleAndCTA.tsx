@@ -43,7 +43,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
 
             <div className="flex flex-col gap-1 flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-label font-bold text-[18px] text-text-primary leading-tight">
+                <span className="font-label font-bold text-[16px] text-text-primary leading-tight">
                   {option.title}
                 </span>
                 {option.saveLabel && (
