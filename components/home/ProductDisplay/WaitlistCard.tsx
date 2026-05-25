@@ -62,7 +62,7 @@ export default function WaitlistCard() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Your email address"
         className="w-full rounded-md px-4 py-3 font-body text-[14px] text-text-primary placeholder:text-text-muted outline-none border border-transparent focus:border-accent-cyan transition-colors"
-        style={{ background: "rgba(255,255,255,0.06)" }}
+        style={{ background: "rgba(255,255,255,0.06)" , borderColor: "#373767"}}
       />
 
       {/* CTA */}
