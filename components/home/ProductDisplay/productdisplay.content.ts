@@ -79,6 +79,6 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   },
   { src: "/images/product/litsaber-green.jpg", alt: "Litsaber in green" },
   { src: "/images/product/litsaber-blue.jpg", alt: "Litsaber in blue" },
-  { src: "/images/product/litsaber-white.jpgG", alt: "Litsaber in white" },
+  { src: "/images/product/litsaber-white.jpg", alt: "Litsaber in white" },
   { src: "/images/product/litsaber-red.jpg", alt: "Litsaber in red" },
 ];
