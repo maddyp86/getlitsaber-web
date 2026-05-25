@@ -58,18 +58,18 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
         </button>
       </div>
 
-      {/* Horizontal thumbnail strip — scrollable, shows ~4 at a time */}
-      <div className="flex flex-row gap-2 overflow-x-auto pb-1 no-scrollbar">
+      {/* Horizontal thumbnail strip — equal-width tiles filling the strip */}
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${GALLERY_IMAGES.length}, 1fr)` }}>
         {GALLERY_IMAGES.map((img, i) => (
           <button
             key={img.src}
             type="button"
             onClick={() => onThumbClick(i)}
             aria-label={img.alt}
-            className={`relative w-[100px] h-[100px] flex-shrink-0 rounded-md overflow-hidden cursor-pointer transition-opacity ${
+            className={`relative aspect-square w-full rounded-md overflow-hidden cursor-pointer transition-all duration-200 ${
               i === activeThumb
-                ? "border-2 border-accent-cyan shadow-glow-cyan opacity-100"
-                : "border border-border-inactive opacity-60 hover:opacity-100"
+                ? "border-2 border-accent-cyan shadow-glow-cyan brightness-100"
+                : "border border-border-inactive brightness-50 hover:brightness-100"
             }`}
           >
             <Image
@@ -77,7 +77,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               alt={img.alt}
               fill
               className="object-cover"
-              sizes="100px"
+              sizes="(min-width: 1024px) calc((50vw - 140px) / 6), calc((100vw - 26px) / 6)"
             />
           </button>
         ))}
