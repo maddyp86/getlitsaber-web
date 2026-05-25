@@ -56,6 +56,7 @@ const config: Config = {
           verified: tokens.color.semantic.verified.value,
           rating: tokens.color.semantic.rating.value,
           discount: tokens.color.semantic.discount.value,
+          error: tokens.color.semantic.error.value,
         },
       },
       fontFamily: {
