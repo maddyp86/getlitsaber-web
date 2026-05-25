@@ -26,7 +26,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
             }`}
           >
             {/* Swatch + label group */}
-            <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="flex items-start gap-3 flex-1 min-w-0">
               <div className="relative w-8 h-8 flex-shrink-0">
                 <Image
                   src={option.swatchSrc}
