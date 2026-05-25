@@ -28,6 +28,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
+  const [contentVisible, setContentVisible] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -47,6 +49,18 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (reducedMotion) { setContentVisible(true); return; }
+    const el = contentRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setContentVisible(true); observer.disconnect(); } },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reducedMotion]);
 
   const cardBorder = (i: number): React.CSSProperties =>
     activeMode === i
@@ -101,7 +115,13 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
       {/* BOTTOM: Pick Your Energy + mode cards */}
       <div className="px-container-mobile pb-[80px]">
         {/* Sub-section heading */}
-        <div className="flex flex-col gap-[12px] mb-[40px] text-center items-center">
+        <motion.div
+          ref={contentRef}
+          className="flex flex-col gap-[12px] mb-[40px] text-center items-center"
+          initial={{ opacity: 0, y: 24 }}
+          animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
           <p className="font-label text-eyebrow text-accent-cyan tracking-widest uppercase">
             THREE MODES
           </p>
@@ -111,12 +131,17 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
           <p className="font-body text-text-secondary" style={{ fontSize: "18px" }}>
             Three lighting behaviors built into the device designed to be as dynamic as your social life. Whether you&apos;re at a festival, a party, or just chilling with friends, adapts to every vibe you bring.
           </p>
-        </div>
+        </motion.div>
 
         {/* Mode cards stacked */}
         <div className="flex flex-col gap-[30px]">
 
           {/* Litsaber Mode */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: EASE }}
+          >
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div
               role="button"
@@ -204,8 +229,14 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
               </div>
             )}
           </div>
+          </motion.div>
 
           {/* Glowstick Mode */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.28, ease: EASE }}
+          >
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div
               role="button"
@@ -244,8 +275,14 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
               </div>
             )}
           </div>
+          </motion.div>
 
           {/* Stealth Mode */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.41, ease: EASE }}
+          >
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div
               role="button"
@@ -284,6 +321,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
               </div>
             )}
           </div>
+          </motion.div>
         </div>
       </div>
     </section>

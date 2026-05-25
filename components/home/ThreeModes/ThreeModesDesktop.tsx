@@ -31,6 +31,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [contentVisible, setContentVisible] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -50,6 +52,18 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (reducedMotion) { setContentVisible(true); return; }
+    const el = contentRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setContentVisible(true); observer.disconnect(); } },
+      { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reducedMotion]);
 
   const cardBorder = (i: number): React.CSSProperties => {
   const isActive = activeMode === i;
@@ -214,7 +228,13 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   }}
         >
           {/* "Pick Your Energy" heading group */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center" }}>
+          <motion.div
+            ref={contentRef}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
             <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
               THREE MODES
             </p>
@@ -230,7 +250,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             >
               Three lighting behaviors built into the device designed to be as dynamic as your social life. Whether you&apos;re at a festival, a party, or just chilling with friends, adapts to every vibe you bring.
             </p>
-          </div>
+          </motion.div>
 
 {/* Modes row: cards LEFT, image RIGHT */}
 <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
@@ -239,6 +259,12 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "20px", flex: "1 0 0", alignSelf: "stretch" }}>
 
     {/* Litsaber Mode card */}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
+      style={{ flex: "1 0 0", alignSelf: "stretch" }}
+    >
     <div
       role="button"
       tabIndex={0}
@@ -319,8 +345,15 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         </AnimatePresence>
       </div>
     </div>
+    </motion.div>
 
     {/* Glowstick Mode card */}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.6, delay: 0.28, ease: EASE }}
+      style={{ flex: "1 0 0", alignSelf: "stretch" }}
+    >
     <div
       role="button"
       tabIndex={0}
@@ -357,8 +390,15 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {MODES[1].body}
       </p>
     </div>
+    </motion.div>
 
     {/* Stealth Mode card */}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.6, delay: 0.41, ease: EASE }}
+      style={{ flex: "1 0 0", alignSelf: "stretch" }}
+    >
     <div
       role="button"
       tabIndex={0}
@@ -395,9 +435,21 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         {MODES[2].body}
       </p>
     </div>
+    </motion.div>
   </div>
 
   {/* Right — mode image */}
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+    transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+    style={{
+      width: "517px",
+      height: "auto",
+      flex: "1 0 0",
+      alignSelf: "stretch",
+    }}
+  >
   <div
     style={{
       width: "517px",
@@ -423,6 +475,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       />
     </AnimatePresence>
   </div>
+  </motion.div>
 </div>
 
  </div>
