@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   useCartItems,
@@ -122,6 +123,32 @@ export default function CartDrawer() {
 
             {/* Item list — flex-1 so it fills available space, scrolls internally */}
             <div className="flex-1 overflow-y-auto">
+              {items.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center gap-6 px-8 text-center">
+                  <div
+                    className="flex items-center justify-center w-20 h-20 rounded-full"
+                    style={{ border: "1px solid rgba(240, 240, 245, 0.15)" }}
+                  >
+                    <EmptyBagIcon />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="font-subhead font-bold text-text-primary" style={{ fontSize: "22px" }}>
+                      Nothing here yet.
+                    </p>
+                    <p className="font-body text-text-muted" style={{ fontSize: "14px" }}>
+                      Your Litsaber is one tap away.
+                    </p>
+                  </div>
+                  <Link
+                    href="/shop/litsaber-og"
+                    onClick={closeCart}
+                    className="font-label font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-90 active:opacity-75 px-10 py-4 rounded-md"
+                    style={{ fontSize: "14px", backgroundColor: "#00E5FF" }}
+                  >
+                    SHOP NOW →
+                  </Link>
+                </div>
+              ) : (
               <ul className="divide-y divide-white/[0.08]">
                 {items.map((line) => (
                   <li key={line.id} className="flex gap-4 px-6 py-5">
@@ -213,9 +240,11 @@ export default function CartDrawer() {
                   </li>
                 ))}
               </ul>
+              )}
             </div>
 
-            {/* Footer — non-scrolling sibling, always pinned at bottom */}
+            {/* Footer — hidden when cart is empty */}
+            {items.length === 0 ? null : (
             <div
               className="flex-shrink-0 px-6 py-5 flex flex-col gap-3"
               style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
@@ -278,10 +307,21 @@ export default function CartDrawer() {
                 </p>
               </div>
             </div>
+            )}
           </motion.div>
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+function EmptyBagIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="rgba(240,240,245,0.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
   );
 }
 
