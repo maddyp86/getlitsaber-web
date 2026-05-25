@@ -83,6 +83,7 @@ const config: Config = {
         none: tokens.radius.none.value,
         sm: tokens.radius.sm.value,
         md: tokens.radius.md.value,
+        selector: tokens.radius.selector.value,
         pill: tokens.radius.pill.value,
         card: tokens.radius.card.value,
         full: tokens.radius.full.value,

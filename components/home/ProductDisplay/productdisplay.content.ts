@@ -1,6 +1,10 @@
 export const PRODUCT_TITLE = "LITSABER OG - Silver";
 export const PRODUCT_SUBTITLE = "The Interactive 510 Battery";
-export const PRODUCT_PRICE = "$59.99";
+
+export const BUNDLE_PRICES: Record<"single" | "twopack", string> = {
+  single: "$59.99",
+  twopack: "$99.99",
+};
 
 export const SPEC_PILLS = [
   "USB-C charging",
@@ -12,12 +16,11 @@ export const SPEC_PILLS = [
 ] as const;
 
 export interface StyleOption {
-  id: string;
+  id: "silver" | "gold";
   label: string;
   status: string;
   swatchSrc: string;
   swatchAlt: string;
-  active: boolean;
 }
 
 export const STYLE_OPTIONS: StyleOption[] = [
@@ -27,7 +30,6 @@ export const STYLE_OPTIONS: StyleOption[] = [
     status: "In Stock. Ships in 24 hrs",
     swatchSrc: "/images/product/litsaber-silver.svg",
     swatchAlt: "Silver Litsaber",
-    active: true,
   },
   {
     id: "gold",
@@ -35,17 +37,15 @@ export const STYLE_OPTIONS: StyleOption[] = [
     status: "Coming Soon",
     swatchSrc: "/images/product/litsaber-gold.svg",
     swatchAlt: "Gold Litsaber",
-    active: false,
   },
 ];
 
 export interface BundleOption {
-  id: string;
+  id: "single" | "twopack";
   title: string;
   descriptor: string;
   price: string;
   saveLabel?: string;
-  active: boolean;
 }
 
 export const BUNDLE_OPTIONS: BundleOption[] = [
@@ -54,15 +54,13 @@ export const BUNDLE_OPTIONS: BundleOption[] = [
     title: "Single",
     descriptor: "One Litsaber",
     price: "$59.99",
-    active: true,
   },
   {
-    id: "two-pack",
+    id: "twopack",
     title: "Two Pack",
     descriptor: "For the lightshow. For the partner. For the never-without",
     price: "$99.99",
     saveLabel: "SAVE $20",
-    active: false,
   },
 ];
 
