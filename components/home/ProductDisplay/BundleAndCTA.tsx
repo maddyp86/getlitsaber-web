@@ -7,6 +7,20 @@ interface BundleAndCTAProps {
   onBundleChange: (id: "single" | "twopack") => void;
 }
 
+function RadioIndicator({ checked }: { checked: boolean }) {
+  return (
+    <div
+      className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border-2 transition-colors ${
+        checked ? "border-accent-cyan bg-surface-card-deep" : "border-border-default bg-surface-card-deep"
+      }`}
+    >
+      {checked && (
+        <div className="w-2.5 h-2.5 rounded-full bg-accent-cyan" />
+      )}
+    </div>
+  );
+}
+
 export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAndCTAProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -21,10 +35,12 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
             key={option.id}
             type="button"
             onClick={() => onBundleChange(option.id)}
-            className={`bg-surface-card-deep rounded-selector rounded-btn p-3 flex flex-row items-start justify-between gap-4 cursor-pointer border text-left transition-colors ${
+            className={`bg-surface-card-deep rounded-selector rounded-btn p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors ${
               option.id === activeBundle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
+            <RadioIndicator checked={option.id === activeBundle} />
+
             <div className="flex flex-col gap-1 flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-label font-bold text-[18px] text-text-primary leading-tight">
@@ -43,6 +59,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
                 {option.descriptor}
               </p>
             </div>
+
             <span className="font-body font-bold text-body text-text-primary flex-shrink-0 text-right">
               {option.price}
             </span>
@@ -50,7 +67,7 @@ export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAnd
         ))}
       </div>
 
-      {/* CTAs — inert until Phase 2c */}
+      {/* CTAs */}
       <div className="flex flex-col gap-3">
         <button
           type="button"

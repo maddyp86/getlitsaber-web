@@ -50,6 +50,7 @@ const config: Config = {
           "tint-purple": tokens.color.surface["tint-purple"].value,
           "tint-white": tokens.color.surface["tint-white"].value,
           card: tokens.color.surface.card.value,
+          "card-deep": tokens.color.surface["card-deep"].value,
         },
         semantic: {
           verified: tokens.color.semantic.verified.value,
