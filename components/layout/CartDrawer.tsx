@@ -289,7 +289,7 @@ export default function CartDrawer() {
                 style={{
                   fontSize: "16px",
                   border: "1px solid rgba(110, 110, 110, 0.20)",
-                  background: "#1E1D1A",
+                  background: "#64748B",
                 }}
               >
                 VIEW CART
