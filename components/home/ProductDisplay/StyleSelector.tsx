@@ -11,7 +11,7 @@ interface StyleSelectorProps {
 export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelectorProps) {
   return (
     <div className="flex flex-col gap-3">
-      <p className="font-body font-medium text-[18px] text-text-secondary uppercase">
+      <p className="font-body font-medium text-[16px] text-text-secondary uppercase">
         Available Styles
       </p>
 
