@@ -1,0 +1,432 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import {
+  useCartItems,
+  useItemCount,
+  useSubtotal,
+  useCartActions,
+} from "@/lib/cart/store";
+import { TrustBadges } from "@/components/cart/TrustBadges";
+
+export default function CartPageBody() {
+  const items = useCartItems();
+  const itemCount = useItemCount();
+  const subtotal = useSubtotal();
+  const { removeItem, updateQty } = useCartActions();
+
+  return (
+    <div
+      className="min-h-screen pt-[80px]"
+      style={{ backgroundColor: "#0A0518" }}
+    >
+      <div
+        className="mx-auto w-full px-[13px] lg:px-[70px] py-10 lg:py-16"
+        style={{ maxWidth: "1400px" }}
+      >
+        {/* Page heading */}
+        <div className="flex items-baseline gap-4 mb-8 lg:mb-10">
+          <h1
+            className="font-subhead font-bold text-text-primary uppercase tracking-wider"
+            style={{ fontSize: "35px", lineHeight: 1.1 }}
+          >
+            Your cart
+          </h1>
+          {itemCount > 0 && (
+            <span
+              className="font-label text-accent-cyan uppercase tracking-widest"
+              style={{ fontSize: "14px" }}
+            >
+              {itemCount} {itemCount === 1 ? "ITEM" : "ITEMS"}
+            </span>
+          )}
+        </div>
+
+        {/* Empty state */}
+        {itemCount === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 gap-6 text-center">
+            <div
+              className="flex items-center justify-center w-20 h-20 rounded-full"
+              style={{ border: "1px solid rgba(240, 240, 245, 0.15)" }}
+            >
+              <EmptyBagIcon />
+            </div>
+            <div className="flex flex-col gap-2">
+              <p
+                className="font-subhead font-bold text-text-primary"
+                style={{ fontSize: "22px" }}
+              >
+                Your cart is empty.
+              </p>
+              <p
+                className="font-body text-text-muted"
+                style={{ fontSize: "16px" }}
+              >
+                Add a Litsaber to get started.
+              </p>
+            </div>
+            <Link
+              href="/shop/litsaber-og"
+              className="font-label font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-90 active:opacity-75 px-10 py-4 rounded-md"
+              style={{ fontSize: "14px", backgroundColor: "#00E5FF" }}
+            >
+              SHOP NOW →
+            </Link>
+          </div>
+        ) : (
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+            {/* ── Left column: items table ── */}
+            <div className="w-full lg:flex-[61]">
+              <div
+                className="rounded-[10px] overflow-hidden"
+                style={{
+                  backgroundColor: "#0F0824",
+                  border: "1px solid rgba(0, 229, 255, 0.2)",
+                }}
+              >
+                {/* Column headers — desktop only */}
+                <div
+                  className="hidden lg:grid px-6 py-3"
+                  style={{
+                    gridTemplateColumns: "100px 1fr 100px 100px 40px",
+                    gap: "16px",
+                    borderBottom: "1px solid rgba(240, 240, 245, 0.08)",
+                  }}
+                >
+                  <span
+                    className="font-label text-accent-cyan uppercase tracking-widest"
+                    style={{ fontSize: "13px" }}
+                  />
+                  <span
+                    className="font-label text-accent-cyan uppercase tracking-widest"
+                    style={{ fontSize: "13px" }}
+                  >
+                    PRODUCT
+                  </span>
+                  <span
+                    className="font-label text-accent-cyan uppercase tracking-widest text-right"
+                    style={{ fontSize: "13px" }}
+                  >
+                    PRICE
+                  </span>
+                  <span
+                    className="font-label text-accent-cyan uppercase tracking-widest text-right"
+                    style={{ fontSize: "13px" }}
+                  >
+                    TOTAL
+                  </span>
+                  <span />
+                </div>
+
+                {/* Item rows */}
+                <ul className="divide-y divide-white/[0.06]">
+                  {items.map((line) => (
+                    <li key={line.id} className="px-5 lg:px-6 py-5">
+                      {/* Mobile layout: image + details stacked */}
+                      <div className="flex gap-4">
+                        {/* Image */}
+                        <div
+                          className="flex-shrink-0 rounded-md overflow-hidden"
+                          style={{
+                            width: 100,
+                            height: 100,
+                            backgroundColor: "#120F2C",
+                          }}
+                        >
+                          <Image
+                            src={line.image}
+                            alt={line.title}
+                            width={100}
+                            height={100}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+
+                        {/* Details + controls */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-between">
+                          {/* Title row */}
+                          <div>
+                            <p
+                              className="font-subhead font-bold text-text-primary leading-tight"
+                              style={{ fontSize: "18px" }}
+                            >
+                              {line.title}
+                            </p>
+                            <p
+                              className="font-label text-text-muted mt-0.5"
+                              style={{ fontSize: "14px" }}
+                            >
+                              {line.variantTitle}
+                            </p>
+                          </div>
+
+                          {/* Mobile: price inline */}
+                          <div className="flex lg:hidden items-center gap-2 mt-1">
+                            <span
+                              className="font-label text-text-muted"
+                              style={{ fontSize: "13px" }}
+                            >
+                              ${line.price.toFixed(2)} ea
+                            </span>
+                            <span
+                              className="font-label text-text-muted"
+                              style={{ fontSize: "13px" }}
+                            >
+                              ·
+                            </span>
+                            <span
+                              className="font-label font-bold text-text-primary"
+                              style={{ fontSize: "13px" }}
+                            >
+                              ${(line.price * line.qty).toFixed(2)}
+                            </span>
+                          </div>
+
+                          {/* Stepper + remove */}
+                          <div className="flex items-center justify-between mt-3">
+                            <QtyStepper
+                              qty={line.qty}
+                              onDecrement={() =>
+                                updateQty(line.id, line.qty - 1)
+                              }
+                              onIncrement={() =>
+                                updateQty(line.id, line.qty + 1)
+                              }
+                              decrementLabel={`Decrease quantity of ${line.title}`}
+                              incrementLabel={`Increase quantity of ${line.title}`}
+                            />
+                            <button
+                              onClick={() => removeItem(line.id)}
+                              aria-label={`Remove ${line.title} from cart`}
+                              className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center justify-center w-7 h-7"
+                              style={{ fontSize: "18px", lineHeight: 1 }}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Desktop: price + total columns */}
+                        <div className="hidden lg:flex flex-col items-end justify-between ml-4" style={{ minWidth: "180px" }}>
+                          <div className="flex gap-8">
+                            <span
+                              className="font-label text-text-muted text-right"
+                              style={{ fontSize: "15px", minWidth: "80px" }}
+                            >
+                              ${line.price.toFixed(2)}
+                            </span>
+                            <span
+                              className="font-label font-bold text-text-primary text-right"
+                              style={{ fontSize: "15px", minWidth: "80px" }}
+                            >
+                              ${(line.price * line.qty).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Continue shopping */}
+              <div className="mt-4">
+                <Link
+                  href="/shop/litsaber-og"
+                  className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 uppercase tracking-widest"
+                  style={{ fontSize: "12px" }}
+                >
+                  ← CONTINUE SHOPPING
+                </Link>
+              </div>
+            </div>
+
+            {/* ── Right column: order summary ── */}
+            <div className="w-full lg:flex-[39]">
+              <div
+                className="rounded-[10px] p-6 flex flex-col gap-4"
+                style={{
+                  backgroundColor: "#110826",
+                  border: "1px solid rgba(0, 229, 255, 0.2)",
+                }}
+              >
+                {/* Heading */}
+                <h2
+                  className="font-subhead font-bold text-accent-cyan uppercase tracking-wider"
+                  style={{ fontSize: "20px" }}
+                >
+                  ORDER SUMMARY
+                </h2>
+
+                {/* Line rows */}
+                <div className="flex flex-col gap-3">
+                  <SummaryRow
+                    label="Subtotal"
+                    value={`$${subtotal.toFixed(2)}`}
+                  />
+                  <SummaryRow label="Shipping" value="AT CHECKOUT" muted />
+                  <SummaryRow
+                    label="Estimated tax"
+                    value="AT CHECKOUT"
+                    muted
+                  />
+                </div>
+
+                {/* Promo code — inert */}
+                <button
+                  type="button"
+                  className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-left"
+                  style={{ fontSize: "13px" }}
+                >
+                  + HAVE A PROMO CODE?
+                </button>
+
+                {/* Divider */}
+                <div
+                  style={{ borderTop: "1px solid rgba(240, 240, 245, 0.10)" }}
+                />
+
+                {/* Total */}
+                <div className="flex justify-between items-center">
+                  <span
+                    className="font-body font-bold text-text-primary"
+                    style={{ fontSize: "18px" }}
+                  >
+                    Total
+                  </span>
+                  <span
+                    className="font-body font-bold text-text-primary"
+                    style={{ fontSize: "22px" }}
+                  >
+                    ${subtotal.toFixed(2)}
+                  </span>
+                </div>
+
+                {/* Checkout button — inert until Phase 4 */}
+                <button
+                  type="button"
+                  className="w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest"
+                  style={{
+                    fontSize: "16px",
+                    backgroundColor: "#EC5793",
+                    textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
+                    // TODO Phase 4: Shopify checkoutUrl
+                  }}
+                >
+                  CHECKOUT →
+                </button>
+
+                {/* Trust badges */}
+                <TrustBadges />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
+
+function QtyStepper({
+  qty,
+  onDecrement,
+  onIncrement,
+  decrementLabel,
+  incrementLabel,
+}: {
+  qty: number;
+  onDecrement: () => void;
+  onIncrement: () => void;
+  decrementLabel: string;
+  incrementLabel: string;
+}) {
+  return (
+    <div
+      className="flex items-center"
+      style={{
+        border: "1px solid rgba(240, 240, 245, 0.15)",
+        borderRadius: "4px",
+        overflow: "hidden",
+      }}
+    >
+      <button
+        onClick={onDecrement}
+        aria-label={decrementLabel}
+        className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
+        style={{ fontSize: "18px", lineHeight: 1 }}
+      >
+        −
+      </button>
+      <span
+        className="w-8 h-8 flex items-center justify-center font-label text-text-primary"
+        style={{
+          fontSize: "14px",
+          borderLeft: "1px solid rgba(240, 240, 245, 0.15)",
+          borderRight: "1px solid rgba(240, 240, 245, 0.15)",
+        }}
+      >
+        {qty}
+      </span>
+      <button
+        onClick={onIncrement}
+        aria-label={incrementLabel}
+        className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
+        style={{ fontSize: "18px", lineHeight: 1 }}
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
+function SummaryRow({
+  label,
+  value,
+  muted = false,
+}: {
+  label: string;
+  value: string;
+  muted?: boolean;
+}) {
+  return (
+    <div className="flex justify-between items-center">
+      <span
+        className="font-label text-text-muted uppercase tracking-widest"
+        style={{ fontSize: "13px" }}
+      >
+        {label}
+      </span>
+      <span
+        className={`font-label uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
+        style={{ fontSize: muted ? "11px" : "15px" }}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function EmptyBagIcon() {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      stroke="rgba(240,240,245,0.35)"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+}
