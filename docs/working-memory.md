@@ -122,7 +122,7 @@ A live log of the build, decisions made, and story beats captured along the way.
 - "LITSABER OG +" PDP title — is the `+` intentional?
 - 2-Pack "SAVE $20" badge math is $19.99 — round up or keep?
 - FAQ Contact page mentions competitor "Danksaber" by name — keep, reframe, or remove?
-- Empty Section 6 (1440×1820) on desktop homepage between FAQs and Reviews
+- ~~Empty Section 6 (1440×1820) on desktop homepage between FAQs and Reviews~~ → now built as the `WhatWereShipping` section (Editions row + ProductDisplay), Phase 1a/1b complete
 - FAQ #3 placeholder copy on homepage ("How long does the battery last?")
 - Contact FAQ answers are mostly boilerplate placeholder — need real copy pre-launch
 
@@ -351,41 +351,6 @@ Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMP
 
 ---
 
-#### Phase 2 — Common Questions section (2026-05-23) ✅
-
-**What was built:** 4-file CommonQuestions section following the established split-component pattern from ADR-003.
-
-**Files:**
-- `components/home/CommonQuestions/commonquestions.content.ts` — eyebrow, headline, 6 FAQ items with number/question/answer shape
-- `components/home/CommonQuestions/CommonQuestionsDesktop.tsx` — 2-column grid layout, centered header
-- `components/home/CommonQuestions/CommonQuestionsMobile.tsx` — single-column stack, left-aligned header
-- `components/home/CommonQuestions/CommonQuestions.tsx` — CSS-toggle wrapper (`hidden lg:block` / `lg:hidden`)
-
-**Design decisions:**
-- Static, always-expanded cards — no accordion (confirmed with user; Figma shows all answers visible)
-- Question font: Orbitron bold 18px (`font-subhead`) per user spec
-- Answer font: Inter regular 16px `#CCC` per user spec
-- Number label: Space Mono cyan (`font-label`, `text-text-accent`)
-- Card background: `#110826` (`bg-background-elevated`), `border-border-pill`, `rounded-card` (16px)
-- Desktop grid: 2-column, `gap-5`, `max-width: 1100px` centered — matches UnderTheHood feature card pattern
-- Background glow orb desktop: `800×800px`, purple radial gradient (`rgba(30,0,77,0.40)` → `rgba(54,0,140,0.40)` → `rgba(16,8,35,0.40)`), `blur(150px)`, centered
-- Background glow orb mobile: `375×375px`, `rgba(30, 0, 77, 0.75)`, `blur(150px)`, centered
-
-**Motion:** MOTION.md signature easing `cubic-bezier(0.16, 1, 0.3, 1)` at 700–800ms. Desktop cards stagger in reading order (row×200ms + col×100ms). Mobile cards cascade 80ms apart. Header eyebrow reveals first, headline 100ms later. One-shot IntersectionObserver. `prefers-reduced-motion` collapses all to instant.
-
-**FAQ #3 copy resolved:** Figma had placeholder text for "How long does the battery last?" User supplied production answer: 800mAh cobalt cell, USB-C under 75 minutes, 300+ recharge cycles.
-
-**Wired into:** `app/page.tsx` after `<WhereItLives />`. Build passes clean — 16 static routes.
-
-**Story beats captured**
-
-| # | Beat | Tag |
-|---|------|-----|
-| 27 | "The FAQ section design called for no accordion — all six answers permanently visible. Most implementations default to collapse-on-load to save space. Here the right call was the obvious one: trust the Figma. The designer knew buyers approaching a purchase decision need to scan all six answers fast, not click-to-reveal them one at a time. Reading the design intent before reaching for a pattern." | `pm-discipline` |
-| 28 | "FAQ #3 had placeholder copy in Figma ('Most 510 batteries are designed to disappear in your pocket...') — the same text as Q1, copy-pasted. Caught it in the content file, flagged it, user supplied the real production answer. Another case where having the content layer separated from the component layer makes inconsistencies visible before they ship." | `pm-discipline`, `discovery` |
-
----
-
 ### Editions + Commerce section — build-phasing plan (2026-05-23, planning)
 
 The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inline PDP-style product display, Figma node `3312:2`). This is the frame previously logged as the empty "Section 6" open question — now resolved as this feature. Planned the build before writing any code because it bundles UI, cart state, form capture, and a payment integration that, done in one pass, would produce something that looks right and breaks on real commerce data.
@@ -409,9 +374,35 @@ The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inli
 
 ---
 
+### WhatWereShipping — Phase 1a + 1b built (2026-05-23) ✅
 
+Static layout for both children of the section is built, reviewed, and committed (repo `getlitsaber-web`, `components/home/`).
 
-Storefront API client, typed responses, cart via Shopify Cart API (not local state), checkout handoff via `checkoutUrl`, webhook handlers for inventory.
+**Built:**
+- `components/home/Editions/` — the 3 CTA boxes (OG Silver / Gold Edition / Future Drops). One responsive component (3-up grid → stacked), per-card accent (cyan/magenta/purple) via a static `ACCENT_CLASSES` lookup (avoids Tailwind JIT string-interpolation trap). Action links inert (Phase 3 wires them). [Phase 1a]
+- `components/home/ProductDisplay/` — gallery (vertical thumb strip left of main on desktop, stacked on mobile; 5 thumbs, packaging hero is thumb 1), title/subtitle/price, 6 rectangular spec pills, StyleSelector (Silver active / Gold "Coming Soon"), BundleAndCTA (Single active / Two Pack, both CTAs inert). Silver hardcoded active; no selection or cart logic yet. [Phase 1b]
+- `components/home/WhatWereShipping/` — `position: relative` wrapper. Gradient bg over `#0A0518`, `box-shadow 0 4px 4px rgba(0,0,0,.25)`, owns all section padding + vertical rhythm. Inner column `mx-auto w-full max-w-[1250px]`. TODO mount point for the section-scoped `<Starfield>` (Phase Motion). Renders `<Editions />` then `<ProductDisplay />`. **Renamed from `Section6` 2026-05-23** — "Section 6" is a Figma artifact name, retired in code.
+
+**Decisions locked during the build:**
+- Title is `LITSABER OG - Silver` (Stellar). Subtitle `The Interactive 510 Battery` (Inter 25px, muted). Price Space Mono 55px (`text-h2`) + pink glow. (Bolt kept guessing Monoton/eyebrow fonts because it can't reach Figma — corrected against node `3335:54` each time.)
+- Sizes snap to the existing type scale: 50px Figma values → `text-h2` (55px). No one-off 50px token added.
+- New tokens added rather than inline hex: `#120F2C` (card-deep bg), `#424242` (inactive border), `r=10`, `r=5`.
+- Two Pack copy: "For the lightshow. For the partner. For the never-without" (partner, not duel).
+- Editions box actions CONFIRMED: Box1 → Shop page (navigate, no modal); Box2 → Gold waitlist modal; Box3 → general email-list modal. Resolves the earlier modal-vs-scroll open question — all modals/navigation are Phase 3.
+
+**Workflow learning:** Bolt cannot pull Figma (login wall) — it reconstructs visuals from prompt text and guesses fonts/copy/radii. Mitigation now standing: Claude pulls the Figma node and hands Bolt exact specs (fonts, px, copy, hex) rather than trusting Bolt to "have enough from the codebase audit." Every Bolt plan gets checked against the real node before code.
+
+**Story beat captured**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 29 | "My builder couldn't see the design file — it was reconstructing the screen from my written description and quietly guessing fonts, copy, and corner radii. Three rounds in I stopped trusting 'I have enough from the codebase' and changed the workflow: I pull the exact spec from the design node and hand it over as literal values — this font, this pixel size, this hex, this verbatim string. The lesson isn't about one tool; it's that when a collaborator is working blind, the fix is to remove the guessing, not to re-check the guesses. Cheaper to feed exact specs than to debug plausible-looking wrong ones." | `pm-discipline`, `ai-collaboration` |
+
+---
+
+### Phase 4 — Shopify Integration + Reviews Provider (pending)
+
+Storefront API client, typed responses, cart via Shopify Cart API (swap the local store's action bodies, not the component layer), checkout handoff via `checkoutUrl`, webhook handlers for inventory.
 
 **Plus:** Reviews provider integration (whichever is chosen pre-Phase 2 per ADR-002).
 

@@ -46,7 +46,7 @@ When Figma and the spec docs disagree, the spec docs win. Always.
 - **`tokens.json` overrides Figma values.** Do not inline a hex Figma shows if a named token exists. Same for spacing, fonts, radii, z-index.
 - **`COMPONENTS.md` overrides Figma layer structure.** Render the components the spec describes, not whatever ad-hoc nesting Figma uses.
 - **Use Figma for:** layout proportions, spacing intent, imagery placement, visual hierarchy
-- **Ignore Figma's:** hidden frames, debug guides, variant prototyping artifacts, inconsistent copy, the empty "Section 6" placeholder frame
+- **Ignore Figma's:** hidden frames, debug guides, variant prototyping artifacts, inconsistent copy. (The frame Figma labels "Section 6" is NOT a placeholder — it is the WhatWereShipping section, now built. See commerce phasing below.)
 
 **Figma file reference:** `cuBHq4i5XibiqCyleuZFHO`. Key nodes:
 - Desktop homepage: `3216:33`
@@ -194,10 +194,11 @@ This is the most complex feature in the build. The governing rule: **build all U
 - **Gold** = coming soon → does NOT add to cart; opens the **waitlist modal** (same form as the "Gold Edition" Editions box).
 - **Two Pack** = two of the Silver SKU shipped together, modeled as one logical cart line ($99.99). No separate product/variant. See "Bundle SKU strategy" above.
 
-**Editions row — three boxes, three actions:**
-- Box 1 "OG Silver / SHOP NOW" → link to `/shop/litsaber-og`.
-- Box 2 "Gold Edition / JOIN THE WAITLIST" → opens Gold waitlist modal → submits to a **HubSpot form**.
-- Box 3 "Future Drops / GET NOTIFIED" → opens notify modal → submits to a **HubSpot form**.
+**Editions row — three boxes, three actions (CONFIRMED 2026-05-23 — all three open as described, no longer open questions):**
+- Box 1 "OG Silver / SHOP NOW" → navigates to the Shop page (`/shop/litsaber-og`). No modal.
+- Box 2 "Gold Edition / JOIN THE WAITLIST" → opens a **modal** (Gold waitlist) → submits to a **HubSpot form**.
+- Box 3 "Future Drops / GET NOTIFIED" → opens a **modal** (general email list signup, NOT Gold-specific) → submits to a **HubSpot form**.
+- Note: this resolves the earlier open question about whether Box 2 used a modal vs. scroll-to-Gold. It is a modal. The inline Gold-waitlist card that appears inside the ProductDisplay (when the Gold style is selected, Figma `3703:7914` Variant2) is a SEPARATE surface from these modals — same intent (waitlist capture), different placement. Both ultimately submit to HubSpot.
 
 **Email confirmations route through HubSpot — do NOT build a backend for this.** Both the Gold waitlist and Future Drops signups submit to HubSpot forms; a HubSpot workflow sends the confirmation email and the contact lands in the CRM (portal `244547358`). Two new HubSpot forms are needed (Gold Waitlist, Future Drops) — created/confirmed by Matt before Phase 3 form wiring. Region is `na2`. Existing form IDs (wholesale, contact) are in the stack notes; reuse the same embed pattern.
 
@@ -209,7 +210,9 @@ This is the most complex feature in the build. The governing rule: **build all U
 3. **Phase 3 — drawers, pages, forms.** (3a) Add-to-cart slide-out drawer (reads store). (3b) `/cart` page (reads store, qty edit + remove). (3c) Gold waitlist + Future Drops modals → HubSpot. (3d) Wire the three Editions box actions.
 4. **Phase 4 — Shopify, last and isolated.** (4a) Storefront API client + env vars, fetch real product/variants. (4b) Swap store action bodies to Shopify cart mutations. (4c) Wire Buy Now / checkout to `checkoutUrl` redirect.
 
-**Figma nodes for this feature** (file `cuBHq4i5XibiqCyleuZFHO`): Editions section `3312:2`; product selector `3703:7914`; add-to-cart drawer `3668:6263`; cart page `3668:5358`. Desktop and mobile mocks both exist — default to one responsive component per chunk per ADR-003; only split out a `*Mobile.tsx` if a chunk's responsive logic becomes unmanageable mid-build. Do not pre-split.
+**Figma nodes for this feature** (file `cuBHq4i5XibiqCyleuZFHO`): Editions section `3312:2`; product display `3335:54` (NOT `3703:7914` — that is only the styles/bundle/CTA sub-block, a 2-variant component instance); add-to-cart drawer `3668:6263`; cart page `3668:5358`. Desktop and mobile mocks both exist — default to one responsive component per chunk per ADR-003; only split out a `*Mobile.tsx` if a chunk's responsive logic becomes unmanageable mid-build. Do not pre-split.
+
+**Component naming (the Figma "Section 6" frame):** Figma labels this frame "Section 6" — that is a Figma artifact name, NOT the code name. In the repo it is `components/home/WhatWereShipping/` (a `position: relative` wrapper carrying the section's gradient background + a `max-w-[1250px]` centered inner column + a TODO mount point for the section-scoped `<Starfield>` motion layer). It renders two children: `components/home/Editions/` (the 3 CTA boxes, built Phase 1a) and `components/home/ProductDisplay/` (the gallery + selectors + CTAs, built Phase 1b). The wrapper owns all section padding and vertical rhythm; the children carry none. Never call the component "Section6" — that name has been retired.
 
 ---
 
