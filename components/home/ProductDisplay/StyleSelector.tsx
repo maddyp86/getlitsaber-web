@@ -15,7 +15,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
         Available Styles
       </p>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         {STYLE_OPTIONS.map((option) => (
           <button
             key={option.id}
@@ -25,7 +25,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
               option.id === activeStyle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
-            <div className="flex items-start gap-[11px] self-stretch">
+            <div className="flex items-start gap-[10px] self-stretch">
               <div className="relative w-12 h-12 flex-shrink-0">
                 <Image
                   src={option.swatchSrc}
