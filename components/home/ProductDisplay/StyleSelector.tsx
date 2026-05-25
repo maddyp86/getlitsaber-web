@@ -21,7 +21,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
             key={option.id}
             type="button"
             onClick={() => onStyleChange(option.id)}
-            className={`bg-surface-card-deep rounded-selector p-2 flex flex-col items-start gap-[30px] cursor-pointer border text-left transition-colors ${
+            className={`bg-surface-card-deep rounded-selector p-3 flex flex-col items-start gap-[30px] cursor-pointer border text-left transition-colors ${
               option.id === activeStyle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
