@@ -3,8 +3,13 @@
 import Image from "next/image";
 import { GALLERY_IMAGES } from "./productdisplay.content";
 
-export default function GalleryBlock() {
-  const mainImage = GALLERY_IMAGES[0];
+interface GalleryBlockProps {
+  activeThumb: number;
+  onThumbClick: (i: number) => void;
+}
+
+export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlockProps) {
+  const mainImage = GALLERY_IMAGES[activeThumb];
 
   return (
     <>
@@ -13,12 +18,14 @@ export default function GalleryBlock() {
         {/* Thumb strip */}
         <div className="flex flex-col gap-2 flex-shrink-0">
           {GALLERY_IMAGES.map((img, i) => (
-            <div
+            <button
               key={img.src}
-              className={`relative w-[100px] h-[100px] rounded-md overflow-hidden flex-shrink-0 cursor-default ${
-                i === 0
+              type="button"
+              onClick={() => onThumbClick(i)}
+              className={`relative w-[100px] h-[100px] rounded-md overflow-hidden flex-shrink-0 cursor-pointer ${
+                i === activeThumb
                   ? "border-2 border-accent-cyan shadow-glow-cyan"
-                  : "border border-border-inactive"
+                  : "border border-border-inactive opacity-60 hover:opacity-100 transition-opacity"
               }`}
             >
               <Image
@@ -28,21 +35,21 @@ export default function GalleryBlock() {
                 className="object-cover"
                 sizes="100px"
               />
-            </div>
+            </button>
           ))}
         </div>
 
         {/* Main image */}
         <div className="relative w-full w-[500px] h-[500px] aspect-square rounded-card overflow-hidden">
-  <Image
-    src={mainImage.src}
-    alt={mainImage.alt}
-    fill
-    className="object-cover"
-    sizes="(min-width: 1024px) 500px, 50vw"
-    priority
-  />
-</div>
+          <Image
+            src={mainImage.src}
+            alt={mainImage.alt}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 500px, 50vw"
+            priority
+          />
+        </div>
       </div>
 
       {/* Mobile: main image on top + horizontal thumb row below */}
@@ -60,12 +67,14 @@ export default function GalleryBlock() {
 
         <div className="flex flex-row gap-2 overflow-x-auto pb-1">
           {GALLERY_IMAGES.map((img, i) => (
-            <div
+            <button
               key={img.src}
-              className={`relative w-[100px] h-[100px] flex-shrink-0 rounded-md overflow-hidden cursor-default ${
-                i === 0
+              type="button"
+              onClick={() => onThumbClick(i)}
+              className={`relative w-[100px] h-[100px] flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${
+                i === activeThumb
                   ? "border-2 border-accent-cyan shadow-glow-cyan"
-                  : "border border-border-inactive"
+                  : "border border-border-inactive opacity-60 hover:opacity-100 transition-opacity"
               }`}
             >
               <Image
@@ -75,7 +84,7 @@ export default function GalleryBlock() {
                 className="object-cover"
                 sizes="100px"
               />
-            </div>
+            </button>
           ))}
         </div>
       </div>

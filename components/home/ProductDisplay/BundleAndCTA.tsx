@@ -1,6 +1,13 @@
+"use client";
+
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 
-export default function BundleAndCTA() {
+interface BundleAndCTAProps {
+  activeBundle: "single" | "twopack";
+  onBundleChange: (id: "single" | "twopack") => void;
+}
+
+export default function BundleAndCTA({ activeBundle, onBundleChange }: BundleAndCTAProps) {
   return (
     <div className="flex flex-col gap-4">
       <p className="font-body font-medium text-body text-text-secondary uppercase">
@@ -10,10 +17,12 @@ export default function BundleAndCTA() {
       {/* Bundle rows */}
       <div className="flex flex-col gap-3">
         {BUNDLE_OPTIONS.map((option) => (
-          <div
+          <button
             key={option.id}
-            className={`bg-surface-card-deep rounded-selector rounded-btn p-5 flex flex-row items-start justify-between gap-4 cursor-default border ${
-              option.active ? "border-accent-cyan" : "border-border-inactive"
+            type="button"
+            onClick={() => onBundleChange(option.id)}
+            className={`bg-surface-card-deep rounded-selector rounded-btn p-5 flex flex-row items-start justify-between gap-4 cursor-pointer border text-left transition-colors ${
+              option.id === activeBundle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
             <div className="flex flex-col gap-1 flex-1 min-w-0">
@@ -37,11 +46,11 @@ export default function BundleAndCTA() {
             <span className="font-body font-bold text-body text-text-primary flex-shrink-0 text-right">
               {option.price}
             </span>
-          </div>
+          </button>
         ))}
       </div>
 
-      {/* CTAs */}
+      {/* CTAs — inert until Phase 2c */}
       <div className="flex flex-col gap-3">
         <button
           type="button"

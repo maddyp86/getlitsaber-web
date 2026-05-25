@@ -1,7 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import { STYLE_OPTIONS } from "./productdisplay.content";
 
-export default function StyleSelector() {
+interface StyleSelectorProps {
+  activeStyle: "silver" | "gold";
+  onStyleChange: (id: "silver" | "gold") => void;
+}
+
+export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelectorProps) {
   return (
     <div className="flex flex-col gap-3">
       <p className="font-body font-medium text-body text-text-secondary uppercase">
@@ -10,10 +17,12 @@ export default function StyleSelector() {
 
       <div className="grid grid-cols-2 gap-3">
         {STYLE_OPTIONS.map((option) => (
-          <div
+          <button
             key={option.id}
-            className={`bg-surface-card-deep rounded-selector p-5 flex flex-col items-start gap-[30px] cursor-default border ${
-              option.active ? "border-accent-cyan" : "border-border-inactive"
+            type="button"
+            onClick={() => onStyleChange(option.id)}
+            className={`bg-surface-card-deep rounded-selector p-5 flex flex-col items-start gap-[30px] cursor-pointer border text-left transition-colors ${
+              option.id === activeStyle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
             <div className="flex items-start gap-[11px] self-stretch">
@@ -35,7 +44,7 @@ export default function StyleSelector() {
                 </span>
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
