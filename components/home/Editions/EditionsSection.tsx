@@ -1,5 +1,5 @@
 import { EYEBROW, HEADLINE, SUBCOPY, EDITIONS } from "./editions.content";
-import EditionActionButton from "./EditionActionButton";
+import EditionCard from "./EditionCard";
 
 export default function EditionsSection() {
   return (
@@ -24,71 +24,7 @@ export default function EditionsSection() {
         {/* Cards grid — Figma: 1300px wide, gap 50px, height 406px */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-[50px]">
           {EDITIONS.map((edition) => (
-            <div
-              key={edition.id}
-              className="flex flex-col justify-between p-[30px]"
-              style={{
-                background: "#111026",
-                border: `1px solid ${edition.cardBorderColor}`,
-              }}
-            >
-              {/* Top: text group */}
-              <div className="flex flex-col gap-[15px]">
-                {/* Badge */}
-                <div
-                  className="flex items-center justify-center gap-[10px] self-start"
-                  style={{
-                    height: "37px",
-                    padding: "0 20px",
-                    border: `1px solid ${edition.badgeBorderColor}`,
-                  }}
-                >
-                  <span
-                    className="font-label text-label uppercase"
-                    style={{ color: edition.badgeTextColor, fontSize: "12px" }}
-                  >
-                    {edition.badge}
-                  </span>
-                </div>
-
-                {/* Title — Monoton, 35px, white */}
-                <h3
-                  className="font-accent text-white uppercase"
-                  style={{ fontSize: "35px", fontWeight: 400, lineHeight: "1.1" }}
-                >
-                  {edition.title}
-                </h3>
-
-                {/* Edition line — Inter 16px #CCC */}
-                <p
-                  className="font-body text-label uppercase"
-                  style={{ color: "#CCCCCC" }}
-                >
-                  {edition.editionLine}
-                </p>
-
-                {/* Descriptor line — Inter 16px, #CCC or pink accent */}
-                <p
-                  className="font-body text-label font-medium uppercase"
-                  style={{ color: edition.descriptorAccent ? "#CCCCCC" : "#CCCCCC" }}
-                >
-                  {edition.descriptorLine}
-                </p>
-              </div>
-
-              {/* Bottom: CTA group */}
-              <div
-                className="pt-4 mt-6"
-                style={{ borderTop: "1px solid rgba(136, 136, 136, 0.3)" }}
-              >
-                <EditionActionButton
-                  action={edition.action}
-                  label={edition.actionLabel}
-                  ctaColor={edition.ctaColor}
-                  arrowSrc={edition.arrowSrc}
-                />
-              </div>
-            </div>
+            <EditionCard key={edition.id} {...edition} />
           ))}
         </div>
       </div>

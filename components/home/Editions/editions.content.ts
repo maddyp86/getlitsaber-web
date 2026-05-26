@@ -14,7 +14,12 @@ export interface Edition {
   badge: string;
   badgeBorderColor: string;
   badgeTextColor: string;
+  /** Full-saturation border color shown on hover */
   cardBorderColor: string;
+  /** Reduced-opacity border color shown at rest */
+  cardBorderColorResting: string;
+  /** RGB values for the inset glow on hover, e.g. "0, 229, 255" */
+  hoverGlowRgb: string;
   title: string;
   editionLine: string;
   descriptorLine: string;
@@ -32,6 +37,8 @@ export const EDITIONS: Edition[] = [
     badgeBorderColor: "#00E5FF",
     badgeTextColor: "#00E5FF",
     cardBorderColor: "#00E5FF",
+    cardBorderColorResting: "rgba(0, 229, 255, 0.20)",
+    hoverGlowRgb: "0, 229, 255",
     title: "OG SILVER",
     editionLine: "EDITION 01  |  5,000 UNITS",
     descriptorLine: "SHIPS IN 24HRS",
@@ -47,6 +54,8 @@ export const EDITIONS: Edition[] = [
     badgeBorderColor: "#EB3E7C",
     badgeTextColor: "#EB3E7C",
     cardBorderColor: "#EB3E7C",
+    cardBorderColorResting: "rgba(235, 62, 124, 0.20)",
+    hoverGlowRgb: "235, 62, 124",
     title: "GOLD EDITION",
     editionLine: "EDITION 02  |  1,000 UNITS",
     descriptorLine: "FESTIVAL SEASON COLORWAY",
@@ -61,7 +70,9 @@ export const EDITIONS: Edition[] = [
     badge: "/ COMING SOON",
     badgeBorderColor: "#9764F7",
     badgeTextColor: "#9764F7",
-    cardBorderColor: "#4B2F81",
+    cardBorderColor: "#9764F7",
+    cardBorderColorResting: "rgba(151, 100, 247, 0.20)",
+    hoverGlowRgb: "151, 100, 247",
     title: "FUTURE DROPS",
     editionLine: "EDITION 03+ TBD",
     descriptorLine: "LITSABER CONNECT, ALL IN ONE",
