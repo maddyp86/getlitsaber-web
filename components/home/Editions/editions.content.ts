@@ -1,7 +1,13 @@
+import type { ModalName } from "@/lib/ui/store";
+
 export const EYEBROW = "EDITIONS";
 export const HEADLINE = "WHAT WE'RE SHIPPING";
 export const SUBCOPY =
   "See what's available and what's to drop soon in our inventory";
+
+export type EditionAction =
+  | { type: "link"; href: string }
+  | { type: "modal"; name: ModalName };
 
 export interface Edition {
   id: string;
@@ -16,6 +22,7 @@ export interface Edition {
   actionLabel: string;
   ctaColor: string;
   arrowSrc: string;
+  action: EditionAction;
 }
 
 export const EDITIONS: Edition[] = [
@@ -32,6 +39,7 @@ export const EDITIONS: Edition[] = [
     actionLabel: "SHOP NOW",
     ctaColor: "#00E5FF",
     arrowSrc: "/images/icons/arrow-right-cyan.png",
+    action: { type: "link", href: "/shop/litsaber-og" },
   },
   {
     id: "gold-edition",
@@ -46,6 +54,7 @@ export const EDITIONS: Edition[] = [
     actionLabel: "JOIN THE WAITLIST",
     ctaColor: "#EC5793",
     arrowSrc: "/images/icons/arrow-right-pink.png",
+    action: { type: "modal", name: "gold" },
   },
   {
     id: "future-drops",
@@ -60,5 +69,6 @@ export const EDITIONS: Edition[] = [
     actionLabel: "GET NOTIFIED",
     ctaColor: "#828282",
     arrowSrc: "/images/icons/arrow-right-grey.png",
+    action: { type: "modal", name: "general" },
   },
 ];

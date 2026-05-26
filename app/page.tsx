@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import WaitlistForm from "@/components/forms/WaitlistForm";
-import ModalTestTriggers from "@/components/dev/ModalTestTriggers";
 import Hero from "@/components/home/Hero";
 import StatBar from "@/components/home/StatBar";
 import BeSeen from "@/components/home/BeSeen/BeSeen";
@@ -32,20 +30,6 @@ export default function HomePage() {
         <EditionsSection />
         <ProductDisplay />
       </WhatWereShipping>
-
-      {/* TEMP: Phase 3c-1 isolation test — remove after HubSpot submission verified */}
-      <section className="px-[13px] lg:px-[70px] py-16 max-w-md mx-auto">
-        <WaitlistForm
-          list="gold"
-          source="isolation-test"
-          headline="Gold Waitlist Test"
-          copy="Temp test mount — remove after verification."
-          buttonLabel="JOIN WAITLIST"
-        />
-      </section>
-
-      {/* TEMP: Phase 3c-2 modal test triggers — remove before Phase 3d commit */}
-      <ModalTestTriggers />
     </>
   );
 }

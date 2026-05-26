@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { WaitlistSource } from "@/lib/forms/sources";
 
 type WaitlistList = "gold" | "general";
 type FormState = "idle" | "submitting" | "success" | "error";
@@ -41,7 +42,7 @@ interface WaitlistFormProps {
   copy: string;
   buttonLabel: string;
   /** HubSpot pageName/source — defaults to "gold-waitlist" or "general-signup" */
-  source?: string;
+  source?: WaitlistSource;
   /** Optional slash-prefixed eyebrow label above the headline (e.g. "/ GOLD EDITION") */
   eyebrow?: string;
 }

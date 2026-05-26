@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { EYEBROW, HEADLINE, SUBCOPY, EDITIONS } from "./editions.content";
+import EditionActionButton from "./EditionActionButton";
 
 export default function EditionsSection() {
   return (
@@ -78,20 +78,14 @@ export default function EditionsSection() {
 
               {/* Bottom: CTA group */}
               <div
-                className="flex items-center justify-between pt-4 mt-6"
+                className="pt-4 mt-6"
                 style={{ borderTop: "1px solid rgba(136, 136, 136, 0.3)" }}
               >
-                <span
-                  className="font-body text-label font-medium uppercase"
-                  style={{ color: edition.ctaColor }}
-                >
-                  {edition.actionLabel}
-                </span>
-                <Image
-                  src={edition.arrowSrc}
-                  alt=""
-                  width={20}
-                  height={27}
+                <EditionActionButton
+                  action={edition.action}
+                  label={edition.actionLabel}
+                  ctaColor={edition.ctaColor}
+                  arrowSrc={edition.arrowSrc}
                 />
               </div>
             </div>
