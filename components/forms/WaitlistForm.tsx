@@ -47,6 +47,8 @@ interface WaitlistFormProps {
   eyebrow?: string;
   /** Called after a successful submission */
   onSuccess?: () => void;
+  /** Strip the card border/background/padding — use when the parent is already a card */
+  cardless?: boolean;
 }
 
 export default function WaitlistForm({
@@ -57,6 +59,7 @@ export default function WaitlistForm({
   source,
   eyebrow,
   onSuccess,
+  cardless = false,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -110,8 +113,8 @@ export default function WaitlistForm({
 
   return (
     <div
-      className="flex flex-col gap-5 p-6 pt-8"
-      style={{
+      className={cardless ? "flex flex-col gap-5" : "flex flex-col gap-5 p-6 pt-8"}
+      style={cardless ? undefined : {
         borderRadius: "20px",
         border: "1px solid rgba(0, 229, 255, 0.20)",
         background: "#0F0F1F",
