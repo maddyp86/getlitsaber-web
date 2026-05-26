@@ -95,6 +95,8 @@ export function usePromoPopup(): UsePromoPopupReturn {
       if (exitBound) {
         document.removeEventListener("mouseleave", handleExitIntent);
       }
+      // Reset so the next run (triggered by age gate confirm) can re-arm.
+      armedRef.current = false;
     };
   // Only re-run when the age gate transitions from visible → dismissed.
   // All other blocking conditions are checked via refs at fire time.
