@@ -31,7 +31,7 @@ export default function FloatingPromoPopup() {
       aria-hidden={!shouldShow}
       className="promo-popup fixed z-modal flex flex-col gap-5 p-5"
       style={{
-        bottom: "24px",
+        bottom: "50px",
         right: "24px",
         width: "400px",
         maxWidth: "calc(100vw - 32px)",
