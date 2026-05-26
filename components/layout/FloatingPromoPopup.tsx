@@ -33,7 +33,8 @@ export default function FloatingPromoPopup() {
       style={{
         bottom: "24px",
         right: "24px",
-        width: "389px",
+        width: "400px",
+        height:"450px"
         maxWidth: "calc(100vw - 32px)",
         // Transform-based slide-in; CSS handles reduced-motion via class
         transform: shouldShow ? "translateX(0)" : "translateX(calc(100% + 48px))",
