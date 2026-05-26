@@ -29,9 +29,9 @@ export default function FloatingPromoPopup() {
       aria-modal="true"
       aria-label="Get $10 off your first Litsaber"
       aria-hidden={!shouldShow}
-      className="promo-popup fixed z-modal flex flex-col gap-5 p-5"
+      className="promo-popup fixed z-modal flex flex-col gap-5 p-8"
       style={{
-        bottom: "50px",
+        bottom: "24px",
         right: "24px",
         width: "400px",
         maxWidth: "calc(100vw - 32px)",
