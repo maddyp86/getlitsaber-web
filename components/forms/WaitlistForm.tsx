@@ -106,10 +106,11 @@ export default function WaitlistForm({
 
   return (
     <div
-      className="flex flex-col gap-5 rounded-selector p-6"
+      className="flex flex-col gap-5 p-6 pt-8"
       style={{
-        background: "#120F2C",
-        border: "1px solid rgba(0, 229, 255, 0.2)",
+        borderRadius: "20px",
+        border: "1px solid rgba(0, 229, 255, 0.20)",
+        background: "#0F0F1F",
       }}
     >
       {/* Header */}

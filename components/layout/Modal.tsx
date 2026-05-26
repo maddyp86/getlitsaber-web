@@ -52,14 +52,8 @@ export default function Modal({ isOpen, onClose, ariaLabel, children }: ModalPro
         role="dialog"
         aria-modal="true"
         aria-label={ariaLabel}
-        className="relative w-full rounded-card shadow-modal"
-        style={{
-          maxWidth: "480px",
-          background: "rgba(5, 5, 16, 0.60)",
-          border: "1px solid rgba(0, 229, 255, 0.20)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-        }}
+        className="relative w-full shadow-modal"
+        style={{ maxWidth: "480px" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -72,9 +66,7 @@ export default function Modal({ isOpen, onClose, ariaLabel, children }: ModalPro
           ✕
         </button>
 
-        <div className="p-6 pt-8">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
