@@ -5,7 +5,30 @@ import { useState } from "react";
 type WaitlistList = "gold" | "general";
 type FormState = "idle" | "submitting" | "success" | "error";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
+
+// Common fat-finger domains → suggested correction
+const TYPO_DOMAINS: Record<string, string> = {
+  "gmai.com":   "gmail.com",
+  "gmial.com":  "gmail.com",
+  "gamil.com":  "gmail.com",
+  "gmail.co":   "gmail.com",
+  "gnail.com":  "gmail.com",
+  "yaho.com":   "yahoo.com",
+  "yahooo.com": "yahoo.com",
+  "hotmal.com": "hotmail.com",
+  "hotmial.com":"hotmail.com",
+  "outlok.com": "outlook.com",
+  "outook.com": "outlook.com",
+  "iclod.com":  "icloud.com",
+};
+
+function getTypoSuggestion(email: string): string | null {
+  const at = email.lastIndexOf("@");
+  if (at === -1) return null;
+  const domain = email.slice(at + 1).toLowerCase();
+  return TYPO_DOMAINS[domain] ? `Did you mean ${email.slice(0, at + 1)}${TYPO_DOMAINS[domain]}?` : null;
+}
 
 const DEFAULT_SOURCE: Record<WaitlistList, string> = {
   gold: "gold-waitlist",
@@ -34,6 +57,8 @@ export default function WaitlistForm({
   const [errorMsg, setErrorMsg] = useState("");
 
   const isValid = EMAIL_RE.test(email);
+  const typoHint = isValid ? getTypoSuggestion(email) : null;
+  const canSubmit = isValid && !typoHint;
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
@@ -45,7 +70,7 @@ export default function WaitlistForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!isValid || state === "submitting") return;
+    if (!canSubmit || state === "submitting") return;
 
     setState("submitting");
 
@@ -158,11 +183,20 @@ export default function WaitlistForm({
                 {errorMsg}
               </p>
             )}
+            {typoHint && state !== "error" && (
+              <p
+                role="alert"
+                className="font-label"
+                style={{ fontSize: "12px", color: "#F59E0B" }}
+              >
+                {typoHint}
+              </p>
+            )}
           </div>
 
           <button
             type="submit"
-            disabled={!isValid || state === "submitting"}
+            disabled={!canSubmit || state === "submitting"}
             className="w-full rounded-md py-4 px-4 font-label font-bold uppercase tracking-widest transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
               fontSize: "16px",

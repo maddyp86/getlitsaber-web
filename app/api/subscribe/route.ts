@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
+
+const TYPO_DOMAINS = new Set([
+  "gmai.com", "gmial.com", "gamil.com", "gmail.co", "gnail.com",
+  "yaho.com", "yahooo.com",
+  "hotmal.com", "hotmial.com",
+  "outlok.com", "outook.com",
+  "iclod.com",
+]);
+
+function isTypoDomain(email: string): boolean {
+  const at = email.lastIndexOf("@");
+  if (at === -1) return false;
+  return TYPO_DOMAINS.has(email.slice(at + 1).toLowerCase());
+}
 
 const PORTAL_ID =
   process.env.HUBSPOT_PORTAL_ID ?? "244547358";
@@ -79,7 +93,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  if (typeof email !== "string" || !EMAIL_RE.test(email)) {
+  if (typeof email !== "string" || !EMAIL_RE.test(email) || isTypoDomain(email)) {
     return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
   }
 
