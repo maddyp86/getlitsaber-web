@@ -8,16 +8,26 @@
 
 import { create } from "zustand";
 
+export type ModalName = "gold" | "general";
+
 type UIStore = {
   isCartOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
+
+  activeModal: ModalName | null;
+  openModal: (name: ModalName) => void;
+  closeModal: () => void;
 };
 
 const useUIStore = create<UIStore>()((set) => ({
   isCartOpen: false,
   openCart: () => set({ isCartOpen: true }),
   closeCart: () => set({ isCartOpen: false }),
+
+  activeModal: null,
+  openModal: (name) => set({ activeModal: name }),
+  closeModal: () => set({ activeModal: null }),
 }));
 
 export function useIsCartOpen(): boolean {
@@ -28,4 +38,14 @@ export function useCartUIActions(): { openCart: () => void; closeCart: () => voi
   const openCart = useUIStore((s) => s.openCart);
   const closeCart = useUIStore((s) => s.closeCart);
   return { openCart, closeCart };
+}
+
+export function useActiveModal(): ModalName | null {
+  return useUIStore((s) => s.activeModal);
+}
+
+export function useModalActions(): { openModal: (name: ModalName) => void; closeModal: () => void } {
+  const openModal = useUIStore((s) => s.openModal);
+  const closeModal = useUIStore((s) => s.closeModal);
+  return { openModal, closeModal };
 }

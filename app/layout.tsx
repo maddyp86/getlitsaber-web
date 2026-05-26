@@ -5,6 +5,8 @@ import AgeGateModal from "@/components/layout/AgeGateModal";
 import CartDrawer from "@/components/layout/CartDrawer";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
+import FutureDropsModal from "@/components/modals/FutureDropsModal";
 
 export const metadata: Metadata = {
   title: {
@@ -50,8 +52,12 @@ export default function RootLayout({
 
         <Footer />
 
-        {/* Cart drawer sits at z-drawer, available on every page */}
+        {/* Cart drawer sits at z-drawer (100), available on every page */}
         <CartDrawer />
+
+        {/* Waitlist modals sit at z-modal (200), available on every page */}
+        <GoldWaitlistModal />
+        <FutureDropsModal />
       </body>
     </html>
   );
