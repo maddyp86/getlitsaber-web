@@ -17,8 +17,9 @@ export default function FutureDropsModal() {
       <WaitlistForm
         list="general"
         source="editions-futuredrops-modal"
-        headline="Get $10 Off Your First Litsaber"
-        copy="Plus early access to the Gold Edition drop and festival giveaways. No spam. Just the good stuff."
+        eyebrow="/ WHAT'S NEXT"
+        headline="FIRST LOOK AT FUTURE DROPS"
+        copy="New editions, colorways, and Litsaber Connect. Get on the list and see them before they go public."
         buttonLabel="GET NOTIFIED"
       />
     </Modal>

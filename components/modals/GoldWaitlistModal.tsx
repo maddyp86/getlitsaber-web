@@ -17,8 +17,9 @@ export default function GoldWaitlistModal() {
       <WaitlistForm
         list="gold"
         source="editions-gold-modal"
-        headline="Gold Edition Drops in June"
-        copy="Be first in line. 24hr early access and first pick before it opens to everyone."
+        eyebrow="/ GOLD EDITION — DROPS IN JUNE"
+        headline="BE FIRST TO THE GOLD DROP"
+        copy="1,000 units. Festival-season colorway. Waitlist members get 24-hour early access and first pick before it opens to everyone."
         buttonLabel="JOIN THE WAITLIST"
       />
     </Modal>

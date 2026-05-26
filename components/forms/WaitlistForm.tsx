@@ -42,6 +42,8 @@ interface WaitlistFormProps {
   buttonLabel: string;
   /** HubSpot pageName/source — defaults to "gold-waitlist" or "general-signup" */
   source?: string;
+  /** Optional slash-prefixed eyebrow label above the headline (e.g. "/ GOLD EDITION") */
+  eyebrow?: string;
 }
 
 export default function WaitlistForm({
@@ -50,6 +52,7 @@ export default function WaitlistForm({
   copy,
   buttonLabel,
   source,
+  eyebrow,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -110,6 +113,11 @@ export default function WaitlistForm({
     >
       {/* Header */}
       <div className="flex flex-col gap-2">
+        {eyebrow && (
+          <p className="font-label text-eyebrow text-text-accent tracking-widest uppercase">
+            {eyebrow}
+          </p>
+        )}
         <h3
           className="font-subhead font-bold text-text-primary uppercase leading-tight"
           style={{ fontSize: "20px" }}
