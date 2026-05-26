@@ -190,37 +190,20 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 2 continued — Homepage, PDP, Cart, etc. (pending)
+### Phase 2 — Homepage complete + Commerce Phase 2 complete (2026-05-26) ✅
 
-**Goal:** Build all 8 page content layers.
-
-**Sequencing (locked in ADR-002):**
-1. Foundation — DONE (see above)
-2. Homepage — All 11 narrative sections in scroll order
-3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data.
-4. Cart — Drawer + page + line items + promo code (mock state, no real Shopify yet)
-5. Wholesale + About — Lower-risk pages
-6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav)
-7. Contact + Policies — Templated, fastest to ship
-
-**Pre-Phase-2 decisions still pending** — see Phase 1.5 entry above.
-
----
-
-### Phase 2 — Scaffold with Bolt (in progress)
-
-**Goal:** Generate the visual layer of all 8 pages + cart UI + modals in Next.js 14, exported to GitHub at ~70% fidelity.
+**Goal:** Build all homepage sections, local cart store, cart drawer, and waitlist form + API route.
 
 **Sequencing (locked in ADR-002):**
 1. Foundation — Layout shell, Navbar, Footer, mobile drawer, age gate modal ✅
-2. Homepage — All 11 narrative sections in scroll order
-3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data.
-4. Cart — Drawer + page + line items + promo code (mock state, no real Shopify yet)
-5. Wholesale + About — Lower-risk pages
-6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav)
-7. Contact + Policies — Templated, fastest to ship
+2. Homepage — All sections in scroll order ✅
+3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data. (pending)
+4. Cart — Drawer + page + line items + promo code (local state, no Shopify yet) ✅ (drawer + store built; `/cart` page pending)
+5. Wholesale + About — Lower-risk pages (pending)
+6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav) (pending)
+7. Contact + Policies — Templated, fastest to ship (pending)
 
-#### Phase 2 — Step 1: Foundation ✅ (deployed to Vercel)
+#### Phase 2 — Step 1: Foundation ✅ (deployed to Vercel) — see entry above
 
 **Bolt output audited.** Build passes, preview works, all 13 routes render. Quality of token integration in `tailwind.config.ts` is gold-standard — every value imports from `tokens.json`, no inline hex anywhere. Accessibility on the modal/drawer is genuinely good (scroll lock, focus management, Escape close, full ARIA labeling). Footer drift from Phase 1.5 resolved — socials + "DESIGNED IN LA" present on both mobile and desktop.
 
@@ -400,6 +383,93 @@ Static layout for both children of the section is built, reviewed, and committed
 
 ---
 
+### Phase 2 — Remaining homepage sections built (2026-05-24–26) ✅
+
+All homepage sections are now built and composed in `app/page.tsx` in scroll order:
+
+1. `<Hero />` — split desktop/mobile per ADR-003 ✅ (logged above)
+2. `<StatBar />` — continuous CSS marquee, 5 stats ✅ (logged above)
+3. `<BeSeen />` — scroll-pinned scrollytelling, 3 stages ✅ (logged above)
+4. `<ThreeModes />` — split desktop/mobile per ADR-003
+5. `<UnderTheHood />` — split desktop/mobile per ADR-003
+6. `<LightMeetsVapor />` — single responsive component, Framer Motion parallax scroll + intersection-observer text reveal
+7. `<WhereItLives />` — venue marquee (CSS animation, duplicated-track technique for seamless loop) + animated headline block with intersection observer
+8. `<CommonQuestions />` — split desktop/mobile per ADR-003
+9. `<WhatWereShipping />` wrapping `<EditionsSection />` + `<ProductDisplay />` ✅ (logged above)
+
+**ThreeModes:** Three product modes (Fade, Pulse, Strobe or equivalent) with shared `useModesState.ts` hook. Split per ADR-003 — structural layout divergence between breakpoints, not just reflow. Files: `ThreeModesDesktop.tsx`, `ThreeModesMobile.tsx`, `ThreeModes.tsx` (CSS-toggle wrapper), `modes.content.ts`, `useModesState.ts`.
+
+**UnderTheHood:** Engineering specs / exploded-view section. Split per ADR-003. Files: `UnderTheHoodDesktop.tsx`, `UnderTheHoodMobile.tsx`, `UnderTheHood.tsx`, `underthehood.content.ts`.
+
+**LightMeetsVapor:** Full-height parallax section ("WHERE LIGHT AND VAPOR MEET"). Single responsive component. Framer Motion `useScroll`/`useTransform` for parallax bg; intersection observer triggers text reveal. Separate aspect ratios per breakpoint (375/600 mobile, 8/5 desktop). Respects `prefers-reduced-motion`.
+
+**WhereItLives:** Venue/lifestyle placement section. CSS marquee strip of venue cards (same duplicated-track technique as StatBar — consistent pattern across the codebase now). Animated headline + body block. Files: `WhereItLives.tsx`, `whereitlives.content.ts`.
+
+**CommonQuestions:** FAQ accordion section. Split per ADR-003. Files: `CommonQuestionsDesktop.tsx`, `CommonQuestionsMobile.tsx`, `CommonQuestions.tsx`, `commonquestions.content.ts`.
+
+---
+
+### Phase 2 — Commerce Phase 2: Local cart store + ProductDisplay logic (2026-05-24–26) ✅
+
+**Cart store built (`lib/cart/store.ts`):**
+- Zustand + `persist` middleware (localStorage, key `litsaber-cart`)
+- State: `items: CartLine[]`, `cartId: string | null`
+- `CartLine` shape: `{ id, variantId, qty, title, variantTitle, price, image }` — matches Shopify line item shape exactly so Phase 4 swap requires no component changes
+- Actions: `addItem` (merges by variantId), `removeItem`, `updateQty` (removes if qty ≤ 0), `clear`
+- Selector hooks exported for components: `useCartItems`, `useCartId`, `useItemCount`, `useSubtotal`, `useCartActions`
+- Phase 4 swap point documented in code comments — action bodies get replaced with Shopify Storefront API mutations; nothing outside the store file changes
+
+**CartDrawer built (`components/layout/CartDrawer.tsx`):**
+- Reads from cart store + UI store; full cart UI with Framer Motion slide-in animation
+- Line items: product image, title, variant label, quantity stepper (−/count/+), line price, remove button
+- Footer: subtotal, shipping placeholder, total, promo code input placeholder, checkout CTA (pink glow button)
+- Empty state with "Shop Now" CTA
+- Keyboard Escape closes; backdrop click closes; body scroll locked when open
+- `TrustBadges` component included in drawer footer
+- Full ARIA labeling (`role="dialog"`, `aria-modal`, `aria-label`)
+- Respects `prefers-reduced-motion` via Framer Motion
+
+**ProductDisplay selection logic wired (Commerce Phase 2):**
+- `StyleSelector` (Silver/Gold) drives conditional CTA: Silver → `addItem` + opens `CartDrawer`; Gold → shows `WaitlistCard` (inline form, no cart)
+- `BundleAndCTA`: Single ($59.99) / Two Pack ($99.99) selector with "SAVE $20" display badge — one logical cart line per the locked bundle SKU strategy
+- Price display updates reactively with bundle selection
+
+---
+
+### Phase 2 — Waitlist form + /api/subscribe (2026-05-25–26) ✅
+
+**`components/forms/WaitlistForm.tsx` built:**
+- Reusable; props: `list` ("gold" | "general"), `headline`, `copy`, `buttonLabel`, optional `source`
+- States: idle → submitting → success or error. Success state replaces form in place: "You're on the list."
+- Email validation client-side; error display inline below the input field
+- Posts to `/api/subscribe` with `{ email, list, source, company }` — `company` is the honeypot field
+
+**`components/home/ProductDisplay/WaitlistCard.tsx`:** thin wrapper around `WaitlistForm` pre-configured for `list="gold"`, `source="pdp-gold-waitlist"`. Renders when Gold style is selected in `ProductDisplay`.
+
+**`app/api/subscribe/route.ts` built:**
+- Validates `email` (regex) and `list` ("gold" | "general")
+- Submits to HubSpot Submissions API v3 with `{ fields: [{ name: "email", value }], context: { pageName } }`
+- HubSpot portal `244547358`; two form IDs (`HUBSPOT_FORM_GOLD`, `HUBSPOT_FORM_GENERAL`) from env vars with fallback defaults
+
+**Spam protection added (2026-05-26) — two layers:**
+
+1. **Honeypot field** (`company`): `<input type="text">` positioned off-screen at `-9999px`, `aria-hidden="true"`, `tabIndex={-1}`, `autoComplete="off"` — in the DOM so bots fill it, unreachable by keyboard/humans. If `company` is non-empty in the POST body, the route returns `{ ok: true }` silently without forwarding to HubSpot. Bot learns nothing.
+
+2. **Rate limiter**: In-memory `Map<ip, { count, windowStart }>`, 5 submissions per 60-second window per IP. IP read from `x-forwarded-for` header (Vercel always sets this). Exceeding the cap returns `429 { ok: false, error: "Too many requests. Please try again shortly." }`. Known limitation noted in code: state is per-Vercel-instance, does not survive cold starts. Upstash Redis is the documented upgrade path if real abuse appears.
+
+**HubSpot reCAPTCHA issue (resolved):** Initial testing failed silently — the form had reCAPTCHA enabled in HubSpot. HubSpot's reCAPTCHA is designed for its embedded JS widget path, not the server-to-server API submission path. Turning it on broke the API route (the reCAPTCHA token is never generated because there's no widget to generate it). Fix: reCAPTCHA turned off on the HubSpot form side. Route protection now lives in the API route itself (honeypot + rate limit). No visible CAPTCHA. Cloudflare Turnstile deferred — add only if real abuse appears.
+
+**Temporary WaitlistForm test mount:** A `<WaitlistForm>` is currently rendered directly on `app/page.tsx` for HubSpot end-to-end verification. Remove this before Gold waitlist / Future Drops modals are built in Phase 3.
+
+**Story beats captured (Commerce Phase 2 + spam protection)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 30 | "The HubSpot form had reCAPTCHA enabled and the API submission route was returning 502 silently. The root cause wasn't our code — it was a provider feature designed for a completely different integration model. reCAPTCHA exists to protect HubSpot's embedded widget path; there's no widget on our page, no token gets generated, and the API rejects the submission. The fix was to turn off the provider's protection mechanism and own it ourselves. Good example of why you read the error before assuming the bug is in your code." | `integration-depth`, `pm-discipline` |
+| 31 | "Designed spam protection in layers: honeypot catches dumb bots at zero cost (they fill visible fields, including the off-screen one), rate limit catches repeat submissions per IP, Cloudflare Turnstile stays on the shelf unless real abuse appears. No visible CAPTCHA on the form — a conversion-critical surface shouldn't make legitimate users prove their humanity unless the threat is real. Proportionate, layered, and the most-disruptive layer is held in reserve." | `pm-discipline`, `integration-depth` |
+
+---
+
 ### Phase 4 — Shopify Integration + Reviews Provider (pending)
 
 Storefront API client, typed responses, cart via Shopify Cart API (swap the local store's action bodies, not the component layer), checkout handoff via `checkoutUrl`, webhook handlers for inventory.
@@ -443,24 +513,31 @@ Active beats are logged within each phase entry above.
 
 ## Open Questions (rolling)
 
-**Pre-Phase-2 (blocking):**
+**Phase 2 complete — unblocked for Phase 3:**
 
-None. Phase 2 unblocked.
+Phase 3 work remaining (in priority order):
+1. Remove temporary `<WaitlistForm>` test mount from `app/page.tsx`
+2. Build Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2
+3. Build Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3
+4. Wire Editions box actions: Box 1 → navigate to `/shop/litsaber-og`; Box 2 → open Gold modal; Box 3 → open Future Drops modal
+5. Build `/cart` page (reads from cart store; qty edit + remove; checkout CTA → `checkoutUrl` placeholder)
+6. Confirm Matt has created the two new HubSpot forms (Gold Waitlist, Future Drops) before wiring modals
 
-**Action items for Phase 2 kickoff:**
+**Action items still open:**
 - Email ReviewInfra to confirm: (1) does a read API exist for fetching reviews as JSON, (2) does any AI summary feature exist or is on roadmap
+- Matt to create Gold Waitlist + Future Drops HubSpot forms before Phase 3 modal wiring
 
 **Pre-launch (non-blocking until later):**
 - AI Summary final approach (pending ReviewInfra response)
 - ReviewInfra Path A vs Path B (pending ReviewInfra response)
 - Floating promo trigger logic + frequency cap
-- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now in build-phasing.
+- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now built.
 - Venue card photography sourcing
 - FAQ #3 placeholder copy (homepage)
 - Contact page FAQ body copy (mostly placeholder)
 - "Danksaber" direct competitor mention — keep, reframe, or remove
 - "LITSABER OG +" title — verify `+` is intentional
-- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-23): Two Pack is a dedicated $99.99 variant; "SAVE $20" is display copy only.
+- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-23): Two Pack is a logical single cart line, $99.99; "SAVE $20" is display copy only.
 - Engineering kinetic animation system spec
 
 **Post-launch:**
