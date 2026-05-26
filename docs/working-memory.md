@@ -190,7 +190,7 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 2 — Homepage complete + Commerce Phase 2 complete (2026-05-26) ✅
+### Phase 2 — Homepage complete + Commerce Phases 2 + 3a/3b/3c-1 complete (2026-05-26) ✅
 
 **Goal:** Build all homepage sections, local cart store, cart drawer, and waitlist form + API route.
 
@@ -409,64 +409,42 @@ All homepage sections are now built and composed in `app/page.tsx` in scroll ord
 
 ---
 
-### Phase 2 — Commerce Phase 2: Local cart store + ProductDisplay logic (2026-05-24–26) ✅
+### Phase 2a/2b/2c + Phase 3a/3b/3c-1 — Commerce UI on a local store (2026-05-25) ✅
 
-**Cart store built (`lib/cart/store.ts`):**
-- Zustand + `persist` middleware (localStorage, key `litsaber-cart`)
-- State: `items: CartLine[]`, `cartId: string | null`
-- `CartLine` shape: `{ id, variantId, qty, title, variantTitle, price, image }` — matches Shopify line item shape exactly so Phase 4 swap requires no component changes
-- Actions: `addItem` (merges by variantId), `removeItem`, `updateQty` (removes if qty ≤ 0), `clear`
-- Selector hooks exported for components: `useCartItems`, `useCartId`, `useItemCount`, `useSubtotal`, `useCartActions`
-- Phase 4 swap point documented in code comments — action bodies get replaced with Shopify Storefront API mutations; nothing outside the store file changes
+The full commerce UI is built and verified against the local cart store. Shopify is still untouched (Phase 4). Each chunk was one Bolt prompt, plan-reviewed against the real Figma node before code, committed separately.
 
-**CartDrawer built (`components/layout/CartDrawer.tsx`):**
-- Reads from cart store + UI store; full cart UI with Framer Motion slide-in animation
-- Line items: product image, title, variant label, quantity stepper (−/count/+), line price, remove button
-- Footer: subtotal, shipping placeholder, total, promo code input placeholder, checkout CTA (pink glow button)
-- Empty state with "Shop Now" CTA
-- Keyboard Escape closes; backdrop click closes; body scroll locked when open
-- `TrustBadges` component included in drawer footer
-- Full ARIA labeling (`role="dialog"`, `aria-modal`, `aria-label`)
-- Respects `prefers-reduced-motion` via Framer Motion
+**Phase 2a — local cart store (`lib/cart/store.ts`).** Zustand + `persist` (key `litsaber-cart`). Shopify-shaped `CartLine` ({ id, variantId, qty, title, variantTitle, price, image }). Actions: `addItem` (on matching variantId increments by incoming qty, else pushes a line with `crypto.randomUUID()` id), `removeItem`, `updateQty` (qty<=0 → remove), `clear`. Derived hooks: `useItemCount`, `useSubtotal`, `useCartItems`, `useCartId`. **`cartId` stays `null` through Phases 1–3** — it is Shopify's server cart handle (set by `cartCreate` in Phase 4); a local UUID there would be a value Shopify rejects, forcing Phase 4 to special-case it. The line-level `id` gets the local UUID; that's correct. Verified in isolation with a temporary DEV harness (add/increment/remove/clear, subtotal math) before any UI consumed it; harness removed before commit.
 
-**ProductDisplay selection logic wired (Commerce Phase 2):**
-- `StyleSelector` (Silver/Gold) drives conditional CTA: Silver → `addItem` + opens `CartDrawer`; Gold → shows `WaitlistCard` (inline form, no cart)
-- `BundleAndCTA`: Single ($59.99) / Two Pack ($99.99) selector with "SAVE $20" display badge — one logical cart line per the locked bundle SKU strategy
-- Price display updates reactively with bundle selection
+**Phase 2b — selection wiring.** Thumbnail click-to-swap, style select (Silver/Gold), bundle select (Single/Two Pack), and reactive headline price — all local component `useState`, NOT cart state. Active/inactive states from node `3703:7914`: active border `#00E5FF`, inactive `#424242`, card bg `#120F2C`.
 
----
+**Phase 2c — conditional CTA.** Silver + ADD TO CART → `addItem` then opens the drawer. Gold → swaps the bundle+CTA region for the inline `WaitlistCard` at the 2b seam. BUY NOW stays inert (Phase 4 Shopify checkout).
 
-### Phase 2 — Waitlist form + /api/subscribe (2026-05-25–26) ✅
+**Bug — `useCartActions` infinite render loop.** First implementation returned a fresh object literal `{ addItem, removeItem, ... }` from a single Zustand selector. Zustand compares selected values by reference; a new object every render reads as "changed," triggering re-render → new object → re-render. React killed it with "Maximum update depth exceeded." Fix: select each action individually (`useCartStore((s) => s.addItem)`), since action functions are created once in `create()` and keep stable references. Root principle: when a system decides "did this change?" by identity, you must hand it stable identities — a fresh wrapper reads as perpetual change. The hook abstraction was kept; only its internals changed.
 
-**`components/forms/WaitlistForm.tsx` built:**
-- Reusable; props: `list` ("gold" | "general"), `headline`, `copy`, `buttonLabel`, optional `source`
-- States: idle → submitting → success or error. Success state replaces form in place: "You're on the list."
-- Email validation client-side; error display inline below the input field
-- Posts to `/api/subscribe` with `{ email, list, source, company }` — `company` is the honeypot field
+**Phase 3a — UI store + CartDrawer.** New `lib/ui/store.ts` (Zustand, no persist) holding `isCartOpen` + `openCart`/`closeCart` — deliberately separate from cart *data*. CartDrawer mounted once in the root layout (openable site-wide), flex-column (fixed header / `flex-1` scrolling list / pinned footer), slide-in with `prefers-reduced-motion` fallback, Esc + backdrop close, focus management. Reads everything from the store — no hardcoded Figma mock values. NO empty state in the drawer (it only opens via `openCart`, which only fires after `addItem`, so zero-items is unreachable). A "VIEW CART" link was added to the drawer footer (navigates to `/cart` + closes drawer) so the cart page isn't orphaned — the navbar icon opens the drawer rather than navigating.
 
-**`components/home/ProductDisplay/WaitlistCard.tsx`:** thin wrapper around `WaitlistForm` pre-configured for `list="gold"`, `source="pdp-gold-waitlist"`. Renders when Gold style is selected in `ProductDisplay`.
+**Navbar cart badge wiring.** The cart icon was built in the foundation phase with a hardcoded `0` and no handler — an unfinished element, not a regression. Wired to `useItemCount()` (badge hidden at 0, pluralized aria-label) and `openCart()`.
 
-**`app/api/subscribe/route.ts` built:**
-- Validates `email` (regex) and `list` ("gold" | "general")
-- Submits to HubSpot Submissions API v3 with `{ fields: [{ name: "email", value }], context: { pageName } }`
-- HubSpot portal `244547358`; two form IDs (`HUBSPOT_FORM_GOLD`, `HUBSPOT_FORM_GENERAL`) from env vars with fallback defaults
+**Phase 3b — `/cart` page.** RSC shell + `CartPageBody` client component. Reuses Navbar/Footer from layout; the "FESTIVAL DROP LIST" email signup in the Figma node was deliberately deferred to 3c (it's a HubSpot form). Two-column desktop / stacked mobile, items table + Order Summary, all store-driven. Empty state LIVES HERE (the page is directly reachable via the drawer link and direct URL, unlike the drawer). The shared trust-badge block was extracted to `components/cart/TrustBadges.tsx` and imported by both drawer and cart page rather than duplicated.
 
-**Spam protection added (2026-05-26) — two layers:**
+**Phase 3c-1 — HubSpot seam + reusable WaitlistForm.** Decided custom-form → HubSpot Submission API, NOT HubSpot's embed script (the embed injects HubSpot markup that fights the dark/cyan design and blocks the in-place success state). Route handler `app/api/subscribe/route.ts` accepts `{ email, list }`, maps `list` → form ID server-side, POSTs to `api.hsforms.com/submissions/v3/integration/submit/{portal}/{formId}`. No API key needed — the Forms Submission API is public/keyless (same path the embed uses); the CRM API would need a token but we're not touching it. Form IDs live in env (server-only, no `NEXT_PUBLIC_`) with literal fallbacks; the orphaned `NEXT_PUBLIC_HUBSPOT_PORTAL_ID` was removed. `WaitlistForm` is one reusable component (`list`, `headline`, `copy`, `buttonLabel`, `source`) with an idle→submitting→success→error state machine, email-only, replace-in-place success. `semantic.error` (`#F56565`) added to `tokens.json` + `tailwind.config.ts` rather than borrowing CTA pink for errors. `WaitlistCard` reduced to a thin wrapper over `WaitlistForm`.
 
-1. **Honeypot field** (`company`): `<input type="text">` positioned off-screen at `-9999px`, `aria-hidden="true"`, `tabIndex={-1}`, `autoComplete="off"` — in the DOM so bots fill it, unreachable by keyboard/humans. If `company` is non-empty in the POST body, the route returns `{ ok: true }` silently without forwarding to HubSpot. Bot learns nothing.
+- **HubSpot IDs:** portal `244547358`, region `na2`, Gold form `d499701a-eb43-4c0e-a6cd-b56a57a98433`, General/$X-off form `2a41aa81-1b55-4bcd-97e5-b2b3fe23ee69`. (Offer amount $5 vs $10 still to reconcile in copy.)
+- **reCAPTCHA 502:** first live submission returned 502 — the route faithfully reporting that HubSpot rejected the POST. Cause: reCAPTCHA was enabled on the HubSpot form, which blocks the custom-API path. Turned off in HubSpot; submission then succeeded and the contact landed in the CRM.
+- **Spam protection (replacing reCAPTCHA):** since the submission endpoint is public, protection moves to our layer — honeypot field (silently 200s without forwarding if filled) + per-IP rate limit in the route. Cloudflare Turnstile deferred unless real abuse appears. Sized for dumb volume bots, not a targeted attack; no user friction.
 
-2. **Rate limiter**: In-memory `Map<ip, { count, windowStart }>`, 5 submissions per 60-second window per IP. IP read from `x-forwarded-for` header (Vercel always sets this). Exceeding the cap returns `429 { ok: false, error: "Too many requests. Please try again shortly." }`. Known limitation noted in code: state is per-Vercel-instance, does not survive cold starts. Upstash Redis is the documented upgrade path if real abuse appears.
+**Still open from this stretch:** WaitlistForm border was specced to cyan-20% per the 2c Figma node — confirm it didn't inherit a drifted value. Offer-amount copy ($5 vs $10) unreconciled. Rate-limit durability (in-memory resets on cold start vs KV/Upstash) to confirm.
 
-**HubSpot reCAPTCHA issue (resolved):** Initial testing failed silently — the form had reCAPTCHA enabled in HubSpot. HubSpot's reCAPTCHA is designed for its embedded JS widget path, not the server-to-server API submission path. Turning it on broke the API route (the reCAPTCHA token is never generated because there's no widget to generate it). Fix: reCAPTCHA turned off on the HubSpot form side. Route protection now lives in the API route itself (honeypot + rate limit). No visible CAPTCHA. Cloudflare Turnstile deferred — add only if real abuse appears.
+**Workflow note (recurring):** Bolt again reported it had updated working-memory.md when it hadn't (cf. beat #16). This entry was written manually. Bolt's self-reports describe intent, not action — the doc is maintained outside the builder.
 
-**Temporary WaitlistForm test mount:** A `<WaitlistForm>` is currently rendered directly on `app/page.tsx` for HubSpot end-to-end verification. Remove this before Gold waitlist / Future Drops modals are built in Phase 3.
-
-**Story beats captured (Commerce Phase 2 + spam protection)**
+**Story beats captured (Commerce Phases 2–3)**
 
 | # | Beat | Tag |
 |---|------|-----|
-| 30 | "The HubSpot form had reCAPTCHA enabled and the API submission route was returning 502 silently. The root cause wasn't our code — it was a provider feature designed for a completely different integration model. reCAPTCHA exists to protect HubSpot's embedded widget path; there's no widget on our page, no token gets generated, and the API rejects the submission. The fix was to turn off the provider's protection mechanism and own it ourselves. Good example of why you read the error before assuming the bug is in your code." | `integration-depth`, `pm-discipline` |
-| 31 | "Designed spam protection in layers: honeypot catches dumb bots at zero cost (they fill visible fields, including the off-screen one), rate limit catches repeat submissions per IP, Cloudflare Turnstile stays on the shelf unless real abuse appears. No visible CAPTCHA on the form — a conversion-critical surface shouldn't make legitimate users prove their humanity unless the threat is real. Proportionate, layered, and the most-disruptive layer is held in reserve." | `pm-discipline`, `integration-depth` |
+| 30 | "An infinite render loop in the cart-actions hook traced to a Zustand footgun: returning a fresh object literal from the selector. The store compares by reference, so a new object every render reads as a change, which triggers another render. The fix was to hand it stable identities — select each action individually, since they're defined once. The general lesson outlived the bug: when a system asks 'did this change?' by identity, wrapping your data in a new container each read is the same as lying to it." | `integration-depth` |
+| 31 | "Built the cart in strict dependency order — data store first, verified in isolation with a throwaway harness, THEN the selection UI, THEN the drawer and page that read it. The discipline that paid off: the store's shape mirrors Shopify, so Phase 4 swaps the store's internals without touching a single component. Each surface that reads cart state (drawer, page, navbar badge) is just a view of one source — change a quantity anywhere and all three update because there's nothing to keep in sync." | `pm-discipline`, `integration-depth` |
+| 32 | "Two surfaces that look identical needed different states. The cart drawer can never be empty — it only opens as a consequence of adding an item — so an empty state there is unreachable code. The cart page is a real destination reachable by URL, so it must handle empty. Built the states each surface can actually reach, not the states it superficially resembles." | `pm-discipline` |
+| 33 | "Chose custom form → HubSpot's public Submission API over their drop-in embed. The embed would have rendered HubSpot's own markup inside our modal — wrong fonts, wrong colors, and no way to do the calm in-place success state. The tradeoff I accepted: the submission endpoint is public and keyless, so spam protection became my job (honeypot + rate-limit) instead of HubSpot's reCAPTCHA — which I'd had to disable anyway because it was silently 502-ing the API path. Brand control over the form was worth owning the spam layer." | `integration-depth`, `tool-choice` |
 
 ---
 
@@ -513,19 +491,21 @@ Active beats are logged within each phase entry above.
 
 ## Open Questions (rolling)
 
-**Phase 2 complete — unblocked for Phase 3:**
+**Phase 3a/3b/3c-1 complete — Phase 3 remainder:**
 
 Phase 3 work remaining (in priority order):
-1. Remove temporary `<WaitlistForm>` test mount from `app/page.tsx`
-2. Build Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2
-3. Build Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3
-4. Wire Editions box actions: Box 1 → navigate to `/shop/litsaber-og`; Box 2 → open Gold modal; Box 3 → open Future Drops modal
-5. Build `/cart` page (reads from cart store; qty edit + remove; checkout CTA → `checkoutUrl` placeholder)
-6. Confirm Matt has created the two new HubSpot forms (Gold Waitlist, Future Drops) before wiring modals
+1. Build Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2
+2. Build Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3
+3. Wire Editions box actions: Box 1 → navigate to `/shop/litsaber-og`; Box 2 → open Gold modal; Box 3 → open Future Drops modal
+4. Wire "FESTIVAL DROP LIST" signup on `/cart` page (deferred from 3b)
+
+**Carry-forward items from 3c-1:**
+- Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value
+- Reconcile offer-amount copy ($5 vs $10) in General waitlist form
+- Decide rate-limit durability: current in-memory Map resets on cold start; upgrade to Upstash Redis if real abuse appears
 
 **Action items still open:**
 - Email ReviewInfra to confirm: (1) does a read API exist for fetching reviews as JSON, (2) does any AI summary feature exist or is on roadmap
-- Matt to create Gold Waitlist + Future Drops HubSpot forms before Phase 3 modal wiring
 
 **Pre-launch (non-blocking until later):**
 - AI Summary final approach (pending ReviewInfra response)
