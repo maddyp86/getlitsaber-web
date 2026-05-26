@@ -10,7 +10,46 @@ const FORM_IDS: Record<"gold" | "general", string> = {
   general: process.env.HUBSPOT_FORM_GENERAL ?? "2a41aa81-1b55-4bcd-97e5-b2b3fe23ee69",
 };
 
+// In-memory rate limiter. State is per-instance and does not survive cold
+// starts. On Vercel's serverless tier, multiple concurrent instances each
+// maintain their own map, so a bot hitting different instances could exceed
+// the limit. Upgrade to Upstash Redis for multi-instance safety if abuse appears.
+const RATE_LIMIT = 5;
+const WINDOW_MS = 60_000;
+
+interface RateEntry { count: number; windowStart: number }
+const rateMap = new Map<string, RateEntry>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+
+  if (!entry || now - entry.windowStart > WINDOW_MS) {
+    rateMap.set(ip, { count: 1, windowStart: now });
+    return false;
+  }
+
+  entry.count += 1;
+  return entry.count > RATE_LIMIT;
+}
+
+function getClientIp(req: NextRequest): string {
+  // Vercel sets x-forwarded-for on every request; take the first (client) IP.
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return "unknown";
+}
+
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { ok: false, error: "Too many requests. Please try again shortly." },
+      { status: 429 }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -27,11 +66,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Missing required fields" }, { status: 400 });
   }
 
-  const { email, list, source } = body as {
+  const { email, list, source, company } = body as {
     email: unknown;
     list: unknown;
     source?: unknown;
+    company?: unknown;
   };
+
+  // Honeypot: bots fill this field, humans never see it. Silently succeed so
+  // the bot doesn't learn it was caught.
+  if (typeof company === "string" && company.length > 0) {
+    return NextResponse.json({ ok: true });
+  }
 
   if (typeof email !== "string" || !EMAIL_RE.test(email)) {
     return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });

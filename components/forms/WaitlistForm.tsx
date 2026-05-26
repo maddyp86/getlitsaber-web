@@ -29,6 +29,7 @@ export default function WaitlistForm({
   source,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -56,6 +57,7 @@ export default function WaitlistForm({
           email,
           list,
           source: source ?? DEFAULT_SOURCE[list],
+          company: honeypot,
         }),
       });
 
@@ -109,6 +111,17 @@ export default function WaitlistForm({
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3">
+          {/* Honeypot: visible to bots, invisible to humans */}
+          <input
+            type="text"
+            name="company"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px" }}
+          />
           <div className="flex flex-col gap-1">
             <input
               type="email"
