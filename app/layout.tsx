@@ -7,6 +7,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
 import FutureDropsModal from "@/components/modals/FutureDropsModal";
+import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
 
 export const metadata: Metadata = {
   title: {
@@ -58,6 +59,9 @@ export default function RootLayout({
         {/* Waitlist modals sit at z-modal (200), available on every page */}
         <GoldWaitlistModal />
         <FutureDropsModal />
+
+        {/* Promo popup sits at z-modal (200) — gated by age confirm + conditions */}
+        <FloatingPromoPopup />
       </body>
     </html>
   );

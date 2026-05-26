@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useAgeGateActions } from "@/lib/ui/store";
 
 const COOKIE_NAME =
   process.env.NEXT_PUBLIC_AGE_GATE_COOKIE_NAME ?? "litsaber_age_verified";
@@ -26,18 +27,23 @@ function setCookie(name: string, value: string, maxAgeDays: number) {
 
 export default function AgeGateModal() {
   const [visible, setVisible] = useState(false);
+  const { setAgeGateVisible, dismissAgeGate } = useAgeGateActions();
 
   useEffect(() => {
     const verified = getCookie(COOKIE_NAME);
     if (!verified) {
       setVisible(true);
+      setAgeGateVisible(true);
       document.body.classList.add("scroll-locked");
     }
+  // setAgeGateVisible is stable (Zustand action ref never changes)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleConfirm() {
     setCookie(COOKIE_NAME, "true", COOKIE_MAX_AGE_DAYS);
     setVisible(false);
+    dismissAgeGate();
     document.body.classList.remove("scroll-locked");
   }
 

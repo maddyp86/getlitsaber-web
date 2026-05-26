@@ -18,6 +18,10 @@ type UIStore = {
   activeModal: ModalName | null;
   openModal: (name: ModalName) => void;
   closeModal: () => void;
+
+  isAgeGateVisible: boolean;
+  setAgeGateVisible: (v: boolean) => void;
+  dismissAgeGate: () => void;
 };
 
 const useUIStore = create<UIStore>()((set) => ({
@@ -28,6 +32,10 @@ const useUIStore = create<UIStore>()((set) => ({
   activeModal: null,
   openModal: (name) => set({ activeModal: name }),
   closeModal: () => set({ activeModal: null }),
+
+  isAgeGateVisible: false,
+  setAgeGateVisible: (v) => set({ isAgeGateVisible: v }),
+  dismissAgeGate: () => set({ isAgeGateVisible: false }),
 }));
 
 export function useIsCartOpen(): boolean {
@@ -48,4 +56,17 @@ export function useModalActions(): { openModal: (name: ModalName) => void; close
   const openModal = useUIStore((s) => s.openModal);
   const closeModal = useUIStore((s) => s.closeModal);
   return { openModal, closeModal };
+}
+
+export function useIsAgeGateVisible(): boolean {
+  return useUIStore((s) => s.isAgeGateVisible);
+}
+
+export function useAgeGateActions(): {
+  setAgeGateVisible: (v: boolean) => void;
+  dismissAgeGate: () => void;
+} {
+  const setAgeGateVisible = useUIStore((s) => s.setAgeGateVisible);
+  const dismissAgeGate = useUIStore((s) => s.dismissAgeGate);
+  return { setAgeGateVisible, dismissAgeGate };
 }

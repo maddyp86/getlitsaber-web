@@ -45,6 +45,8 @@ interface WaitlistFormProps {
   source?: WaitlistSource;
   /** Optional slash-prefixed eyebrow label above the headline (e.g. "/ GOLD EDITION") */
   eyebrow?: string;
+  /** Called after a successful submission */
+  onSuccess?: () => void;
 }
 
 export default function WaitlistForm({
@@ -54,6 +56,7 @@ export default function WaitlistForm({
   buttonLabel,
   source,
   eyebrow,
+  onSuccess,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -94,6 +97,7 @@ export default function WaitlistForm({
 
       if (data.ok) {
         setState("success");
+        onSuccess?.();
       } else {
         setErrorMsg(data.error ?? "Something went wrong. Please try again.");
         setState("error");
