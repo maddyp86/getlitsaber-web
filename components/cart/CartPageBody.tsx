@@ -91,7 +91,7 @@ export default function CartPageBody() {
                   className="hidden lg:grid px-6 py-3"
                   style={{
                     gridTemplateColumns: "100px 1fr 120px 120px",
-          
+                    gap: "16px",
                     borderBottom: "1px solid rgba(240, 240, 245, 0.08)",
                   }}
                 >
