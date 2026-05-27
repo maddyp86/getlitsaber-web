@@ -106,7 +106,7 @@ export default function CartPageBody() {
                       </div>
 
                       {/* Text block — grows to fill space */}
-                      <div className="flex-1 min-w-0">
+                      <div className="flex-1 min-w-0 mb-5">
                         {/* Title row: name + price right-aligned */}
                         <div className="flex items-start justify-between gap-2">
                           <p
