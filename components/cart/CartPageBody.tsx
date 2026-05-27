@@ -472,13 +472,13 @@ function SummaryRow({
     <div className="flex justify-between items-center">
       <span
         className="font-label text-text-muted uppercase tracking-widest"
-        style={{ fontSize: "13px" }}
+        style={{ fontSize: "14px" }}
       >
         {label}
       </span>
       <span
         className={`font-label uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
-        style={{ fontSize: muted ? "11px" : "15px" }}
+        style={{ fontSize: muted ? "12px" : "15px" }}
       >
         {value}
       </span>
