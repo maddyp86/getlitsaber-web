@@ -87,15 +87,7 @@ export default function CartPageBody() {
                 }}
               >
                 {/* Column headers — desktop only */}
-                <div
-                  className="hidden lg:grid px-6 py-3"
-                  style={{
-                    gridTemplateColumns: "100px 1fr 120px 120px",
-                    gap: "16px",
-                    borderBottom: "1px solid rgba(240, 240, 245, 0.08)",
-                  }}
-                >
-                  <span />
+             
                   <span
                     className="font-label text-accent-cyan uppercase tracking-widest"
                     style={{ fontSize: "13px" }}
