@@ -306,7 +306,7 @@ export default function CartPageBody() {
 
                           {/* Price column */}
                           <span
-                            className="font-label text-text-muted text-right"
+                            className="font-label text-text-muted text-left"
                             style={{ fontSize: "15px", width: "150px" }}
                           >
                             ${line.price.toFixed(2)}
@@ -314,7 +314,7 @@ export default function CartPageBody() {
 
                           {/* Total column */}
                           <span
-                            className="font-label font-bold text-text-primary text-right"
+                            className="font-label font-bold text-text-primary text-left"
                             style={{ fontSize: "15px", width: "150px" }}
                           >
                             ${getTierPrice(line.qty).toFixed(2)}
