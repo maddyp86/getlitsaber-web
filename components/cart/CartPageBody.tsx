@@ -109,13 +109,13 @@ export default function CartPageBody() {
                         {/* Title + variant */}
                         <p
                           className="font-subhead font-bold text-text-primary leading-tight"
-                          style={{ fontSize: "16px" }}
+                          style={{ fontSize: "14px" }}
                         >
                           {line.title}
                         </p>
                         <p
                           className="font-label text-text-muted uppercase tracking-widest mt-1"
-                          style={{ fontSize: "11px" }}
+                          style={{ fontSize: "12px" }}
                         >
                           {line.variantTitle} × {line.qty}
                         </p>
@@ -124,7 +124,7 @@ export default function CartPageBody() {
                         <div className="flex items-end justify-between mt-auto pt-2">
                           <span
                             className="font-subhead font-bold"
-                            style={{ fontSize: "18px", color: "#00E5FF" }}
+                            style={{ fontSize: "14px", color: "#00E5FF" }}
                           >
                             ${getTierPrice(line.qty).toFixed(2)}
                           </span>
