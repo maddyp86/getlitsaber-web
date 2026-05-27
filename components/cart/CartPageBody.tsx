@@ -371,11 +371,12 @@ export default function CartPageBody() {
                   {/* Promo code strip */}
                   <button
                     type="button"
-                    className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-start w-full pl-2 pr-2"
+                    className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-start w-full"
                     style={{
                       fontSize: "12px",
                       height: "50px",
                       border: "1px solid #2D2D2D",
+                      padding: "0px 10px 0px 10px",
                       borderRadius:"5px",
                       background: "#081D2F",
                       letterSpacing: "0.1em",
