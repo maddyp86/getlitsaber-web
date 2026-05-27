@@ -20,6 +20,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { getTierPrice } from "@/lib/cart/pricing";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -27,11 +28,11 @@ import { persist } from "zustand/middleware";
 
 export type CartLine = {
   id: string;          // line id — local: crypto.randomUUID(); Phase 4: Shopify line id
-  variantId: string;   // opaque variant key e.g. "silver-single", "silver-twopack"
+  variantId: string;   // opaque variant key; Phase 4: real Shopify GID
   qty: number;
   title: string;       // product title e.g. "Litsaber OG — Silver"
-  variantTitle: string;// e.g. "Single" | "Two Pack"
-  price: number;       // unit price in dollars (59.99 / 99.99)
+  variantTitle: string;// edition label e.g. "Silver"
+  price: number;       // base unit price in dollars (59.99); tier total derived via getTierPrice(qty)
   image: string;       // thumbnail path
 };
 
@@ -128,8 +129,15 @@ export function useItemCount(): number {
 
 export function useSubtotal(): number {
   return useCartStore(
-    (s) => s.items.reduce((acc, i) => acc + i.price * i.qty, 0)
+    (s) => s.items.reduce((acc, i) => acc + getTierPrice(i.qty), 0)
   );
+}
+
+export function useCartLineTotal(lineId: string): number {
+  return useCartStore((s) => {
+    const line = s.items.find((i) => i.id === lineId);
+    return line ? getTierPrice(line.qty) : 0;
+  });
 }
 
 export function useCartActions(): CartActions {

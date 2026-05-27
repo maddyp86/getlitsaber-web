@@ -1,11 +1,6 @@
 export const PRODUCT_TITLE = "LITSABER OG - Silver";
 export const PRODUCT_SUBTITLE = "The Interactive 510 Battery";
 
-export const BUNDLE_PRICES: Record<"single" | "twopack", string> = {
-  single: "$59.99",
-  twopack: "$99.99",
-};
-
 export const SPEC_PILLS = [
   "USB-C charging",
   "3 modes",
@@ -40,11 +35,14 @@ export const STYLE_OPTIONS: StyleOption[] = [
   },
 ];
 
+export type BundleId = "single" | "twopack" | "more";
+
 export interface BundleOption {
-  id: "single" | "twopack";
+  id: BundleId;
   title: string;
   descriptor: string;
-  price: string;
+  // Static price string for single/twopack; undefined for "more" (price is derived dynamically)
+  price?: string;
   saveLabel?: string;
 }
 
@@ -58,9 +56,14 @@ export const BUNDLE_OPTIONS: BundleOption[] = [
   {
     id: "twopack",
     title: "Two Pack",
-    descriptor: "For the lightshow. For the partner. For the never-without",
+    descriptor: "For the lightshow. For the partner. For the never-without.",
     price: "$99.99",
     saveLabel: "SAVE $20",
+  },
+  {
+    id: "more",
+    title: "More",
+    descriptor: "",
   },
 ];
 

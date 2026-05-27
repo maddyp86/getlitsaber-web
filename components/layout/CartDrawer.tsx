@@ -10,6 +10,7 @@ import {
   useSubtotal,
   useCartActions,
 } from "@/lib/cart/store";
+import { getTierPrice } from "@/lib/cart/pricing";
 import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 
@@ -180,7 +181,7 @@ export default function CartDrawer() {
                           className="font-label text-text-muted mt-0.5"
                           style={{ fontSize: "12px" }}
                         >
-                          {line.variantTitle}
+                          {line.variantTitle} × {line.qty}
                         </p>
                       </div>
 
@@ -219,12 +220,12 @@ export default function CartDrawer() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                          {/* Line price */}
+                          {/* Line price — tier total, not unit × qty */}
                           <span
                             className="font-label font-bold text-accent-cyan"
                             style={{ fontSize: "16px" }}
                           >
-                            ${(line.price * line.qty).toFixed(2)}
+                            ${getTierPrice(line.qty).toFixed(2)}
                           </span>
                           {/* Remove */}
                           <button

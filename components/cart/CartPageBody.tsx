@@ -8,6 +8,7 @@ import {
   useSubtotal,
   useCartActions,
 } from "@/lib/cart/store";
+import { getTierPrice } from "@/lib/cart/pricing";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 
 export default function CartPageBody() {
@@ -157,7 +158,7 @@ export default function CartPageBody() {
                               className="font-label text-text-muted mt-0.5"
                               style={{ fontSize: "14px" }}
                             >
-                              {line.variantTitle}
+                              {line.variantTitle} × {line.qty}
                             </p>
                           </div>
 
@@ -179,7 +180,7 @@ export default function CartPageBody() {
                               className="font-label font-bold text-text-primary"
                               style={{ fontSize: "13px" }}
                             >
-                              ${(line.price * line.qty).toFixed(2)}
+                              ${getTierPrice(line.qty).toFixed(2)}
                             </span>
                           </div>
 
@@ -220,7 +221,7 @@ export default function CartPageBody() {
                               className="font-label font-bold text-text-primary text-right"
                               style={{ fontSize: "15px", minWidth: "80px" }}
                             >
-                              ${(line.price * line.qty).toFixed(2)}
+                              ${getTierPrice(line.qty).toFixed(2)}
                             </span>
                           </div>
                         </div>

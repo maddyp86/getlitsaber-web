@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { PRODUCT_TITLE, PRODUCT_SUBTITLE, BUNDLE_PRICES, SPEC_PILLS } from "./productdisplay.content";
+import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.content";
+import type { BundleId } from "./productdisplay.content";
+import { getTierPrice } from "@/lib/cart/pricing";
 import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
@@ -10,9 +12,13 @@ import WaitlistCard from "./WaitlistCard";
 export default function ProductDisplay() {
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
-  const [activeBundle, setActiveBundle] = useState<"single" | "twopack">("single");
+  const [activeBundle, setActiveBundle] = useState<BundleId>("single");
+  const [moreQty, setMoreQty] = useState(3);
 
-  const displayPrice = BUNDLE_PRICES[activeBundle];
+  const selectedQty =
+    activeBundle === "single" ? 1 : activeBundle === "twopack" ? 2 : moreQty;
+
+  const displayPrice = `$${getTierPrice(selectedQty).toFixed(2)}`;
 
   return (
     <div className="max-w-container mx-auto">
@@ -60,7 +66,13 @@ export default function ProductDisplay() {
           {activeStyle === "gold" ? (
             <WaitlistCard />
           ) : (
-            <BundleAndCTA activeBundle={activeBundle} onBundleChange={setActiveBundle} />
+            <BundleAndCTA
+              activeBundle={activeBundle}
+              onBundleChange={setActiveBundle}
+              moreQty={moreQty}
+              onMoreQtyChange={setMoreQty}
+              selectedQty={selectedQty}
+            />
           )}
         </div>
       </div>
