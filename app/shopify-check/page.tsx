@@ -8,7 +8,7 @@ export default async function ShopifyCheckPage() {
   let fetchError: string | null = null;
 
   try {
-    product = await getProductByHandle("litsaber-og");
+    product = await getProductByHandle("litsaber-og-two-pack-two-pack");
   } catch (err) {
     fetchError = err instanceof Error ? err.message : String(err);
   }
@@ -34,7 +34,7 @@ export default async function ShopifyCheckPage() {
       </h1>
       <p style={{ marginBottom: "8px", color: "#6b7280" }}>
         API version: <strong>2025-07</strong> &nbsp;|&nbsp; Handle queried:{" "}
-        <strong>litsaber-og</strong>
+        <strong>litsaber-og-two-pack</strong>
       </p>
 
       {fetchError && (
@@ -63,7 +63,7 @@ export default async function ShopifyCheckPage() {
             marginTop: "16px",
           }}
         >
-          <strong>Product not found.</strong> Handle &quot;litsaber-og&quot; returned null.
+          <strong>Product not found.</strong> Handle &quot;litsaber-og-two-pack&quot; returned null.
           Check the exact handle in Shopify admin.
         </div>
       )}
