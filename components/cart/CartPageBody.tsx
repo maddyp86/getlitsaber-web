@@ -186,10 +186,10 @@ export default function CartPageBody() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="flex flex-col justify-between" style={{ minHeight: "100px" }}>
+                          <div className="flex flex-col justify-between" style={{ minHeight: "100px", flex: "1 0 0" }}>
                             <div>
                               <p
-                                className="font-subhead font-bold text-text-primary "
+                                className="font-subhead font-bold text-text-primary leading-tight"
                                 style={{ fontSize: "16px" }}
                               >
                                 {line.title}
