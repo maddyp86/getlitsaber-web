@@ -468,16 +468,18 @@ function SummaryRow({
   value: string;
   muted?: boolean;
 }) {
-  return (
-    <div className="flex justify-between items-center">
+  return ( 
+    <div className="flex justify-between items-center py-2"
+       style={noBorder ? undefined : { borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
+      >
       <span
-        className="font-label text-text-muted uppercase tracking-widest"
+        className="font-body text-text-muted uppercase tracking-widest"
         style={{ fontSize: "14px" }}
       >
         {label}
       </span>
       <span
-        className={`font-label uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
+        className={`font-body uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
         style={{ fontSize: muted ? "12px" : "15px" }}
       >
         {value}
