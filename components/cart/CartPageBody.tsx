@@ -173,7 +173,7 @@ export default function CartPageBody() {
                         style={{ padding: "30px 20px" }}
                       >
                         {/* Product column: flex 1, image + text side by side */}
-                        <div className="flex gap-2 items-start" style={{ flex: "1 0 0" }}>
+                        <div className="flex gap-4 items-start" style={{ flex: "1 0 0" }}>
                           <div
                             className="flex-shrink-0 rounded-md overflow-hidden"
                             style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
