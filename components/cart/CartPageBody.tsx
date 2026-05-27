@@ -247,13 +247,13 @@ export default function CartPageBody() {
                       PRODUCT
                     </span>
                     <span
-                      className="font-label text-accent-cyan uppercase tracking-widest text-right"
+                      className="font-label text-accent-cyan uppercase tracking-widest text-left"
                       style={{ fontSize: "13px", width: "150px" }}
                     >
                       PRICE
                     </span>
                     <span
-                      className="font-label text-accent-cyan uppercase tracking-widest text-right"
+                      className="font-label text-accent-cyan uppercase tracking-widest text-left"
                       style={{ fontSize: "13px", width: "150px" }}
                     >
                       TOTAL
