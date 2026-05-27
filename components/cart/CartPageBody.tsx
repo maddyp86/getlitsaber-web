@@ -81,7 +81,7 @@ export default function CartPageBody() {
             <div className="flex flex-col lg:hidden gap-5">
               {/* Items list */}
               <ul
-                className="rounded-[10px] overflow-hidden divide-y divide-white/[0.06]"
+                className="rounded-[10px]"
                 
               >
                 {items.map((line) => (
