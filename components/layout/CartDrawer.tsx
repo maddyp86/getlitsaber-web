@@ -227,6 +227,16 @@ export default function CartDrawer() {
               className="flex-shrink-0 px-6 py-5 flex flex-col gap-3"
               style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
             >
+              {/* Promo code — inert */}
+              <button
+                type="button"
+                className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-left"
+                style={{ fontSize: "12px" }}
+                tabIndex={0}
+              >
+                + HAVE A PROMO CODE?
+              </button>
+              
               {/* Subtotal */}
               <div className="flex justify-between items-center">
                 <span className="font-label text-text-muted uppercase tracking-widest" style={{ fontSize: "12px" }}>SUBTOTAL</span>
@@ -247,16 +257,6 @@ export default function CartDrawer() {
                 <span className="font-label font-bold text-text-primary uppercase tracking-widest" style={{ fontSize: "14px" }}>TOTAL</span>
                 <span className="font-label font-bold text-text-primary" style={{ fontSize: "20px" }}>${subtotal.toFixed(2)}</span>
               </div>
-
-              {/* Promo code — inert */}
-              <button
-                type="button"
-                className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-left"
-                style={{ fontSize: "12px" }}
-                tabIndex={0}
-              >
-                + HAVE A PROMO CODE?
-              </button>
 
               {/* View cart button */}
               <Link
