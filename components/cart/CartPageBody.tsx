@@ -365,7 +365,7 @@ export default function CartPageBody() {
                   <div className="flex flex-col gap-2">
                     <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                     <SummaryRow label="Shipping" value="AT CHECKOUT" muted />
-                    <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted />
+                    <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted noBorder/>
                   </div>
 
                   {/* Promo code strip */}
