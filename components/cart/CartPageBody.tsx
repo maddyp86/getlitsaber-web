@@ -204,7 +204,7 @@ export default function CartPageBody() {
                     textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
                   }}
                 >
-                  SECURE CHECKOUT →
+                  SECURE CHECKOUT
                 </button>
 
                 {/* Trust badges */}
