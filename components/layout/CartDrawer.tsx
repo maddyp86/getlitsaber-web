@@ -230,7 +230,7 @@ export default function CartDrawer() {
               {/* Promo code — inert */}
               <button
                 type="button"
-                className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-left"
+                className="font-label text-primary hover:text-accent-cyan transition-colors duration-150 text-left"
                 style={{ fontSize: "12px" }}
                 tabIndex={0}
               >
