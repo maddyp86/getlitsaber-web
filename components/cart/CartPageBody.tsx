@@ -330,7 +330,7 @@ export default function CartPageBody() {
                               <Image
                                 src="/images/icons/close-svgrepo-com 1.svg"
                                 alt="Remove"
-                                width={16}
+                                width={50}
                                 height={16}
                                 className="transition-all duration-200 group-hover:[filter:invert(79%)_sepia(97%)_saturate(1000%)_hue-rotate(152deg)_brightness(102%)_contrast(105%)]"
                               />
