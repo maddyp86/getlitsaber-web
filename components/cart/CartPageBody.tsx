@@ -8,7 +8,7 @@ import {
   useSubtotal,
   useCartActions,
 } from "@/lib/cart/store";
-import { getTierPrice, getTierSavings, getTierUnitPrice } from "@/lib/cart/pricing";
+import { getTierPrice, getTierSavings } from "@/lib/cart/pricing";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 
 export default function CartPageBody() {
@@ -120,15 +120,9 @@ export default function CartPageBody() {
                           {line.variantTitle} × {line.qty}
                         </p>
                         {line.qty > 1 && (
-                          <div className="mt-1 flex flex-col gap-0.5">
-                            <p className="font-label text-text-muted" style={{ fontSize: "11px" }}>
-                              Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
-                            </p>
-                            <p className="font-label text-text-muted" style={{ fontSize: "11px" }}>
-                              ${getTierUnitPrice(line.qty).toFixed(2)}{" "}
-                              <span className="line-through">$59.99</span>
-                            </p>
-                          </div>
+                          <p className="font-label text-text-muted mt-1" style={{ fontSize: "11px" }}>
+                            Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
+                          </p>
                         )}
 
                         {/* Price left, trash right — bottom of the text block */}
@@ -303,15 +297,9 @@ export default function CartPageBody() {
                                   {line.variantTitle} × {line.qty}
                                 </p>
                                 {line.qty > 1 && (
-                                  <div className="mt-1 flex flex-col gap-0.5">
-                                    <p className="font-label text-text-muted" style={{ fontSize: "12px" }}>
-                                      Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
-                                    </p>
-                                    <p className="font-label text-text-muted" style={{ fontSize: "12px" }}>
-                                      ${getTierUnitPrice(line.qty).toFixed(2)}{" "}
-                                      <span className="line-through">$59.99</span>
-                                    </p>
-                                  </div>
+                                  <p className="font-label text-text-muted mt-1" style={{ fontSize: "12px" }}>
+                                    Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
+                                  </p>
                                 )}
                               </div>
                               <button
