@@ -283,7 +283,7 @@ export default function CartDrawer() {
                   // TODO Phase 4: Shopify checkoutUrl
                 }}
               >
-                CHECKOUT
+               SECURE CHECKOUT
               </button>
 
               {/* Trust badges */}
