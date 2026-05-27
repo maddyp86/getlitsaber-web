@@ -258,6 +258,7 @@ export default function CartPageBody() {
                     >
                       TOTAL
                     </span>
+                    <span style={{ width: "40px" }} />
                   </div>
 
                   {/* Item rows */}
@@ -282,34 +283,24 @@ export default function CartPageBody() {
                                 className="w-full h-full object-cover"
                               />
                             </div>
-                            <div className="flex flex-col justify-between min-w-0 flex-1" style={{ minHeight: "100px" }}>
-                              <div>
-                                <p
-                                  className="font-subhead font-bold text-text-primary leading-tight"
-                                  style={{ fontSize: "16px" }}
-                                >
-                                  {line.title}
-                                </p>
-                                <p
-                                  className="font-label text-text-muted mt-0.5"
-                                  style={{ fontSize: "14px" }}
-                                >
-                                  {line.variantTitle} × {line.qty}
-                                </p>
-                                {line.qty > 1 && (
-                                  <p className="font-label text-text-muted mt-1" style={{ fontSize: "12px" }}>
-                                    Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
-                                  </p>
-                                )}
-                              </div>
-                              <button
-                                onClick={() => removeItem(line.id)}
-                                aria-label={`Remove ${line.title} from cart`}
-                                className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
-                                style={{ fontSize: "12px" }}
+                            <div className="flex flex-col min-w-0 flex-1">
+                              <p
+                                className="font-subhead font-bold text-text-primary leading-tight"
+                                style={{ fontSize: "16px" }}
                               >
-                                Remove ✕
-                              </button>
+                                {line.title}
+                              </p>
+                              <p
+                                className="font-label text-text-muted mt-0.5"
+                                style={{ fontSize: "14px" }}
+                              >
+                                {line.variantTitle} × {line.qty}
+                              </p>
+                              {line.qty > 1 && (
+                                <p className="font-label text-text-muted mt-1" style={{ fontSize: "12px" }}>
+                                  Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
+                                </p>
+                              )}
                             </div>
                           </div>
 
@@ -324,10 +315,22 @@ export default function CartPageBody() {
                           {/* Total column */}
                           <span
                             className="font-label font-bold text-text-primary text-right"
-                            style={{ fontSize: "15x", width: "150px" }}
+                            style={{ fontSize: "15px", width: "150px" }}
                           >
                             ${getTierPrice(line.qty).toFixed(2)}
                           </span>
+
+                          {/* Remove column */}
+                          <div className="flex justify-center" style={{ width: "40px" }}>
+                            <button
+                              onClick={() => removeItem(line.id)}
+                              aria-label={`Remove ${line.title} from cart`}
+                              className="text-text-muted hover:text-text-primary transition-colors duration-150"
+                              style={{ fontSize: "16px", lineHeight: 1 }}
+                            >
+                              ×
+                            </button>
+                          </div>
                         </div>
                       </li>
                     ))}
