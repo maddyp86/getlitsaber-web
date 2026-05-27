@@ -88,29 +88,27 @@ export default function CartPageBody() {
               >
                 {/* Column headers — desktop only */}
                 <div
-                  className="hidden lg:grid px-6 py-3"
+                  className="hidden lg:flex items-start"
                   style={{
-                    gridTemplateColumns: "100px 1fr 120px 120px",
-                    gap: "16px",
+                    padding: "10px 20px",
                     borderBottom: "1px solid rgba(240, 240, 245, 0.08)",
                   }}
                 >
-                  <span />
                   <span
                     className="font-label text-accent-cyan uppercase tracking-widest"
-                    style={{ fontSize: "13px" }}
+                    style={{ fontSize: "13px", flex: "1 0 0" }}
                   >
                     PRODUCT
                   </span>
                   <span
                     className="font-label text-accent-cyan uppercase tracking-widest text-right"
-                    style={{ fontSize: "13px" }}
+                    style={{ fontSize: "13px", width: "150px" }}
                   >
                     PRICE
                   </span>
                   <span
                     className="font-label text-accent-cyan uppercase tracking-widest text-right"
-                    style={{ fontSize: "13px" }}
+                    style={{ fontSize: "13px", width: "150px" }}
                   >
                     TOTAL
                   </span>
@@ -119,9 +117,9 @@ export default function CartPageBody() {
                 {/* Item rows */}
                 <ul className="divide-y divide-white/[0.06]">
                   {items.map((line) => (
-                    <li key={line.id} className="px-5 lg:px-6 py-5">
-                      {/* Mobile: flex layout */}
-                      <div className="flex lg:hidden gap-4">
+                    <li key={line.id}>
+                      {/* Mobile layout */}
+                      <div className="flex lg:hidden gap-4 px-5 py-5">
                         <div
                           className="flex-shrink-0 rounded-md overflow-hidden"
                           style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
@@ -169,70 +167,66 @@ export default function CartPageBody() {
                         </div>
                       </div>
 
-                      {/* Desktop: shared grid matching header */}
+                      {/* Desktop layout — flex row matching header */}
                       <div
-                        className="hidden lg:grid"
-                        style={{ gridTemplateColumns: "100px 1fr 120px 120px", gap: "16px", alignItems: "stretch" }}
+                        className="hidden lg:flex items-start justify-between"
+                        style={{ padding: "30px 20px" }}
                       >
-                        {/* Col 1: image */}
-                        <div
-                          className="rounded-md overflow-hidden"
-                          style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
-                        >
-                          <Image
-                            src={line.image}
-                            alt={line.title}
-                            width={100}
-                            height={100}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-
-                        {/* Col 2: product info + remove pinned to bottom */}
-                        <div className="flex flex-col justify-between min-h-[100px]">
-                          <div>
-                            <p
-                              className="font-subhead font-bold text-text-primary leading-tight"
-                              style={{ fontSize: "18px" }}
-                            >
-                              {line.title}
-                            </p>
-                            <p
-                              className="font-label text-text-muted mt-0.5"
-                              style={{ fontSize: "14px" }}
-                            >
-                              {line.variantTitle} × {line.qty}
-                            </p>
+                        {/* Product column: flex 1, image + text side by side */}
+                        <div className="flex gap-4 items-start" style={{ flex: "1 0 0" }}>
+                          <div
+                            className="flex-shrink-0 rounded-md overflow-hidden"
+                            style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
+                          >
+                            <Image
+                              src={line.image}
+                              alt={line.title}
+                              width={100}
+                              height={100}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
-                          <button
-                            onClick={() => removeItem(line.id)}
-                            aria-label={`Remove ${line.title} from cart`}
-                            className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
-                            style={{ fontSize: "12px" }}
-                          >
-                            Remove ✕
-                          </button>
+                          <div className="flex flex-col justify-between" style={{ minHeight: "100px" }}>
+                            <div>
+                              <p
+                                className="font-subhead font-bold text-text-primary leading-tight"
+                                style={{ fontSize: "18px" }}
+                              >
+                                {line.title}
+                              </p>
+                              <p
+                                className="font-label text-text-muted mt-0.5"
+                                style={{ fontSize: "14px" }}
+                              >
+                                {line.variantTitle} × {line.qty}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => removeItem(line.id)}
+                              aria-label={`Remove ${line.title} from cart`}
+                              className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
+                              style={{ fontSize: "12px" }}
+                            >
+                              Remove ✕
+                            </button>
+                          </div>
                         </div>
 
-                        {/* Col 3: unit price */}
-                        <div className="flex items-center justify-end">
-                          <span
-                            className="font-label text-text-muted text-right"
-                            style={{ fontSize: "15px" }}
-                          >
-                            ${line.price.toFixed(2)}
-                          </span>
-                        </div>
+                        {/* Price column */}
+                        <span
+                          className="font-label text-text-muted text-right"
+                          style={{ fontSize: "15px", width: "150px" }}
+                        >
+                          ${line.price.toFixed(2)}
+                        </span>
 
-                        {/* Col 4: tier total */}
-                        <div className="flex items-center justify-end">
-                          <span
-                            className="font-label font-bold text-text-primary text-right"
-                            style={{ fontSize: "15px" }}
-                          >
-                            ${getTierPrice(line.qty).toFixed(2)}
-                          </span>
-                        </div>
+                        {/* Total column */}
+                        <span
+                          className="font-label font-bold text-text-primary text-right"
+                          style={{ fontSize: "15px", width: "150px" }}
+                        >
+                          ${getTierPrice(line.qty).toFixed(2)}
+                        </span>
                       </div>
                     </li>
                   ))}
@@ -282,19 +276,21 @@ export default function CartPageBody() {
                   />
                 </div>
 
-                {/* Promo code — inert */}
+                {/* Promo code strip */}
                 <button
                   type="button"
-                  className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 text-left"
-                  style={{ fontSize: "13px" }}
+                  className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-center w-full"
+                  style={{
+                    fontSize: "12px",
+                    height: "48px",
+                    padding: "15px 0",
+                    gap: "10px",
+                    borderTop: "1px solid #2D2D2D",
+                    borderBottom: "1px solid #2D2D2D",
+                  }}
                 >
                   + HAVE A PROMO CODE?
                 </button>
-
-                {/* Divider */}
-                <div
-                  style={{ borderTop: "1px solid rgba(240, 240, 245, 0.10)" }}
-                />
 
                 {/* Total */}
                 <div className="flex justify-between items-center">
