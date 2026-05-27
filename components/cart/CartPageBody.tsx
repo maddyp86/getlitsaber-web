@@ -448,7 +448,7 @@ function MobileSummaryRow({
         {label}
       </span>
       <span
-        className={`font-label uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
+        className={`font-body uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
         style={{ fontSize: muted ? "10px" : "14px" }}
       >
         {value}
