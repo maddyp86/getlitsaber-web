@@ -478,7 +478,7 @@ function SummaryRow({
       >
       <span
         className="font-body text-text-muted uppercase tracking-widest"
-        style={{ fontSize: "14px" }}
+        style={{ fontSize: "13px" }}
       >
         {label}
       </span>
