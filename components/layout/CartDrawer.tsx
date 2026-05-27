@@ -20,7 +20,7 @@ export default function CartDrawer() {
   const items = useCartItems();
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
-  const { removeItem, updateQty } = useCartActions();
+  const { removeItem } = useCartActions();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -186,57 +186,22 @@ export default function CartDrawer() {
                       </div>
 
                       <div className="flex items-center justify-between mt-3">
-                        {/* Qty stepper */}
-                        <div
-                          className="flex items-center gap-0"
-                          style={{
-                            border: "1px solid rgba(240, 240, 245, 0.15)",
-                            borderRadius: "4px",
-                            overflow: "hidden",
-                          }}
+                        {/* Line price — tier total */}
+                        <span
+                          className="font-label font-bold text-accent-cyan"
+                          style={{ fontSize: "16px" }}
                         >
-                          <button
-                            onClick={() => updateQty(line.id, line.qty - 1)}
-                            aria-label={`Decrease quantity of ${line.title}`}
-                            className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
-                            style={{ fontSize: "18px", lineHeight: 1 }}
-                          >
-                            −
-                          </button>
-                          <span
-                            className="w-8 h-8 flex items-center justify-center font-label text-text-primary"
-                            style={{ fontSize: "14px", borderLeft: "1px solid rgba(240, 240, 245, 0.15)", borderRight: "1px solid rgba(240, 240, 245, 0.15)" }}
-                          >
-                            {line.qty}
-                          </span>
-                          <button
-                            onClick={() => updateQty(line.id, line.qty + 1)}
-                            aria-label={`Increase quantity of ${line.title}`}
-                            className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
-                            style={{ fontSize: "18px", lineHeight: 1 }}
-                          >
-                            +
-                          </button>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          {/* Line price — tier total, not unit × qty */}
-                          <span
-                            className="font-label font-bold text-accent-cyan"
-                            style={{ fontSize: "16px" }}
-                          >
-                            ${getTierPrice(line.qty).toFixed(2)}
-                          </span>
-                          {/* Remove */}
-                          <button
-                            onClick={() => removeItem(line.id)}
-                            aria-label={`Remove ${line.title} from cart`}
-                            className="font-label text-text-muted hover:text-text-primary underline transition-colors duration-150"
-                            style={{ fontSize: "11px" }}
-                          >
-                            Remove
-                          </button>
-                        </div>
+                          ${getTierPrice(line.qty).toFixed(2)}
+                        </span>
+                        {/* Remove */}
+                        <button
+                          onClick={() => removeItem(line.id)}
+                          aria-label={`Remove ${line.title} from cart`}
+                          className="font-label text-text-muted hover:text-text-primary underline transition-colors duration-150"
+                          style={{ fontSize: "11px" }}
+                        >
+                          Remove
+                        </button>
                       </div>
                     </div>
                   </li>

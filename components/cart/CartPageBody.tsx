@@ -15,7 +15,7 @@ export default function CartPageBody() {
   const items = useCartItems();
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
-  const { removeItem, updateQty } = useCartActions();
+  const { removeItem } = useCartActions();
 
   return (
     <div
@@ -184,19 +184,8 @@ export default function CartPageBody() {
                             </span>
                           </div>
 
-                          {/* Stepper + remove */}
-                          <div className="flex items-center justify-between mt-3">
-                            <QtyStepper
-                              qty={line.qty}
-                              onDecrement={() =>
-                                updateQty(line.id, line.qty - 1)
-                              }
-                              onIncrement={() =>
-                                updateQty(line.id, line.qty + 1)
-                              }
-                              decrementLabel={`Decrease quantity of ${line.title}`}
-                              incrementLabel={`Increase quantity of ${line.title}`}
-                            />
+                          {/* Remove */}
+                          <div className="flex items-center justify-end mt-3">
                             <button
                               onClick={() => removeItem(line.id)}
                               aria-label={`Remove ${line.title} from cart`}
@@ -332,58 +321,6 @@ export default function CartPageBody() {
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
-
-function QtyStepper({
-  qty,
-  onDecrement,
-  onIncrement,
-  decrementLabel,
-  incrementLabel,
-}: {
-  qty: number;
-  onDecrement: () => void;
-  onIncrement: () => void;
-  decrementLabel: string;
-  incrementLabel: string;
-}) {
-  return (
-    <div
-      className="flex items-center"
-      style={{
-        border: "1px solid rgba(240, 240, 245, 0.15)",
-        borderRadius: "4px",
-        overflow: "hidden",
-      }}
-    >
-      <button
-        onClick={onDecrement}
-        aria-label={decrementLabel}
-        className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
-        style={{ fontSize: "18px", lineHeight: 1 }}
-      >
-        −
-      </button>
-      <span
-        className="w-8 h-8 flex items-center justify-center font-label text-text-primary"
-        style={{
-          fontSize: "14px",
-          borderLeft: "1px solid rgba(240, 240, 245, 0.15)",
-          borderRight: "1px solid rgba(240, 240, 245, 0.15)",
-        }}
-      >
-        {qty}
-      </span>
-      <button
-        onClick={onIncrement}
-        aria-label={incrementLabel}
-        className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-tint-white transition-colors duration-150 font-label"
-        style={{ fontSize: "18px", lineHeight: 1 }}
-      >
-        +
-      </button>
-    </div>
-  );
-}
 
 function SummaryRow({
   label,

@@ -487,7 +487,7 @@ The full commerce UI is built and verified against the local cart store. Shopify
 
 **Build chunks:**
 - Chunk A: cart store refactor + PDP Pattern B selector + `lib/cart/pricing.ts` module (one commit) ✅
-- Chunk B: remove quantity stepper from drawer + cart page (one commit)
+- Chunk B: remove quantity stepper from drawer + cart page (one commit) ✅
 
 **Chunk A shipped (2026-05-27):**
 
@@ -501,6 +501,12 @@ Files changed:
 - `components/cart/CartPageBody.tsx` — same variant subtitle + getTierPrice on mobile inline price and desktop TOTAL column. PRICE column stays `line.price` (per-unit, unchanged).
 
 **localStorage note:** Existing localStorage entries with `variantId: "silver-single"` or `"silver-twopack"` are orphaned — they won't merge with new "silver" adds, but they display correctly (tier pricing applies based on their qty). Recommend one-time clear for testers via browser DevTools → Application → Local Storage → delete `litsaber-cart`.
+
+**Chunk B shipped (2026-05-27):**
+
+Files changed:
+- `components/layout/CartDrawer.tsx` — removed qty stepper (`−`/`+` buttons and qty display) from each line item. Static "× N" in the subtitle remains. Line shows tier price + Remove link only. `updateQty` un-destructured from `useCartActions()`.
+- `components/cart/CartPageBody.tsx` — same: `<QtyStepper />` call removed, `QtyStepper` sub-component function deleted. Remove button stays. `updateQty` un-destructured. `useCartActions` destructure now only extracts `removeItem`. `updateQty` action remains in store (`lib/cart/store.ts`) untouched for Phase 4 / programmatic use.
 
 **Story beat captured**
 
