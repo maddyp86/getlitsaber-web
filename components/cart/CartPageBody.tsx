@@ -88,7 +88,7 @@ export default function CartPageBody() {
               >
                 {/* Column headers — desktop only */}
                 <div
-                  className="hidden lg:grid "
+                  className="hidden lg:grid px-6 py-3"
                   style={{
                     gridTemplateColumns: "100px 1fr 120px 120px",
                     gap: "16px",
