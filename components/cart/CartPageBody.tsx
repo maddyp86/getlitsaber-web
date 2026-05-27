@@ -395,7 +395,7 @@ export default function CartPageBody() {
                     </span>
                     <span
                       className="font-body font-bold text-text-primary"
-                      style={{ fontSize: "22px" }}
+                      style={{ fontSize: "18px" }}
                     >
                       ${subtotal.toFixed(2)}
                     </span>
