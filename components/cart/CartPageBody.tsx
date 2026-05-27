@@ -321,11 +321,11 @@ export default function CartPageBody() {
                           </span>
 
                           {/* Remove column */}
-                          <div className="flex justify-center" style={{ width: "40px" }}>
+                          <div className="flex justify-center" style={{ width: "50px" }}>
                             <button
                               onClick={() => removeItem(line.id)}
                               aria-label={`Remove ${line.title} from cart`}
-                              className="opacity-50 hover:opacity-100 transition-all duration-200 group"
+                              className="opacity-75 hover:opacity-100 transition-all duration-200 group"
                             >
                               <Image
                                 src="/images/icons/close-svgrepo-com 1.svg"
