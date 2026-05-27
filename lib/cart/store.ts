@@ -1,16 +1,12 @@
 /*
- * PHASE 4 SWAP SEAM — read before modifying
+ * PHASE 4b — Shopify cart mutations
  *
  * This store is the single interface between the UI and the cart backend.
- * Phases 1–3: all action bodies operate on local Zustand state only.
- *             No network calls, no Shopify imports anywhere in this file.
- * Phase 4:    Swap the action bodies to Shopify Storefront API mutations:
- *               addItem    → cartCreate (first item) + cartLinesAdd
- *               removeItem → cartLinesRemove
- *               updateQty  → cartLinesUpdate
- *               clear      → cartLinesRemove all lines
- *             cartId transitions from null → Shopify's opaque cart handle
- *             (returned by cartCreate). The component layer does not change.
+ *   addItem    → cartCreate (first item) + cartLinesAdd (subsequent)
+ *   removeItem → cartLinesRemove
+ *   updateQty  → cartLinesUpdate
+ *   clear      → cartLinesRemove all lines; cartId nulled on success only
+ *   hydrate    → re-fetches cart from Shopify on app load via cartId in localStorage
  *
  * Components must NEVER import useCartStore or zustand directly.
  * They import the derived hooks exported at the bottom of this file.
@@ -21,34 +17,127 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getTierPrice } from "@/lib/cart/pricing";
+import { shopifyFetch } from "@/lib/shopify/client";
+import type { ShopifyCart, ShopifyCartResponse } from "@/lib/shopify/types";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 export type CartLine = {
-  id: string;          // line id — local: crypto.randomUUID(); Phase 4: Shopify line id
-  variantId: string;   // opaque variant key; Phase 4: real Shopify GID
+  id: string;           // Shopify cart line GID
+  variantId: string;    // Shopify variant GID
   qty: number;
-  title: string;       // product title e.g. "Litsaber OG — Silver"
-  variantTitle: string;// edition label e.g. "Silver"
-  price: number;       // base unit price in dollars (59.99); tier total derived via getTierPrice(qty)
-  image: string;       // thumbnail path
+  title: string;
+  variantTitle: string;
+  price: number;        // base unit price in dollars (59.99); tier total via getTierPrice(qty)
+  image: string;
 };
 
 export type CartState = {
   items: CartLine[];
-  cartId: string | null; // null until Phase 4 wires cartCreate; do not set locally
+  cartId: string | null;
+  // Shared promise while a cartCreate is in-flight.
+  // A second concurrent addItem awaits this, then routes through cartLinesAdd.
+  pendingCartCreate: Promise<void> | null;
 };
 
 type CartActions = {
-  addItem(line: Omit<CartLine, "id">): void;
-  removeItem(lineId: string): void;
-  updateQty(lineId: string, qty: number): void;
-  clear(): void;
+  addItem(line: Omit<CartLine, "id">): Promise<void>;
+  removeItem(lineId: string): Promise<void>;
+  updateQty(lineId: string, qty: number): Promise<void>;
+  clear(): Promise<void>;
+  hydrate(): Promise<void>;
 };
 
 type CartStore = CartState & CartActions;
+
+// ---------------------------------------------------------------------------
+// GraphQL
+// ---------------------------------------------------------------------------
+
+const CART_FRAGMENT = `
+  id
+  checkoutUrl
+  lines(first: 10) {
+    edges {
+      node {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
+            id
+          }
+        }
+        cost {
+          totalAmount {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+`;
+
+const CART_CREATE = `
+  mutation CartCreate($lines: [CartLineInput!]!) {
+    cartCreate(input: { lines: $lines }) {
+      cart { ${CART_FRAGMENT} }
+    }
+  }
+`;
+
+const CART_LINES_ADD = `
+  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart { ${CART_FRAGMENT} }
+    }
+  }
+`;
+
+const CART_LINES_REMOVE = `
+  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart { ${CART_FRAGMENT} }
+    }
+  }
+`;
+
+const CART_LINES_UPDATE = `
+  mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart { ${CART_FRAGMENT} }
+    }
+  }
+`;
+
+const CART_QUERY = `
+  query GetCart($cartId: ID!) {
+    cart(id: $cartId) { ${CART_FRAGMENT} }
+  }
+`;
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+// Hard-coded for the single Silver SKU. Revisit when multi-product.
+function transformShopifyCart(cart: ShopifyCart): CartLine[] {
+  return cart.lines.edges.map(({ node }) => ({
+    id: node.id,
+    variantId: node.merchandise.id,
+    qty: node.quantity,
+    title: "Litsaber OG — Silver",
+    variantTitle: "Silver",
+    price: 59.99,
+    image: "/images/product/litsaber-lights-off.jpg",
+  }));
+}
+
+function shopifyEnvPresent(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
+}
 
 // ---------------------------------------------------------------------------
 // Store
@@ -56,11 +145,13 @@ type CartStore = CartState & CartActions;
 
 export const useCartStore = create<CartStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       items: [],
       cartId: null,
+      pendingCartCreate: null,
 
-      addItem(line) {
+      async addItem(line) {
+        // Optimistic update
         set((state) => {
           const existing = state.items.find((i) => i.variantId === line.variantId);
           if (existing) {
@@ -73,40 +164,160 @@ export const useCartStore = create<CartStore>()(
             };
           }
           return {
-            items: [
-              ...state.items,
-              { ...line, id: crypto.randomUUID() },
-            ],
+            items: [...state.items, { ...line, id: crypto.randomUUID() }],
           };
         });
+
+        const optimisticItems = get().items;
+
+        try {
+          // If a cartCreate is already in-flight, wait for it so we have a cartId.
+          const pending = get().pendingCartCreate;
+          if (pending) {
+            await pending;
+          }
+
+          const { cartId } = get();
+
+          if (!cartId) {
+            // First item — create the cart.
+            let resolveCreate!: () => void;
+            const createPromise = new Promise<void>((res) => {
+              resolveCreate = res;
+            });
+            set({ pendingCartCreate: createPromise });
+
+            try {
+              const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
+                lines: [{ merchandiseId: line.variantId, quantity: line.qty }],
+              });
+              const cart = data.cartCreate!.cart;
+              set({
+                cartId: cart.id,
+                items: transformShopifyCart(cart),
+                pendingCartCreate: null,
+              });
+            } finally {
+              resolveCreate();
+            }
+          } else {
+            // Cart already exists — add lines.
+            const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_ADD, {
+              cartId,
+              lines: [{ merchandiseId: line.variantId, quantity: line.qty }],
+            });
+            set({ items: transformShopifyCart(data.cartLinesAdd!.cart) });
+          }
+        } catch (err) {
+          console.error("[cart] addItem failed:", err);
+          // TODO: wire toast — "Failed to add item. Please try again."
+          set({ items: optimisticItems, pendingCartCreate: null });
+        }
       },
 
-      removeItem(lineId) {
+      async removeItem(lineId) {
+        const { cartId, items } = get();
+
+        // Optimistic update
         set((state) => ({
           items: state.items.filter((i) => i.id !== lineId),
         }));
+
+        if (!cartId) return;
+
+        try {
+          const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_REMOVE, {
+            cartId,
+            lineIds: [lineId],
+          });
+          set({ items: transformShopifyCart(data.cartLinesRemove!.cart) });
+        } catch (err) {
+          console.error("[cart] removeItem failed:", err);
+          // TODO: wire toast — "Failed to remove item. Please try again."
+          set({ items });
+        }
       },
 
-      updateQty(lineId, qty) {
+      async updateQty(lineId, qty) {
         if (qty <= 0) {
-          set((state) => ({
-            items: state.items.filter((i) => i.id !== lineId),
-          }));
-        } else {
+          return get().removeItem(lineId);
+        }
+
+        const { cartId, items } = get();
+        const originalQty = items.find((i) => i.id === lineId)?.qty ?? qty;
+
+        // Optimistic update
+        set((state) => ({
+          items: state.items.map((i) => (i.id === lineId ? { ...i, qty } : i)),
+        }));
+
+        if (!cartId) return;
+
+        try {
+          const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_UPDATE, {
+            cartId,
+            lines: [{ id: lineId, quantity: qty }],
+          });
+          set({ items: transformShopifyCart(data.cartLinesUpdate!.cart) });
+        } catch (err) {
+          console.error("[cart] updateQty failed:", err);
+          // TODO: wire toast — "Failed to update quantity. Please try again."
           set((state) => ({
             items: state.items.map((i) =>
-              i.id === lineId ? { ...i, qty } : i
+              i.id === lineId ? { ...i, qty: originalQty } : i
             ),
           }));
         }
       },
 
-      clear() {
-        set({ items: [], cartId: null });
+      async clear() {
+        const { cartId, items } = get();
+
+        // Optimistic wipe of items only; keep cartId during the Shopify call.
+        set({ items: [] });
+
+        if (!cartId) return;
+
+        try {
+          const lineIds = items.map((i) => i.id);
+          await shopifyFetch<ShopifyCartResponse>(CART_LINES_REMOVE, {
+            cartId,
+            lineIds,
+          });
+          // Null cartId only on confirmed success. Next addItem triggers a fresh cartCreate.
+          set({ cartId: null });
+        } catch (err) {
+          console.error("[cart] clear failed:", err);
+          // TODO: wire toast — "Failed to clear cart. Please try again."
+          set({ items });
+        }
+      },
+
+      async hydrate() {
+        if (!shopifyEnvPresent()) return;
+
+        const { cartId } = get();
+        if (!cartId) return;
+
+        try {
+          const data = await shopifyFetch<ShopifyCartResponse>(CART_QUERY, { cartId });
+          const cart = data.cart;
+          if (!cart) {
+            // Cart expired or invalid — clean up stale localStorage reference.
+            set({ cartId: null, items: [] });
+            return;
+          }
+          set({ items: transformShopifyCart(cart) });
+        } catch (err) {
+          console.error("[cart] hydrate failed:", err);
+          // Silently fail — user sees stale local state; next action will surface any real error.
+        }
       },
     }),
     {
       name: "litsaber-cart",
+      // Only persist cartId. Items are re-fetched from Shopify on hydration.
+      partialize: (state) => ({ cartId: state.cartId }),
     }
   )
 );
@@ -140,10 +351,14 @@ export function useCartLineTotal(lineId: string): number {
   });
 }
 
-export function useCartActions(): CartActions {
+export function useCartActions(): Pick<CartActions, "addItem" | "removeItem" | "updateQty" | "clear"> {
   const addItem = useCartStore((s) => s.addItem);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateQty = useCartStore((s) => s.updateQty);
   const clear = useCartStore((s) => s.clear);
   return { addItem, removeItem, updateQty, clear };
+}
+
+export function useCartHydrate(): () => Promise<void> {
+  return useCartStore((s) => s.hydrate);
 }

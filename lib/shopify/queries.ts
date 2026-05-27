@@ -12,6 +12,7 @@ export const GET_PRODUCT_BY_HANDLE = `
           node {
             id
             title
+            sku
             availableForSale
             price {
               amount
@@ -27,6 +28,7 @@ export const GET_PRODUCT_BY_HANDLE = `
 export async function getProductByHandle(
   handle: string
 ): Promise<ShopifyProduct | null> {
+  if (!process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN) return null;
   const data = await shopifyFetch<ShopifyProductResponse>(
     GET_PRODUCT_BY_HANDLE,
     { handle }

@@ -6,6 +6,7 @@ export interface ShopifyMoneyV2 {
 export interface ShopifyVariant {
   id: string;
   title: string;
+  sku: string;
   availableForSale: boolean;
   price: ShopifyMoneyV2;
 }
@@ -36,4 +37,36 @@ export interface ShopifyGraphQLError {
 export interface ShopifyFetchResult<T> {
   data: T;
   errors?: ShopifyGraphQLError[];
+}
+
+// ---------------------------------------------------------------------------
+// Cart types
+// ---------------------------------------------------------------------------
+
+export interface ShopifyCartLineNode {
+  id: string;
+  quantity: number;
+  merchandise: {
+    __typename: "ProductVariant";
+    id: string;
+  };
+  cost: {
+    totalAmount: ShopifyMoneyV2;
+  };
+}
+
+export interface ShopifyCart {
+  id: string;
+  checkoutUrl: string;
+  lines: {
+    edges: Array<{ node: ShopifyCartLineNode }>;
+  };
+}
+
+export interface ShopifyCartResponse {
+  cartCreate?: { cart: ShopifyCart };
+  cartLinesAdd?: { cart: ShopifyCart };
+  cartLinesRemove?: { cart: ShopifyCart };
+  cartLinesUpdate?: { cart: ShopifyCart };
+  cart?: ShopifyCart | null;
 }

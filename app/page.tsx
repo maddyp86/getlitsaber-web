@@ -10,12 +10,20 @@ import CommonQuestions from "@/components/home/CommonQuestions/CommonQuestions";
 import WhatWereShipping from "@/components/home/WhatWereShipping/WhatWereShipping";
 import EditionsSection from "@/components/home/Editions/EditionsSection";
 import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
+import { getProductByHandle } from "@/lib/shopify/queries";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
 };
 
-export default function HomePage() {
+const SILVER_SKU = "LTS-OG-SLV";
+
+export default async function HomePage() {
+  const product = await getProductByHandle("litsaber-og");
+  const silverVariant = product?.variants.edges
+    .map((e) => e.node)
+    .find((v) => v.sku === SILVER_SKU) ?? null;
+
   return (
     <>
       <Hero />
@@ -28,7 +36,10 @@ export default function HomePage() {
       <CommonQuestions />
       <WhatWereShipping>
         <EditionsSection />
-        <ProductDisplay />
+        <ProductDisplay
+          variantId={silverVariant?.id ?? ""}
+          available={silverVariant !== null}
+        />
       </WhatWereShipping>
     </>
   );

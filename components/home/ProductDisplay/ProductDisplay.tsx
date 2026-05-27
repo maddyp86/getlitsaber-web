@@ -9,7 +9,12 @@ import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
 import WaitlistCard from "./WaitlistCard";
 
-export default function ProductDisplay() {
+interface ProductDisplayProps {
+  variantId: string;
+  available: boolean;
+}
+
+export default function ProductDisplay({ variantId, available }: ProductDisplayProps) {
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [activeBundle, setActiveBundle] = useState<BundleId>("single");
@@ -72,6 +77,8 @@ export default function ProductDisplay() {
               moreQty={moreQty}
               onMoreQtyChange={setMoreQty}
               selectedQty={selectedQty}
+              variantId={variantId}
+              available={available}
             />
           )}
         </div>

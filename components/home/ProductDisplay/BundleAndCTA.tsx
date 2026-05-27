@@ -16,6 +16,8 @@ interface BundleAndCTAProps {
   moreQty: number;
   onMoreQtyChange: (qty: number) => void;
   selectedQty: number;
+  variantId: string;
+  available: boolean;
 }
 
 function RadioIndicator({ checked }: { checked: boolean }) {
@@ -38,6 +40,8 @@ export default function BundleAndCTA({
   moreQty,
   onMoreQtyChange,
   selectedQty,
+  variantId,
+  available,
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
   const { openCart } = useCartUIActions();
@@ -47,7 +51,7 @@ export default function BundleAndCTA({
 
   function handleAddToCart() {
     addItem({
-      variantId: "silver",
+      variantId,
       qty: selectedQty,
       title: "Litsaber OG — Silver",
       variantTitle: "Silver",
@@ -191,21 +195,29 @@ export default function BundleAndCTA({
 
       {/* CTAs */}
       <div className="flex flex-col gap-3">
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-pointer transition-opacity active:opacity-80"
-          style={{ textShadow: "0 0 10px rgba(236, 87, 147, 0.7)" }}
-        >
-          + ADD TO CART
-        </button>
+        {available ? (
+          <>
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-pointer transition-opacity active:opacity-80"
+              style={{ textShadow: "0 0 10px rgba(236, 87, 147, 0.7)" }}
+            >
+              + ADD TO CART
+            </button>
 
-        <button
-          type="button"
-          className="w-full bg-white font-label font-bold text-[16px] text-black rounded-md py-4 px-4 cursor-default"
-        >
-          BUY NOW
-        </button>
+            <button
+              type="button"
+              className="w-full bg-white font-label font-bold text-[16px] text-black rounded-md py-4 px-4 cursor-default"
+            >
+              BUY NOW
+            </button>
+          </>
+        ) : (
+          <p className="font-label text-[14px] text-text-muted text-center py-4 border border-border-inactive rounded-md">
+            Currently unavailable
+          </p>
+        )}
       </div>
 
       {/* Trust line */}
