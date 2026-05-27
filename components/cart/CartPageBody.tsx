@@ -189,7 +189,7 @@ export default function CartPageBody() {
                           <div className="flex flex-col justify-between" style={{ minHeight: "100px" }}>
                             <div>
                               <p
-                                className="font-subhead font-bold text-text-primary leading-tight"
+                                className="font-subhead font-bold text-text-primary "
                                 style={{ fontSize: "16px" }}
                               >
                                 {line.title}
