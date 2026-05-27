@@ -463,13 +463,17 @@ function SummaryRow({
   label,
   value,
   muted = false,
+  noBorder = false,
 }: {
   label: string;
   value: string;
   muted?: boolean;
+  noBorder?: boolean;
 }) {
   return ( 
-    <div className="flex justify-between items-center ">
+    <div className="flex justify-between items-center py-2"
+       style={noBorder ? undefined : { borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
+      >
       <span
         className="font-body text-text-muted uppercase tracking-widest"
         style={{ fontSize: "14px" }}
