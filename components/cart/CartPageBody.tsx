@@ -248,13 +248,13 @@ export default function CartPageBody() {
                     </span>
                     <span
                       className="font-label text-accent-cyan uppercase tracking-widest text-left"
-                      style={{ fontSize: "13px", width: "150px" }}
+                      style={{ fontSize: "13px", width: "100px" }}
                     >
                       PRICE
                     </span>
                     <span
                       className="font-label text-accent-cyan uppercase tracking-widest text-left"
-                      style={{ fontSize: "13px", width: "150px" }}
+                      style={{ fontSize: "13px", width: "100px" }}
                     >
                       TOTAL
                     </span>
@@ -307,7 +307,7 @@ export default function CartPageBody() {
                           {/* Price column */}
                           <span
                             className="font-label text-text-muted text-left"
-                            style={{ fontSize: "15px", width: "150px" }}
+                            style={{ fontSize: "15px", width: "100px" }}
                           >
                             ${line.price.toFixed(2)}
                           </span>
@@ -315,7 +315,7 @@ export default function CartPageBody() {
                           {/* Total column */}
                           <span
                             className="font-label font-bold text-text-primary text-left"
-                            style={{ fontSize: "15px", width: "150px" }}
+                            style={{ fontSize: "15px", width: "100px" }}
                           >
                             ${getTierPrice(line.qty).toFixed(2)}
                           </span>
