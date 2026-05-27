@@ -205,7 +205,7 @@ export default function CartPageBody() {
                               onClick={() => removeItem(line.id)}
                               aria-label={`Remove ${line.title} from cart`}
                               className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
-                              style={{ fontSize: "12px", fontDecoration:"underline" }}
+                              style={{ fontSize: "12px" }}
                             >
                               Remove ✕
                             </button>
