@@ -80,7 +80,13 @@ export default function CartPageBody() {
             {/* ── Mobile layout ── */}
             <div className="flex flex-col lg:hidden gap-5">
               {/* Items list */}
-              <ul>
+              <ul
+                className="rounded-[10px] overflow-hidden divide-y divide-white/[0.06]"
+                style={{
+                  backgroundColor: "#0F0824",
+                  border: "1px solid rgba(0, 229, 255, 0.2)",
+                }}
+              >
                 {items.map((line) => (
                   <li key={line.id} className="px-4 py-4">
                     <div className="flex items-start gap-3">
