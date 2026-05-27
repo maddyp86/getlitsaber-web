@@ -153,68 +153,70 @@ export default function CartPageBody() {
                 ))}
               </ul>
 
-              {/* Promo code strip */}
-              <button
-                type="button"
-                className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-center w-full mt-4"
-                style={{
-                  fontSize: "12px",
-                  height: "48px",
-                  border: "1px solid #2D2D2D",
-                  background: "#081D2F",
-                  borderRadius: "5px",
-                  letterSpacing: "0.1em",
-                }}
-              >
-                + HAVE A PROMO CODE?
-              </button>
-
-              {/* Summary rows — flat, no card on mobile */}
-              <div className="flex flex-col gap-0 mt-4">
-                <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
-                <MobileSummaryRow label="Shipping" value="CALCULATED AT CHECKOUT" muted />
-                <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted />
-              </div>
-
-              {/* Total row */}
+              {/* Order summary group */}
               <div
-                className="flex justify-between items-center mt-4 pt-4"
-                style={{ borderTop: "1px solid rgba(240, 240, 245, 0.10)" }}
+                className="flex flex-col items-center mx-auto mt-4"
+                style={{ width: "375px", maxWidth: "100%", padding: "15px", gap: "20px" }}
               >
-                <span
-                  className="font-body font-bold text-text-primary"
-                  style={{ fontSize: "20px" }}
+                {/* Promo code strip */}
+                <button
+                  type="button"
+                  className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-center w-full"
+                  style={{
+                    fontSize: "12px",
+                    height: "48px",
+                    border: "1px solid #2D2D2D",
+                    background: "#081D2F",
+                    borderRadius: "5px",
+                    letterSpacing: "0.1em",
+                  }}
                 >
-                  Total
-                </span>
-                <span
-                  className="font-body font-bold text-text-primary"
-                  style={{ fontSize: "20px" }}
+                  + HAVE A PROMO CODE?
+                </button>
+
+                {/* Summary rows */}
+                <div className="flex flex-col gap-0 w-full">
+                  <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
+                  <MobileSummaryRow label="Shipping" value="CALCULATED AT CHECKOUT" muted />
+                  <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted />
+                </div>
+
+                {/* Total row */}
+                <div
+                  className="flex justify-between items-center w-full pt-4"
+                  style={{ borderTop: "1px solid rgba(240, 240, 245, 0.10)" }}
                 >
-                  ${subtotal.toFixed(2)}
-                </span>
-              </div>
+                  <span
+                    className="font-body font-bold text-text-primary"
+                    style={{ fontSize: "20px" }}
+                  >
+                    Total
+                  </span>
+                  <span
+                    className="font-body font-bold text-text-primary"
+                    style={{ fontSize: "20px" }}
+                  >
+                    ${subtotal.toFixed(2)}
+                  </span>
+                </div>
 
-              {/* Checkout button */}
-              <button
-                type="button"
-                className="w-full py-4 font-label font-bold text-white rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest mt-5"
-                style={{
-                  fontSize: "16px",
-                  backgroundColor: "#EC5793",
-                  textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
-                }}
-              >
-                SECURE CHECKOUT →
-              </button>
+                {/* Checkout button */}
+                <button
+                  type="button"
+                  className="w-full py-4 font-label font-bold text-white rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest"
+                  style={{
+                    fontSize: "16px",
+                    backgroundColor: "#EC5793",
+                    textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
+                  }}
+                >
+                  SECURE CHECKOUT →
+                </button>
 
-              {/* Trust badges */}
-              <div className="mt-4">
+                {/* Trust badges */}
                 <TrustBadges />
-              </div>
 
-              {/* Continue shopping */}
-              <div className="mt-6 text-center">
+                {/* Continue shopping */}
                 <Link
                   href="/shop/litsaber-og"
                   className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 uppercase tracking-widest"
