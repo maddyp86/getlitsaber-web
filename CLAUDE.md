@@ -175,6 +175,7 @@ Full version in `BRAND.md`. The non-negotiables:
   - Block site interaction until confirmed
   - Set a cookie on confirmation to suppress re-prompts within session/period (final policy TBD)
   - Provide an EXIT option that redirects to a safe external destination (e.g. `https://www.google.com`)
+- **Quantity cap is 5 units per add-to-cart action** (Silver only; Gold-specific cap revisited at launch). Quantity discount tiers are defined in `lib/cart/pricing.ts` and apply as total line prices, not per-unit discounts. In Phase 4, these become Shopify automatic discount rules. See "Phase 2 decisions (locked)" for the full tier table.
 - **TSA-compliant device** but cannabis carts are not — FAQ handles this honestly.
 - **Wholesale MOQ is 5 units** (locked). Free display case at 80+ units. 4-tier wholesale pricing: Initiate, Knight, Archon, Legend.
 
@@ -190,9 +191,9 @@ This is the most complex feature in the build. The governing rule: **build all U
 - **Phases 1–3 back every store action with LOCAL state only — no API calls.** The final phase swaps the action bodies to Shopify Storefront API mutations (`cartCreate`, `cartLinesAdd`, `cartLinesUpdate`, `cartLinesRemove`). The component layer does not change during that swap.
 
 **Variant → behavior mapping (locked):**
-- **Silver** = in stock → add-to-cart flow (opens `<CartDrawer />`). Silver is the only physical SKU; both bundle options (Single / Two Pack) resolve to it.
+- **Silver** = in stock → add-to-cart flow (opens `<CartDrawer />`). Silver is the only physical SKU available now.
 - **Gold** = coming soon → does NOT add to cart; opens the **waitlist modal** (same form as the "Gold Edition" Editions box).
-- **Two Pack** = two of the Silver SKU shipped together, modeled as one logical cart line ($99.99). No separate product/variant. See "Bundle SKU strategy" above.
+- **Quantity** = the dimension that varies. The PDP selector exposes Single / Two Pack / More (with stepper for 3–5), each mapping to a quantity that adds to the cart as `qty × Silver`. Tier pricing applies. See "Phase 2 decisions" → "Bundle SKU strategy" for the full mechanism.
 
 **Editions row — three boxes, three actions (CONFIRMED 2026-05-23 — all three open as described, no longer open questions):**
 - Box 1 "OG Silver / SHOP NOW" → navigates to the Shop page (`/shop/litsaber-og`). No modal.
@@ -207,8 +208,8 @@ This is the most complex feature in the build. The governing rule: **build all U
 **Build sequence (each bullet = one builder prompt = one commit). Do not collapse phases.**
 1. **Phase 1 — static layout, zero logic.** (1a) Editions CTA row, 3 boxes, responsive, buttons inert. (1b) Product Display: gallery + thumbs, spec pills, variant selector, bundle selector, both CTAs — all static.
 2. **Phase 2 — local cart store + selection logic.** (2a) Build the store (local-backed). (2b) Wire variant/bundle selection + price display to component state. (2c) Conditional CTA: Silver → `addItem`; Gold → waitlist modal.
-3. **Phase 3 — drawers, pages, forms.** (3a) Add-to-cart slide-out drawer (reads store). (3b) `/cart` page (reads store, qty edit + remove). (3c) Gold waitlist + Future Drops modals → HubSpot. (3d) Wire the three Editions box actions.
-4. **Phase 4 — Shopify, last and isolated.** (4a) Storefront API client + env vars, fetch real product/variants. (4b) Swap store action bodies to Shopify cart mutations. (4c) Wire Buy Now / checkout to `checkoutUrl` redirect.
+3. **Phase 3 — drawers, pages, forms.** (3a) Add-to-cart slide-out drawer (reads store). (3b) `/cart` page (reads store, remove only — no qty stepper). (3c) Gold waitlist + Future Drops modals → HubSpot. (3d) Wire the three Editions box actions.
+4. **Phase 4 — Shopify, last and isolated.** (4a) Storefront API client + env vars, fetch real product/variants. (4b) Swap store action bodies to Shopify cart mutations. (4c) Wire Buy Now / checkout to `checkoutUrl` redirect. Tier pricing migrates from `lib/cart/pricing.ts` constants to Shopify automatic discount rules at this point.
 
 **Figma nodes for this feature** (file `cuBHq4i5XibiqCyleuZFHO`): Editions section `3312:2`; product display `3335:54` (NOT `3703:7914` — that is only the styles/bundle/CTA sub-block, a 2-variant component instance); add-to-cart drawer `3668:6263`; cart page `3668:5358`. Desktop and mobile mocks both exist — default to one responsive component per chunk per ADR-003; only split out a `*Mobile.tsx` if a chunk's responsive logic becomes unmanageable mid-build. Do not pre-split.
 
@@ -269,9 +270,32 @@ If any of these aren't true, the work isn't done — say so and propose what's l
 
 ## Phase 2 decisions (locked)
 
-- **Bundle SKU strategy (FINAL 2026-05-23):** The Two Pack is **two of the single Litsaber OG SKU shipped together** — there is NO physical two-pack box and NO separate Shopify product/variant. One inventory pool. Decision driven by operations: shared inventory means no allocation guessing, no 3PL kitting map (the pick order reads "Litsaber OG Silver × 2" of a SKU the 3PL already knows), and QuickBooks stays single-SKU with COGS auto-computed as qty × $13.33. This reverses an interim "dedicated variant" call once it was clear no physical two-pack exists.
-  - **Front-end (Phases 1–3):** model the Two Pack as a SINGLE logical line item in the local cart store ("Two Pack" title, $99.99, qty handling internal) so the cart UI shows one clean row, not "2× minus $20." "SAVE $20" is display copy only, never a Shopify discount object.
-  - **Shopify mechanism (Phase 4 decision, leaning native Bundles):** the single logical line maps to Shopify via either (a) **Shopify native Bundles** — preferred, gives a clean bundle line that decrements the single's stock, or (b) an automatic discount on 2× the single. Both preserve the one-inventory-pool requirement. A dedicated variant is explicitly OFF the table because it would split inventory for one physical good.
+- **Bundle SKU strategy (FINAL 2026-05-27, supersedes 2026-05-23 entry):** The Two Pack is **quantity 2 of the single Litsaber OG Silver SKU**, priced via a quantity discount tier system. There is no separate Shopify variant, no "Two Pack" logical line in the cart, and no physical two-pack package. The PDP exposes a curated selector (Single / Two Pack / More-with-stepper) that maps each option to a quantity (1 / 2 / 3–5) and adds `qty × Silver` to the cart.
+
+  **Tier prices** (defined in `lib/cart/pricing.ts`):
+  ```
+  qty 1 -> $59.99   ($59.99/unit)               (no discount)
+  qty 2 -> $99.99   ($50.00/unit)   save $19.99 (17% off)
+  qty 3 -> $134.99  ($45.00/unit)   save $44.98 (25% off)
+  qty 4 -> $169.99  ($42.50/unit)   save $69.97 (29% off)
+  qty 5 -> $199.99  ($40.00/unit)   save $99.96 (33% off)
+  ```
+
+  Each tier's per-unit drop creates a real incentive to move up; $199.99 at the cap is the marketable "save $100" anchor. $40/unit floor stays well above wholesale Tier 1 ($24/unit) to protect channel separation.
+
+  **Cart cap:** 5 units per Silver line. At cap, PDP surfaces a "Need more? See wholesale →" link to `/wholesale`.
+
+  **Cart UI:** lines display real quantities ("Litsaber Silver × 2") with tier total. **No quantity stepper in drawer or cart page** — PDP owns quantity selection; customers remove and re-add to change quantity. The store's `updateQty` action remains in the store interface for Phase 4 / programmatic edge cases, but is not exposed as a UI control.
+
+  **No mix-and-match UI for now.** Revisited when Gold ships; until then, a customer wanting a Silver + Gold mix would use two add-to-cart actions (Gold is currently waitlist-only, so this is moot until launch).
+
+  **Shopify mechanism (Phase 4):** an automatic discount per quantity threshold. **Native Bundles is OFF the table** — it doesn't expose variant IDs through the Storefront API, which a headless cart needs. Component layer does not change during the Phase 4 swap — only the store's action bodies. The pricing constant in `lib/cart/pricing.ts` becomes a client-side fallback once Shopify discounts are live; Shopify is the source of truth for prices at checkout.
+
+  **Decision history** — reversed twice during build:
+  1. Dedicated $99.99 Two Pack variant → reversed because it would split inventory for a single physical good.
+  2. Single SKU with the Two Pack modeled as one logical cart line at $99.99 → reversed because the model had no clean answer for quantities of 3, 4, or 5.
+  3. Quantity discount on a single SKU (this entry) — the cart holds real quantities, marketing names live on the PDP where they belong, and the model scales linearly to any future tier.
+
 - **PDP long-form copy:** Approved for rewrite. Current Figma copy ("Ignite your night... world's first... glow-up accessory") violates BRAND.md and must be replaced with copy matching the established voice. Rewrite happens during Phase 2 scaffold; flag for review before commit.
 - **Age gate behavior (locked):**
   - First-visit cookie, **30-day duration** (industry standard for vape)

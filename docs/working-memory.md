@@ -341,7 +341,7 @@ The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inli
 **Governing architecture decision:** Decouple UI from commerce. Build all UI against a local cart store (`lib/cart/store.ts`, Zustand + localStorage) exposing a Shopify-shaped interface; swap the store's action bodies to Shopify Storefront API mutations only in the final phase. Components talk to the store, never to Shopify. This isolates integration risk and keeps every builder prompt small. Full spec written into CLAUDE.md ("Commerce build phasing" section).
 
 **Four commercial decisions confirmed by Matt (2026-05-23):**
-- **Two Pack = two single SKUs shipped together (FINAL 2026-05-23).** No physical two-pack box, no separate Shopify variant. Driven by ops/inventory: one inventory pool (no allocation guessing), no 3PL kitting map (pick order is "Silver × 2"), QuickBooks stays single-SKU. Front-end models it as one logical cart line ($99.99); Shopify mechanism deferred to Phase 4 (leaning native Bundles, fallback automatic discount on 2× single). Interim "dedicated variant" call was reversed once it was confirmed no physical two-pack exists.
+- **Two Pack = two single SKUs shipped together (FINAL 2026-05-23).** No physical two-pack box, no separate Shopify variant. Driven by ops/inventory: one inventory pool (no allocation guessing), no 3PL kitting map (pick order is "Silver × 2"), QuickBooks stays single-SKU. Front-end models it as one logical cart line ($99.99); Shopify mechanism deferred to Phase 4 (leaning native Bundles, fallback automatic discount on 2× single). Interim "dedicated variant" call was reversed once it was confirmed no physical two-pack exists. **NOTE: this decision was reversed again on 2026-05-27 — see "Quantity discount refactor" entry below.**
 - **Authorize.net** already approved for this store; Shopify hosted checkout routes to it. Wired in Phase 4, not before.
 - **HubSpot** handles both new signup flows (Gold waitlist, Future Drops notify) — submit to HubSpot forms, a workflow sends confirmation, contact lands in CRM. No custom backend. Two new forms needed; Matt to create before Phase 3 form wiring.
 - **Variant→behavior:** Silver → add to cart + drawer. Gold → waitlist modal (no cart).
@@ -448,11 +448,79 @@ The full commerce UI is built and verified against the local cart store. Shopify
 
 ---
 
+### Phase 2 — Quantity discount refactor (2026-05-27) — building
+
+**What changed:** The 2026-05-23 "Two Pack as logical single cart line" model was reversed in favor of a quantity discount on a single SKU. Cart holds real quantities; PDP exposes a curated selector that maps each option to a quantity.
+
+**Trigger for the reversal:** A user question — "Can someone buy 3 or 5? How does that work?" The May 23 model had no clean answer. Either the cart logic had to grow a "Two Pack" string that meant qty 2 PLUS a separate qty field for everything else (two ways to represent the same dimension), or every higher tier needed its own logical-line treatment (a SKU explosion in cart presentation, not just in Shopify). Neither held up.
+
+**Decisions locked (2026-05-27):**
+
+1. **Cap: 5 units per add-to-cart action** for Silver. Gold revisited at launch (the mix-and-match question lands then; until Gold ships there is no mix to enable).
+2. **PDP selector pattern: Pattern B** — Single / Two Pack as discrete radios + a "More" radio that reveals a qty stepper for 3 / 4 / 5. Pattern B keeps the highest-converting tiers (1, 2) as curated marketing surfaces; treats 3–5 as the "less curated" tail without bloating the PDP with five separate radios (Pattern A) or losing the Two Pack narrative entirely (Pattern C, pure stepper).
+3. **No mix-and-match UI for now.** Revisited when Gold ships.
+4. **Discount tiers** (defined in `lib/cart/pricing.ts`):
+
+   | Qty | Total | Per-unit | Saved | % off |
+   |---|---|---|---|---|
+   | 1 | $59.99 | $59.99 | — | — |
+   | 2 | $99.99 | $50.00 | $19.99 | 17% |
+   | 3 | $134.99 | $45.00 | $44.98 | 25% |
+   | 4 | $169.99 | $42.50 | $69.97 | 29% |
+   | 5 | $199.99 | $40.00 | $99.96 | 33% |
+
+   Each tier's per-unit drop creates a real incentive to move up. $199.99 at the cap is the marketable "save $100" anchor. $40/unit floor stays well above wholesale Tier 1 ($24/unit) — channel separation preserved. At $13.33 landed cost, ~67% gross margin holds even at the deepest tier.
+
+5. **Cart drawer + page: no quantity stepper.** PDP owns quantity selection. Customers remove + re-add to change quantity. The store's `updateQty` action stays for Phase 4 / programmatic use; only the UI control is removed.
+
+6. **Cart line representation:** real qty of the Silver variant, displayed as "Litsaber Silver × N" with the tier total. "Two Pack" stops being a string the cart knows about — it's now purely a PDP UI affordance.
+
+7. **At qty 5, surface a wholesale link** on the PDP ("Need more? See wholesale →"). Routes high-quantity buyers to the right channel without blocking the add-to-cart.
+
+**Why the reversal (third iteration on this decision):**
+
+- Iteration 1 (pre-May 23): dedicated $99.99 Two Pack variant. Reversed because it would split inventory for a single physical good.
+- Iteration 2 (May 23): single SKU with the Two Pack modeled as one logical cart line at $99.99 ("Two Pack" title, internal qty handling). Worked for 1 and 2 units; broke down when planning for 3 / 4 / 5.
+- Iteration 3 (this entry): quantity is the dimension; the cart holds real quantities; tier pricing applies via a pricing module that becomes Shopify discount rules in Phase 4. The cart no longer carries marketing metadata as a name; the marketing lives on the PDP where it belongs.
+
+**Phase 4 implication confirmed:** Native Shopify Bundles is now OFF the table — it doesn't expose variant IDs through the Storefront API, which a headless cart requires. The Phase 4 swap becomes: same `addItem(variantId, qty)` shape, but the store's action body POSTs to `cartLinesAdd`. Shopify automatic discounts (one per quantity threshold) handle the tier pricing. The component layer doesn't change.
+
+**Build chunks:**
+- Chunk A: cart store refactor + PDP Pattern B selector + `lib/cart/pricing.ts` module (one commit)
+- Chunk B: remove quantity stepper from drawer + cart page (one commit)
+
+**Story beat captured**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 34 | "Reversed the bundle model a third time. First call was a dedicated $99.99 variant — clean code, splits inventory for a single physical good. Second call was a single SKU with the 2-Pack as a logical cart line — works for 1 and 2 units, has no answer when someone wants 3 or 5. Third call follows from one question I should have asked sooner: can someone buy 3? The honest answer made 'Two Pack as a name in the cart' obviously wrong. Quantity is the dimension. The cart holds quantities. Marketing names live on the PDP. The pattern: when a design decision keeps breaking under follow-up questions, the decision is wrong, not the questions. Reversal isn't waste — staying with the broken decision is." | `pm-discipline`, `integration-depth` |
+
+---
+
 ### Phase 4 — Shopify Integration + Reviews Provider (pending)
 
-Storefront API client, typed responses, cart via Shopify Cart API (swap the local store's action bodies, not the component layer), checkout handoff via `checkoutUrl`, webhook handlers for inventory.
+Three chunks, in order. The whole phase is governed by the Phase 2a architecture decision: the cart store's interface stays identical; only its action bodies change. The component layer doesn't move.
 
-**Plus:** Reviews provider integration (whichever is chosen pre-Phase 2 per ADR-002).
+**Phase 4a — Storefront API client + env vars + typed product/variant fetch. Read-only. No cart yet.**
+- Add Storefront API client at `lib/shopify/client.ts`. GraphQL over `fetch`, typed responses, Next.js cache hints.
+- Env vars: `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_API_TOKEN`, `SHOPIFY_API_VERSION`. Server-only (no `NEXT_PUBLIC_` prefix). Add to `.env.example` with placeholder values.
+- Generated TypeScript types for the product/variant payload — either via `graphql-codegen` or hand-typed if codegen feels heavy for the surface area.
+- First real fetch: `getProductByHandle('litsaber-og')` returning typed product + variants (Silver, Gold). Variant IDs sourced from Shopify replace the hardcoded mock IDs in the PDP.
+- Critical: NO cart mutations yet. NO swap of store action bodies. The local cart still runs locally with localStorage persistence. This phase verifies the client works and the data shape lines up; it does not touch commerce flow.
+- Deliverable check: PDP renders with variant IDs pulled from Shopify; cart still operates entirely against the local store; nothing user-visible has moved.
+
+**Phase 4b — Swap store action bodies to Shopify Cart API mutations.**
+- Replace the local-state action bodies in `lib/cart/store.ts` with Storefront API mutations: `cartCreate` (on first add), `cartLinesAdd`, `cartLinesUpdate`, `cartLinesRemove`. `cartId` flips from `null` to the Shopify-returned ID and persists.
+- Same interface — `addItem(variantId, qty)`, `removeItem(lineId)`, `updateQty(lineId, qty)`, `clear()` — every component that reads the store continues to work without code change. This is the payoff for the Phase 2a discipline.
+- localStorage persistence model adjusts: store the `cartId` (durable across sessions) and re-fetch line data from Shopify on hydration, rather than persisting line data locally. Avoids stale cart drift.
+- Optimistic updates on the UI side; reconciliation on the Shopify response. Decide error handling pattern (toast + revert vs. silent retry) during this build.
+
+**Phase 4c — Wire Buy Now / checkout to `checkoutUrl` redirect + tier pricing migration.**
+- Buy Now button (currently inert) redirects to the Shopify `checkoutUrl` returned by the cart. Hosted checkout handles Authorize.net.
+- **Tier pricing migration:** the `lib/cart/pricing.ts` constants from the 2026-05-27 refactor become Shopify automatic discount rules at this point. One discount per quantity threshold (2 / 3 / 4 / 5), each with the matching amount-off-per-unit so the totals land on $99.99 / $134.99 / $169.99 / $199.99. The pricing constant remains as a client-side fallback for cart UI rendering before checkout; Shopify is the source of truth at checkout.
+- Webhook handlers for inventory (out-of-stock state on PDP when variant inventory drops).
+
+**Plus:** Reviews provider integration (ReviewInfra per ADR-002 — Path A widget embed by default, Path B if their read API turns out to exist).
 
 ---
 
@@ -499,6 +567,10 @@ Phase 3 work remaining (in priority order):
 3. Wire Editions box actions: Box 1 → navigate to `/shop/litsaber-og`; Box 2 → open Gold modal; Box 3 → open Future Drops modal
 4. Wire "FESTIVAL DROP LIST" signup on `/cart` page (deferred from 3b)
 
+**Phase 2 quantity discount refactor (planned, 2026-05-27):**
+1. Chunk A — cart store refactor + PDP Pattern B selector + `lib/cart/pricing.ts` (one Bolt prompt)
+2. Chunk B — remove quantity stepper from drawer + cart page (one Bolt prompt)
+
 **Carry-forward items from 3c-1:**
 - Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value
 - Reconcile offer-amount copy ($5 vs $10) in General waitlist form
@@ -517,7 +589,8 @@ Phase 3 work remaining (in priority order):
 - Contact page FAQ body copy (mostly placeholder)
 - "Danksaber" direct competitor mention — keep, reframe, or remove
 - "LITSABER OG +" title — verify `+` is intentional
-- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-23): Two Pack is a logical single cart line, $99.99; "SAVE $20" is display copy only.
+- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-27): quantity discount model — tier prices are exact ($99.99, $134.99, $169.99, $199.99), display badges round to nearest dollar ("SAVE $20", "SAVE $45", "SAVE $70", "SAVE $100").
+- Mix-and-match UI revisit when Gold ships (currently no UI for Silver+Gold combinations; customer would use two add-to-cart actions if Gold were live)
 - Engineering kinetic animation system spec
 
 **Post-launch:**
