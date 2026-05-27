@@ -258,7 +258,7 @@ export default function CartPageBody() {
                     >
                       TOTAL
                     </span>
-                    <span style={{ width: "150px" }} />
+                    <span style={{ width: "50px" }} />
                   </div>
 
                   {/* Item rows */}
@@ -321,7 +321,7 @@ export default function CartPageBody() {
                           </span>
 
                           {/* Remove column */}
-                          <div className="flex justify-start" style={{ width: "150px", paddingleft:"5px" }}>
+                          <div className="flex justify-start" style={{ width: "50px", paddingleft:"5px" }}>
                             <button
                               onClick={() => removeItem(line.id)}
                               aria-label={`Remove ${line.title} from cart`}
