@@ -173,7 +173,7 @@ export default function CartPageBody() {
                         style={{ padding: "30px 20px" }}
                       >
                         {/* Product column: flex 1, image + text side by side */}
-                        <div className="flex gap-4 items-start" style={{ flex: "1 0 0" }}>
+                        <div className="flex gap-4 items-start min-w-0" style={{ flex: "1 0 0" }}>
                           <div
                             className="flex-shrink-0 rounded-md overflow-hidden"
                             style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
@@ -186,7 +186,7 @@ export default function CartPageBody() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="flex flex-col justify-between" style={{ minHeight: "100px",  }}>
+                          <div className="flex flex-col justify-between min-w-0 flex-1" style={{ minHeight: "100px" }}>
                             <div>
                               <p
                                 className="font-subhead font-bold text-text-primary leading-tight"
