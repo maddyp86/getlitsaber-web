@@ -30,7 +30,7 @@ export default function CartPageBody() {
         <div className="flex items-baseline gap-4 mb-8 lg:mb-10">
           <h1
             className="font-subhead font-bold text-text-primary uppercase tracking-wider"
-            style={{ fontSize: "35px", lineHeight: 1.1 }}
+            style={{ fontSize: "25px", lineHeight: 1.1 }}
           >
             Your cart
           </h1>
