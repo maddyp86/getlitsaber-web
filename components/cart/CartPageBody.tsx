@@ -123,7 +123,7 @@ export default function CartPageBody() {
                         {/* Price left, trash right — bottom of the text block */}
                         <div className="flex items-end justify-between mt-auto pt-2">
                           <span
-                            className="font-subhead font-bold"
+                            className="font-label font-bold"
                             style={{ fontSize: "14px", color: "#00E5FF" }}
                           >
                             ${getTierPrice(line.qty).toFixed(2)}
