@@ -23,7 +23,7 @@ export default function CartPageBody() {
       style={{ backgroundColor: "#0A0518" }}
     >
       <div
-        className="mx-auto w-full px-[13px] lg:px-[70px] py-10 lg:py-16"
+        className="mx-auto w-full px-4 lg:px-[70px] py-10 lg:py-16"
         style={{ maxWidth: "1400px" }}
       >
         {/* Page heading */}
@@ -76,165 +76,138 @@ export default function CartPageBody() {
             </Link>
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-            {/* ── Left column: items table ── */}
-            <div className="w-full lg:flex-[61]">
-              <div
-                className="rounded-[10px] overflow-hidden"
+          <>
+            {/* ── Mobile layout ── */}
+            <div className="flex flex-col lg:hidden gap-0">
+              {/* Items list */}
+              <ul
+                className="rounded-[10px] overflow-hidden divide-y divide-white/[0.06]"
                 style={{
                   backgroundColor: "#0F0824",
                   border: "1px solid rgba(0, 229, 255, 0.2)",
                 }}
               >
-                {/* Column headers — desktop only */}
-                <div
-                  className="hidden lg:flex items-start"
-                  style={{
-                    padding: "10px 20px",
-                    borderBottom: "1px solid rgba(240, 240, 245, 0.08)",
-                  }}
-                >
-                  <span
-                    className="font-label text-accent-cyan uppercase tracking-widest"
-                    style={{ fontSize: "13px", flex: "1 0 0" }}
-                  >
-                    PRODUCT
-                  </span>
-                  <span
-                    className="font-label text-accent-cyan uppercase tracking-widest text-right"
-                    style={{ fontSize: "13px", width: "150px" }}
-                  >
-                    PRICE
-                  </span>
-                  <span
-                    className="font-label text-accent-cyan uppercase tracking-widest text-right"
-                    style={{ fontSize: "13px", width: "150px" }}
-                  >
-                    TOTAL
-                  </span>
-                </div>
-
-                {/* Item rows */}
-                <ul className="divide-y divide-white/[0.06]">
-                  {items.map((line) => (
-                    <li key={line.id}>
-                      {/* Mobile layout */}
-                      <div className="flex lg:hidden gap-4 px-5 py-5">
-                        <div
-                          className="flex-shrink-0 rounded-md overflow-hidden"
-                          style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
-                        >
-                          <Image
-                            src={line.image}
-                            alt={line.title}
-                            width={100}
-                            height={100}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0 flex flex-col justify-between">
-                          <div>
-                            <p
-                              className="font-subhead font-bold text-text-primary leading-tight"
-                              style={{ fontSize: "16px" }}
-                            >
-                              {line.title}
-                            </p>
-                            <p
-                              className="font-label text-text-muted mt-0.5"
-                              style={{ fontSize: "14px" }}
-                            >
-                              {line.variantTitle} × {line.qty}
-                            </p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="font-label text-text-muted" style={{ fontSize: "13px" }}>
-                                ${line.price.toFixed(2)} ea
-                              </span>
-                              <span className="font-label text-text-muted" style={{ fontSize: "13px" }}>·</span>
-                              <span className="font-label font-bold text-text-primary" style={{ fontSize: "13px" }}>
-                                ${getTierPrice(line.qty).toFixed(2)}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => removeItem(line.id)}
-                            aria-label={`Remove ${line.title} from cart`}
-                            className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 mt-3 self-start"
-                            style={{ fontSize: "12px" }}
-                          >
-                            Remove ✕
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Desktop layout — flex row matching header */}
+                {items.map((line) => (
+                  <li key={line.id} className="px-4 py-4">
+                    {/* Row: image | title+variant+price | trash */}
+                    <div className="flex items-start gap-3">
+                      {/* Thumbnail */}
                       <div
-                        className="hidden lg:flex items-start justify-between"
-                        style={{ padding: "30px 20px" }}
+                        className="flex-shrink-0 rounded-md overflow-hidden"
+                        style={{ width: 72, height: 72, backgroundColor: "#120F2C" }}
                       >
-                        {/* Product column: flex 1, image + text side by side */}
-                        <div className="flex gap-4 items-start min-w-0" style={{ flex: "1 0 0" }}>
-                          <div
-                            className="flex-shrink-0 rounded-md overflow-hidden"
-                            style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
+                        <Image
+                          src={line.image}
+                          alt={line.title}
+                          width={72}
+                          height={72}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Text block — grows to fill space */}
+                      <div className="flex-1 min-w-0">
+                        {/* Title row: name + price right-aligned */}
+                        <div className="flex items-start justify-between gap-2">
+                          <p
+                            className="font-subhead font-bold text-text-primary leading-tight"
+                            style={{ fontSize: "16px" }}
                           >
-                            <Image
-                              src={line.image}
-                              alt={line.title}
-                              width={100}
-                              height={100}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="flex flex-col justify-between min-w-0 flex-1" style={{ minHeight: "100px" }}>
-                            <div>
-                              <p
-                                className="font-subhead font-bold text-text-primary leading-tight"
-                                style={{ fontSize: "16px" }}
-                              >
-                                {line.title}
-                              </p>
-                              <p
-                                className="font-label text-text-muted mt-0.5"
-                                style={{ fontSize: "14px" }}
-                              >
-                                {line.variantTitle} × {line.qty}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() => removeItem(line.id)}
-                              aria-label={`Remove ${line.title} from cart`}
-                              className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
-                              style={{ fontSize: "12px" }}
-                            >
-                              Remove ✕
-                            </button>
-                          </div>
+                            {line.title}
+                          </p>
+                          <span
+                            className="font-label font-bold flex-shrink-0"
+                            style={{ fontSize: "15px", color: "#00E5FF" }}
+                          >
+                            ${getTierPrice(line.qty).toFixed(2)}
+                          </span>
                         </div>
 
-                        {/* Price column */}
-                        <span
-                          className="font-label text-text-muted text-right"
-                          style={{ fontSize: "15px", width: "150px" }}
+                        {/* Variant label */}
+                        <p
+                          className="font-label text-text-muted uppercase tracking-widest mt-1"
+                          style={{ fontSize: "11px" }}
                         >
-                          ${line.price.toFixed(2)}
-                        </span>
-
-                        {/* Total column */}
-                        <span
-                          className="font-label font-bold text-text-primary text-right"
-                          style={{ fontSize: "15px", width: "150px" }}
-                        >
-                          ${getTierPrice(line.qty).toFixed(2)}
-                        </span>
+                          {line.variantTitle} × {line.qty}
+                        </p>
                       </div>
-                    </li>
-                  ))}
-                </ul>
+                    </div>
+
+                    {/* Trash icon pinned to bottom-right */}
+                    <div className="flex justify-end mt-2">
+                      <button
+                        onClick={() => removeItem(line.id)}
+                        aria-label={`Remove ${line.title} from cart`}
+                        className="text-text-muted hover:text-text-primary transition-colors duration-150 p-1"
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Promo code strip */}
+              <button
+                type="button"
+                className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-center w-full mt-4"
+                style={{
+                  fontSize: "12px",
+                  height: "48px",
+                  borderTop: "1px solid #2D2D2D",
+                  borderBottom: "1px solid #2D2D2D",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                + HAVE A PROMO CODE?
+              </button>
+
+              {/* Summary rows — flat, no card on mobile */}
+              <div className="flex flex-col gap-0 mt-4">
+                <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
+                <MobileSummaryRow label="Shipping" value="CALCULATED AT CHECKOUT" muted />
+                <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted />
+              </div>
+
+              {/* Total row */}
+              <div
+                className="flex justify-between items-center mt-4 pt-4"
+                style={{ borderTop: "1px solid rgba(240, 240, 245, 0.10)" }}
+              >
+                <span
+                  className="font-body font-bold text-text-primary"
+                  style={{ fontSize: "20px" }}
+                >
+                  Total
+                </span>
+                <span
+                  className="font-body font-bold text-text-primary"
+                  style={{ fontSize: "20px" }}
+                >
+                  ${subtotal.toFixed(2)}
+                </span>
+              </div>
+
+              {/* Checkout button */}
+              <button
+                type="button"
+                className="w-full py-4 font-label font-bold text-white rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest mt-5"
+                style={{
+                  fontSize: "16px",
+                  backgroundColor: "#EC5793",
+                  textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
+                }}
+              >
+                SECURE CHECKOUT →
+              </button>
+
+              {/* Trust badges */}
+              <div className="mt-4">
+                <TrustBadges />
               </div>
 
               {/* Continue shopping */}
-              <div className="mt-4">
+              <div className="mt-6 text-center">
                 <Link
                   href="/shop/litsaber-og"
                   className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 uppercase tracking-widest"
@@ -245,88 +218,197 @@ export default function CartPageBody() {
               </div>
             </div>
 
-            {/* ── Right column: order summary ── */}
-            <div className="w-full lg:flex-[39]">
-              <div
-                className="rounded-[10px] p-6 flex flex-col gap-4"
-                style={{
-                  backgroundColor: "#110826",
-                  border: "1px solid rgba(0, 229, 255, 0.2)",
-                }}
-              >
-                {/* Heading */}
-                <h2
-                  className="font-subhead font-bold text-accent-cyan uppercase tracking-wider"
-                  style={{ fontSize: "20px" }}
-                >
-                  ORDER SUMMARY
-                </h2>
-
-                {/* Line rows */}
-                <div className="flex flex-col gap-3">
-                  <SummaryRow
-                    label="Subtotal"
-                    value={`$${subtotal.toFixed(2)}`}
-                  />
-                  <SummaryRow label="Shipping" value="AT CHECKOUT" muted />
-                  <SummaryRow
-                    label="Estimated tax"
-                    value="AT CHECKOUT"
-                    muted
-                  />
-                </div>
-
-                {/* Promo code strip */}
-                <button
-                  type="button"
-                  className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-start w-full"
+            {/* ── Desktop layout ── */}
+            <div className="hidden lg:flex flex-row gap-8 items-start">
+              {/* Left column: items table */}
+              <div className="flex-[61]">
+                <div
+                  className="rounded-[10px] overflow-hidden"
                   style={{
-                    fontSize: "12px",
-                    height: "48px",
-                    padding: "15px 0",
-                    gap: "10px",
-                    borderTop: "1px solid #2D2D2D",
-                    borderBottom: "1px solid #2D2D2D",
+                    backgroundColor: "#0F0824",
+                    border: "1px solid rgba(0, 229, 255, 0.2)",
                   }}
                 >
-                  + HAVE A PROMO CODE?
-                </button>
+                  {/* Column headers */}
+                  <div
+                    className="flex items-start"
+                    style={{
+                      padding: "10px 20px",
+                      borderBottom: "1px solid rgba(240, 240, 245, 0.08)",
+                    }}
+                  >
+                    <span
+                      className="font-label text-accent-cyan uppercase tracking-widest"
+                      style={{ fontSize: "13px", flex: "1 0 0" }}
+                    >
+                      PRODUCT
+                    </span>
+                    <span
+                      className="font-label text-accent-cyan uppercase tracking-widest text-right"
+                      style={{ fontSize: "13px", width: "150px" }}
+                    >
+                      PRICE
+                    </span>
+                    <span
+                      className="font-label text-accent-cyan uppercase tracking-widest text-right"
+                      style={{ fontSize: "13px", width: "150px" }}
+                    >
+                      TOTAL
+                    </span>
+                  </div>
 
-                {/* Total */}
-                <div className="flex justify-between items-center">
-                  <span
-                    className="font-body font-bold text-text-primary"
-                    style={{ fontSize: "18px" }}
-                  >
-                    Total
-                  </span>
-                  <span
-                    className="font-body font-bold text-text-primary"
-                    style={{ fontSize: "22px" }}
-                  >
-                    ${subtotal.toFixed(2)}
-                  </span>
+                  {/* Item rows */}
+                  <ul className="divide-y divide-white/[0.06]">
+                    {items.map((line) => (
+                      <li key={line.id}>
+                        <div
+                          className="flex items-start justify-between"
+                          style={{ padding: "30px 20px" }}
+                        >
+                          {/* Product column */}
+                          <div className="flex gap-4 items-start min-w-0" style={{ flex: "1 0 0" }}>
+                            <div
+                              className="flex-shrink-0 rounded-md overflow-hidden"
+                              style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
+                            >
+                              <Image
+                                src={line.image}
+                                alt={line.title}
+                                width={100}
+                                height={100}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="flex flex-col justify-between min-w-0 flex-1" style={{ minHeight: "100px" }}>
+                              <div>
+                                <p
+                                  className="font-subhead font-bold text-text-primary leading-tight"
+                                  style={{ fontSize: "16px" }}
+                                >
+                                  {line.title}
+                                </p>
+                                <p
+                                  className="font-label text-text-muted mt-0.5"
+                                  style={{ fontSize: "14px" }}
+                                >
+                                  {line.variantTitle} × {line.qty}
+                                </p>
+                              </div>
+                              <button
+                                onClick={() => removeItem(line.id)}
+                                aria-label={`Remove ${line.title} from cart`}
+                                className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
+                                style={{ fontSize: "12px" }}
+                              >
+                                Remove ✕
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Price column */}
+                          <span
+                            className="font-label text-text-muted text-right"
+                            style={{ fontSize: "15px", width: "150px" }}
+                          >
+                            ${line.price.toFixed(2)}
+                          </span>
+
+                          {/* Total column */}
+                          <span
+                            className="font-label font-bold text-text-primary text-right"
+                            style={{ fontSize: "15px", width: "150px" }}
+                          >
+                            ${getTierPrice(line.qty).toFixed(2)}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Checkout button — inert until Phase 4 */}
-                <button
-                  type="button"
-                  className="w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest"
+                {/* Continue shopping */}
+                <div className="mt-4">
+                  <Link
+                    href="/shop/litsaber-og"
+                    className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 uppercase tracking-widest"
+                    style={{ fontSize: "12px" }}
+                  >
+                    ← CONTINUE SHOPPING
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right column: order summary */}
+              <div className="flex-[39]">
+                <div
+                  className="rounded-[10px] p-6 flex flex-col gap-4"
                   style={{
-                    fontSize: "16px",
-                    backgroundColor: "#EC5793",
-                    textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
-                    // TODO Phase 4: Shopify checkoutUrl
+                    backgroundColor: "#110826",
+                    border: "1px solid rgba(0, 229, 255, 0.2)",
                   }}
                 >
-                  CHECKOUT →
-                </button>
+                  <h2
+                    className="font-subhead font-bold text-accent-cyan uppercase tracking-wider"
+                    style={{ fontSize: "20px" }}
+                  >
+                    ORDER SUMMARY
+                  </h2>
 
-                {/* Trust badges */}
-                <TrustBadges />
+                  <div className="flex flex-col gap-3">
+                    <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
+                    <SummaryRow label="Shipping" value="AT CHECKOUT" muted />
+                    <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted />
+                  </div>
+
+                  {/* Promo code strip */}
+                  <button
+                    type="button"
+                    className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-center w-full"
+                    style={{
+                      fontSize: "12px",
+                      height: "48px",
+                      borderTop: "1px solid #2D2D2D",
+                      borderBottom: "1px solid #2D2D2D",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    + HAVE A PROMO CODE?
+                  </button>
+
+                  {/* Total */}
+                  <div className="flex justify-between items-center">
+                    <span
+                      className="font-body font-bold text-text-primary"
+                      style={{ fontSize: "18px" }}
+                    >
+                      Total
+                    </span>
+                    <span
+                      className="font-body font-bold text-text-primary"
+                      style={{ fontSize: "22px" }}
+                    >
+                      ${subtotal.toFixed(2)}
+                    </span>
+                  </div>
+
+                  {/* Checkout button */}
+                  <button
+                    type="button"
+                    className="w-full py-4 font-label font-bold text-white rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest"
+                    style={{
+                      fontSize: "16px",
+                      backgroundColor: "#EC5793",
+                      textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
+                    }}
+                  >
+                    SECURE CHECKOUT →
+                  </button>
+
+                  <TrustBadges />
+                </div>
               </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>
@@ -336,6 +418,36 @@ export default function CartPageBody() {
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
+
+function MobileSummaryRow({
+  label,
+  value,
+  muted = false,
+}: {
+  label: string;
+  value: string;
+  muted?: boolean;
+}) {
+  return (
+    <div
+      className="flex justify-between items-center py-3"
+      style={{ borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
+    >
+      <span
+        className="font-label text-text-muted"
+        style={{ fontSize: "14px" }}
+      >
+        {label}
+      </span>
+      <span
+        className={`font-label uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
+        style={{ fontSize: muted ? "10px" : "14px" }}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
 
 function SummaryRow({
   label,
@@ -361,6 +473,28 @@ function SummaryRow({
         {value}
       </span>
     </div>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+    </svg>
   );
 }
 
