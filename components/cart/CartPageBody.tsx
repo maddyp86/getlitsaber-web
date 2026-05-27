@@ -89,7 +89,6 @@ export default function CartPageBody() {
               >
                 {items.map((line) => (
                   <li key={line.id} className="px-4 py-4">
-                    {/* Row: image | title+variant+price | trash */}
                     <div className="flex items-start gap-3">
                       {/* Thumbnail */}
                       <div
@@ -105,43 +104,39 @@ export default function CartPageBody() {
                         />
                       </div>
 
-                      {/* Text block — grows to fill space */}
-                      <div className="flex-1 min-w-0">
-                        {/* Title row: name + price right-aligned */}
-                        <div className="flex items-start justify-between gap-2">
-                          <p
-                            className="font-subhead font-bold text-text-primary leading-tight"
-                            style={{ fontSize: "16px" }}
-                          >
-                            {line.title}
-                          </p>
-                          <span
-                            className="font-label font-bold flex-shrink-0"
-                            style={{ fontSize: "15px", color: "#00E5FF" }}
-                          >
-                            ${getTierPrice(line.qty).toFixed(2)}
-                          </span>
-                        </div>
-
-                        {/* Variant label */}
+                      {/* Text block + trash */}
+                      <div className="flex-1 min-w-0 flex flex-col" style={{ minHeight: "72px" }}>
+                        {/* Title + variant */}
+                        <p
+                          className="font-subhead font-bold text-text-primary leading-tight"
+                          style={{ fontSize: "16px" }}
+                        >
+                          {line.title}
+                        </p>
                         <p
                           className="font-label text-text-muted uppercase tracking-widest mt-1"
                           style={{ fontSize: "11px" }}
                         >
                           {line.variantTitle} × {line.qty}
                         </p>
-                      </div>
-                    </div>
 
-                    {/* Trash icon pinned to bottom-right */}
-                    <div className="flex justify-end mt-2">
-                      <button
-                        onClick={() => removeItem(line.id)}
-                        aria-label={`Remove ${line.title} from cart`}
-                        className="text-text-muted hover:text-text-primary transition-colors duration-150 p-1"
-                      >
-                        <TrashIcon />
-                      </button>
+                        {/* Price left, trash right — bottom of the text block */}
+                        <div className="flex items-end justify-between mt-auto pt-2">
+                          <span
+                            className="font-subhead font-bold"
+                            style={{ fontSize: "18px", color: "#00E5FF" }}
+                          >
+                            ${getTierPrice(line.qty).toFixed(2)}
+                          </span>
+                          <button
+                            onClick={() => removeItem(line.id)}
+                            aria-label={`Remove ${line.title} from cart`}
+                            className="text-text-muted hover:text-text-primary transition-colors duration-150 p-1"
+                          >
+                            <TrashIcon />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
                 ))}
