@@ -17,12 +17,17 @@ export const metadata: Metadata = {
 };
 
 const SILVER_SKU = "LTS-OG-SLV";
+const shopifyConfigured = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
 export default async function HomePage() {
   const product = await getProductByHandle("litsaber-og");
   const silverVariant = product?.variants.edges
     .map((e) => e.node)
     .find((v) => v.sku === SILVER_SKU) ?? null;
+
+  // If Shopify is not configured (local dev without env vars), default to
+  // showing the buy buttons rather than "Currently unavailable".
+  const available = shopifyConfigured ? silverVariant !== null : true;
 
   return (
     <>
@@ -38,7 +43,7 @@ export default async function HomePage() {
         <EditionsSection />
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
-          available={silverVariant !== null}
+          available={available}
         />
       </WhatWereShipping>
     </>

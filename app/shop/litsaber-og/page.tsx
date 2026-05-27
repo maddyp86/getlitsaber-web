@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 };
 
 const SILVER_SKU = "LTS-OG-SLV";
+const shopifyConfigured = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
 export default async function PDPPage() {
   const product = await getProductByHandle("litsaber-og");
@@ -14,11 +15,15 @@ export default async function PDPPage() {
     .map((e) => e.node)
     .find((v) => v.sku === SILVER_SKU) ?? null;
 
+  // If Shopify is not configured (local dev without env vars), default to
+  // showing the buy buttons rather than "Currently unavailable".
+  const available = shopifyConfigured ? silverVariant !== null : true;
+
   return (
     <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl">
       <ProductDisplay
         variantId={silverVariant?.id ?? ""}
-        available={silverVariant !== null}
+        available={available}
       />
     </div>
   );

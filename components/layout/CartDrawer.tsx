@@ -86,12 +86,9 @@ export default function CartDrawer() {
             exit="exit"
             variants={panelVariants}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-drawer flex flex-col"
+            className="fixed inset-0 z-drawer flex flex-col"
             style={{
-              width: "min(480px, 100vw)",
               backgroundColor: "#0E0825",
-              borderLeft: "1px solid rgba(157, 95, 255, 0.25)",
-              boxShadow: "-10px 0 40px rgba(0, 0, 0, 0.3)",
             }}
           >
             {/* Header */}
