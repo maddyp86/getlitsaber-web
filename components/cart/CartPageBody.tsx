@@ -154,8 +154,7 @@ export default function CartPageBody() {
                 style={{
                   fontSize: "12px",
                   height: "48px",
-                  borderTop: "1px solid #2D2D2D",
-                  borderBottom: "1px solid #2D2D2D",
+                  border: "1px solid #2D2D2D",
                   letterSpacing: "0.1em",
                 }}
               >
