@@ -374,9 +374,10 @@ export default function CartPageBody() {
                     className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-start w-full"
                     style={{
                       fontSize: "12px",
-                      height: "48px",
-                      borderTop: "1px solid #2D2D2D",
-                      borderBottom: "1px solid #2D2D2D",
+                      height: "50px",
+                      border: "1px solid #2D2D2D",
+                      borderRadius:"5px",
+                      background: "#081D2F"
                       letterSpacing: "0.1em",
                     }}
                   >
