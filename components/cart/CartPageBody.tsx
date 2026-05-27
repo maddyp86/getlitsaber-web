@@ -172,7 +172,7 @@ export default function CartPageBody() {
                 <div className="flex flex-col gap-0 w-full">
                   <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                   <MobileSummaryRow label="Shipping" value="CALCULATED AT CHECKOUT" muted />
-                  <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted />
+                  <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted noBorder />
                 </div>
 
                 {/* Total row */}
@@ -431,15 +431,17 @@ function MobileSummaryRow({
   label,
   value,
   muted = false,
+  noBorder = false,
 }: {
   label: string;
   value: string;
   muted?: boolean;
+  noBorder?: boolean;
 }) {
   return (
     <div
       className="flex justify-between items-center py-2"
-      style={{ borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
+      style={noBorder ? undefined : { borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
     >
       <span
         className="font-body text-text-muted"
