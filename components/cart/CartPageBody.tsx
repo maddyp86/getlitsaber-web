@@ -78,7 +78,7 @@ export default function CartPageBody() {
         ) : (
           <>
             {/* ── Mobile layout ── */}
-            <div className="flex flex-col lg:hidden gap-0">
+            <div className="flex flex-col lg:hidden gap-0 mb-5">
               {/* Items list */}
               <ul
                 className="rounded-[10px] overflow-hidden divide-y divide-white/[0.06]"
