@@ -132,7 +132,7 @@ export default function CartPageBody() {
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <div className="flex-2 min-w-0 flex flex-col justify-between">
+                        <div className="flex-0 min-w-0 flex flex-col justify-between">
                           <div>
                             <p
                               className="font-subhead font-bold text-text-primary leading-tight"
