@@ -1,4 +1,4 @@
-export const PRODUCT_TITLE = "LITSABER OG - Silver";
+export const PRODUCT_TITLE = "LITSABER OG";
 export const PRODUCT_SUBTITLE = "The Interactive 510 Battery";
 
 export const SPEC_PILLS = [
