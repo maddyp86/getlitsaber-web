@@ -176,7 +176,7 @@ export default function CartPageBody() {
                         <div className="flex gap-4 items-start" style={{ flex: "1 0 0" }}>
                           <div
                             className="flex-shrink-0 rounded-md overflow-hidden"
-                            style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
+                            style={{ width: 150, height: 100, backgroundColor: "#120F2C" }}
                           >
                             <Image
                               src={line.image}
