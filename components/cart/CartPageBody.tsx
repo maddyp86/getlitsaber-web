@@ -442,7 +442,7 @@ function MobileSummaryRow({
       style={{ borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
     >
       <span
-        className="font-label text-text-muted"
+        className="font-body text-text-muted"
         style={{ fontSize: "14px" }}
       >
         {label}
