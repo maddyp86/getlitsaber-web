@@ -262,7 +262,7 @@ export default function CartDrawer() {
               <Link
                 href="/cart"
                 onClick={closeCart}
-                className="w-full py-4 font-label font-bold text-text-primary text-center uppercase tracking-widest transition-opacity hover:opacity-80 active:opacity-60 rounded-[10px]"
+                className="w-full py-3 font-label font-bold text-text-primary text-center uppercase tracking-widest transition-opacity hover:opacity-80 active:opacity-60 rounded-[10px]"
                 style={{
                   fontSize: "16px",
                   border: "1px solid rgba(110, 110, 110, 0.20)",
@@ -275,7 +275,7 @@ export default function CartDrawer() {
               {/* Checkout button */}
               <button
                 type="button"
-                className="w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80"
+                className="w-full py-3 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80"
                 style={{
                   fontSize: "16px",
                   backgroundColor: "#EC5793",
