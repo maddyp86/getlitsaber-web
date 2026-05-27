@@ -136,7 +136,7 @@ export default function CartPageBody() {
                           <div>
                             <p
                               className="font-subhead font-bold text-text-primary leading-tight"
-                              style={{ fontSize: "18px" }}
+                              style={{ fontSize: "16px" }}
                             >
                               {line.title}
                             </p>
