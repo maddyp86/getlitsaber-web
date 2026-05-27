@@ -325,10 +325,15 @@ export default function CartPageBody() {
                             <button
                               onClick={() => removeItem(line.id)}
                               aria-label={`Remove ${line.title} from cart`}
-                              className="text-text-muted hover:text-text-primary transition-colors duration-150"
-                              style={{ fontSize: "16px", lineHeight: 1 }}
+                              className="opacity-50 hover:opacity-100 transition-all duration-200 group"
                             >
-                              ×
+                              <Image
+                                src="/images/icons/close-svgrepo-com 1.svg"
+                                alt="Remove"
+                                width={16}
+                                height={16}
+                                className="transition-all duration-200 group-hover:[filter:invert(79%)_sepia(97%)_saturate(1000%)_hue-rotate(152deg)_brightness(102%)_contrast(105%)]"
+                              />
                             </button>
                           </div>
                         </div>
