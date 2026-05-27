@@ -341,7 +341,7 @@ export default function CartPageBody() {
                     className="font-label text-text-muted hover:text-accent-cyan transition-colors duration-150 uppercase tracking-widest"
                     style={{ fontSize: "12px" }}
                   >
-                    ← CONTINUE SHOPPING
+                    CONTINUE SHOPPING
                   </Link>
                 </div>
               </div>
