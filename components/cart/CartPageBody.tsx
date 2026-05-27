@@ -105,7 +105,7 @@ export default function CartPageBody() {
                       </div>
 
                       {/* Text block + trash */}
-                      <div className="flex-1 min-w-0 flex flex-col" style={{ minHeight: "72px" }}>
+                      <div className="flex-1 min-w-0 flex flex-col" style={{ minHeight: "100px" }}>
                         {/* Title + variant */}
                         <p
                           className="font-subhead font-bold text-text-primary leading-tight"
