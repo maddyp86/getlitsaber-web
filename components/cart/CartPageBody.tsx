@@ -258,7 +258,7 @@ export default function CartPageBody() {
                     >
                       TOTAL
                     </span>
-                    <span style={{ width: "40px" }} />
+                    <span style={{ width: "150px" }} />
                   </div>
 
                   {/* Item rows */}
