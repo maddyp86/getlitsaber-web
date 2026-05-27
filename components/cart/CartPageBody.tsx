@@ -362,7 +362,7 @@ export default function CartPageBody() {
                     ORDER SUMMARY
                   </h2>
 
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-2">
                     <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                     <SummaryRow label="Shipping" value="AT CHECKOUT" muted />
                     <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted />
