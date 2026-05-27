@@ -264,7 +264,7 @@ export default function CartDrawer() {
                 onClick={closeCart}
                 className="w-full py-3 font-label font-bold text-text-primary text-center uppercase tracking-widest transition-opacity hover:opacity-80 active:opacity-60 rounded-[10px]"
                 style={{
-                  fontSize: "16px",
+                  fontSize: "15px",
                   border: "1px solid rgba(110, 110, 110, 0.20)",
                   background: "#64748B",
                 }}
@@ -277,7 +277,7 @@ export default function CartDrawer() {
                 type="button"
                 className="w-full py-3 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80"
                 style={{
-                  fontSize: "16px",
+                  fontSize: "15px",
                   backgroundColor: "#EC5793",
                   textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
                   // TODO Phase 4: Shopify checkoutUrl
