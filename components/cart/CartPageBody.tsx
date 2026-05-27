@@ -438,7 +438,7 @@ function MobileSummaryRow({
 }) {
   return (
     <div
-      className="flex justify-between items-center py-3"
+      className="flex justify-between items-center py-1"
       style={{ borderBottom: "1px solid rgba(240, 240, 245, 0.06)" }}
     >
       <span
