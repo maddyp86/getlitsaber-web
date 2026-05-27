@@ -46,7 +46,7 @@ export default function CartPageBody() {
 
         {/* Empty state */}
         {itemCount === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-6 text-center">
+          <div className="flex flex-col items-center justify-center py-10 gap-6 text-center">
             <div
               className="flex items-center justify-center w-20 h-20 rounded-full"
               style={{ border: "1px solid rgba(240, 240, 245, 0.15)" }}
