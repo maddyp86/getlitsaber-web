@@ -99,8 +99,8 @@ export default function CartPageBody() {
                         <Image
                           src={line.image}
                           alt={line.title}
-                          width={72}
-                          height={72}
+                          width={100}
+                          height={100}
                           className="w-full h-full object-cover"
                         />
                       </div>
