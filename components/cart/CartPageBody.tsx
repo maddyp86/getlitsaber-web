@@ -186,7 +186,7 @@ export default function CartPageBody() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="flex flex-col justify-between" style={{ minHeight: "100px", flex: "1 0 0" }}>
+                          <div className="flex flex-col justify-between" style={{ minHeight: "100px",  }}>
                             <div>
                               <p
                                 className="font-subhead font-bold text-text-primary leading-tight"
@@ -205,7 +205,7 @@ export default function CartPageBody() {
                               onClick={() => removeItem(line.id)}
                               aria-label={`Remove ${line.title} from cart`}
                               className="font-label text-text-muted hover:text-text-primary transition-colors duration-150 flex items-center gap-1 self-start"
-                              style={{ fontSize: "12px" }}
+                              style={{ fontSize: "12px", fontDecoration:"underline" }}
                             >
                               Remove ✕
                             </button>
