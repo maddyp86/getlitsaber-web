@@ -155,7 +155,7 @@ export default function CartPageBody() {
                   fontSize: "12px",
                   height: "48px",
                   border: "1px solid #2D2D2D",
-                  background: "#081D2F"
+                  background: "#081D2F",
                   letterSpacing: "0.1em",
                 }}
               >
