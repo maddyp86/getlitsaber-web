@@ -484,7 +484,7 @@ function SummaryRow({
       </span>
       <span
         className={`font-body uppercase tracking-wider ${muted ? "text-text-muted" : "text-text-primary font-bold"}`}
-        style={{ fontSize: muted ? "12px" : "15px" }}
+        style={{ fontSize: muted ? "12px" : "13px" }}
       >
         {value}
       </span>
