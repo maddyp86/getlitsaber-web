@@ -94,13 +94,13 @@ export default function CartPageBody() {
                       {/* Thumbnail */}
                       <div
                         className="flex-shrink-0 rounded-md overflow-hidden"
-                        style={{ width: 100, height: 100, backgroundColor: "#120F2C" }}
+                        style={{ width: 72, height: 72, backgroundColor: "#120F2C" }}
                       >
                         <Image
                           src={line.image}
                           alt={line.title}
-                          width={100}
-                          height={100}
+                          width={72}
+                          height={72}
                           className="w-full h-full object-cover"
                         />
                       </div>
