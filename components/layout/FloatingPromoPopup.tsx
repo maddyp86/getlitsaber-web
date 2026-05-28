@@ -65,6 +65,7 @@ export default function FloatingPromoPopup() {
           max-width: 400px;
           display: flex;
           flex-direction: column;
+         justify-content: center;
           gap: 20px;
           padding: 32px;
           border: 1px solid rgba(0, 229, 255, 0.20);
