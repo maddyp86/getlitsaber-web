@@ -68,9 +68,7 @@ export default function FloatingPromoPopup() {
          justify-content: center;
           gap: 20px;
           padding: 32px;
-          border: 1px solid rgba(0, 229, 255, 0.20);
           background: #0F0F1F;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         /* Desktop (lg+): restore corner card, slide-in from right */
