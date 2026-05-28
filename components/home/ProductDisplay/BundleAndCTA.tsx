@@ -65,134 +65,138 @@ export default function BundleAndCTA({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-body font-medium text-[14px] text-text-secondary uppercase">
-        SELECT QUANTITY
-      </p>
+      {available && (
+        <>
+          <p className="font-body font-medium text-[14px] text-text-secondary uppercase">
+            SELECT QUANTITY
+          </p>
 
-      {/* Option rows */}
-      <div className="flex flex-col gap-3">
-        {BUNDLE_OPTIONS.map((option) => {
-          const isChecked = option.id === activeBundle;
+          {/* Option rows */}
+          <div className="flex flex-col gap-3">
+            {BUNDLE_OPTIONS.map((option) => {
+              const isChecked = option.id === activeBundle;
 
-          const displayPrice =
-            option.id === "more"
-              ? `$${moreTierPrice.toFixed(2)}`
-              : (option.price ?? "");
+              const displayPrice =
+                option.id === "more"
+                  ? `$${moreTierPrice.toFixed(2)}`
+                  : (option.price ?? "");
 
-          const saveLabel =
-            option.id === "more"
-              ? `SAVE $${moreSavingsRounded}`
-              : option.saveLabel;
+              const saveLabel =
+                option.id === "more"
+                  ? `SAVE $${moreSavingsRounded}`
+                  : option.saveLabel;
 
-          return (
-            <div key={option.id} className="flex flex-col">
-              <button
-                type="button"
-                onClick={() => onBundleChange(option.id)}
-                className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors w-full ${
-                  isChecked ? "border-accent-cyan" : "border-border-inactive"
-                } ${
-                  option.id === "more" && isChecked
-                    ? "rounded-t-selector rounded-t-btn border-b-0"
-                    : "rounded-selector rounded-btn"
-                }`}
-              >
-                <RadioIndicator checked={isChecked} />
+              return (
+                <div key={option.id} className="flex flex-col">
+                  <button
+                    type="button"
+                    onClick={() => onBundleChange(option.id)}
+                    className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors w-full ${
+                      isChecked ? "border-accent-cyan" : "border-border-inactive"
+                    } ${
+                      option.id === "more" && isChecked
+                        ? "rounded-t-selector rounded-t-btn border-b-0"
+                        : "rounded-selector rounded-btn"
+                    }`}
+                  >
+                    <RadioIndicator checked={isChecked} />
 
-                <div className="flex flex-col gap-1 flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-label font-bold text-[16px] text-text-primary leading-tight">
-                      {option.title}
+                    <div className="flex flex-col gap-1 flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-label font-bold text-[16px] text-text-primary leading-tight">
+                          {option.title}
+                        </span>
+                        {saveLabel && (
+                          <span
+                            className="font-label text-[12px] text-accent-cyan rounded-pill px-2 py-0.5"
+                            style={{ background: "rgba(0, 229, 255, 0.05)" }}
+                          >
+                            {saveLabel}
+                          </span>
+                        )}
+                      </div>
+                      {option.descriptor && (
+                        <p className="font-body text-[12px] text-text-secondary leading-snug">
+                          {option.descriptor}
+                        </p>
+                      )}
+                    </div>
+
+                    <span className="font-body font-bold text-[16px] text-text-primary flex-shrink-0 text-right">
+                      {displayPrice}
                     </span>
-                    {saveLabel && (
-                      <span
-                        className="font-label text-[12px] text-accent-cyan rounded-pill px-2 py-0.5"
-                        style={{ background: "rgba(0, 229, 255, 0.05)" }}
-                      >
-                        {saveLabel}
+                  </button>
+
+                  {/* Inline stepper — visible only when "more" is active */}
+                  {option.id === "more" && isChecked && (
+                    <div
+                      className="bg-surface-card-deep border border-accent-cyan border-t-0 rounded-b-selector rounded-b-btn px-4 py-3 flex items-center gap-4"
+                    >
+                      <span className="font-label text-[12px] text-text-muted uppercase tracking-wider">
+                        Quantity
                       </span>
-                    )}
-                  </div>
-                  {option.descriptor && (
-                    <p className="font-body text-[12px] text-text-secondary leading-snug">
-                      {option.descriptor}
-                    </p>
+                      <div
+                        className="flex items-center"
+                        style={{
+                          border: "1px solid rgba(240, 240, 245, 0.20)",
+                          borderRadius: "4px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => onMoreQtyChange(Math.max(MORE_MIN, moreQty - 1))}
+                          disabled={moreQty <= MORE_MIN}
+                          aria-label="Decrease quantity"
+                          className="w-9 h-9 flex items-center justify-center font-label text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
+                          style={{ fontSize: "20px", lineHeight: 1 }}
+                        >
+                          −
+                        </button>
+                        <span
+                          className="w-9 h-9 flex items-center justify-center font-label font-bold text-text-primary"
+                          style={{
+                            fontSize: "16px",
+                            borderLeft: "1px solid rgba(240, 240, 245, 0.15)",
+                            borderRight: "1px solid rgba(240, 240, 245, 0.15)",
+                          }}
+                        >
+                          {moreQty}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => onMoreQtyChange(Math.min(MORE_MAX, moreQty + 1))}
+                          disabled={moreQty >= MORE_MAX}
+                          aria-label="Increase quantity"
+                          className="w-9 h-9 flex items-center justify-center font-label text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
+                          style={{ fontSize: "20px", lineHeight: 1 }}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <span className="font-label text-[12px] text-text-muted">
+                        Save ${moreSavingsRounded.toFixed(2)}
+                      </span>
+                    </div>
                   )}
                 </div>
+              );
+            })}
+          </div>
 
-                <span className="font-body font-bold text-[16px] text-text-primary flex-shrink-0 text-right">
-                  {displayPrice}
-                </span>
-              </button>
-
-              {/* Inline stepper — visible only when "more" is active */}
-              {option.id === "more" && isChecked && (
-                <div
-                  className="bg-surface-card-deep border border-accent-cyan border-t-0 rounded-b-selector rounded-b-btn px-4 py-3 flex items-center gap-4"
-                >
-                  <span className="font-label text-[12px] text-text-muted uppercase tracking-wider">
-                    Quantity
-                  </span>
-                  <div
-                    className="flex items-center"
-                    style={{
-                      border: "1px solid rgba(240, 240, 245, 0.20)",
-                      borderRadius: "4px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => onMoreQtyChange(Math.max(MORE_MIN, moreQty - 1))}
-                      disabled={moreQty <= MORE_MIN}
-                      aria-label="Decrease quantity"
-                      className="w-9 h-9 flex items-center justify-center font-label text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
-                      style={{ fontSize: "20px", lineHeight: 1 }}
-                    >
-                      −
-                    </button>
-                    <span
-                      className="w-9 h-9 flex items-center justify-center font-label font-bold text-text-primary"
-                      style={{
-                        fontSize: "16px",
-                        borderLeft: "1px solid rgba(240, 240, 245, 0.15)",
-                        borderRight: "1px solid rgba(240, 240, 245, 0.15)",
-                      }}
-                    >
-                      {moreQty}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => onMoreQtyChange(Math.min(MORE_MAX, moreQty + 1))}
-                      disabled={moreQty >= MORE_MAX}
-                      aria-label="Increase quantity"
-                      className="w-9 h-9 flex items-center justify-center font-label text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
-                      style={{ fontSize: "20px", lineHeight: 1 }}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <span className="font-label text-[12px] text-text-muted">
-                    Save ${moreSavingsRounded.toFixed(2)}
-                  </span>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Wholesale nudge at qty cap */}
-      {selectedQty >= MAX_QTY && (
-        <p className="font-label text-[12px] text-text-muted">
-          Need more?{" "}
-          <Link
-            href="/wholesale"
-            className="text-text-secondary underline hover:text-accent-cyan transition-colors duration-150"
-          >
-            See wholesale →
-          </Link>
-        </p>
+          {/* Wholesale nudge at qty cap */}
+          {selectedQty >= MAX_QTY && (
+            <p className="font-label text-[12px] text-text-muted">
+              Need more?{" "}
+              <Link
+                href="/wholesale"
+                className="text-text-secondary underline hover:text-accent-cyan transition-colors duration-150"
+              >
+                See wholesale →
+              </Link>
+            </p>
+          )}
+        </>
       )}
 
       {/* CTAs */}
