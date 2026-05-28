@@ -9,6 +9,7 @@ import {
   useItemCount,
   useSubtotal,
   useCartActions,
+  useCheckoutUrl,
 } from "@/lib/cart/store";
 import { getTierPrice, getTierSavings } from "@/lib/cart/pricing";
 import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
@@ -20,6 +21,7 @@ export default function CartDrawer() {
   const items = useCartItems();
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
+  const checkoutUrl = useCheckoutUrl();
   const { removeItem } = useCartActions();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -266,12 +268,13 @@ export default function CartDrawer() {
               {/* Checkout button */}
               <button
                 type="button"
-                className="w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80"
+                disabled={!checkoutUrl}
+                onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+                className={`w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80 ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 cursor-pointer"}`}
                 style={{
                   fontSize: "15px",
                   backgroundColor: "#EC5793",
                   textShadow: "0 0 10px rgba(236, 87, 147, 0.7)",
-                  // TODO Phase 4: Shopify checkoutUrl
                 }}
               >
                SECURE CHECKOUT

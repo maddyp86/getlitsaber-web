@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
 import { getTierPrice, getTierSavings, MAX_QTY } from "@/lib/cart/pricing";
-import { useCartActions } from "@/lib/cart/store";
+import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
@@ -47,6 +48,7 @@ export default function BundleAndCTA({
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
   const { openCart } = useCartUIActions();
+  const [buyNowLoading, setBuyNowLoading] = useState(false);
 
   const moreTierPrice = getTierPrice(moreQty);
   const moreSavingsRounded = Math.round(getTierSavings(moreQty));
@@ -61,6 +63,25 @@ export default function BundleAndCTA({
       image: "/images/product/litsaber-lights-off.jpg",
     });
     openCart();
+  }
+
+  async function handleBuyNow() {
+    setBuyNowLoading(true);
+    try {
+      await addItem({
+        variantId,
+        qty: selectedQty,
+        title: "Litsaber OG — Silver",
+        variantTitle: "Silver",
+        price: 59.99,
+        image: "/images/product/litsaber-lights-off.jpg",
+      });
+      // Read post-mutation value directly from store — hook closure would be stale
+      const url = useCartStore.getState().checkoutUrl;
+      if (url) window.location.href = url;
+    } finally {
+      setBuyNowLoading(false);
+    }
   }
 
   return (
@@ -214,9 +235,11 @@ export default function BundleAndCTA({
 
             <button
               type="button"
-              className="w-full bg-white font-label font-bold text-[16px] text-black rounded-md py-4 px-4 cursor-default"
+              onClick={handleBuyNow}
+              disabled={buyNowLoading}
+              className={`w-full bg-white font-label font-bold text-[16px] text-black rounded-md py-4 px-4 transition-opacity ${buyNowLoading ? "opacity-60 cursor-not-allowed" : "cursor-pointer hover:opacity-90 active:opacity-75"}`}
             >
-              BUY NOW
+              {buyNowLoading ? "REDIRECTING..." : "BUY NOW"}
             </button>
 
             {/* Trust line */}

@@ -37,6 +37,7 @@ export type CartLine = {
 export type CartState = {
   items: CartLine[];
   cartId: string | null;
+  checkoutUrl: string | null;
   // Shared promise while a cartCreate is in-flight.
   // A second concurrent addItem awaits this, then routes through cartLinesAdd.
   pendingCartCreate: Promise<void> | null;
@@ -148,6 +149,7 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       cartId: null,
+      checkoutUrl: null,
       pendingCartCreate: null,
 
       async addItem(line) {
@@ -195,6 +197,7 @@ export const useCartStore = create<CartStore>()(
               set({
                 cartId: cart.id,
                 items: transformShopifyCart(cart),
+                checkoutUrl: cart.checkoutUrl,
                 pendingCartCreate: null,
               });
             } finally {
@@ -206,7 +209,10 @@ export const useCartStore = create<CartStore>()(
               cartId,
               lines: [{ merchandiseId: line.variantId, quantity: line.qty }],
             });
-            set({ items: transformShopifyCart(data.cartLinesAdd!.cart) });
+            set({
+              items: transformShopifyCart(data.cartLinesAdd!.cart),
+              checkoutUrl: data.cartLinesAdd!.cart.checkoutUrl,
+            });
           }
         } catch (err) {
           console.error("[cart] addItem failed:", err);
@@ -230,7 +236,10 @@ export const useCartStore = create<CartStore>()(
             cartId,
             lineIds: [lineId],
           });
-          set({ items: transformShopifyCart(data.cartLinesRemove!.cart) });
+          set({
+            items: transformShopifyCart(data.cartLinesRemove!.cart),
+            checkoutUrl: data.cartLinesRemove!.cart.checkoutUrl,
+          });
         } catch (err) {
           console.error("[cart] removeItem failed:", err);
           // TODO: wire toast — "Failed to remove item. Please try again."
@@ -258,7 +267,10 @@ export const useCartStore = create<CartStore>()(
             cartId,
             lines: [{ id: lineId, quantity: qty }],
           });
-          set({ items: transformShopifyCart(data.cartLinesUpdate!.cart) });
+          set({
+            items: transformShopifyCart(data.cartLinesUpdate!.cart),
+            checkoutUrl: data.cartLinesUpdate!.cart.checkoutUrl,
+          });
         } catch (err) {
           console.error("[cart] updateQty failed:", err);
           // TODO: wire toast — "Failed to update quantity. Please try again."
@@ -285,7 +297,7 @@ export const useCartStore = create<CartStore>()(
             lineIds,
           });
           // Null cartId only on confirmed success. Next addItem triggers a fresh cartCreate.
-          set({ cartId: null });
+          set({ cartId: null, checkoutUrl: null });
         } catch (err) {
           console.error("[cart] clear failed:", err);
           // TODO: wire toast — "Failed to clear cart. Please try again."
@@ -304,10 +316,10 @@ export const useCartStore = create<CartStore>()(
           const cart = data.cart;
           if (!cart) {
             // Cart expired or invalid — clean up stale localStorage reference.
-            set({ cartId: null, items: [] });
+            set({ cartId: null, items: [], checkoutUrl: null });
             return;
           }
-          set({ items: transformShopifyCart(cart) });
+          set({ items: transformShopifyCart(cart), checkoutUrl: cart.checkoutUrl });
         } catch (err) {
           console.error("[cart] hydrate failed:", err);
           // Silently fail — user sees stale local state; next action will surface any real error.
@@ -316,7 +328,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "litsaber-cart",
-      // Only persist cartId. Items are re-fetched from Shopify on hydration.
+      // Only persist cartId. Items and checkoutUrl are re-fetched from Shopify on hydration.
       partialize: (state) => ({ cartId: state.cartId }),
     }
   )
@@ -361,4 +373,8 @@ export function useCartActions(): Pick<CartActions, "addItem" | "removeItem" | "
 
 export function useCartHydrate(): () => Promise<void> {
   return useCartStore((s) => s.hydrate);
+}
+
+export function useCheckoutUrl(): string | null {
+  return useCartStore((s) => s.checkoutUrl);
 }

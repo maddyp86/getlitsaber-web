@@ -7,6 +7,7 @@ import {
   useItemCount,
   useSubtotal,
   useCartActions,
+  useCheckoutUrl,
 } from "@/lib/cart/store";
 import { getTierPrice, getTierSavings } from "@/lib/cart/pricing";
 import { TrustBadges } from "@/components/cart/TrustBadges";
@@ -15,6 +16,7 @@ export default function CartPageBody() {
   const items = useCartItems();
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
+  const checkoutUrl = useCheckoutUrl();
   const { removeItem } = useCartActions();
 
   return (
@@ -197,7 +199,9 @@ export default function CartPageBody() {
                 {/* Checkout button */}
                 <button
                   type="button"
-                  className="w-full py-4 font-label font-bold text-white rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest"
+                  disabled={!checkoutUrl}
+                  onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+                  className={`w-full py-4 font-label font-bold text-white rounded-md transition-opacity uppercase tracking-widest ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:opacity-75 cursor-pointer"}`}
                   style={{
                     fontSize: "16px",
                     backgroundColor: "#EC5793",
@@ -413,7 +417,9 @@ export default function CartPageBody() {
                   {/* Checkout button */}
                   <button
                     type="button"
-                    className="w-full py-4 font-label font-bold text-white rounded-md transition-opacity hover:opacity-90 active:opacity-75 uppercase tracking-widest"
+                    disabled={!checkoutUrl}
+                    onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+                    className={`w-full py-4 font-label font-bold text-white rounded-md transition-opacity uppercase tracking-widest ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:opacity-75 cursor-pointer"}`}
                     style={{
                       fontSize: "16px",
                       backgroundColor: "#EC5793",
