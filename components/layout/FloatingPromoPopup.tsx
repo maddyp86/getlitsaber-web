@@ -42,7 +42,7 @@ export default function FloatingPromoPopup() {
         /* Mobile: full-screen blocking overlay */
         .promo-popup-wrapper {
           position: fixed;
-          heigh:100%;
+          height:100%;
           inset: 0;
           z-index: var(--z-modal, 200);
           display: flex;
