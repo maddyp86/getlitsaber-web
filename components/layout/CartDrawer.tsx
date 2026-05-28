@@ -123,6 +123,47 @@ export default function CartDrawer() {
               </button>
             </div>
 
+            {/* Cap alert — fixed between header and scroll region */}
+            <AnimatePresence>
+              {capReached && items.length > 0 && (
+                <motion.div
+                  key="cap-alert"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex-shrink-0"
+                  style={{ overflow: "hidden" }}
+                >
+                  <div
+                    className="mx-4 mt-4 flex items-start gap-3 rounded-md px-4 py-3"
+                    style={{
+                      backgroundColor: "rgba(0, 229, 255, 0.08)",
+                      border: "1px solid rgba(0, 229, 255, 0.35)",
+                      borderLeft: "4px solid #00E5FF",
+                    }}
+                  >
+                    <AlertIcon />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-label font-bold text-text-primary" style={{ fontSize: "13px" }}>
+                        Order limit reached
+                      </p>
+                      <p className="font-label text-text-secondary mt-0.5" style={{ fontSize: "12px", lineHeight: "1.5" }}>
+                        Max 5 per order. Need more?{" "}
+                        <Link
+                          href="/wholesale"
+                          onClick={closeCart}
+                          className="text-accent-cyan font-bold underline hover:opacity-80 transition-opacity"
+                        >
+                          See wholesale →
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Item list — flex-1 so it fills available space, scrolls internally */}
             <div className="flex-1 overflow-y-auto">
               {items.length === 0 ? (
@@ -152,44 +193,6 @@ export default function CartDrawer() {
                 </div>
               ) : (
               <>
-              <AnimatePresence>
-                {capReached && (
-                  <motion.div
-                    key="cap-alert"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ overflow: "hidden" }}
-                  >
-                    <div
-                      className="mx-4 mt-4 flex items-start gap-3 rounded-md px-4 py-3"
-                      style={{
-                        backgroundColor: "rgba(0, 229, 255, 0.08)",
-                        border: "1px solid rgba(0, 229, 255, 0.35)",
-                        borderLeft: "4px solid #00E5FF",
-                      }}
-                    >
-                      <AlertIcon />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-label font-bold text-text-primary" style={{ fontSize: "13px" }}>
-                          Order limit reached
-                        </p>
-                        <p className="font-label text-text-secondary mt-0.5" style={{ fontSize: "12px", lineHeight: "1.5" }}>
-                          Max 5 per order. Need more?{" "}
-                          <Link
-                            href="/wholesale"
-                            onClick={closeCart}
-                            className="text-accent-cyan font-bold underline hover:opacity-80 transition-opacity"
-                          >
-                            See wholesale →
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
               <ul className="divide-y divide-white/[0.08]">
                 {items.map((line) => (
                   <li key={line.id} className="flex gap-4 px-6 py-5">
