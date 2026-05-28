@@ -6,6 +6,8 @@ import type { BundleId } from "./productdisplay.content";
 import { getTierPrice, getTierSavings, MAX_QTY } from "@/lib/cart/pricing";
 import { useCartActions } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
+import WaitlistForm from "@/components/forms/WaitlistForm";
+import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 
 const MORE_MIN = 3;
 const MORE_MAX = MAX_QTY;
@@ -214,9 +216,13 @@ export default function BundleAndCTA({
             </button>
           </>
         ) : (
-          <p className="font-label text-[14px] text-text-muted text-center py-4 border border-border-inactive rounded-md">
-            Currently unavailable
-          </p>
+          <WaitlistForm
+            list="general"
+            source={WAITLIST_SOURCES.pdpSoldOut}
+            headline="Sold out — for now"
+            copy="Drop your email and we'll let you know the moment Silver is back in stock."
+            buttonLabel="NOTIFY ME"
+          />
         )}
       </div>
 

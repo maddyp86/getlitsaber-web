@@ -1,5 +1,6 @@
 export const WAITLIST_SOURCES = {
   pdpGold:        "pdp-gold-waitlist",
+  pdpSoldOut:     "pdp-sold-out",
   editionsGold:   "editions-gold-modal",
   editionsFuture: "editions-futuredrops-modal",
   promoPopup:     "floating-promo-$10",
