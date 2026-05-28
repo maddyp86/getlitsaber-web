@@ -32,80 +32,7 @@ export default function FloatingPromoPopup() {
   }, [shouldShow, dismiss]);
 
   return (
-    /*
-     * Always in the DOM so the hook tracks state across navigation.
-     * Mobile: full-screen blocking overlay (matches AgeGateModal pattern).
-     * Desktop (lg+): small corner card, fixed bottom-right, slide-in from right.
-     */
-    <>
-      <style>{`
-        /* Mobile: full-screen blocking overlay */
-        .promo-popup-wrapper {
-          position: fixed;
-          inset: 0;
-          z-index: var(--z-modal, 200);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: rgba(5, 5, 16, 0.80);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          pointer-events: auto;
-          opacity: 1;
-          transition: opacity 0.25s ease;
-        }
-        .promo-popup-wrapper[aria-hidden="true"] {
-          opacity: 0;
-          pointer-events: none;
-        }
-        .promo-popup-card {
-          position: relative;
-          width: 100%;
-          height:100%;
-          max-width: 400px;
-          display: flex;
-          flex-direction: column;
-         justify-content: center;
-          gap: 20px;
-          padding: 32px;
-          background: #0F0F1F;
-        }
-
-        /* Desktop (lg+): restore corner card, slide-in from right */
-        @media (min-width: 1024px) {
-          .promo-popup-wrapper {
-            inset: unset;
-            bottom: 24px;
-            right: 24px;
-            width: 400px;
-            max-width: calc(100vw - 32px);
-            background-color: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            align-items: unset;
-            justify-content: unset;
-            transform: translateX(0);
-            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-          }
-          .promo-popup-wrapper[aria-hidden="true"] {
-            opacity: 1;
-            transform: translateX(calc(100% + 48px));
-          }
-          .promo-popup-card {
-            max-width: 100%;
-            border-radius: 20px;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .promo-popup-wrapper {
-            transition: opacity 0.25s ease !important;
-            transform: none !important;
-          }
-        }
-      `}</style>
-
-      <div
+    <div
         className="promo-popup-wrapper z-modal"
         role="dialog"
         aria-modal="true"
@@ -155,6 +82,5 @@ export default function FloatingPromoPopup() {
           </div>
         </div>
       </div>
-    </>
   );
 }
