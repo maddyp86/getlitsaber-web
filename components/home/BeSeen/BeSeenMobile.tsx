@@ -41,8 +41,7 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
               aria-hidden="true"
             />
             <div
-              className="absolute inset-x-0 bottom-0 flex flex-col justify-between px-[20px] pb-[50px]"
-              style={{ height: "550px" }}
+              className="absolute inset-x-0 inset-y-0 flex flex-col justify-between px-[20px] pt-[20px] pb-[50px]"
             >
               <div className="flex flex-col gap-[20px]" style={{ width: "auto" }}>
                 <p className="font-label text-eyebrow text-accent-cyan tracking-widest uppercase">
@@ -113,10 +112,9 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
           aria-hidden="true"
         />
 
-        {/* Text + bars column — anchored to bottom, Figma: justify-between with 150px gap */}
+        {/* Text + bars column — fills container so overflow-hidden never clips the eyebrow */}
         <div
-          className="absolute inset-x-0 bottom-0 z-20 flex flex-col justify-between px-[20px] pb-[40px]"
-          style={{ height: "550px" }}
+          className="absolute inset-0 z-20 flex flex-col justify-between px-[20px] pt-[20px] pb-[40px]"
         >
           {/* Text group */}
           <div className="flex flex-col gap-[20px]" style={{ width: "327px" }}>
