@@ -150,7 +150,7 @@ export default function CartPageBody() {
               {/* Order summary group */}
               <div
                 className="flex flex-col items-center mx-auto mt-4"
-                style={{ width: "auto", maxWidth: "100%", gap: "15px" }}
+                style={{ width: "100%", maxWidth: "100%", gap: "15px" }}
               >
                 {/* Promo code strip */}
                 <button
