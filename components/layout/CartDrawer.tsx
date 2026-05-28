@@ -152,14 +152,44 @@ export default function CartDrawer() {
                 </div>
               ) : (
               <>
-              {capReached && (
-                <p className="font-label text-text-muted px-6 pt-4 pb-0" style={{ fontSize: "12px" }}>
-                  Max 5 per order. Need more?{" "}
-                  <Link href="/wholesale" onClick={closeCart} className="text-accent-cyan underline">
-                    See wholesale →
-                  </Link>
-                </p>
-              )}
+              <AnimatePresence>
+                {capReached && (
+                  <motion.div
+                    key="cap-alert"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <div
+                      className="mx-4 mt-4 flex items-start gap-3 rounded-md px-4 py-3"
+                      style={{
+                        backgroundColor: "rgba(0, 229, 255, 0.08)",
+                        border: "1px solid rgba(0, 229, 255, 0.35)",
+                        borderLeft: "4px solid #00E5FF",
+                      }}
+                    >
+                      <AlertIcon />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-label font-bold text-text-primary" style={{ fontSize: "13px" }}>
+                          Order limit reached
+                        </p>
+                        <p className="font-label text-text-secondary mt-0.5" style={{ fontSize: "12px", lineHeight: "1.5" }}>
+                          Max 5 per order. Need more?{" "}
+                          <Link
+                            href="/wholesale"
+                            onClick={closeCart}
+                            className="text-accent-cyan font-bold underline hover:opacity-80 transition-opacity"
+                          >
+                            See wholesale →
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <ul className="divide-y divide-white/[0.08]">
                 {items.map((line) => (
                   <li key={line.id} className="flex gap-4 px-6 py-5">
@@ -308,6 +338,23 @@ function EmptyBagIcon() {
       <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
       <line x1="3" y1="6" x2="21" y2="6" />
       <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+}
+
+function AlertIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+      className="flex-shrink-0 mt-[1px]"
+    >
+      <circle cx="8" cy="8" r="7" stroke="#00E5FF" strokeWidth="1.5" />
+      <path d="M8 4.5v4" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="8" cy="11" r="0.75" fill="#00E5FF" />
     </svg>
   );
 }
