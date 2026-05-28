@@ -516,7 +516,7 @@ Files changed:
 
 ---
 
-### Phase 4 — Shopify Integration + Reviews Provider (pending)
+### Phase 4 — Shopify Integration + Reviews Provider (commerce complete 2026-05-28 ✅ — reviews provider still pending)
 
 Three chunks, in order. The whole phase is governed by the Phase 2a architecture decision: the cart store's interface stays identical; only its action bodies change. The component layer doesn't move.
 
@@ -543,9 +543,111 @@ Three chunks, in order. The whole phase is governed by the Phase 2a architecture
 
 ---
 
+### Phase 4 — Commerce integration complete (2026-05-28) ✅
+
+The Phase 2a seam held: the cart store's interface never changed; only its
+action bodies were swapped to Shopify. Every component that reads cart state
+kept working untouched. Each chunk was one Bolt prompt, plan-reviewed against
+the real artifact before any code.
+
+**4a — Storefront client + PDP wiring.**
+- Reused existing `lib/shopify/client.ts` (`shopifyFetch`) and
+  `lib/shopify/queries.ts` (`getProductByHandle`) instead of letting Bolt
+  duplicate them with a client-side hook.
+- Variant fetch is a server-component fetch in `app/shop/litsaber-og/page.tsx`,
+  drilling `variantId` + `available` as props (not a client `useEffect`).
+- Variant matched by `sku === "LTS-OG-SLV"`, not title-includes. Added `sku` to
+  the query and the `ShopifyVariant` type.
+- Locked variant: Silver, SKU `LTS-OG-SLV`,
+  GID `gid://shopify/ProductVariant/45098118316239`, $59.99, handle
+  `litsaber-og`, store `innovapeconcepts.myshopify.com`. No Gold/Two Pack
+  variant (waitlist + quantity-discount models respectively).
+- `/shopify-check` debug route added — REMOVE pre-Phase-7.
+
+**4b — Cart store → Shopify mutations.**
+- `lib/cart/store.ts` rewritten: `addItem` → `cartCreate` (first) / `cartLinesAdd`;
+  `removeItem` → `cartLinesRemove`; `updateQty` → `cartLinesUpdate`; `clear` →
+  remove all; `hydrate` → `CART_QUERY` on load.
+- Persistence model changed: `partialize` stores ONLY `cartId`; line data is
+  re-fetched from Shopify on hydration (server cart is source of truth, local
+  line data only drifts). `CartHydrator.tsx` client component mounts in
+  `app/layout.tsx`; layout stays a Server Component.
+- Six fixes added to Bolt's plan before code: correct `merchandise { ... on
+  ProductVariant { id } }` fragment; price read from `cost.totalAmount.amount`;
+  `pendingCartCreate` promise guards the double-click race; hydrate clears a
+  stale `cartId` on null; `clear()` keeps `cartId` until success then nulls;
+  env-guard on hydrate.
+- Verified live: adding the same variant twice merges to one line, qty 2.
+  Cart returns a working `checkoutUrl`. Toast deferred (`console.error` +
+  `// TODO: wire toast` at revert sites).
+
+**4c — Checkout + tier-discount sourcing.**
+- 4c-1: wired the three inert checkout buttons (CartDrawer, CartPageBody ×2, PDP
+  BUY NOW) to redirect to `cart.checkoutUrl` via a `useCheckoutUrl()` hook. BUY
+  NOW awaits `addItem`, reads `useCartStore.getState().checkoutUrl` (not the
+  stale hook value), redirects without opening the drawer. Verified.
+- 4c-2: prices sourced from Shopify. Discounts are already created in Shopify and
+  applied at cart level — qty 2 returns `cost.totalAmount.amount = "99.99"`.
+  Added `lineTotal` to `CartLine` from that field; `useSubtotal`/`useCartLineTotal`
+  read it; `lib/cart/pricing.ts`/`getTierPrice` demoted to optimistic-UI + PDP
+  display fallback. Savings = `Math.round(line.price * line.qty - line.lineTotal)`.
+  Shopify is the source of truth for money at checkout; the client module is
+  fallback only.
+
+**MAX_QTY cap (closed a real over-cap pricing hole).**
+- The PDP capped at 5 but the cart didn't (BUY NOW 5 → back → ADD 2 = 7, priced
+  wrong because discounts only cover 2–5). Enforced the cap at the store
+  chokepoint (`addItem` + `updateQty`), in both optimistic state and the Shopify
+  mutation vars — not in BUY NOW logic. Existing-line path uses `cartLinesUpdate`
+  with `quantity: resultQty` (idempotent "set to exactly 5," can't overshoot on
+  retry). `capReached` transient flag (excluded from `partialize`) +
+  `useCapReached()` hook; CartDrawer shows "Max 5 per order. Need more?
+  See wholesale →" (`/wholesale`). Four stacking tests pass — Shopify payload
+  shows `quantity: 5`, not 6.
+
+**Full test-mode purchase ✅.** Qty 5 through Authorize.net hosted checkout;
+order landed in Shopify admin at the discounted $199.99 total.
+
+**Promo popup cookie fix ✅.** `dismiss()` previously only hid the popup and set
+no cookie, so it reappeared. Now `dismiss()` sets `COOKIE_SEEN` for 72h;
+`markSubscribed()` keeps the 365d `COOKIE_SUBSCRIBED`; the re-arm path re-reads
+both cookies. Verified: dismiss → reload within 72h → stays gone.
+
+**Promo code architecture decided → ADR-004 (Architecture A).** HubSpot stores
+the contact + sends the code; Shopify owns one shared `WELCOME10`/`LITSABER`
+code at "$10 off, one use per customer." Two suppression layers kept separate
+(client cookie stops the popup; Shopify stops code reuse). Frontend promo box
+(Figma `3770:1315`) deferred and bundled with the backend as a pre-launch unit
+on top of Phase 5 instrumentation. Offer locked at $10.
+
+**Cleanup / carry-forward (tracked in Open Questions):** remove `console.log("[PDP]")`
+from the PDP page; remove `/shopify-check` route pre-Phase-7; flip Authorize.net
+test → live before launch; ReviewInfra integration was in the Phase 4 plan but
+this phase was commerce-only — still pending.
+
+**Recurring Bolt lessons (banked):** Bolt summarizes files when asked for their
+contents (now 3rd+ occurrence) — always demand the literal file in a code block.
+Bolt declares its own code correct without reading every line — the availability
+bug lived in the snippet it pasted but never quoted. Plan-review-as-PR-review
+caught real bugs in 4a and 4b before any code was written.
+
+**Story beats captured (Phase 4)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 35 | "I reviewed the builder's plan before it wrote a line of code, the way you'd review a PR. Three real bugs in the 4a plan, six gaps in the 4b plan, all caught at the plan stage. It is far cheaper to fix a paragraph than a commit, and the builder doesn't push back on a plan the way it defends code it's already written." | `ai-collaboration`, `pm-discipline` |
+| 36 | "The add-to-cart button stayed live after I marked the variant unavailable in Shopify. The builder pasted the file, declared its own code correct, and pointed me at a different function. The bug was one line it had pasted but never quoted back in its analysis: it checked whether the variant existed, not whether it was available for sale. The lesson is blunt. When the tool says 'my code is correct,' the bug is in the line it skipped reading." | `integration-depth`, `ai-collaboration` |
+| 37 | "Three different Shopify admin states — product in draft, zero inventory, variant unpublished from the channel — all return the same null from the Storefront API. One code branch handles all three correctly, but they're indistinguishable to the API, so you can't show 'sold out' vs 'paused' vs 'discontinued' until a second variant exists. Logged it so I don't rediscover it the hard way when Gold ships." | `integration-depth` |
+| 38 | "On the Shopify swap the obvious move is to persist the whole cart locally. I persisted only the cart ID and re-fetch the lines from Shopify on load. The server cart is the source of truth; cached local line data only drifts. The Phase 2a seam paid off exactly as designed — I swapped the store's internals and didn't touch a single component that reads it." | `integration-depth`, `pm-discipline` |
+| 39 | "The PDP capped quantity at 5 but the cart didn't. Buy five, go back, add two more, and you're at seven, priced wrong because the discounts only cover two through five. I fixed it at the store action, not the button, so every path that can add inventory passes through one cap. And I used an idempotent 'set quantity to exactly 5' update so a retried request can't overshoot. Enforce invariants at the chokepoint, not at every entrance." | `integration-depth`, `pm-discipline` |
+| 40 | "I'd written a client-side pricing module. Once the real discounts went into Shopify, the cart started returning the discounted total in its own cost field, so I sourced price from Shopify and demoted my module to an optimistic-UI fallback. Two sources of truth for money is a bug waiting to happen. The server wins at checkout, so the server has to win in the cart too." | `integration-depth`, `pm-discipline` |
+| 41 | "The dismissed promo popup kept coming back because dismiss only hid it and never set a cookie — only showing it did. I fixed dismiss to suppress for 72 hours. The deeper clarity was realizing 'stop the popup' and 'stop the code being reused' are two different layers: a browser cookie on the client and Shopify's one-per-customer rule on the server. Conflate them and you ship a promo that either nags forever or pays out twice." | `integration-depth`, `pm-discipline` |
+
+---
+
 ### Phase 5 — Observability Instrumentation (pending)
 
-PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Age gate behavior + floating promo trigger logic finalized here based on event design.
+PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
 ---
 
@@ -601,7 +703,11 @@ Phase 3 work remaining (in priority order):
 **Pre-launch (non-blocking until later):**
 - AI Summary final approach (pending ReviewInfra response)
 - ReviewInfra Path A vs Path B (pending ReviewInfra response)
-- Floating promo trigger logic + frequency cap
+- ~~Floating promo trigger logic + frequency cap~~ → RESOLVED (2026-05-28): 12s + exit-intent; 72h dismiss / 365d subscribe cookies. Offer locked at $10. Promo code architecture → ADR-004 (Architecture A).
+- Build promo box frontend (Figma `3770:1315`) — bundled pre-launch with ADR-004 backend, on Phase 5 instrumentation. Design the error state first (absent in Figma); consider auto-apply via `?discount=` checkout URL.
+- Remove `console.log("[PDP]")` from `app/shop/litsaber-og/page.tsx` (next Bolt pass in that file)
+- Remove `/shopify-check` debug route before Phase 7
+- Flip Authorize.net from test to live before launch
 - ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now built.
 - Venue card photography sourcing
 - FAQ #3 placeholder copy (homepage)
@@ -626,3 +732,4 @@ Phase 3 work remaining (in priority order):
 - **Human-in-the-loop:** The agent proposes; the human approves and ships. Trust layer, not a bottleneck.
 - **ADR:** Architecture Decision Record. A short markdown doc capturing context, decision, and consequences for a significant call.
 - **Phase 1.5:** Mid-phase reconciliation between Phase 1 (design tokens + repo) and Phase 2 (Bolt scaffold), introduced because mobile UI and additional pages came in after Phase 1 close.
+- **Plan-review pattern:** Reviewing the builder's written plan as if it were a pull request — catching bugs and architectural gaps at the paragraph stage, before any code is written. Cheaper to fix a plan than a commit, and the builder defends a plan less than code it has already produced.

@@ -176,6 +176,7 @@ Full version in `BRAND.md`. The non-negotiables:
   - Set a cookie on confirmation to suppress re-prompts within session/period (final policy TBD)
   - Provide an EXIT option that redirects to a safe external destination (e.g. `https://www.google.com`)
 - **Quantity cap is 5 units per add-to-cart action** (Silver only; Gold-specific cap revisited at launch). Quantity discount tiers are defined in `lib/cart/pricing.ts` and apply as total line prices, not per-unit discounts. In Phase 4, these become Shopify automatic discount rules. See "Phase 2 decisions (locked)" for the full tier table.
+- **Promo / welcome discount (locked — ADR-004).** Architecture A: HubSpot stores the contact and emails the code; Shopify owns one shared code (`WELCOME10`/`LITSABER`), "$10 off, one use per customer." Offer locked at **$10**. Two independent suppression layers: client cookie stops the popup (`COOKIE_SEEN` 72h on dismiss, `COOKIE_SUBSCRIBED` 365d on subscribe); Shopify "one per customer" stops code reuse. Frontend promo box (Figma `3770:1315`) is wired via `cartDiscountCodesUpdate` and ships as a pre-launch bundle with the backend, on Phase 5 instrumentation. Design the error state before building (absent in Figma).
 - **TSA-compliant device** but cannabis carts are not — FAQ handles this honestly.
 - **Wholesale MOQ is 5 units** (locked). Free display case at 80+ units. 4-tier wholesale pricing: Initiate, Knight, Archon, Legend.
 
@@ -209,7 +210,7 @@ This is the most complex feature in the build. The governing rule: **build all U
 1. **Phase 1 — static layout, zero logic.** (1a) Editions CTA row, 3 boxes, responsive, buttons inert. (1b) Product Display: gallery + thumbs, spec pills, variant selector, bundle selector, both CTAs — all static.
 2. **Phase 2 — local cart store + selection logic.** (2a) Build the store (local-backed). (2b) Wire variant/bundle selection + price display to component state. (2c) Conditional CTA: Silver → `addItem`; Gold → waitlist modal.
 3. **Phase 3 — drawers, pages, forms.** (3a) Add-to-cart slide-out drawer (reads store). (3b) `/cart` page (reads store, remove only — no qty stepper). (3c) Gold waitlist + Future Drops modals → HubSpot. (3d) Wire the three Editions box actions.
-4. **Phase 4 — Shopify, last and isolated.** (4a) Storefront API client + env vars, fetch real product/variants. (4b) Swap store action bodies to Shopify cart mutations. (4c) Wire Buy Now / checkout to `checkoutUrl` redirect. Tier pricing migrates from `lib/cart/pricing.ts` constants to Shopify automatic discount rules at this point.
+4. **Phase 4 — Shopify, last and isolated. ✅ COMPLETE 2026-05-28 (commerce; reviews provider still pending).** (4a) Storefront client + variant fetch by `sku === "LTS-OG-SLV"`, server-component PDP wiring, availability via `availableForSale`. (4b) Store action bodies swapped to `cartCreate`/`cartLinesAdd`/`cartLinesUpdate`/`cartLinesRemove`; persist `cartId` only, re-fetch lines on hydrate. (4c) Checkout buttons redirect to `checkoutUrl`; tier pricing sourced from Shopify `cost.totalAmount` (discounts live in Shopify, `lib/cart/pricing.ts` demoted to optimistic-UI fallback). Qty cap enforced store-side. Full test-mode purchase verified end to end.
 
 **Figma nodes for this feature** (file `cuBHq4i5XibiqCyleuZFHO`): Editions section `3312:2`; product display `3335:54` (NOT `3703:7914` — that is only the styles/bundle/CTA sub-block, a 2-variant component instance); add-to-cart drawer `3668:6263`; cart page `3668:5358`. Desktop and mobile mocks both exist — default to one responsive component per chunk per ADR-003; only split out a `*Mobile.tsx` if a chunk's responsive logic becomes unmanageable mid-build. Do not pre-split.
 
@@ -313,7 +314,7 @@ Prefer to **stop and ask** over guessing on:
 - New dependencies — propose, don't install unilaterally
 - Anything that touches `.env` or secrets
 - ReviewInfra integration questions (Path A vs Path B, AI Summary)
-- Floating promo popup trigger logic (still open)
+- Promo box error-state UX before building it (Figma has no error state — ADR-004)
 
 For everything else, propose a plan, get a thumbs-up, then execute.
 

@@ -98,8 +98,9 @@ Email-capture modal with $10 discount offer.
 
 - **Dimensions:** 389×441 desktop; mobile-adjusted
 - **Content:** "/ WAIT —" eyebrow, "$10 OFF YOUR FIRST LITSABER" headline, "Drop your email. We'll send a code + early access to the next drop." body, email input + "SEND MY CODE" button, "No spam. Unsubscribe anytime." + "✓ AUTO-APPLIED ✓ ONE-TIME USE ✓ 14-DAY VALID" trust line
-- **Trigger options (decision pending):** exit-intent, scroll depth, time delay, first-visit only
-- **Frequency cap (decision pending):** once per session, once per week, once ever per browser
+- **Triggers (locked 2026-05-28):** 12s time delay + exit-intent (mouse-leave). `armedRef` guards against double-fire; re-arm path re-reads cookies.
+- **Frequency cap (locked 2026-05-28):** dismiss → `COOKIE_SEEN` 72h (suppressed, may reappear after); subscribe → `COOKIE_SUBSCRIBED` 365d (never reappears).
+- **Offer (locked):** $10. Source tag `floating-promo-$10`. Submits to HubSpot General form per ADR-004.
 - **Suppress on:** age gate flow, checkout pages, already-subscribed users (cookie check)
 
 ---
@@ -155,7 +156,8 @@ Reusable +/- counter.
   - `expanded` — input + Apply button
   - `applied` — shows applied code with discount line and remove option
   - `error` — invalid code message
-- **Behavior:** Posts to Shopify Cart API; cart state reflects discount
+- **Behavior:** Posts to Shopify via `cartDiscountCodesUpdate`; cart state reflects discount. Ships pre-launch bundled with ADR-004 backend, on Phase 5 instrumentation.
+- **⚠ Spec gap:** the `error` variant above is required by spec but Figma component `3770:1315` has Default / input / filled / success only — no error state. Design invalid-code / already-used UI before building.
 
 ### `<SecureCheckoutBadge />`
 "🔒 SECURE CHECKOUT" header + payment method logos row (VISA, MC, AMEX, DISCOVER).
