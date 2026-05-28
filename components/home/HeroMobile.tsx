@@ -117,7 +117,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: "39px",
+          gap: "100px",
           flexShrink: 0,
           background: "#000",
         }}
