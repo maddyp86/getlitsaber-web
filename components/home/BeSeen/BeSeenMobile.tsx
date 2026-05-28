@@ -44,7 +44,7 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
               className="absolute inset-x-0 bottom-0 flex flex-col justify-between px-[20px] pb-[50px]"
               style={{ height: "550px" }}
             >
-              <div className="flex flex-col gap-[20px]" style={{ width: "auto", height: "350px" }}>
+              <div className="flex flex-col gap-[20px]" style={{ width: "auto" }}>
                 <p className="font-label text-eyebrow text-accent-cyan tracking-widest uppercase">
                   {stage.eyebrow}
                 </p>
@@ -119,7 +119,7 @@ export default function BeSeenMobile({ className }: BeSeenMobileProps) {
           style={{ height: "550px" }}
         >
           {/* Text group */}
-          <div className="flex flex-col gap-[20px]" style={{ width: "327px", height: "350px" }}>
+          <div className="flex flex-col gap-[20px]" style={{ width: "327px" }}>
             <AnimatePresence mode="wait">
               <motion.p
                 key={`eyebrow-${activeStage}`}
