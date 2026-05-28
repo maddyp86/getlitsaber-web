@@ -74,7 +74,7 @@ export default function AgeGateModal() {
         <style>{`
           @media (min-width: 1024px) {
             .age-gate-panel {
-              max-width: 448px;
+              max-width: 450px;
               background: rgba(5, 5, 16, 0.60);
               border: 1px solid rgba(0, 229, 255, 0.20);
               box-shadow: 0 0 20px 0 rgba(0, 229, 255, 0.05) inset;
