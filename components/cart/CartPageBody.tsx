@@ -9,7 +9,6 @@ import {
   useCartActions,
   useCheckoutUrl,
 } from "@/lib/cart/store";
-import { getTierPrice, getTierSavings } from "@/lib/cart/pricing";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 
 export default function CartPageBody() {
@@ -123,7 +122,7 @@ export default function CartPageBody() {
                         </p>
                         {line.qty > 1 && (
                           <p className="font-label text-text-muted mt-1" style={{ fontSize: "11px" }}>
-                            Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
+                            Buy {line.qty} Litsabers, Save ${Math.round(line.price * line.qty - line.lineTotal)}
                           </p>
                         )}
 
@@ -133,7 +132,7 @@ export default function CartPageBody() {
                             className="font-label font-bold"
                             style={{ fontSize: "14px", color: "#00E5FF" }}
                           >
-                            ${getTierPrice(line.qty).toFixed(2)}
+                            ${line.lineTotal.toFixed(2)}
                           </span>
                           <button
                             onClick={() => removeItem(line.id)}
@@ -302,7 +301,7 @@ export default function CartPageBody() {
                               </p>
                               {line.qty > 1 && (
                                 <p className="font-label text-text-muted mt-1" style={{ fontSize: "12px" }}>
-                                  Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
+                                  Buy {line.qty} Litsabers, Save ${Math.round(line.price * line.qty - line.lineTotal)}
                                 </p>
                               )}
                             </div>
@@ -321,7 +320,7 @@ export default function CartPageBody() {
                             className="font-label font-bold text-text-primary text-left"
                             style={{ fontSize: "15px", width: "100px" }}
                           >
-                            ${getTierPrice(line.qty).toFixed(2)}
+                            ${line.lineTotal.toFixed(2)}
                           </span>
 
                           {/* Remove column */}

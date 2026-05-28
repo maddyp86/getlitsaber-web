@@ -11,7 +11,6 @@ import {
   useCartActions,
   useCheckoutUrl,
 } from "@/lib/cart/store";
-import { getTierPrice, getTierSavings } from "@/lib/cart/pricing";
 import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 
@@ -184,18 +183,18 @@ export default function CartDrawer() {
                         </p>
                         {line.qty > 1 && (
                           <p className="font-label text-text-muted mt-1" style={{ fontSize: "11px" }}>
-                            Buy {line.qty} Litsabers, Save ${getTierSavings(line.qty).toFixed(2)}
+                            Buy {line.qty} Litsabers, Save ${Math.round(line.price * line.qty - line.lineTotal)}
                           </p>
                         )}
                       </div>
 
                       <div className="flex items-center justify-between mt-3">
-                        {/* Line price — tier total */}
+                        {/* Line price — Shopify discounted total */}
                         <span
                           className="font-label font-bold text-accent-cyan"
                           style={{ fontSize: "16px" }}
                         >
-                          ${getTierPrice(line.qty).toFixed(2)}
+                          ${line.lineTotal.toFixed(2)}
                         </span>
                         {/* Remove */}
                         <button

@@ -30,7 +30,8 @@ export type CartLine = {
   qty: number;
   title: string;
   variantTitle: string;
-  price: number;        // base unit price in dollars (59.99); tier total via getTierPrice(qty)
+  price: number;        // base unit price in dollars (59.99); for per-unit display and optimistic fallback only
+  lineTotal: number;    // Shopify-provided discounted line total; seeded optimistically, overwritten on mutation response
   image: string;
 };
 
@@ -44,7 +45,7 @@ export type CartState = {
 };
 
 type CartActions = {
-  addItem(line: Omit<CartLine, "id">): Promise<void>;
+  addItem(line: Omit<CartLine, "id" | "lineTotal">): Promise<void>;
   removeItem(lineId: string): Promise<void>;
   updateQty(lineId: string, qty: number): Promise<void>;
   clear(): Promise<void>;
@@ -132,6 +133,7 @@ function transformShopifyCart(cart: ShopifyCart): CartLine[] {
     title: "Litsaber OG — Silver",
     variantTitle: "Silver",
     price: 59.99,
+    lineTotal: parseFloat(node.cost.totalAmount.amount),
     image: "/images/product/litsaber-lights-off.jpg",
   }));
 }
@@ -153,20 +155,21 @@ export const useCartStore = create<CartStore>()(
       pendingCartCreate: null,
 
       async addItem(line) {
-        // Optimistic update
+        // Optimistic update — lineTotal seeded from local tier table; overwritten on Shopify response.
         set((state) => {
           const existing = state.items.find((i) => i.variantId === line.variantId);
           if (existing) {
+            const newQty = existing.qty + line.qty;
             return {
               items: state.items.map((i) =>
                 i.variantId === line.variantId
-                  ? { ...i, qty: i.qty + line.qty }
+                  ? { ...i, qty: newQty, lineTotal: getTierPrice(newQty) }
                   : i
               ),
             };
           }
           return {
-            items: [...state.items, { ...line, id: crypto.randomUUID() }],
+            items: [...state.items, { ...line, lineTotal: getTierPrice(line.qty), id: crypto.randomUUID() }],
           };
         });
 
@@ -255,9 +258,11 @@ export const useCartStore = create<CartStore>()(
         const { cartId, items } = get();
         const originalQty = items.find((i) => i.id === lineId)?.qty ?? qty;
 
-        // Optimistic update
+        // Optimistic update — lineTotal reseeded from local tier table; overwritten on Shopify response.
         set((state) => ({
-          items: state.items.map((i) => (i.id === lineId ? { ...i, qty } : i)),
+          items: state.items.map((i) =>
+            i.id === lineId ? { ...i, qty, lineTotal: getTierPrice(qty) } : i
+          ),
         }));
 
         if (!cartId) return;
@@ -351,15 +356,18 @@ export function useItemCount(): number {
 }
 
 export function useSubtotal(): number {
+  // Sum Shopify's discounted line totals. Line-level summing is correct for
+  // the current single-SKU setup; cart.cost.totalAmount is the more
+  // future-proof source once order-level discounts or multiple SKUs exist.
   return useCartStore(
-    (s) => s.items.reduce((acc, i) => acc + getTierPrice(i.qty), 0)
+    (s) => s.items.reduce((acc, i) => acc + i.lineTotal, 0)
   );
 }
 
 export function useCartLineTotal(lineId: string): number {
   return useCartStore((s) => {
     const line = s.items.find((i) => i.id === lineId);
-    return line ? getTierPrice(line.qty) : 0;
+    return line ? line.lineTotal : 0;
   });
 }
 

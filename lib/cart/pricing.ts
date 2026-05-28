@@ -1,9 +1,11 @@
 export const MAX_QTY = 5;
 export const BASE_UNIT_PRICE = 59.99;
 
-// Total line price at each quantity tier.
-// Phase 4c: Shopify automatic discount rules become the source of truth at
-// checkout; this module remains as the client-side display fallback.
+// Optimistic UI fallback and PDP display only.
+// Once an item is in the cart, Shopify's cost.totalAmount is the source of
+// truth for prices (stored as CartLine.lineTotal). These constants are used
+// for: (a) the instant between add-click and Shopify's response, and
+// (b) the PDP quantity selector, which has no cart line to read from yet.
 export const TIER_PRICES: Record<number, number> = {
   1: 59.99,
   2: 99.99,
