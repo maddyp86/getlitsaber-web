@@ -19,14 +19,6 @@ export default async function PDPPage() {
   // showing the buy buttons rather than "Currently unavailable".
   const available = shopifyConfigured ? silverVariant?.availableForSale === true : true;
 
-  console.log("[PDP]", {
-    hasProduct: product !== null,
-    variantSku: silverVariant?.sku,
-    availableForSale: silverVariant?.availableForSale,
-    shopifyConfigured,
-    available,
-  });
-
   return (
     <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl">
       <ProductDisplay
