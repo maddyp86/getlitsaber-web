@@ -10,6 +10,7 @@ import {
   useSubtotal,
   useCartActions,
   useCheckoutUrl,
+  useCapReached,
 } from "@/lib/cart/store";
 import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
@@ -22,6 +23,7 @@ export default function CartDrawer() {
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
   const { removeItem } = useCartActions();
+  const capReached = useCapReached();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -149,6 +151,15 @@ export default function CartDrawer() {
                   </Link>
                 </div>
               ) : (
+              <>
+              {capReached && (
+                <p className="font-label text-text-muted px-6 pt-4 pb-0" style={{ fontSize: "12px" }}>
+                  Max 5 per order. Need more?{" "}
+                  <Link href="/wholesale" onClick={closeCart} className="text-accent-cyan underline">
+                    See wholesale →
+                  </Link>
+                </p>
+              )}
               <ul className="divide-y divide-white/[0.08]">
                 {items.map((line) => (
                   <li key={line.id} className="flex gap-4 px-6 py-5">
@@ -210,6 +221,7 @@ export default function CartDrawer() {
                   </li>
                 ))}
               </ul>
+              </>
               )}
             </div>
 

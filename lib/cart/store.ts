@@ -16,7 +16,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { getTierPrice } from "@/lib/cart/pricing";
+import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { shopifyFetch } from "@/lib/shopify/client";
 import type { ShopifyCart, ShopifyCartResponse } from "@/lib/shopify/types";
 
@@ -39,6 +39,7 @@ export type CartState = {
   items: CartLine[];
   cartId: string | null;
   checkoutUrl: string | null;
+  capReached: boolean;  // transient — true when the last addItem was clamped at MAX_QTY
   // Shared promise while a cartCreate is in-flight.
   // A second concurrent addItem awaits this, then routes through cartLinesAdd.
   pendingCartCreate: Promise<void> | null;
@@ -152,24 +153,39 @@ export const useCartStore = create<CartStore>()(
       items: [],
       cartId: null,
       checkoutUrl: null,
+      capReached: false,
       pendingCartCreate: null,
 
       async addItem(line) {
+        // Compute clamped quantities before touching state.
+        const existingLine = get().items.find((i) => i.variantId === line.variantId);
+        const existingQty = existingLine?.qty ?? 0;
+        const resultQty = Math.min(existingQty + line.qty, MAX_QTY);
+        const effectiveAddQty = resultQty - existingQty;
+        const clamped = resultQty < existingQty + line.qty;
+
+        // Already at cap — nothing to add.
+        if (effectiveAddQty <= 0) {
+          set({ capReached: true });
+          return;
+        }
+
         // Optimistic update — lineTotal seeded from local tier table; overwritten on Shopify response.
         set((state) => {
           const existing = state.items.find((i) => i.variantId === line.variantId);
           if (existing) {
-            const newQty = existing.qty + line.qty;
             return {
               items: state.items.map((i) =>
                 i.variantId === line.variantId
-                  ? { ...i, qty: newQty, lineTotal: getTierPrice(newQty) }
+                  ? { ...i, qty: resultQty, lineTotal: getTierPrice(resultQty) }
                   : i
               ),
+              capReached: clamped,
             };
           }
           return {
-            items: [...state.items, { ...line, lineTotal: getTierPrice(line.qty), id: crypto.randomUUID() }],
+            items: [...state.items, { ...line, qty: resultQty, lineTotal: getTierPrice(resultQty), id: crypto.randomUUID() }],
+            capReached: clamped,
           };
         });
 
@@ -194,7 +210,7 @@ export const useCartStore = create<CartStore>()(
 
             try {
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
-                lines: [{ merchandiseId: line.variantId, quantity: line.qty }],
+                lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
               });
               const cart = data.cartCreate!.cart;
               set({
@@ -206,11 +222,21 @@ export const useCartStore = create<CartStore>()(
             } finally {
               resolveCreate();
             }
+          } else if (existingLine) {
+            // Variant already in cart — set to the absolute clamped total (idempotent on retry).
+            const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_UPDATE, {
+              cartId,
+              lines: [{ id: existingLine.id, quantity: resultQty }],
+            });
+            set({
+              items: transformShopifyCart(data.cartLinesUpdate!.cart),
+              checkoutUrl: data.cartLinesUpdate!.cart.checkoutUrl,
+            });
           } else {
-            // Cart already exists — add lines.
+            // New variant — add line.
             const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_ADD, {
               cartId,
-              lines: [{ merchandiseId: line.variantId, quantity: line.qty }],
+              lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
             });
             set({
               items: transformShopifyCart(data.cartLinesAdd!.cart),
@@ -227,9 +253,10 @@ export const useCartStore = create<CartStore>()(
       async removeItem(lineId) {
         const { cartId, items } = get();
 
-        // Optimistic update
+        // Optimistic update — clearing capReached since qty will drop below MAX_QTY.
         set((state) => ({
           items: state.items.filter((i) => i.id !== lineId),
+          capReached: false,
         }));
 
         if (!cartId) return;
@@ -255,13 +282,14 @@ export const useCartStore = create<CartStore>()(
           return get().removeItem(lineId);
         }
 
+        const clampedQty = Math.min(qty, MAX_QTY);
         const { cartId, items } = get();
-        const originalQty = items.find((i) => i.id === lineId)?.qty ?? qty;
+        const originalQty = items.find((i) => i.id === lineId)?.qty ?? clampedQty;
 
         // Optimistic update — lineTotal reseeded from local tier table; overwritten on Shopify response.
         set((state) => ({
           items: state.items.map((i) =>
-            i.id === lineId ? { ...i, qty, lineTotal: getTierPrice(qty) } : i
+            i.id === lineId ? { ...i, qty: clampedQty, lineTotal: getTierPrice(clampedQty) } : i
           ),
         }));
 
@@ -270,7 +298,7 @@ export const useCartStore = create<CartStore>()(
         try {
           const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_UPDATE, {
             cartId,
-            lines: [{ id: lineId, quantity: qty }],
+            lines: [{ id: lineId, quantity: clampedQty }],
           });
           set({
             items: transformShopifyCart(data.cartLinesUpdate!.cart),
@@ -385,4 +413,8 @@ export function useCartHydrate(): () => Promise<void> {
 
 export function useCheckoutUrl(): string | null {
   return useCartStore((s) => s.checkoutUrl);
+}
+
+export function useCapReached(): boolean {
+  return useCartStore((s) => s.capReached);
 }
