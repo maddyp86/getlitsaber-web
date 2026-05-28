@@ -68,7 +68,6 @@ export function usePromoPopup(): UsePromoPopupReturn {
       if (isCartOpenRef.current) return;
       if (activeModalRef.current) return;
 
-      setCookie(COOKIE_SEEN, "true", 7);
       setVisible(true);
     }
 
@@ -116,6 +115,7 @@ export function usePromoPopup(): UsePromoPopupReturn {
   const shouldShow = visible && !isSuppressedRoute(pathname);
 
   function dismiss() {
+    setCookie(COOKIE_SEEN, "true", 3);
     setVisible(false);
   }
 
