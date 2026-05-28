@@ -218,6 +218,10 @@ export default function BundleAndCTA({
             >
               BUY NOW
             </button>
+            {/* Trust line */}
+      <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
+        {TRUST_LINE}
+      </p>
           </>
         ) : (
           <WaitlistForm
@@ -229,11 +233,6 @@ export default function BundleAndCTA({
           />
         )}
       </div>
-
-      {/* Trust line */}
-      <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
-        {TRUST_LINE}
-      </p>
     </div>
   );
 }
