@@ -649,6 +649,63 @@ caught real bugs in 4a and 4b before any code was written.
 
 PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
+## Phase 5a — PostHog install + pageview capture (2026-05-30) ✅
+
+First chunk of Phase 5 observability. Install + autocapture only; the typed event
+layer (5b) and server-side/webhook capture (5c) are separate chunks. Verified live:
+pageviews and autocapture events landing in PostHog (project 445005, US Cloud).
+
+**Decisions:**
+- **Wizard skipped deliberately.** PostHog's onboarding offered an `npx @posthog/wizard`
+  auto-installer. Declined — it runs a second write path into the repo (installs SDK,
+  edits files, commits), the exact two-write-path collision CLAUDE.md forbids. Install
+  went through Bolt (the single write path) instead, configured to our spec.
+- **`providers.tsx` + `useEffect` pattern, NOT `instrumentation-client.ts`.** The
+  lightweight `instrumentation-client.ts` convention is Next.js 15.3+ only; we're on
+  14.2.35, so the `'use client'` provider wrapping the layout is correct. Verified
+  against current PostHog docs before building.
+- **`defaults: '2026-01-30'`** snapshot handles SPA pageview + pageleave capture for
+  App Router automatically — no hand-rolled `PostHogPageView` component needed.
+- **Env var named `NEXT_PUBLIC_POSTHOG_TOKEN`** — resolved a three-way naming conflict
+  (spec said `_PROJECT_TOKEN`, existing `.env.example` had `_KEY`, PostHog docs use
+  `_TOKEN`). Picked `_TOKEN`: shortest, matches PostHog tooling, and avoids "KEY" which
+  invites confusion with the secret personal API key. The `phc_` token is a public
+  client-side key (write-only, safe to ship in browser) — `NEXT_PUBLIC_` is convention,
+  not a leak. Host corrected to `https://us.i.posthog.com` (the `.i.` matters; without
+  it ingestion silently fails).
+- **Layout stays a Server Component** — only `providers.tsx` is `'use client'`; all
+  existing shell (AgeGate, Navbar, Footer, CartDrawer, CartHydrator) preserved and
+  reordered nothing.
+- **Reverse proxy deferred.** Skipped the Next.js rewrite that dodges ad-blockers —
+  adds a moving part; priority was clean baseline data flowing. Optional later hardening
+  if ad-blocker loss proves material.
+
+**Build-reality beats (all recurring, worth banking):**
+- **Bolt won't update working-memory — confirmed policy now.** Considered letting Bolt
+  write this doc directly; decided against it. Bolt has falsely reported updating
+  working-memory 3+ times (beats #16, #33) and writes a thinner builder's-eye version
+  that misses decision history. Working-memory stays maintained outside Bolt. Bolt was
+  explicitly told not to touch `docs/`.
+- **Benign GitHub conflict (not the bad kind).** On Bolt's push, GitHub had two `docs:`
+  commits Bolt's workspace didn't (committed directly in a Bolt-idle window, the correct
+  docs write path). "Pull and resend" reconciled cleanly. This is the GOOD version of the
+  two-write-path situation — pull-before-write enforced by the system — vs the `public/`
+  wipe (beat #22) where a sync merged without pulling first and dropped files. Same root
+  cause, opposite outcome, entirely down to ordering.
+- **First dependency add hit a Bolt sandbox limit.** `posthog-js` is the first npm
+  package added in the whole build (everything prior was code edits to existing files).
+  Bolt added it to `package.json` but its sandbox ran out of memory running `pnpm install`,
+  so `pnpm-lock.yaml` never regenerated. Vercel's `--frozen-lockfile` default correctly
+  rejected the mismatch (`ERR_PNPM_OUTDATED_LOCKFILE`). Fix: set Vercel install command to
+  `pnpm install --no-frozen-lockfile` (left as standing config — safe at this scale,
+  reconciles the lockfile at build time). This WILL recur on every future package add
+  (5c adds posthog-node, likely a Supabase client) — the Vercel flag handles it permanently.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 42 | "PostHog's onboarding pushed a one-command auto-installer. I skipped it. Convenient for a solo dev on a local repo, wrong for us: it's a second tool writing to the repo, the exact collision that's bitten us twice. The install went through our single write path instead, configured to the taxonomy we'd designed rather than whatever the wizard guesses. The fastest path and the right path aren't the same when you've deliberately constrained who can write." | `tool-choice`, `pm-discipline` |
+| 43 | "First npm package added in the entire build, and it surfaced a tool limit we'd never hit: the builder's sandbox can't complete pnpm install (out of memory), so it edits package.json but can't regenerate the lockfile. The deploy's frozen-lockfile check caught the mismatch and refused — correctly. The lesson isn't the workaround (a Vercel install flag); it's that the builder does the visible half of a change and silently drops the half it can't execute, every time. The verification step exists because the builder's completion claim isn't trustworthy — same theme as the availability bug and the working-memory false reports." | `integration-depth`, `ai-collaboration` |
+
 ---
 
 ### Phase 6 — Production Agent (pending)
