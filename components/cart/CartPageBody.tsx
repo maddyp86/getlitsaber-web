@@ -136,7 +136,10 @@ export default function CartPageBody() {
                             ${line.lineTotal.toFixed(2)}
                           </span>
                           <button
-                            onClick={() => removeItem(line.id)}
+                            onClick={() => {
+                              track(EVENTS.cart_remove_item, { variant: "silver", quantity: line.qty });
+                              removeItem(line.id);
+                            }}
                             aria-label={`Remove ${line.title} from cart`}
                             className="text-text-muted hover:text-text-primary transition-colors duration-150 p-1"
                           >
@@ -206,6 +209,7 @@ export default function CartPageBody() {
                         cart_value: subtotal,
                         item_count: itemCount,
                         has_promo_code: false,
+                        source: "cart_page",
                       });
                       window.location.href = checkoutUrl;
                     }
@@ -336,10 +340,13 @@ export default function CartPageBody() {
                           {/* Remove column */}
                           <div className="flex justify-center" style={{ width: "50px", paddingLeft: "5px" }}>
                             <button
-                              onClick={() => removeItem(line.id)}
+                              onClick={() => {
+                                track(EVENTS.cart_remove_item, { variant: "silver", quantity: line.qty });
+                                removeItem(line.id);
+                              }}
                               aria-label={`Remove ${line.title} from cart`}
                               className="opacity-75 hover:opacity-100 transition-all duration-200 group"
-                             
+
                             >
                               <Image
                                 src="/images/icons/close-svgrepo-com 1.svg"
@@ -433,6 +440,7 @@ export default function CartPageBody() {
                         cart_value: subtotal,
                         item_count: itemCount,
                         has_promo_code: false,
+                        source: "cart_page",
                       });
                       window.location.href = checkoutUrl;
                     }

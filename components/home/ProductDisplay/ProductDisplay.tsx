@@ -13,9 +13,10 @@ import WaitlistCard from "./WaitlistCard";
 interface ProductDisplayProps {
   variantId: string;
   available: boolean;
+  surface: "homepage_buy" | "pdp";
 }
 
-export default function ProductDisplay({ variantId, available }: ProductDisplayProps) {
+export default function ProductDisplay({ variantId, available, surface }: ProductDisplayProps) {
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [activeBundle, setActiveBundle] = useState<BundleId>("single");
@@ -25,7 +26,9 @@ export default function ProductDisplay({ variantId, available }: ProductDisplayP
   useEffect(() => {
     if (productViewedFired.current) return;
     productViewedFired.current = true;
-    track(EVENTS.product_viewed, { surface: "homepage_buy" });
+    track(EVENTS.product_viewed, { surface });
+    // surface is a static prop set at the call site and never changes per mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectedQty =
@@ -87,6 +90,7 @@ export default function ProductDisplay({ variantId, available }: ProductDisplayP
               selectedQty={selectedQty}
               variantId={variantId}
               available={available}
+              surface={surface}
             />
           )}
         </div>

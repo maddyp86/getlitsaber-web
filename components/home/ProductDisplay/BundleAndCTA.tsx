@@ -22,6 +22,7 @@ interface BundleAndCTAProps {
   selectedQty: number;
   variantId: string;
   available: boolean;
+  surface: "homepage_buy" | "pdp";
 }
 
 function RadioIndicator({ checked }: { checked: boolean }) {
@@ -46,6 +47,7 @@ export default function BundleAndCTA({
   selectedQty,
   variantId,
   available,
+  surface,
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
   const { openCart } = useCartUIActions();
@@ -68,6 +70,7 @@ export default function BundleAndCTA({
       quantity: selectedQty,
       tier_price: getTierPrice(selectedQty),
       unit_price: getTierUnitPrice(selectedQty),
+      source: surface,
     });
     openCart();
   }
@@ -96,6 +99,7 @@ export default function BundleAndCTA({
         cart_value: freshCartValue,
         item_count: freshItemCount,
         has_promo_code: false,
+        source: "buy_now",
       });
       const url = freshState.checkoutUrl;
       if (url) window.location.href = url;

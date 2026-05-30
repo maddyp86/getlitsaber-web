@@ -26,6 +26,7 @@ export default async function PDPPage() {
       <ProductDisplay
         variantId={silverVariant?.id ?? ""}
         available={available}
+        surface="pdp"
       />
     </div>
   );

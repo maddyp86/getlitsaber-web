@@ -46,6 +46,7 @@ export default async function HomePage() {
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
           available={available}
+          surface="homepage_buy"
         />
       </WhatWereShipping>
     </>

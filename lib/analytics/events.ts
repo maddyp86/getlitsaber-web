@@ -16,6 +16,7 @@ type FunnelEvents = {
     quantity: number;
     tier_price: number;
     unit_price: number;
+    source: "homepage_buy" | "pdp";
   };
   buy_now_clicked: {
     variant: "silver";
@@ -26,6 +27,11 @@ type FunnelEvents = {
     cart_value: number;
     item_count: number;
     has_promo_code: boolean;
+    source: "drawer" | "cart_page" | "buy_now";
+  };
+  cart_remove_item: {
+    variant: "silver";
+    quantity: number;
   };
 };
 
@@ -39,6 +45,7 @@ export const EVENTS = {
   cart_add_to_cart: "cart_add_to_cart",
   buy_now_clicked: "buy_now_clicked",
   checkout_started: "checkout_started",
+  cart_remove_item: "cart_remove_item",
 } as const satisfies Record<keyof FunnelEvents, string>;
 
 // ---------------------------------------------------------------------------

@@ -243,7 +243,10 @@ export default function CartDrawer() {
                         </span>
                         {/* Remove */}
                         <button
-                          onClick={() => removeItem(line.id)}
+                          onClick={() => {
+                            track(EVENTS.cart_remove_item, { variant: "silver", quantity: line.qty });
+                            removeItem(line.id);
+                          }}
                           aria-label={`Remove ${line.title} from cart`}
                           className="font-label text-text-muted hover:text-text-primary underline transition-colors duration-150"
                           style={{ fontSize: "11px" }}
@@ -320,6 +323,7 @@ export default function CartDrawer() {
                     cart_value: subtotal,
                     item_count: itemCount,
                     has_promo_code: false,
+                    source: "drawer",
                   });
                   window.location.href = checkoutUrl;
                 }
