@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
-import { getTierPrice, getTierSavings, MAX_QTY } from "@/lib/cart/pricing";
+import { getTierPrice, getTierSavings, getTierUnitPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
+import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 
@@ -53,14 +54,20 @@ export default function BundleAndCTA({
   const moreTierPrice = getTierPrice(moreQty);
   const moreSavingsRounded = Math.round(getTierSavings(moreQty));
 
-  function handleAddToCart() {
-    addItem({
+  async function handleAddToCart() {
+    await addItem({
       variantId,
       qty: selectedQty,
       title: "Litsaber OG — Silver",
       variantTitle: "Silver",
       price: 59.99,
       image: "/images/product/litsaber-lights-off.jpg",
+    });
+    track(EVENTS.cart_add_to_cart, {
+      variant: "silver",
+      quantity: selectedQty,
+      tier_price: getTierPrice(selectedQty),
+      unit_price: getTierUnitPrice(selectedQty),
     });
     openCart();
   }
@@ -76,8 +83,21 @@ export default function BundleAndCTA({
         price: 59.99,
         image: "/images/product/litsaber-lights-off.jpg",
       });
-      // Read post-mutation value directly from store — hook closure would be stale
-      const url = useCartStore.getState().checkoutUrl;
+      // Read post-mutation values directly from store — hook closures would be stale
+      const freshState = useCartStore.getState();
+      const freshCartValue = freshState.items.reduce((acc, i) => acc + i.lineTotal, 0);
+      const freshItemCount = freshState.items.reduce((acc, i) => acc + i.qty, 0);
+      track(EVENTS.buy_now_clicked, {
+        variant: "silver",
+        quantity: selectedQty,
+        tier_price: getTierPrice(selectedQty),
+      });
+      track(EVENTS.checkout_started, {
+        cart_value: freshCartValue,
+        item_count: freshItemCount,
+        has_promo_code: false,
+      });
+      const url = freshState.checkoutUrl;
       if (url) window.location.href = url;
     } finally {
       setBuyNowLoading(false);

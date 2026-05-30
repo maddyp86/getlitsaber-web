@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAgeGateActions } from "@/lib/ui/store";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 const COOKIE_NAME =
   process.env.NEXT_PUBLIC_AGE_GATE_COOKIE_NAME ?? "litsaber_age_verified";
@@ -42,6 +43,7 @@ export default function AgeGateModal() {
 
   function handleConfirm() {
     setCookie(COOKIE_NAME, "true", COOKIE_MAX_AGE_DAYS);
+    track(EVENTS.age_gate_confirmed, {});
     setVisible(false);
     dismissAgeGate();
     document.body.classList.remove("scroll-locked");

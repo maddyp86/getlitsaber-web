@@ -10,6 +10,7 @@ import CommonQuestions from "@/components/home/CommonQuestions/CommonQuestions";
 import WhatWereShipping from "@/components/home/WhatWereShipping/WhatWereShipping";
 import EditionsSection from "@/components/home/Editions/EditionsSection";
 import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
+import HomepageEngagementTracker from "@/components/home/HomepageEngagementTracker";
 import { getProductByHandle } from "@/lib/shopify/queries";
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <HomepageEngagementTracker />
       <Hero />
       <StatBar />
       <BeSeen />

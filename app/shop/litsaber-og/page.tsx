@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getProductByHandle } from "@/lib/shopify/queries";
 import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
+import PdpViewTracker from "@/components/pdp/PdpViewTracker";
 
 export const metadata: Metadata = {
   title: "Litsaber OG — The Interactive 510 Battery",
@@ -21,6 +22,7 @@ export default async function PDPPage() {
 
   return (
     <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl">
+      <PdpViewTracker />
       <ProductDisplay
         variantId={silverVariant?.id ?? ""}
         available={available}
