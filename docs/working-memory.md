@@ -706,6 +706,71 @@ pageviews and autocapture events landing in PostHog (project 445005, US Cloud).
 | 42 | "PostHog's onboarding pushed a one-command auto-installer. I skipped it. Convenient for a solo dev on a local repo, wrong for us: it's a second tool writing to the repo, the exact collision that's bitten us twice. The install went through our single write path instead, configured to the taxonomy we'd designed rather than whatever the wizard guesses. The fastest path and the right path aren't the same when you've deliberately constrained who can write." | `tool-choice`, `pm-discipline` |
 | 43 | "First npm package added in the entire build, and it surfaced a tool limit we'd never hit: the builder's sandbox can't complete pnpm install (out of memory), so it edits package.json but can't regenerate the lockfile. The deploy's frozen-lockfile check caught the mismatch and refused — correctly. The lesson isn't the workaround (a Vercel install flag); it's that the builder does the visible half of a change and silently drops the half it can't execute, every time. The verification step exists because the builder's completion claim isn't trustworthy — same theme as the availability bug and the working-memory false reports." | `integration-depth`, `ai-collaboration` |
 
+## Phase 5b — Typed event layer + funnel wiring (2026-05-30) ✅
+
+Second Phase 5 chunk. The typed `lib/analytics/events.ts` module is the single
+source of event names (no inline `posthog.capture` strings anywhere — same
+enforcement model as "no inline hex"). Six funnel events wired into existing
+surfaces; deferred surfaces (promo box, Activate page) excluded.
+
+**Module:** `lib/analytics/events.ts` — `EVENTS` const + `PayloadFor<E>` typed map +
+`track<E>(event, properties)` wrapping `posthog.capture`. Guards on `window` +
+`posthog.__loaded`; no-ops silently if uninitialized. Malformed `track()` calls
+fail to compile.
+
+**Events wired (6):** `age_gate_confirmed` (AgeGateModal confirm) · `homepage_engaged`
+(first of scroll-past-hero / 10s dwell / CTA click, fire-once per session via
+sessionStorage, `trigger` property, timer cleared on unmount) · `product_viewed`
+(PDP + homepage buy section, fire-once guards, `surface` property) ·
+`cart_add_to_cart` (post-`addItem`, real variant/qty/tier_price/unit_price) ·
+`buy_now_clicked` (BUY NOW, before redirect) · `checkout_started` (3 cart surfaces +
+BUY NOW).
+
+**Server-Component shim pattern:** `app/page.tsx` and the PDP page are Server
+Components and can't hold hooks, so invisible `"use client"` tracker components
+(`HomepageEngagementTracker`, `PdpViewTracker`) render `null` and carry the
+tracking. Server Components never import PostHog directly.
+
+**Two file-verified findings during plan review:**
+- `cart_value` on `checkout_started` reads `useSubtotal()`, which sums `lineTotal` =
+  `parseFloat(node.cost.totalAmount.amount)` — Shopify's actual charged amount, NOT
+  the `pricing.ts` client fallback. Analytics value = what the customer pays (beat #40
+  invariant holds).
+- `checkout_started` stays co-located across the 3 cart buttons rather than centralized:
+  `useCheckoutUrl()` turned out to be a plain Zustand selector returning a string, not a
+  shared redirect function, so there was no chokepoint to centralize into without an
+  out-of-scope refactor. The cost — 4 call sites that could drift — is logged; if a 5th
+  checkout button is ever added, it needs the event added too.
+- BUY NOW reads fresh `useCartStore.getState()` post-`addItem` for `cart_value` (the
+  render-time hook closure would be stale/zero right after a cart create) — same pattern
+  the handler already uses for `checkoutUrl`.
+
+## Phase 5b — source attribution + remove-item (2026-05-30) ✅
+
+Three additions surfaced by reviewing the live PostHog reports (user caught two real
+gaps the original 5b spec missed):
+
+1. **`source` on `cart_add_to_cart`** (`'homepage_buy' | 'pdp'`) — `BundleAndCTA` renders
+   on BOTH the homepage buy section and the PDP, so without a source the two add surfaces
+   were indistinguishable. Now we can see which surface drives adds.
+2. **`source` on `checkout_started`** (`'drawer' | 'cart_page' | 'buy_now'`) — the three
+   checkout entry points emitted an identical event; now each is attributed, so
+   drawer-vs-cart-page-vs-impulse checkout behavior is separable.
+3. **`cart_remove_item`** (`{ variant, quantity }`) — wired on the store `removeItem` path
+   (drawer + cart page). Not a forward funnel step; it's a friction signal — pre-checkout
+   removal is exactly the hesitation behavior the performance report flagged ("interest
+   without conversion") and previously had no event.
+
+**On autocapture vs typed events (clarified):** the `clicked button with text "..."` events
+in reports are PostHog autocapture (on by default via `defaults: '2026-01-30'`), not
+redundant with our typed events. Autocapture = wide exploratory net, brittle (keyed on DOM
+text). Typed events = stable semantic spine with structured properties. Funnels/KPIs run on
+typed events; autocapture is ambient backup. Left on pre-launch; can disable later if noisy.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 44 | "Reviewing the live event stream caught two holes my own spec missed: the add-to-cart event fired identically from the homepage and the product page, and the checkout event fired identically from three different entry points. Same event, no idea where it happened. A `source` property on each — three lines of typed payload — turned 'people are checking out' into 'people are checking out from the drawer 3x more than the cart page,' which is the difference between a number and a decision. The lesson: an event without the context of where it fired is half an event. Watch the real stream early, because the gaps are invisible in the spec and obvious in the data." | `integration-depth`, `pm-discipline` |
+
 ---
 
 ### Phase 6 — Production Agent (pending)
