@@ -14,6 +14,7 @@ import {
 } from "@/lib/cart/store";
 import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 export default function CartDrawer() {
   const isOpen = useIsCartOpen();
@@ -313,7 +314,16 @@ export default function CartDrawer() {
               <button
                 type="button"
                 disabled={!checkoutUrl}
-                onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+              onClick={() => {
+                if (checkoutUrl) {
+                  track(EVENTS.checkout_started, {
+                    cart_value: subtotal,
+                    item_count: itemCount,
+                    has_promo_code: false,
+                  });
+                  window.location.href = checkoutUrl;
+                }
+              }}
                 className={`w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80 ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 cursor-pointer"}`}
                 style={{
                   fontSize: "15px",

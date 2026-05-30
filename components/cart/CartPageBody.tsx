@@ -10,6 +10,7 @@ import {
   useCheckoutUrl,
 } from "@/lib/cart/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 export default function CartPageBody() {
   const items = useCartItems();
@@ -199,7 +200,16 @@ export default function CartPageBody() {
                 <button
                   type="button"
                   disabled={!checkoutUrl}
-                  onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+                  onClick={() => {
+                    if (checkoutUrl) {
+                      track(EVENTS.checkout_started, {
+                        cart_value: subtotal,
+                        item_count: itemCount,
+                        has_promo_code: false,
+                      });
+                      window.location.href = checkoutUrl;
+                    }
+                  }}
                   className={`w-full py-4 font-label font-bold text-white rounded-md transition-opacity uppercase tracking-widest ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:opacity-75 cursor-pointer"}`}
                   style={{
                     fontSize: "16px",
@@ -417,7 +427,16 @@ export default function CartPageBody() {
                   <button
                     type="button"
                     disabled={!checkoutUrl}
-                    onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+                    onClick={() => {
+                    if (checkoutUrl) {
+                      track(EVENTS.checkout_started, {
+                        cart_value: subtotal,
+                        item_count: itemCount,
+                        has_promo_code: false,
+                      });
+                      window.location.href = checkoutUrl;
+                    }
+                  }}
                     className={`w-full py-4 font-label font-bold text-white rounded-md transition-opacity uppercase tracking-widest ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:opacity-75 cursor-pointer"}`}
                     style={{
                       fontSize: "16px",

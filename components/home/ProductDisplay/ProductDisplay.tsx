@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { track, EVENTS } from "@/lib/analytics/events";
 import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
 import { getTierPrice } from "@/lib/cart/pricing";
@@ -19,6 +20,13 @@ export default function ProductDisplay({ variantId, available }: ProductDisplayP
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [activeBundle, setActiveBundle] = useState<BundleId>("single");
   const [moreQty, setMoreQty] = useState(3);
+
+  const productViewedFired = useRef(false);
+  useEffect(() => {
+    if (productViewedFired.current) return;
+    productViewedFired.current = true;
+    track(EVENTS.product_viewed, { surface: "homepage_buy" });
+  }, []);
 
   const selectedQty =
     activeBundle === "single" ? 1 : activeBundle === "twopack" ? 2 : moreQty;
