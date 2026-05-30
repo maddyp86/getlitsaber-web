@@ -58,11 +58,21 @@ METRICS.md.
 
 1. `age_gate_confirmed` — user clicks "I AM 21+". The compliance gate is the true
    top of funnel; everything before it is pre-entry.
-2. `homepage_engaged` — **(added after the report)** user engages past the hero
-   (scroll-depth milestone or first meaningful interaction). The report's single
-   clearest UX finding (16s on page, 45.4% exit) had no event in the original
-   taxonomy. This is KPI rung 2. Property: `depth` or `trigger`
-   (`scroll` | `cta_click`).
+2. `homepage_engaged` — **(added after the report; definition locked 2026-05-30)**
+   the user crosses a meaningful engagement threshold on the homepage. The report's
+   single clearest UX finding (16s on page, 45.4% exit) had no event in the original
+   taxonomy; this is the event the repositioning homepage is judged by. This is KPI
+   rung 2. **Fires once per session, on whichever comes FIRST of:**
+   (a) scrolling past the hero into the second section — the truest "didn't bounce
+   off the headline" signal, directly inverts the 45.4% exit;
+   (b) a dwell of ~10s on the homepage — catches engaged readers who haven't scrolled
+   (threshold sits deliberately BELOW the old 16s average: measures "stayed longer
+   than a bounce," not "longer than old average");
+   (c) any CTA click — unambiguous engagement regardless of scroll/time.
+   Property: `trigger` (`scroll` | `dwell` | `cta_click`) — records which threshold
+   fired, so `scroll` vs `dwell` engagement can be separated in analysis. Wired in
+   Phase 5b (moved up from deferred — rung 2 is the leak the homepage rebuild targets,
+   so it must be measurable from launch).
 3. `product_viewed` — PDP or homepage buy section enters view. Property:
    `surface` (`pdp` | `homepage_buy`), `page_path`.
 4. `product_variant_selected` — Silver/Gold style chosen. Property:
