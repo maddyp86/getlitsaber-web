@@ -9,6 +9,7 @@ import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
 import FutureDropsModal from "@/components/modals/FutureDropsModal";
 import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
 import CartHydrator from "@/components/layout/CartHydrator";
+import PostHogProvider from "./providers";
 
 export const metadata: Metadata = {
   title: {
@@ -44,28 +45,30 @@ export default function RootLayout({
       ].join(" ")}
     >
       <body className="font-body bg-background-primary text-text-primary antialiased">
-        {/* Age gate sits at z-age-gate (300) — above everything */}
-        <AgeGateModal />
+        <PostHogProvider>
+          {/* Age gate sits at z-age-gate (300) — above everything */}
+          <AgeGateModal />
 
-        {/* Navbar sits at z-navbar (50) */}
-        <Navbar />
+          {/* Navbar sits at z-navbar (50) */}
+          <Navbar />
 
-        <main>{children}</main>
+          <main>{children}</main>
 
-        <Footer />
+          <Footer />
 
-        {/* Cart drawer sits at z-drawer (100), available on every page */}
-        <CartDrawer />
+          {/* Cart drawer sits at z-drawer (100), available on every page */}
+          <CartDrawer />
 
-        {/* Waitlist modals sit at z-modal (200), available on every page */}
-        <GoldWaitlistModal />
-        <FutureDropsModal />
+          {/* Waitlist modals sit at z-modal (200), available on every page */}
+          <GoldWaitlistModal />
+          <FutureDropsModal />
 
-        {/* Promo popup sits at z-modal (200) — gated by age confirm + conditions */}
-        <FloatingPromoPopup />
+          {/* Promo popup sits at z-modal (200) — gated by age confirm + conditions */}
+          <FloatingPromoPopup />
 
-        {/* Hydrates cart from Shopify on mount using persisted cartId */}
-        <CartHydrator />
+          {/* Hydrates cart from Shopify on mount using persisted cartId */}
+          <CartHydrator />
+        </PostHogProvider>
       </body>
     </html>
   );
