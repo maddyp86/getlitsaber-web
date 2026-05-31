@@ -29,6 +29,7 @@ interface ShopifyOrder {
   line_items: ShopifyLineItem[];
   discount_codes: ShopifyDiscountCode[];
   note_attributes?: Array<{ name: string; value: string }>;
+  customer?: { first_name: string | null; last_name: string | null } | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -82,10 +83,20 @@ export async function POST(req: Request): Promise<Response> {
   const hasPromoCode = order.discount_codes.length > 0;
   const discountCode = order.discount_codes[0]?.code ?? null;
 
-  // distinct_id: permanent fallback is 'order_<id>'.
-  // 5c-2b will read the stitched PostHog id from note_attributes and use it
-  // when present, falling back to this value when absent.
-  const distinctId = "order_" + orderId;
+  // distinct_id: use the PostHog visitor id stitched through checkout via cart attributes.
+  // Falls back to 'order_<id>' when the attribute is absent (e.g. direct API orders).
+  const stitchedId = order.note_attributes
+    ?.find((a) => a.name === "posthog_distinct_id")
+    ?.value?.trim();
+  const distinctId = stitchedId || "order_" + orderId;
+  if (!stitchedId) {
+    console.warn("[webhook/orders] no posthog_distinct_id on order, using fallback", orderId);
+  }
+
+  // customer_name: join non-empty name parts; null if both absent.
+  const nameParts = [order.customer?.first_name, order.customer?.last_name]
+    .filter((p): p is string => Boolean(p?.trim()));
+  const customerName = nameParts.length > 0 ? nameParts.join(" ") : null;
 
   // 4. Write to Supabase — upsert so duplicate deliveries are a no-op
   const { error: dbError } = await insertOrder({
@@ -94,12 +105,13 @@ export async function POST(req: Request): Promise<Response> {
     order_value: orderValue,
     item_count: itemCount,
     currency: order.currency,
-    distinct_id: distinctId, // FIX 1: write the order_<id> fallback, not null — keeps Supabase + PostHog joinable; 5c-2b overwrites with stitched id
+    distinct_id: distinctId,
     has_promo_code: hasPromoCode,
     discount_code: discountCode,
     discount_amount: discountAmount,
     email: order.email ?? null,
-    raw: order as unknown as Record<string, unknown>, // FIX 2: reuse the already-parsed object, don't JSON.parse(rawBody) a second time
+    customer_name: customerName,
+    raw: JSON.parse(rawBody) as Record<string, unknown>,
   });
 
   if (dbError) {
