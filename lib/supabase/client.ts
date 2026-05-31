@@ -1,6 +1,6 @@
 // SERVER ONLY — uses the service_role key which bypasses RLS. Never import into a Client Component.
 
-import { createClient } from "@supabase/Bolt Database-js";
+import { createClient } from "@supabase/supabase-js";
 
 // ---------------------------------------------------------------------------
 // OrderRow — typed to match the existing `orders` table (do not create/migrate)
