@@ -53,9 +53,9 @@ function getSupabaseAdmin() {
 export async function insertOrder(
   payload: OrderInsert
 ): Promise<{ error: { message: string } | null }> {
-  const Bolt Database = getSupabaseAdmin();
+  const supabase = getSupabaseAdmin();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (Bolt Database as any)
+  const { error } = await (supabase as any)
     .from("orders")
     .upsert(payload, { onConflict: "shopify_order_id", ignoreDuplicates: true });
   return { error: error ?? null };
