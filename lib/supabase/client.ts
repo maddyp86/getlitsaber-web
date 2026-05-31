@@ -1,6 +1,6 @@
 // SERVER ONLY — uses the service_role key which bypasses RLS. Never import into a Client Component.
 
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/Bolt Database-js";
 
 // ---------------------------------------------------------------------------
 // OrderRow — typed to match the existing `orders` table (do not create/migrate)
@@ -18,6 +18,7 @@ export interface OrderRow {
   discount_code: string | null;
   discount_amount: number;
   email: string | null;
+  customer_name: string | null;
   raw: Record<string, unknown> | null;
   created_at: string;
 }
@@ -28,7 +29,7 @@ export type OrderInsert = Omit<OrderRow, "id" | "created_at">;
 // getSupabaseAdmin — factory so the env-var guard runs at call time, not at
 // module import, which surfaces missing-var errors clearly in server logs.
 //
-// Note: the Database generic doesn't resolve through supabase-js's internal
+// Note: the Database generic doesn't resolve through Bolt Database-js's internal
 // type machinery in v2.106.2, so .from("orders").insert() is untyped. Callers
 // must use insertOrder() below — it is the single type-checked insert path.
 // ---------------------------------------------------------------------------
@@ -46,15 +47,15 @@ function getSupabaseAdmin() {
 // ---------------------------------------------------------------------------
 // insertOrder — type-checked upsert on shopify_order_id.
 // Duplicate Shopify webhook deliveries are silently ignored (ignoreDuplicates).
-// Returns the Supabase error (or null on success).
+// Returns the Bolt Database error (or null on success).
 // ---------------------------------------------------------------------------
 
 export async function insertOrder(
   payload: OrderInsert
 ): Promise<{ error: { message: string } | null }> {
-  const supabase = getSupabaseAdmin();
+  const Bolt Database = getSupabaseAdmin();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await (Bolt Database as any)
     .from("orders")
     .upsert(payload, { onConflict: "shopify_order_id", ignoreDuplicates: true });
   return { error: error ?? null };

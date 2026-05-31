@@ -16,6 +16,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import posthog from "posthog-js";
 import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { shopifyFetch } from "@/lib/shopify/client";
 import type { ShopifyCart, ShopifyCartResponse } from "@/lib/shopify/types";
@@ -84,8 +85,8 @@ const CART_FRAGMENT = `
 `;
 
 const CART_CREATE = `
-  mutation CartCreate($lines: [CartLineInput!]!) {
-    cartCreate(input: { lines: $lines }) {
+  mutation CartCreate($lines: [CartLineInput!]!, $attributes: [AttributeInput!]) {
+    cartCreate(input: { lines: $lines, attributes: $attributes }) {
       cart { ${CART_FRAGMENT} }
     }
   }
@@ -209,8 +210,11 @@ export const useCartStore = create<CartStore>()(
             set({ pendingCartCreate: createPromise });
 
             try {
+              const phId = posthog.get_distinct_id();
+              const attributes = phId ? [{ key: "posthog_distinct_id", value: phId }] : [];
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
+                attributes,
               });
               const cart = data.cartCreate!.cart;
               set({
