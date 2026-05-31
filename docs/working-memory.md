@@ -860,6 +860,59 @@ the per-webhook editor — that dialog doesn't show it). Third package add (`pos
 |---|------|-----|
 | 46 | "The builder said the webhook was built and the build was clean. The live URL returned 404 and the logs were empty. Both were true at once: it HAD written correct code, and that code had reached nothing — the builder's sandbox isn't a git repo, so 'done' meant 'done in a place nothing deploys from.' I found it by hitting the deployed URL, not by reading the report — 404 with no logs is the unmistakable signature of code that exists nowhere the running system can see it. The fix was mundane (paste three files into GitHub by hand). The lesson is that 'it builds' and 'it's live' are separated by an entire delivery pipeline, and the only honest test is the one run against the thing actually serving traffic." | `integration-depth`, `ai-collaboration` |
 
+## Phase 5c-2b — Identity stitch + customer_name (2026-05-31) ✅
+
+Stitches the PostHog visitor id through checkout so the server-side `purchase`
+connects to the on-site session funnel. Verified: a fresh cart carried the id into
+the order, Supabase row showed the real PostHog distinct_id (not the fallback), and
+the purchase attached to the session timeline. `customer_name` also captured.
+
+**Mechanism:** at `cartCreate` (first add), the store reads `posthog.get_distinct_id()`
+(from the imported posthog-js singleton, NOT `window.posthog` — the window global may
+be undefined depending on attach behavior) and writes it as a cart attribute
+`posthog_distinct_id`. Shopify carries cart attributes to the order's `note_attributes`;
+the webhook reads it there, uses it for BOTH the Supabase `distinct_id` and the PostHog
+`distinctId`, falling back to `order_<id>` + a `console.warn` when absent. `customer_name`
+built from `customer.first_name`/`last_name` (join non-empty, null if both empty); name
+and email go to Supabase only, never PostHog properties. `customer_name` column added to
+the table first (migration `002`) before the writing code deployed.
+
+**KNOWN LIMITATION (logged, not fixed):** the attribute is only written at `cartCreate`.
+A returning visitor with a persisted `cartId` adds via `cartLinesAdd`, skipping
+`cartCreate`, so their cart never gets the attribute → their purchase falls back to
+`order_<id>`. First-time visitors (the bulk of the funnel, and what the completion-rate
+diagnostic most cares about) always hit `cartCreate` on first add, so they stitch. The
+`console.warn` measures the real miss rate once traffic flows. Harden later with
+`cartAttributesUpdate` on the add-to-existing-cart path ONLY if the miss rate warrants.
+
+**Two debugging sagas (both instructive):**
+- **Paste corruption (3 build cycles).** Hand-pasting Bolt's output into the GitHub web
+  editor introduced transcription errors: a global find-replace mangled `supabase` →
+  "Bolt Database" across `client.ts` (broke the import + every reference), and a separate
+  paste dropped the `customer_name` line and later the entire `insertOrder` export. Each
+  failed the build loudly (syntax error → type error → missing-export), caught before any
+  bad deploy. Fix: wholesale-replace whole files rather than line-edit, and grep for "Bolt"
+  (zero hits = clean). The deeper signal: the GitHub web-editor paste is itself an
+  unreliable write path — SECOND confirmed-unreliable path after Bolt's GitHub sync. Worth
+  moving to local-clone + git (see-the-whole-file, diff before push) rather than blind
+  textarea pasting.
+- **Stale-cart false alarm (code was right the whole time).** First stitch test failed —
+  Supabase showed `order_<id>`, Vercel logged the fallback warn. Looked like a stitch bug.
+  Wasn't: the browser had a persisted `cartId` from earlier testing, so `hydrate()`
+  re-fetched it (`GetCart` in the network tab, not `cartCreate`), `addItem` went down
+  `cartLinesAdd`, and `cartCreate` (the only path that writes the attribute) never ran.
+  Diagnosed by reading the actual network request — `GetCart`/`cartLinesAdd` vs `cartCreate`
+  was the tell. Fixed the TEST, not the code: fresh incognito → clean `cartCreate` with
+  `attributes: [{ posthog_distinct_id }]` in the payload → real id on the order row.
+
+**Bolt-push reality banked:** Bolt's sandbox is not a git repo and cannot push. "Bolt says
+shipped" = sandbox state only; everything must be hand-pasted to GitHub by the user. This
+is now standing fact, not a per-chunk surprise.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 47 | "The purchase event was landing disconnected from the session that produced it — a buy with no browse attached. The fix was to carry the analytics id through checkout as a cart attribute and read it back server-side, so the completed order rejoins the visitor's timeline. The thing it unlocks is the only question that matters for conversion: of the people who started checkout, which ones finished — answerable per person, not just in aggregate." | `integration-depth`, `agent-loop` |
+| 48 | "Spent an hour chasing a stitch that 'failed' — wrong id on every test order. The code was correct the entire time. My browser kept reusing a cart created before the feature existed, so the code path that writes the id never ran. I found it by reading the actual network request instead of re-reading the code: the call was fetching an old cart, not creating a new one. The lesson is that when a feature fails only in your hands, suspect your test conditions before your code — a stale local cart is not a bug in the stitch, it's a bug in how you tested it. Incognito removed the variable and it worked first try." | `integration-depth`, `pm-discipline` |
 
 ---
 
