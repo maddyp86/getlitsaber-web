@@ -771,6 +771,51 @@ typed events; autocapture is ambient backup. Left on pre-launch; can disable lat
 |---|------|-----|
 | 44 | "Reviewing the live event stream caught two holes my own spec missed: the add-to-cart event fired identically from the homepage and the product page, and the checkout event fired identically from three different entry points. Same event, no idea where it happened. A `source` property on each — three lines of typed payload — turned 'people are checking out' into 'people are checking out from the drawer 3x more than the cart page,' which is the difference between a number and a decision. The lesson: an event without the context of where it fired is half an event. Watch the real stream early, because the gaps are invisible in the spec and obvious in the data." | `integration-depth`, `pm-discipline` |
 
+## Phase 5c-1 — Supabase server-side client + orders table (2026-05-31) ✅
+
+Foundation for the orders mirror. Supabase project provisioned (region us-east-2),
+`orders` table created, server-only client wired, verified with a throwaway
+insert-and-read route. No webhook yet (5c-2).
+
+**Supabase:** project in us-east-2 (close to Vercel's iad1 — negligible latency).
+`orders` table = 13 columns, `shopify_order_id` unique (webhook-retry dedupe key),
+`raw` jsonb (Phase 6 escape hatch), `email` included (own DB, not the analytics
+stream). RLS enabled with NO policies — service_role bypasses RLS so the webhook
+writes; nothing client-side can read. Table SQL committed to the repo (source of
+truth for the schema, not just clicked into the dashboard).
+
+**Client:** `lib/supabase/client.ts`, server-only (SERVER ONLY comment, no
+`NEXT_PUBLIC_` env reads — the service_role key bypasses RLS and must never reach
+the browser). `getSupabaseAdmin()` factory (env guard runs at call time, not module
+import — surfaces missing-var errors clearly, plays nice with Next.js static
+analysis). Env vars `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` (cleaned up a stale
+`NEXT_PUBLIC_SUPABASE_*` block left in `.env.example` by an old scaffold).
+
+**The typed-insert that wasn't (the real beat):** Bolt's first pass made
+`.from("orders").insert()` *look* type-checked but it only compiled via an `as never`
+cast — the supabase-js v2 `Database` generic wasn't resolving, so inserts were
+silently untyped. Caught it by asking "how does this type the insert?" instead of
+trusting the green build. Fix: an `insertOrder(payload: OrderInsert)` helper — the
+single typed insert path, `OrderInsert` enforced at the call site with no cast, the
+unavoidable `as any` quarantined inside `client.ts`. The throwaway check route
+exercises `insertOrder`, so 5c-1's verification validates the EXACT path 5c-2's
+webhook will write through, not a different one.
+
+**Schema/type coupling to maintain by hand:** the `as any` inside `insertOrder` means
+the compiler won't catch a column mismatch inside the helper — `OrderRow`/`OrderInsert`
+must stay manually paired with the table SQL in the repo. Comment in `client.ts` notes
+the coupling.
+
+**Verification:** check route → `{ ok: true, row: {...} }` (full 13-col row). Confirmed
+the whole chain: client connects, `SUPABASE_URL` resolves, service_role authenticates +
+bypasses RLS, `insertOrder` types the payload, table accepts. Route deleted + 404
+confirmed; TEST row deleted from the table.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 45 | "The builder's insert compiled and the build was green, so by every visible signal it was done. I asked one question anyway — how is this insert actually type-checked? — and the honest answer was: it isn't, it's casting to `never` to silence the compiler. A typed-looking call that enforced nothing, which would have let a malformed order payload fail silently against the production table in the next chunk. The fix was a single typed helper. The lesson is the question, not the helper: 'it builds' and 'it's correct' are different claims, and the gap between them is exactly where the cast-to-shut-the-compiler-up bugs live." | `integration-depth`, `ai-collaboration` |
+
+
 ---
 
 ### Phase 6 — Production Agent (pending)
