@@ -815,6 +815,51 @@ confirmed; TEST row deleted from the table.
 |---|------|-----|
 | 45 | "The builder's insert compiled and the build was green, so by every visible signal it was done. I asked one question anyway — how is this insert actually type-checked? — and the honest answer was: it isn't, it's casting to `never` to silence the compiler. A typed-looking call that enforced nothing, which would have let a malformed order payload fail silently against the production table in the next chunk. The fix was a single typed helper. The lesson is the question, not the helper: 'it builds' and 'it's correct' are different claims, and the gap between them is exactly where the cast-to-shut-the-compiler-up bugs live." | `integration-depth`, `ai-collaboration` |
 
+## Phase 5c-2a — Shopify orders/create webhook receiver (2026-05-31) ✅
+
+The webhook pipe: Shopify checkout → `orders/create` webhook → HMAC verify →
+Supabase upsert + PostHog `purchase` event. Verified end-to-end with a test order
+(row in Supabase, event in PostHog, webhook in Vercel logs). NO identity stitch yet
+(5c-2b) — purchases land under an `order_<id>` fallback distinctId.
+
+**The webhook (`app/api/webhooks/orders/route.ts`):** reads raw body via `req.text()`
+BEFORE parsing (HMAC must be computed on exact bytes — parse-then-restringify breaks
+the signature), verifies `X-Shopify-Hmac-Sha256` with a timing-safe compare, 401s on
+mismatch, parses only after. Maps the order → `OrderInsert`, upserts via `insertOrder`
+(dedupes on `shopify_order_id` so Shopify retries don't double-count), fires the
+server-side PostHog `purchase` via `posthog-node` with `await posthog.shutdown()` to
+flush before the serverless function freezes. Downstream failures (Supabase/PostHog)
+are logged but still return 200 — a hiccup must not trigger a Shopify retry-storm.
+
+**Two bugs caught in plan-review before paste (Bolt's code, would've corrupted data):**
+- Supabase write had `distinct_id: null` while PostHog used `order_<id>` — same order,
+  unjoinable across the two systems. Fixed to write the `order_<id>` fallback to both,
+  so they match (5c-2b overwrites with the real stitched id).
+- `raw` re-parsed `rawBody` a second time instead of reusing the already-parsed object.
+
+**The deploy-gap saga (the real lesson):** Bolt reported "clean build, here's what
+shipped" for 5c-2a — but the code only ever existed in Bolt's sandbox. Bolt's sandbox
+is NOT a git repo; it cannot push. So nothing reached GitHub, nothing deployed, and the
+live route 404'd with zero Vercel logs (a request that hits no function leaves no trace).
+Diagnosed by hitting the live URL: 404 = route not deployed, full stop. Root cause found
+by checking GitHub (no commit) + Vercel (newest deploy was the PRIOR chunk). Fix: Bolt
+printed the three full files, pasted into GitHub web editor by hand (the user's write
+path, since Bolt can't push), committed, deployed. Confirmed fixed when the URL flipped
+404 → 405 (route live, rejects GET). The whole episode is the sharpest instance yet of
+"Bolt's status report describes its sandbox, not reality" — same family as the
+working-memory false reports (#16) and the availability bug (#36).
+
+**Manual setup done:** `orders/create` webhook registered in Shopify (Settings →
+Notifications) pointed at `get-litsaber.vercel.app/api/webhooks/orders`, JSON, API
+version 2026-04 (Storefront client is on 2025-07 — benign mismatch for the fields read).
+`SHOPIFY_WEBHOOK_SECRET` set in Vercel from the Notifications-page signing secret (NOT
+the per-webhook editor — that dialog doesn't show it). Third package add (`posthog-node`);
+`--no-frozen-lockfile` handled the lockfile as expected.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 46 | "The builder said the webhook was built and the build was clean. The live URL returned 404 and the logs were empty. Both were true at once: it HAD written correct code, and that code had reached nothing — the builder's sandbox isn't a git repo, so 'done' meant 'done in a place nothing deploys from.' I found it by hitting the deployed URL, not by reading the report — 404 with no logs is the unmistakable signature of code that exists nowhere the running system can see it. The fix was mundane (paste three files into GitHub by hand). The lesson is that 'it builds' and 'it's live' are separated by an entire delivery pipeline, and the only honest test is the one run against the thing actually serving traffic." | `integration-depth`, `ai-collaboration` |
+
 
 ---
 
