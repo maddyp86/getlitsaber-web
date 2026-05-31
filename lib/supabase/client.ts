@@ -24,43 +24,40 @@ export interface OrderRow {
 
 export type OrderInsert = Omit<OrderRow, "id" | "created_at">;
 
-// Matches the shape produced by supabase-js codegen (Tables + Views + Functions + Enums).
-// All tables other than `orders` are omitted — add them as needed.
-interface Database {
-  public: {
-    Tables: {
-      orders: {
-        Row: OrderRow;
-        Insert: OrderInsert;
-        Update: Partial<OrderInsert>;
-        Relationships: [];
-      };
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-  };
-}
-
 // ---------------------------------------------------------------------------
 // getSupabaseAdmin — factory so the env-var guard runs at call time, not at
 // module import, which surfaces missing-var errors clearly in server logs.
+//
+// Note: the Database generic doesn't resolve through supabase-js's internal
+// type machinery in v2.106.2, so .from("orders").insert() is untyped. Callers
+// must use insertOrder() below — it is the single type-checked insert path.
 // ---------------------------------------------------------------------------
 
-export function getSupabaseAdmin() {
+function getSupabaseAdmin() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url) throw new Error("Missing env var: SUPABASE_URL");
   if (!key) throw new Error("Missing env var: SUPABASE_SERVICE_ROLE_KEY");
 
-  return createClient<Database>(url, key, {
-    auth: { persistSession: false },
-  });
+  return createClient(url, key, { auth: { persistSession: false } });
 }
+
+// ---------------------------------------------------------------------------
+// insertOrder — the single type-checked insert path for the orders table.
+// The payload is validated against OrderInsert at compile time.
+// Returns the Supabase error (or null on success).
+// ---------------------------------------------------------------------------
+
+export async function insertOrder(
+  payload: OrderInsert
+): Promise<{ error: { message: string } | null }> {
+  const supabase = getSupabaseAdmin();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any).from("orders").insert(payload);
+  return { error: error ?? null };
+}
+
+// Expose the raw client for SELECT queries (reads are structurally safe without
+// the Insert type constraint). Do not use for inserts — use insertOrder().
+export { getSupabaseAdmin };

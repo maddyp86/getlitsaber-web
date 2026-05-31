@@ -4,17 +4,16 @@
 // The inserted row will remain in the database; delete it manually from Supabase.
 
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin, type OrderInsert } from "@/lib/supabase/client";
+import { insertOrder, getSupabaseAdmin } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const supabase = getSupabaseAdmin();
     const testOrderId = `TEST-${Date.now()}`;
 
-    // Insert a clearly-prefixed dummy row
-    const payload: OrderInsert = {
+    // Insert via the type-checked helper
+    const { error: insertError } = await insertOrder({
       shopify_order_id: testOrderId,
       order_number: "TEST-0000",
       order_value: 0,
@@ -26,15 +25,16 @@ export async function GET() {
       discount_amount: 0,
       email: null,
       raw: null,
-    };
-    const { error: insertError } = await supabase.from("orders").insert(payload as never);
+    });
 
     if (insertError) {
       return NextResponse.json({ ok: false, stage: "insert", error: insertError.message }, { status: 500 });
     }
 
     // Read it back to confirm round-trip
-    const { data, error: selectError } = await supabase
+    const supabase = getSupabaseAdmin();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error: selectError } = await (supabase as any)
       .from("orders")
       .select("*")
       .eq("shopify_order_id", testOrderId)
