@@ -44,8 +44,8 @@ function getSupabaseAdmin() {
 }
 
 // ---------------------------------------------------------------------------
-// insertOrder — the single type-checked insert path for the orders table.
-// The payload is validated against OrderInsert at compile time.
+// insertOrder — type-checked upsert on shopify_order_id.
+// Duplicate Shopify webhook deliveries are silently ignored (ignoreDuplicates).
 // Returns the Supabase error (or null on success).
 // ---------------------------------------------------------------------------
 
@@ -54,7 +54,9 @@ export async function insertOrder(
 ): Promise<{ error: { message: string } | null }> {
   const supabase = getSupabaseAdmin();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any).from("orders").insert(payload);
+  const { error } = await (supabase as any)
+    .from("orders")
+    .upsert(payload, { onConflict: "shopify_order_id", ignoreDuplicates: true });
   return { error: error ?? null };
 }
 
