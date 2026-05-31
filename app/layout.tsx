@@ -10,6 +10,8 @@ import FutureDropsModal from "@/components/modals/FutureDropsModal";
 import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
 import CartHydrator from "@/components/layout/CartHydrator";
 import PostHogProvider from "./providers";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: {
@@ -69,6 +71,8 @@ export default function RootLayout({
           {/* Hydrates cart from Shopify on mount using persisted cartId */}
           <CartHydrator />
         </PostHogProvider>
+           <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
