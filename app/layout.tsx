@@ -10,7 +10,7 @@ import FutureDropsModal from "@/components/modals/FutureDropsModal";
 import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
 import CartHydrator from "@/components/layout/CartHydrator";
 import PostHogProvider from "./providers";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
