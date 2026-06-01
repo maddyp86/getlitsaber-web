@@ -1,6 +1,6 @@
 "use client";
 
-import Modal from "@/components/layout/Modal";
+import ModalBase from "@/components/modals/ModalBase";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { useActiveModal, useModalActions } from "@/lib/ui/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
@@ -10,7 +10,7 @@ export default function FutureDropsModal() {
   const { closeModal } = useModalActions();
 
   return (
-    <Modal
+    <ModalBase
       isOpen={activeModal === "general"}
       onClose={closeModal}
       ariaLabel="Future drops signup"
@@ -23,6 +23,6 @@ export default function FutureDropsModal() {
         copy="New editions, colorways, and Litsaber Connect. Get on the list and see them before they go public."
         buttonLabel="GET NOTIFIED"
       />
-    </Modal>
+    </ModalBase>
   );
 }

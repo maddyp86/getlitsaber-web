@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { stellar, monoton, orbitron, inter, spaceMono } from "@/lib/fonts";
-import AgeGateModal from "@/components/layout/AgeGateModal";
+import AgeGateModal from "@/components/modals/AgeGateModal";
 import CartDrawer from "@/components/layout/CartDrawer";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
