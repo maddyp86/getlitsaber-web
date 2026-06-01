@@ -11,9 +11,9 @@ export default function ToastContainer() {
   const slideVariants = prefersReducedMotion
     ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
     : {
-        initial: { opacity: 0, y: 20 },
+        initial: { opacity: 0, y: -12 },
         animate: { opacity: 1, y: 0 },
-        exit:    { opacity: 0, y: 10 },
+        exit:    { opacity: 0, y: -8 },
       };
 
   return (
@@ -28,7 +28,7 @@ export default function ToastContainer() {
      * role/aria-live on the motion elements themselves.
      */
     <div
-      className="fixed inset-x-0 bottom-0 z-toast pointer-events-none sm:inset-x-auto sm:right-6 sm:left-auto sm:bottom-6 sm:w-full sm:max-w-sm"
+      className="fixed top-6 inset-x-0 z-toast pointer-events-none flex flex-col items-center gap-2"
       aria-label="Notifications"
     >
       {/* Success live region — polite */}
@@ -51,7 +51,7 @@ export default function ToastContainer() {
 
       {/* Visual toasts */}
       <ul
-        className="flex flex-col gap-2 px-4 pb-4 sm:px-0 sm:pb-0"
+        className="flex flex-col items-center gap-2 px-4 w-full"
         aria-hidden="true"
       >
         <AnimatePresence initial={false}>
@@ -63,6 +63,7 @@ export default function ToastContainer() {
               animate={slideVariants.animate}
               exit={slideVariants.exit}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-sm"
             >
               <ToastCard toast={toast} onDismiss={dismissToast} />
             </motion.li>
