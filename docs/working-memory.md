@@ -1016,6 +1016,64 @@ still worth doing before Phase 6, but the acute pain is gone.
 | 51 | "The form 'success message not showing' wasn't a missing message — the popup closes on submit, so an inline success block had nowhere to live. The right pattern when the container closes is a toast: independent of the popup, persists after it's gone. Built it reusable (success + error) because the infra cost is identical and form feedback is needed in five other places. The bug diagnosed the architecture." | `integration-depth`, `ui-judgment` |
 | 52 | "Three build-cycles of paste corruption, then Bolt sync just… worked. The lesson isn't 'the tool fixed itself' — it's that I'd built enough discipline around the bad path (wholesale-replace, grep for the corruption signature, verify on the live URL not the sandbox's word) that when the path got reliable, I could tell immediately. Trust returned because it was earned against a checklist, not assumed." | `tool-choice`, `ai-augmented-build` |
 
+## Promo instrumentation + the mount-race bug (2026-05-31) ✅
+
+Wired the promo sub-funnel into PostHog and, in doing so, surfaced a systemic
+timing bug affecting any near-mount event. Four promo events, all verified live:
+`promo_popup_shown` (trigger: time_delay|exit_intent — the denominator),
+`promo_email_submitted` (source: floating-promo-$10, the real WAITLIST_SOURCES
+value), `promo_popup_dismissed` (method: close_button|backdrop|escape — added when
+Matt asked "isn't dismissed more interesting than shown?" → both: shown is the
+denominator, dismissed is the loss state with active-vs-passive texture),
+`promo_code_captured` (code — REPLACES the obsolete promo_code_applied, whose
+in-cart cartDiscountCodesUpdate trigger we deleted this session).
+
+**Structural guards over runtime guards (the good engineering call):** the
+submit-vs-dismiss double-count trap (a submit closes the popup too, so naive
+dismissal logic would fire on every conversion and break shown = submitted +
+dismissed) was solved by code-path separation — markSubscribed calls
+setVisible(false) directly, never routes through dismiss(method) — so dismissal is
+STRUCTURALLY impossible on the success path, not flag-guarded. Same for fire-once:
+one setVisible(true) site, track() beside it.
+
+**THE BUG (the real find):** promo_code_captured never reached PostHog despite the
+sessionStorage write succeeding. Chased it through several wrong theories
+(dedup-suppressing, stale state, ordering) before the decisive evidence: after
+clearing sessionStorage and reloading, the storage HAD the code (so the if-block
+ran, so track() was called) but no event landed. Diagnosis: PostHog's init() is
+async; a track() in a mount useEffect fires before PostHog is capture-ready and
+no-ops SILENTLY (no error, surrounding sync work succeeds — looks fine). promo_
+popup_shown worked only because it fires ~12s later, after init. Fix: defer the
+track() until ready via posthog.onFeatureFlags(); keep the sessionStorage write at
+mount (auto-apply needs it early).
+
+**The audit was the payoff:** asked Bolt whether any OTHER event fires near mount.
+It found product_viewed — funnel STEP 3, every PDP visit — had the identical bug.
+The core funnel had been under-counting product views into PostHog's init gap. That
+reframed the whole session: chasing one promo event surfaced a systemic hole.
+Fixed product_viewed with the same readiness gate, abstracted into a shared
+trackWhenReady() helper (immediate if posthog.__loaded, else onFeatureFlags) in
+lib/analytics/events.ts — now the rule ("near-mount events use trackWhenReady") is
+enforced by a function name, not tribal knowledge. ADR-005 updated with the rule +
+the four promo events + the promo_code_applied supersede.
+
+**Fidelity gap logged (not fixed):** product_viewed is specced as viewport-entry
+but both call sites fire at MOUNT (no IntersectionObserver). On the homepage with
+the buy section below the fold, it measures "page loaded" more than "saw product."
+Revisit if product-view fidelity matters.
+
+**Debugging lesson:** spent several cycles reasoning about track() from the outside
+(did the event arrive?) and inferring causes, before asking to READ the one
+function every event flows through. The shared code path is the thing to read
+FIRST when many symptoms point at one helper, not after exhausting external probes.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 53 | "The dismissal-vs-submit double-count was solved structurally, not with a flag: the success path calls setVisible(false) directly and never touches the dismiss function, so a conversion CAN'T register as a dismissal. A flag guarding the same thing could be defeated by a future edit; mutually-exclusive code paths can't. When the funnel math has to hold as an identity (shown = submitted + dismissed), enforce it in the shape of the code, not a runtime check." | `integration-depth`, `analytics-rigor` |
+| 54 | "One promo event silently failing to reach PostHog turned out to be a systemic bug: any track() firing at component mount races PostHog's async init and no-ops with no error. The tell was sessionStorage having the value (proving the code ran) while the event never arrived. The real win wasn't the fix — it was asking 'what else fires near mount?' and finding product_viewed, funnel step 3, carrying the same hole. A canary bug is worth more than a clean one; it points at the class." | `analytics-rigor`, `pm-discipline` |
+| 55 | "Abstracted the readiness-gate into trackWhenReady() once a second event needed it. The value isn't DRY — it's that the rule ('near-mount events defer until PostHog is ready') now lives in a function name a future build will reach for, instead of a lesson that has to be re-learned by re-encountering the silent drop. Encode the rule where it can't be skipped." | `ai-augmented-build`, `analytics-rigor` |
+| 56 | "Burned several debugging cycles probing a failing event from the outside — did it arrive, is it deduped, is the state stale — before reading the track() helper every event passes through. When many symptoms converge on one shared code path, read the path first. External probes feel like progress because each rules something out, but reading the shared function would have ruled out everything at once." | `pm-discipline`, `tool-choice` |
+
 ---
 
 ### Phase 6 — Production Agent (pending)
