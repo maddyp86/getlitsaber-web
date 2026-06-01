@@ -45,7 +45,7 @@ export default function WhatCustomersSay() {
           data-ref="1c1005f73abba5a4f494d6d3366fb8b25238dc2b"
         >
           <a
-            className="feed-powered-by-es feed-powered-by-es-feed-img es-widget-branding"
+            className="feed-powered-by-es feed-powered-by-es-feed-img es-widget-branding bg-none"
             href="https://embedsocial.com/"
             target="_blank"
             rel="noopener noreferrer"
