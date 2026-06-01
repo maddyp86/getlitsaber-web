@@ -109,17 +109,40 @@ METRICS.md.
 
 ### Secondary funnels
 
-**Promo sub-funnel (ADR-004) — measured as an isolated lever:**
+**Promo sub-funnel (ADR-004) — measured as an isolated lever.
+REVISED 2026-05-31: redemption architecture changed (in-cart field removed,
+replaced by ?discount= checkout-URL auto-apply — see ADR-006), so the
+redemption-side event was redefined and a dismissal event added.**
+
 - `promo_popup_shown` — property: `trigger` (`time_delay` | `exit_intent`).
-- `promo_email_submitted` — property: `source` (`floating-promo-$10`).
-- `promo_code_applied` — fires from `cartDiscountCodesUpdate` success. Property:
-  `code`. (When the promo box ships — bundled pre-launch per ADR-004.)
-- joins the primary funnel at `purchase`, where `has_promo_code` /
-  `discount_code` / `discount_amount` are read off the Shopify order. This is what
-  makes promo-attributed completion a real comparable number (orders WITH code vs
-  WITHOUT) and lets us track total margin given up to the promo. `discount_amount`
-  is captured even though the launch offer is a flat $10 — future-proofs for
-  variable/stacked promos, near-zero cost now, annoying to retrofit later.
+  The funnel DENOMINATOR. Not "always shown" — gated by usePromoPopup's triggers
+  AND the 72h-dismiss / 365d-subscribe suppression cookies, so it's a real
+  variable. Every per-shown rate depends on this.
+- `promo_email_submitted` — property: `source`. Fires on successful popup submit
+  (co-located with the toast + markSubscribed in onSuccess). **Source value
+  corrected:** uses `WAITLIST_SOURCES.promoPopup` (the actual constant), NOT the
+  earlier draft's guessed `floating-promo-$10` literal.
+- `promo_popup_dismissed` — property: `method` (`close_button` | `backdrop` |
+  `escape`). **(added 2026-05-31)** The loss state. Fires only on user-initiated
+  close WITHOUT submit — explicitly NOT on the success-close path (a submit closes
+  the popup too; firing dismissal there would double-count every conversion and
+  break shown = submitted + dismissed). `method` separates active rejection
+  (✕/backdrop/escape) from passive abandonment (derivable later as shown − submitted
+  − dismissed; the non-event is not instrumented — not worth the complexity).
+- `promo_code_captured` — property: `code`. **(added 2026-05-31, REPLACES
+  `promo_code_applied`)** Fires when useDiscountCapture reads a `?discount=CODE`
+  param on landing. Fires once per NEW capture, not on re-reading an existing
+  stored value. Measures arrivals via the email link.
+- **`promo_code_applied` — SUPERSEDED 2026-05-31.** Originally specced to fire from
+  `cartDiscountCodesUpdate` success (the in-cart apply field). That field and that
+  mutation path were removed this session (redemption moved to checkout-URL
+  auto-apply per ADR-006), so the trigger no longer exists. Redemption is NOT lost
+  from measurement — it's captured server-side at `purchase` (has_promo_code /
+  discount_code / discount_amount, read off the Shopify order, step 9). The
+  redemption MOMENT is no longer observable client-side (it happens inside Shopify
+  hosted checkout); redemption FACT is measured at purchase.
+- joins the primary funnel at `purchase` [...rest of the existing paragraph about
+  has_promo_code / discount_amount unchanged...]
 
 **Waitlist sub-funnel (Gold + Future Drops):**
 - `waitlist_modal_opened` — property: `list` (`gold` | `general`).
