@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import posthog from "posthog-js";
 import { track, EVENTS } from "@/lib/analytics/events";
 
 const SESSION_KEY = "litsaber_discount";
@@ -15,8 +16,17 @@ export function useDiscountCapture(): void {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("discount")?.trim();
     if (code && sessionStorage.getItem(SESSION_KEY) !== code) {
+      // Write immediately — auto-apply at checkout depends on this being in
+      // storage as early as possible, independent of PostHog readiness.
       sessionStorage.setItem(SESSION_KEY, code);
-      track(EVENTS.promo_code_captured, { code });
+
+      // Defer the track() call until PostHog has finished initializing.
+      // track() checks posthog.__loaded and silently no-ops at mount because
+      // posthog.init() is async. onFeatureFlags fires exactly once per
+      // registration, after init completes, so the event reaches PostHog.
+      posthog.onFeatureFlags(() => {
+        track(EVENTS.promo_code_captured, { code });
+      });
     }
   }, []);
 }
