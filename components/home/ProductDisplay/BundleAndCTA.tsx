@@ -160,10 +160,12 @@ export default function BundleAndCTA({
                           </span>
                         )}
                       </div>
-                      {option.descriptor && (
+                      <!-- 
+                        {option.descriptor && (
                         <p className="font-body text-[12px] text-text-secondary leading-snug">
                           {option.descriptor}
-                        </p>
+                        </p> 
+                    -->
                       )}
                     </div>
 
