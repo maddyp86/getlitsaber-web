@@ -43,7 +43,7 @@ export default function WhatCustomersSay() {
         {/* Taggbox TikTok feed widget */}
         <div
           className="taggbox"
-          style={{ width: "100%", height: "100%", overflow: "auto" }}
+          style={{ width: "90%", height: "100%", overflow: "auto" }}
           data-widget-id="326981"
           data-website="1"
         />
