@@ -4,10 +4,11 @@ import { useEffect } from "react";
 
 export default function WhatCustomersSay() {
   useEffect(() => {
-    if (document.getElementById("EmbedSocialHashtagScript")) return;
+    if (document.getElementById("TaggboxWidgetScript")) return;
     const js = document.createElement("script");
-    js.id = "EmbedSocialHashtagScript";
-    js.src = "https://embedsocial.com/cdn/ht.js";
+    js.id = "TaggboxWidgetScript";
+    js.src = "https://widget.taggbox.com/embed.min.js";
+    js.type = "text/javascript";
     document.getElementsByTagName("head")[0].appendChild(js);
   }, []);
 
@@ -39,21 +40,13 @@ export default function WhatCustomersSay() {
           </p>
         </div>
 
-        {/* EmbedSocial TikTok feed widget */}
+        {/* Taggbox TikTok feed widget */}
         <div
-          className="embedsocial-hashtag"
-          data-ref="1c1005f73abba5a4f494d6d3366fb8b25238dc2b"
-        >
-          <a
-            className="feed-powered-by-es feed-powered-by-es-feed-img es-widget-branding bg-none"
-            href="https://embedsocial.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Widget by EmbedSocial"
-          >
-  
-          </a>
-        </div>
+          className="taggbox"
+          style={{ width: "100%", height: "100%", overflow: "auto" }}
+          data-widget-id="326981"
+          data-website="1"
+        />
       </div>
     </section>
   );
