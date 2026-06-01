@@ -3,10 +3,12 @@
 import { useEffect } from "react";
 import { usePromoPopup } from "@/lib/hooks/usePromoPopup";
 import WaitlistForm from "@/components/forms/WaitlistForm";
+import { useToastActions } from "@/lib/toast/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 
 export default function FloatingPromoPopup() {
   const { shouldShow, dismiss, markSubscribed } = usePromoPopup();
+  const { addToast } = useToastActions();
 
   // Lock scroll on mobile only while visible
   useEffect(() => {
@@ -64,11 +66,14 @@ export default function FloatingPromoPopup() {
             headline="$10 OFF YOUR FIRST LITSABER"
             copy="Drop your email. We'll send a code + early access to the next drop."
             buttonLabel="SEND MY CODE"
-            onSuccess={markSubscribed}
             cardless
-            successMessage={{
-              heading: "Check your inbox \u2014 your code\u2019s on the way.",
-              body: "Already signed up? It\u2019s already in there.",
+            onSuccess={() => {
+              markSubscribed();
+              dismiss();
+              addToast({ variant: "success", message: "Check your inbox \u2014 your code\u2019s on the way." });
+            }}
+            onError={(msg) => {
+              addToast({ variant: "error", message: msg });
             }}
           />
 

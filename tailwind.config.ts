@@ -146,6 +146,7 @@ const config: Config = {
         drawer: String(tokens["z-index"].drawer.value),
         modal: String(tokens["z-index"].modal.value),
         "age-gate": String(tokens["z-index"]["age-gate"].value),
+        toast: String(tokens["z-index"].toast.value),
       },
       screens: {
         sm: tokens.breakpoint.sm.value,

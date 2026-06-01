@@ -9,6 +9,7 @@ import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
 import FutureDropsModal from "@/components/modals/FutureDropsModal";
 import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
 import CartHydrator from "@/components/layout/CartHydrator";
+import ToastContainer from "@/components/layout/ToastContainer";
 import PostHogProvider from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -70,6 +71,9 @@ export default function RootLayout({
 
           {/* Hydrates cart from Shopify on mount using persisted cartId */}
           <CartHydrator />
+
+          {/* Toast notifications sit at z-toast (350) — topmost layer */}
+          <ToastContainer />
         </PostHogProvider>
            <Analytics />
         <SpeedInsights />

@@ -4,24 +4,24 @@ import { useState } from "react";
 import type { WaitlistSource } from "@/lib/forms/sources";
 
 type WaitlistList = "gold" | "general";
-type FormState = "idle" | "submitting" | "success" | "error";
+type FormState = "idle" | "submitting" | "error";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
 
 // Common fat-finger domains → suggested correction
 const TYPO_DOMAINS: Record<string, string> = {
-  "gmai.com":   "gmail.com",
-  "gmial.com":  "gmail.com",
-  "gamil.com":  "gmail.com",
-  "gmail.co":   "gmail.com",
-  "gnail.com":  "gmail.com",
-  "yaho.com":   "yahoo.com",
-  "yahooo.com": "yahoo.com",
-  "hotmal.com": "hotmail.com",
-  "hotmial.com":"hotmail.com",
-  "outlok.com": "outlook.com",
-  "outook.com": "outlook.com",
-  "iclod.com":  "icloud.com",
+  "gmai.com":    "gmail.com",
+  "gmial.com":   "gmail.com",
+  "gamil.com":   "gmail.com",
+  "gmail.co":    "gmail.com",
+  "gnail.com":   "gmail.com",
+  "yaho.com":    "yahoo.com",
+  "yahooo.com":  "yahoo.com",
+  "hotmal.com":  "hotmail.com",
+  "hotmial.com": "hotmail.com",
+  "outlok.com":  "outlook.com",
+  "outook.com":  "outlook.com",
+  "iclod.com":   "icloud.com",
 };
 
 function getTypoSuggestion(email: string): string | null {
@@ -45,12 +45,12 @@ interface WaitlistFormProps {
   source?: WaitlistSource;
   /** Optional slash-prefixed eyebrow label above the headline (e.g. "/ GOLD EDITION") */
   eyebrow?: string;
-  /** Called after a successful submission */
+  /** Called after a successful submission — parent handles close + toast */
   onSuccess?: () => void;
+  /** Called with the error message on API failure — parent handles toast */
+  onError?: (message: string) => void;
   /** Strip the card border/background/padding — use when the parent is already a card */
   cardless?: boolean;
-  /** Override the default success state message lines */
-  successMessage?: { heading: string; body: string };
 }
 
 export default function WaitlistForm({
@@ -61,8 +61,8 @@ export default function WaitlistForm({
   source,
   eyebrow,
   onSuccess,
+  onError,
   cardless = false,
-  successMessage,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -102,15 +102,19 @@ export default function WaitlistForm({
       const data = (await res.json()) as { ok: boolean; error?: string };
 
       if (data.ok) {
-        setState("success");
+        setState("idle");
         onSuccess?.();
       } else {
-        setErrorMsg(data.error ?? "Something went wrong. Please try again.");
+        const msg = data.error ?? "Something went wrong. Please try again.";
+        setErrorMsg(msg);
         setState("error");
+        onError?.(msg);
       }
     } catch {
-      setErrorMsg("Network error. Please check your connection and try again.");
+      const msg = "Network error. Please check your connection and try again.";
+      setErrorMsg(msg);
       setState("error");
+      onError?.(msg);
     }
   }
 
@@ -141,94 +145,79 @@ export default function WaitlistForm({
         </p>
       </div>
 
-      {/* Success state — replaces input+button in place */}
-      {state === "success" ? (
-        <div className="flex flex-col gap-2 py-2">
-          <p
-            className="font-label font-bold text-accent-cyan uppercase tracking-widest"
-            style={{ fontSize: "14px" }}
-          >
-            {successMessage?.heading ?? "You\u2019re on the list."}
-          </p>
-          <p className="font-body text-text-muted" style={{ fontSize: "13px" }}>
-            {successMessage?.body ?? "We\u2019ll reach out when it\u2019s time."}
-          </p>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3">
-          {/* Honeypot: visible to bots, invisible to humans */}
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3">
+        {/* Honeypot: visible to bots, invisible to humans */}
+        <input
+          type="text"
+          name="company"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px" }}
+        />
+        <div className="flex flex-col gap-1">
           <input
-            type="text"
-            name="company"
-            value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-            style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px" }}
-          />
-          <div className="flex flex-col gap-1">
-            <input
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="Your email address"
-              disabled={state === "submitting"}
-              aria-label="Email address"
-              aria-describedby={state === "error" ? "waitlist-error" : undefined}
-              className="w-full rounded-md px-4 py-3 font-body text-text-primary placeholder:text-text-muted outline-none transition-colors disabled:opacity-50"
-              style={{
-                fontSize: "14px",
-                background: "rgba(255, 255, 255, 0.06)",
-                border: `1px solid ${state === "error" ? "#F56565" : "#373767"}`,
-              }}
-              onFocus={(e) => {
-                if (state !== "error") {
-                  e.currentTarget.style.borderColor = "#00E5FF";
-                }
-              }}
-              onBlur={(e) => {
-                if (state !== "error") {
-                  e.currentTarget.style.borderColor = "#373767";
-                }
-              }}
-            />
-            {state === "error" && (
-              <p
-                id="waitlist-error"
-                role="alert"
-                className="font-label"
-                style={{ fontSize: "12px", color: "#F56565" }}
-              >
-                {errorMsg}
-              </p>
-            )}
-            {typoHint && state !== "error" && (
-              <p
-                role="alert"
-                className="font-label"
-                style={{ fontSize: "12px", color: "#F59E0B" }}
-              >
-                {typoHint}
-              </p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={!canSubmit || state === "submitting"}
-            className="w-full rounded-md py-4 px-4 font-label font-bold uppercase tracking-widest transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40 disabled:cursor-not-allowed"
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder="Your email address"
+            disabled={state === "submitting"}
+            aria-label="Email address"
+            aria-describedby={state === "error" ? "waitlist-error" : undefined}
+            className="w-full rounded-md px-4 py-3 font-body text-text-primary placeholder:text-text-muted outline-none transition-colors disabled:opacity-50"
             style={{
-              fontSize: "16px",
-              background: "#270513",
-              border: "1px solid #EC5793",
-              color: state === "submitting" ? "rgba(236, 87, 147, 0.5)" : "#EC5793",
+              fontSize: "14px",
+              background: "rgba(255, 255, 255, 0.06)",
+              border: `1px solid ${state === "error" ? "#F56565" : "#373767"}`,
             }}
-          >
-            {state === "submitting" ? "SUBMITTING..." : buttonLabel}
-          </button>
-        </form>
-      )}
+            onFocus={(e) => {
+              if (state !== "error") {
+                e.currentTarget.style.borderColor = "#00E5FF";
+              }
+            }}
+            onBlur={(e) => {
+              if (state !== "error") {
+                e.currentTarget.style.borderColor = "#373767";
+              }
+            }}
+          />
+          {state === "error" && (
+            <p
+              id="waitlist-error"
+              role="alert"
+              className="font-label"
+              style={{ fontSize: "12px", color: "#F56565" }}
+            >
+              {errorMsg}
+            </p>
+          )}
+          {typoHint && state !== "error" && (
+            <p
+              role="alert"
+              className="font-label"
+              style={{ fontSize: "12px", color: "#F59E0B" }}
+            >
+              {typoHint}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={!canSubmit || state === "submitting"}
+          className="w-full rounded-md py-4 px-4 font-label font-bold uppercase tracking-widest transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40 disabled:cursor-not-allowed"
+          style={{
+            fontSize: "16px",
+            background: "#270513",
+            border: "1px solid #EC5793",
+            color: state === "submitting" ? "rgba(236, 87, 147, 0.5)" : "#EC5793",
+          }}
+        >
+          {state === "submitting" ? "SUBMITTING..." : buttonLabel}
+        </button>
+      </form>
     </div>
   );
 }
