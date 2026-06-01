@@ -914,6 +914,108 @@ is now standing fact, not a per-chunk surprise.
 | 47 | "The purchase event was landing disconnected from the session that produced it — a buy with no browse attached. The fix was to carry the analytics id through checkout as a cart attribute and read it back server-side, so the completed order rejoins the visitor's timeline. The thing it unlocks is the only question that matters for conversion: of the people who started checkout, which ones finished — answerable per person, not just in aggregate." | `integration-depth`, `agent-loop` |
 | 48 | "Spent an hour chasing a stitch that 'failed' — wrong id on every test order. The code was correct the entire time. My browser kept reusing a cart created before the feature existed, so the code path that writes the id never ran. I found it by reading the actual network request instead of re-reading the code: the call was fetching an old cart, not creating a new one. The lesson is that when a feature fails only in your hands, suspect your test conditions before your code — a stale local cart is not a bug in the stitch, it's a bug in how you tested it. Incognito removed the variable and it worked first try." | `integration-depth`, `pm-discipline` |
 
+## Phase 5 close + Promo/CRM track (2026-05-31) ✅
+
+### Vercel Analytics + Speed Insights — Phase 5 closed
+`@vercel/analytics` + `@vercel/speed-insights`, components rendered before `</body>`
+in `app/layout.tsx` (stays a Server Component). KEY GOTCHA: there is no separate
+dashboard "enable" toggle on the current Vercel flow — adding the `<Analytics />`
+component IS the enable step; data flows once the deployed component sends its first
+beacon. "No data" was not a bug: (1) the HubSpot email link points at PRODUCTION
+(getlitsaber.com = old WordPress), not the Vercel preview, and (2) content blockers
+block `/_vercel/insights/*` (same family as PostHog). Test in fresh incognito on the
+PREVIEW url with real navigation. Complementary to PostHog, not redundant: Vercel =
+performance/vitals, PostHog = product funnel.
+
+**Phase 5 (observability) is COMPLETE:** full funnel (age gate → engagement → product
+→ cart → checkout → server-side purchase, identity-stitched) + Supabase order mirror
++ Vercel performance. The whole metrics spine the framework was built on.
+
+### Deferred-events status corrected
+The green analytics build PROVED `FloatingPromoPopup`, `GoldWaitlistModal`,
+`FutureDropsModal` exist as real files (a missing import would have failed the build) —
+contradicting the earlier "unbuilt" assumption. They were functional, not stubs.
+
+### ADR-006 — Customer Data Architecture (written, in docs/decisions/)
+Documents VERIFIED reality, not plan. Three destinations, each a distinct lens:
+HubSpot (CRM/customer-service, via native Shopify–HubSpot integration), Supabase
+(agent data, via webhook), PostHog (funnel analytics, via webhook). Contact created
+at popup signup (NOT at order — rejected delaying because it discards non-converting
+leads and breaks code delivery). Email is the unifying key (HubSpot dedupes). No custom
+redemption write-back needed — native order sync surfaces the discount code in HubSpot
+for free (verified: GETLIT-WELCOME10 visible on the synced order object). Starter tier:
+both customer + order sync enabled; contact unifies promo signup + order. Duplicate
+contacts (different email at popup vs checkout) = accepted reconciliation tail, not
+preventable, not worth blocking lead capture to avoid.
+
+### Promo code is GETLIT-WELCOME10 (NOT WELCOME10)
+Must match across 5 places: Shopify, HubSpot email callout box, email CTA button
+`?discount=`, website auto-apply, PostHog. Has a hyphen — URL-safe, don't strip it.
+The code STACKS with the automatic tier discounts (Phase 4c) — combinations enabled on
+BOTH the code and the automatic discount (both must permit it). Verified: $29.99 off on
+a multi-unit cart. Flagged as a deliberate margin choice (holds at ~67% even deepest
+tier); confirm it's intended, not just path-of-least-resistance.
+
+### Promo flow VERIFIED end-to-end
+Form submit → HubSpot workflow → automated code email → contact created → code applied
+at checkout → order placed same email → order synced to HubSpot contact → discount code
+visible on the synced order. The unified customer object is real on Starter tier.
+
+### In-cart promo fields REMOVED (commented, not deleted)
+Decision: skip in-cart promo entry entirely; redemption rides on Shopify hosted
+checkout's own discount field + `?discount=` auto-apply. In-cart fields in CartDrawer +
+CartPageBody (mobile + desktop) commented out with `PROMO-FIELD-DISABLED:` markers, easy
+to restore. Reasoning: Shopify's hosted checkout already has a discount field 1.5s later;
+an in-cart field would duplicate it, own three error states, and fight Storefront-API
+vagueness about WHY a code fails — building a worse version of a free field. Only loss:
+"discount visible in cart total before redirect," which is unproven and A/B-worthy, not
+worth the code.
+
+### Robust ?discount= auto-apply (shipped, verified)
+`lib/hooks/useDiscount.ts`: `useDiscountCapture()` reads `?discount=CODE` on any landing
+and writes sessionStorage `litsaber_discount` (NEVER clears on a param-less page — the
+don't-clear guard is the difference between "survives browsing" and "falls off on
+navigation"). Mounted in CartHydrator (already client, already every-page). At
+`cartCreate` the code rides as a SECOND cart attribute `discount_code` alongside
+`posthog_distinct_id` (reuses the identity-stitch pattern → inherits its SAME limitation:
+returning visitor with persisted cartId adds via cartLinesAdd, skips cartCreate, attribute
+not written; fresh-from-email first-timers work, which is the dominant welcome-code case).
+`appendDiscountToCheckoutUrl()` appends to the checkoutUrl at the two navigation sites
+(`?` vs `&` handled). Verified: param persisted across navigation, both attributes in the
+cartCreate payload, `&discount=GETLIT-WELCOME10` present on the Shopify checkout URL.
+NOTE: a test showed the code not auto-applying — diagnosed as one-per-customer (the test
+customer had already redeemed it), NOT a code bug. Email link also carries HubSpot
+tracking params (_hsenc/_hsmi/utm_*) after `?discount=` — capture reads only `discount`,
+unaffected.
+
+### Reusable toast system (shipped, verified) — replaced inline form success
+`lib/toast/store.ts` (Zustand, ephemeral, 5s auto-dismiss, success|error variants),
+`components/layout/ToastContainer.tsx` mounted in layout at NEW z-layer `z-toast` (350,
+above age-gate 300; added to tokens.json + tailwind.config). Pivot: the promo popup
+CLOSES on submit, so the inline success block had nowhere to live (the "form just closed,
+no message" bug). All three forms now close-and-toast with per-form messages (promo:
+"check your inbox, your code's on the way"; Gold: "you're on the Gold list…"; Future
+Drops: "you're in…"). WaitlistForm refactored to a pure input/submit component — inline
+`success` state + `successMessage` prop REMOVED (dead code from the superseded approach),
+`onError` callback added. Inline FIELD error (red border/message) KEPT for validation;
+toast is for API-level failure (form stays open to retry). a11y: aria-live on a stable
+always-mounted wrapper, not per-toast. Verified the full matrix: 3 forms × success (each
+fires its own message), error path (toast + form stays open), z-layering above modals.
+
+### MILESTONE: Bolt sync started working reliably
+After a whole session of two unreliable write paths (Bolt sandbox couldn't push;
+GitHub web-editor paste corrupted files across 3+ build cycles), Bolt began syncing to
+GitHub correctly during the toast chunk. "Build clean" now plausibly means code actually
+reached the repo. Reduces (doesn't eliminate) the case for the local-git workflow —
+still worth doing before Phase 6, but the acute pain is gone.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 49 | "The in-cart promo field is the build I talked myself out of. Shopify's hosted checkout already has a discount field one screen later — an in-cart version would duplicate it, own three error states, and fight an API that's vague about why a code fails. I'd have built a worse copy of something free. The redemption rides on the checkout URL instead. The discipline is recognizing that 'the customer asked to start here' isn't the same as 'this is the thing worth building.'" | `pm-discipline`, `scope-control` |
+| 50 | "Wanted to block already-redeemed customers from re-submitting the email form. Every honest path to 'does this email already exist' led to a lookup endpoint — the same complexity I'd already deferred once. The actual fix was copy: a success message that's true whether they're new or returning ('check your inbox, and if you already signed up it's already there'). The financial protection already existed twice over (HubSpot first-time enrollment + Shopify one-per-customer). I was about to build a guard for something already guarded." | `pm-discipline`, `scope-control` |
+| 51 | "The form 'success message not showing' wasn't a missing message — the popup closes on submit, so an inline success block had nowhere to live. The right pattern when the container closes is a toast: independent of the popup, persists after it's gone. Built it reusable (success + error) because the infra cost is identical and form feedback is needed in five other places. The bug diagnosed the architecture." | `integration-depth`, `ui-judgment` |
+| 52 | "Three build-cycles of paste corruption, then Bolt sync just… worked. The lesson isn't 'the tool fixed itself' — it's that I'd built enough discipline around the bad path (wholesale-replace, grep for the corruption signature, verify on the live URL not the sandbox's word) that when the path got reliable, I could tell immediately. Trust returned because it was earned against a checklist, not assumed." | `tool-choice`, `ai-augmented-build` |
+
 ---
 
 ### Phase 6 — Production Agent (pending)
