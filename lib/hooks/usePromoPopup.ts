@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useIsAgeGateVisible, useIsCartOpen, useActiveModal } from "@/lib/ui/store";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 const COOKIE_SEEN = "litsaber_promo_seen";
 const COOKIE_SUBSCRIBED = "litsaber_promo_subscribed";
@@ -27,7 +28,7 @@ function isSuppressedRoute(pathname: string): boolean {
 
 export interface UsePromoPopupReturn {
   shouldShow: boolean;
-  dismiss: () => void;
+  dismiss: (method: "close_button" | "backdrop" | "escape") => void;
   markSubscribed: () => void;
 }
 
@@ -50,6 +51,7 @@ export function usePromoPopup(): UsePromoPopupReturn {
 
   // Arm triggers once the age gate has been dismissed.
   const armedRef = useRef(false);
+  const triggerRef = useRef<"time_delay" | "exit_intent">("time_delay");
 
   useEffect(() => {
     // Skip if: already armed, age gate still up, cookies block us.
@@ -69,8 +71,10 @@ export function usePromoPopup(): UsePromoPopupReturn {
       if (activeModalRef.current) return;
 
       setVisible(true);
+      track(EVENTS.promo_popup_shown, { trigger: triggerRef.current });
     }
 
+    triggerRef.current = "time_delay";
     const timerId = setTimeout(tryShow, DELAY_MS);
 
     // Exit-intent: desktop (fine pointer) only, cursor leaving top of viewport.
@@ -80,6 +84,7 @@ export function usePromoPopup(): UsePromoPopupReturn {
         clearTimeout(timerId);
         document.removeEventListener("mouseleave", handleExitIntent);
         exitBound = false;
+        triggerRef.current = "exit_intent";
         tryShow();
       }
     }
@@ -114,9 +119,10 @@ export function usePromoPopup(): UsePromoPopupReturn {
   // Suppress on suppressed routes.
   const shouldShow = visible && !isSuppressedRoute(pathname);
 
-  function dismiss() {
+  function dismiss(method: "close_button" | "backdrop" | "escape") {
     setCookie(COOKIE_SEEN, "true", 3);
     setVisible(false);
+    track(EVENTS.promo_popup_dismissed, { method });
   }
 
   function markSubscribed() {

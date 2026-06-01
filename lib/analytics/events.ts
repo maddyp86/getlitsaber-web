@@ -33,6 +33,18 @@ type FunnelEvents = {
     variant: "silver";
     quantity: number;
   };
+  promo_popup_shown: {
+    trigger: "time_delay" | "exit_intent";
+  };
+  promo_email_submitted: {
+    source: string;
+  };
+  promo_code_captured: {
+    code: string;
+  };
+  promo_popup_dismissed: {
+    method: "close_button" | "backdrop" | "escape";
+  };
 };
 
 export type PayloadFor<E extends keyof FunnelEvents> = FunnelEvents[E];
@@ -46,6 +58,10 @@ export const EVENTS = {
   buy_now_clicked: "buy_now_clicked",
   checkout_started: "checkout_started",
   cart_remove_item: "cart_remove_item",
+  promo_popup_shown: "promo_popup_shown",
+  promo_email_submitted: "promo_email_submitted",
+  promo_code_captured: "promo_code_captured",
+  promo_popup_dismissed: "promo_popup_dismissed",
 } as const satisfies Record<keyof FunnelEvents, string>;
 
 // ---------------------------------------------------------------------------

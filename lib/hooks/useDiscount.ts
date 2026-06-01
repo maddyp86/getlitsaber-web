@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 const SESSION_KEY = "litsaber_discount";
 
@@ -13,8 +14,9 @@ export function useDiscountCapture(): void {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("discount")?.trim();
-    if (code) {
+    if (code && sessionStorage.getItem(SESSION_KEY) !== code) {
       sessionStorage.setItem(SESSION_KEY, code);
+      track(EVENTS.promo_code_captured, { code });
     }
   }, []);
 }

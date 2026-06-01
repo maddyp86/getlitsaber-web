@@ -5,6 +5,7 @@ import { usePromoPopup } from "@/lib/hooks/usePromoPopup";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { useToastActions } from "@/lib/toast/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 export default function FloatingPromoPopup() {
   const { shouldShow, dismiss, markSubscribed } = usePromoPopup();
@@ -27,7 +28,7 @@ export default function FloatingPromoPopup() {
   useEffect(() => {
     if (!shouldShow) return;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") dismiss();
+      if (e.key === "Escape") dismiss("escape");
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
@@ -41,7 +42,7 @@ export default function FloatingPromoPopup() {
         aria-label="Get $10 off your first Litsaber"
         aria-hidden={!shouldShow}
         // Mobile: clicking the backdrop dismisses; desktop: no backdrop to click
-        onClick={dismiss}
+        onClick={() => dismiss("backdrop")}
       >
         {/* Card — stop propagation so clicking inside doesn't dismiss */}
         <div
@@ -50,7 +51,7 @@ export default function FloatingPromoPopup() {
         >
           {/* Close button */}
           <button
-            onClick={dismiss}
+            onClick={() => dismiss("close_button")}
             aria-label="Close promo popup"
             className="absolute top-4 right-4 text-text-muted hover:text-text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan rounded-sm"
             style={{ fontSize: "18px", lineHeight: 1 }}
@@ -69,7 +70,7 @@ export default function FloatingPromoPopup() {
             cardless
             onSuccess={() => {
               markSubscribed();
-              dismiss();
+              track(EVENTS.promo_email_submitted, { source: WAITLIST_SOURCES.promoPopup });
               addToast({ variant: "success", message: "Check your inbox \u2014 your code\u2019s on the way." });
             }}
             onError={(msg) => {
