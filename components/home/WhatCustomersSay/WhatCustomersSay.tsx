@@ -4,11 +4,11 @@ import { useEffect } from "react";
 
 export default function WhatCustomersSay() {
   useEffect(() => {
-    if (document.getElementById("TaggboxWidgetScript")) return;
+    if (document.getElementById("ElfsightPlatformScript")) return;
     const js = document.createElement("script");
-    js.id = "TaggboxWidgetScript";
-    js.src = "https://widget.taggbox.com/embed.min.js";
-    js.type = "text/javascript";
+    js.id = "ElfsightPlatformScript";
+    js.src = "https://elfsightcdn.com/platform.js";
+    js.async = true;
     document.getElementsByTagName("head")[0].appendChild(js);
   }, []);
 
@@ -40,12 +40,10 @@ export default function WhatCustomersSay() {
           </p>
         </div>
 
-        {/* Taggbox TikTok feed widget */}
+        {/* Elfsight TikTok Feed widget */}
         <div
-          className="taggbox"
-          style={{ width: "90%", height: "100%", overflow: "auto" }}
-          data-widget-id="326981"
-          data-website="1"
+          className="elfsight-app-524981f9-9c22-458f-bd55-f4584917156e"
+          data-elfsight-app-lazy
         />
       </div>
     </section>
