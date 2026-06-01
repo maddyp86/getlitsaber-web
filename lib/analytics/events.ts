@@ -78,3 +78,24 @@ export function track<E extends keyof FunnelEvents>(
   if (!posthog.__loaded) return;
   posthog.capture(event, properties as Record<string, unknown>);
 }
+
+// ---------------------------------------------------------------------------
+// trackWhenReady() — for events that fire at or near mount, before PostHog
+// finishes its async init. If PostHog is already loaded, delegates to track()
+// immediately. If not, defers via onFeatureFlags (fires once after init).
+// Use this instead of track() for any mount-time or early-lifecycle event.
+// ---------------------------------------------------------------------------
+
+export function trackWhenReady<E extends keyof FunnelEvents>(
+  event: E,
+  properties: PayloadFor<E>
+): void {
+  if (typeof window === "undefined") return;
+  if (posthog.__loaded) {
+    posthog.capture(event, properties as Record<string, unknown>);
+  } else {
+    posthog.onFeatureFlags(() => {
+      track(event, properties);
+    });
+  }
+}

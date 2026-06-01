@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { track, EVENTS } from "@/lib/analytics/events";
+import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
 import { getTierPrice } from "@/lib/cart/pricing";
@@ -26,7 +26,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
   useEffect(() => {
     if (productViewedFired.current) return;
     productViewedFired.current = true;
-    track(EVENTS.product_viewed, { surface });
+    trackWhenReady(EVENTS.product_viewed, { surface });
     // surface is a static prop set at the call site and never changes per mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
