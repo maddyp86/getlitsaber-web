@@ -11,6 +11,7 @@ import WhatWereShipping from "@/components/home/WhatWereShipping/WhatWereShippin
 import EditionsSection from "@/components/home/Editions/EditionsSection";
 import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
 import HomepageEngagementTracker from "@/components/home/HomepageEngagementTracker";
+import WhatCustomersSay from "@/components/home/WhatCustomersSay/WhatCustomersSay";
 import { getProductByHandle } from "@/lib/shopify/queries";
 
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default async function HomePage() {
           surface="homepage_buy"
         />
       </WhatWereShipping>
+      <WhatCustomersSay />
     </>
   );
 }
