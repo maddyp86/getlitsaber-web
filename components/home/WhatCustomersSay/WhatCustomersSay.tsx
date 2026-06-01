@@ -32,7 +32,7 @@ export default function WhatCustomersSay() {
             className="font-display text-h1 uppercase text-text-primary leading-tight"
             style={{ fontWeight: 700, lineHeight: "1.1" }}
           >
-            WHAT CUSTOMERS SAY
+            AS SEEN ON TIKTOK
           </h2>
           <p className="font-body text-body text-text-secondary">
             The internet is talking.
