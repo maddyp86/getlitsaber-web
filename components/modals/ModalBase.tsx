@@ -2,14 +2,14 @@
 
 import { useEffect, useRef } from "react";
 
-interface ModalProps {
+interface ModalBaseProps {
   isOpen: boolean;
   onClose: () => void;
   ariaLabel: string;
   children: React.ReactNode;
 }
 
-export default function Modal({ isOpen, onClose, ariaLabel, children }: ModalProps) {
+export default function ModalBase({ isOpen, onClose, ariaLabel, children }: ModalBaseProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
