@@ -51,12 +51,7 @@ export default function WhatCustomersSay() {
             rel="noopener noreferrer"
             title="Widget by EmbedSocial"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp"
-              alt="EmbedSocial"
-            />
-            <div className="es-widget-branding-text">Widget by EmbedSocial</div>
+  
           </a>
         </div>
       </div>
