@@ -11,6 +11,7 @@ import {
 } from "@/lib/cart/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
+import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 
 export default function CartPageBody() {
   const items = useCartItems();
@@ -157,7 +158,7 @@ export default function CartPageBody() {
                 className="flex flex-col items-center mx-auto mt-4"
                 style={{ width: "100%", maxWidth: "100%", gap: "15px" }}
               >
-                {/* Promo code strip */}
+                {/* PROMO-FIELD-DISABLED: replaced by ?discount= auto-apply via sessionStorage on checkout redirect
                 <button
                   type="button"
                   className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-center w-full"
@@ -172,6 +173,7 @@ export default function CartPageBody() {
                 >
                   + HAVE A PROMO CODE?
                 </button>
+                */}
 
                 {/* Summary rows */}
                 <div className="flex flex-col gap-0 w-full">
@@ -211,7 +213,7 @@ export default function CartPageBody() {
                         has_promo_code: false,
                         source: "cart_page",
                       });
-                      window.location.href = checkoutUrl;
+                      window.location.href = appendDiscountToCheckoutUrl(checkoutUrl);
                     }
                   }}
                   className={`w-full py-4 font-label font-bold text-white rounded-md transition-opacity uppercase tracking-widest ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:opacity-75 cursor-pointer"}`}
@@ -397,7 +399,7 @@ export default function CartPageBody() {
                     <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted noBorder/>
                   </div>
 
-                  {/* Promo code strip */}
+                  {/* PROMO-FIELD-DISABLED: replaced by ?discount= auto-apply via sessionStorage on checkout redirect
                   <button
                     type="button"
                     className="font-label font-bold text-accent-cyan hover:opacity-80 transition-opacity duration-150 flex items-center justify-start w-full"
@@ -413,6 +415,7 @@ export default function CartPageBody() {
                   >
                     + HAVE A PROMO CODE?
                   </button>
+                  */}
 
                   {/* Total */}
                   <div className="flex justify-between items-center">
@@ -442,7 +445,7 @@ export default function CartPageBody() {
                         has_promo_code: false,
                         source: "cart_page",
                       });
-                      window.location.href = checkoutUrl;
+                      window.location.href = appendDiscountToCheckoutUrl(checkoutUrl);
                     }
                   }}
                     className={`w-full py-4 font-label font-bold text-white rounded-md transition-opacity uppercase tracking-widest ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:opacity-75 cursor-pointer"}`}

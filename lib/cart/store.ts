@@ -211,7 +211,10 @@ export const useCartStore = create<CartStore>()(
 
             try {
               const phId = posthog.get_distinct_id();
-              const attributes = phId ? [{ key: "posthog_distinct_id", value: phId }] : [];
+              const attributes: { key: string; value: string }[] = [];
+              if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
+              const storedDiscount = sessionStorage.getItem("litsaber_discount");
+              if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
                 attributes,

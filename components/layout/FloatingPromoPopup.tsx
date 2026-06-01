@@ -66,6 +66,10 @@ export default function FloatingPromoPopup() {
             buttonLabel="SEND MY CODE"
             onSuccess={markSubscribed}
             cardless
+            successMessage={{
+              heading: "Check your inbox \u2014 your code\u2019s on the way.",
+              body: "Already signed up? It\u2019s already in there.",
+            }}
           />
 
           {/* Trust block */}

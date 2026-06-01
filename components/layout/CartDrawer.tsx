@@ -15,6 +15,7 @@ import {
 import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
+import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 
 export default function CartDrawer() {
   const isOpen = useIsCartOpen();
@@ -268,7 +269,7 @@ export default function CartDrawer() {
               className="flex-shrink-0 px-6 py-5 flex flex-col gap-3"
               style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
             >
-              {/* Promo code — inert */}
+              {/* PROMO-FIELD-DISABLED: replaced by ?discount= auto-apply via sessionStorage on checkout redirect
               <button
                 type="button"
                 className="font-label text-accent-cyan hover:text-accent-cyan transition-colors duration-150 text-left"
@@ -277,6 +278,7 @@ export default function CartDrawer() {
               >
                 + HAVE A PROMO CODE?
               </button>
+              */}
               
               {/* Subtotal */}
               <div className="flex justify-between items-center">
@@ -325,7 +327,7 @@ export default function CartDrawer() {
                     has_promo_code: false,
                     source: "drawer",
                   });
-                  window.location.href = checkoutUrl;
+                  window.location.href = appendDiscountToCheckoutUrl(checkoutUrl);
                 }
               }}
                 className={`w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80 ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 cursor-pointer"}`}

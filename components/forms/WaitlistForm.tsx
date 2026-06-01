@@ -49,6 +49,8 @@ interface WaitlistFormProps {
   onSuccess?: () => void;
   /** Strip the card border/background/padding — use when the parent is already a card */
   cardless?: boolean;
+  /** Override the default success state message lines */
+  successMessage?: { heading: string; body: string };
 }
 
 export default function WaitlistForm({
@@ -60,6 +62,7 @@ export default function WaitlistForm({
   eyebrow,
   onSuccess,
   cardless = false,
+  successMessage,
 }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -145,10 +148,10 @@ export default function WaitlistForm({
             className="font-label font-bold text-accent-cyan uppercase tracking-widest"
             style={{ fontSize: "14px" }}
           >
-            You&apos;re on the list.
+            {successMessage?.heading ?? "You\u2019re on the list."}
           </p>
           <p className="font-body text-text-muted" style={{ fontSize: "13px" }}>
-            We&apos;ll reach out when it&apos;s time.
+            {successMessage?.body ?? "We\u2019ll reach out when it\u2019s time."}
           </p>
         </div>
       ) : (
