@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export interface TikTokVideo {
   url: string;
-  thumbnail: string;
+  thumbnail?: string;
   caption?: string;
   views?: string;
 }
@@ -52,7 +52,6 @@ export default function TikTokRail({ videos }: TikTokRailProps) {
 
   return (
     <>
-      {/* Rail + arrows */}
       <div className="relative max-w-[1280px] mx-auto">
         {/* Prev arrow */}
         <button
@@ -129,7 +128,6 @@ export default function TikTokRail({ videos }: TikTokRailProps) {
         </button>
       </div>
 
-      {/* Lightbox */}
       {activeId && <Lightbox id={activeId} onClose={close} />}
     </>
   );
@@ -164,7 +162,6 @@ function VideoCard({ video, handle, onPlay }: VideoCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Poster */}
       {video.thumbnail ? (
         <Image
           src={video.thumbnail}
