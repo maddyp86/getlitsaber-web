@@ -23,7 +23,10 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   return (
     <div className="flex flex-col gap-3">
       {/* Main image with hover-reveal prev/next arrows */}
-      <div className="group relative w-full aspect-square rounded-card overflow-hidden">
+      <div
+        className="group relative rounded-card overflow-hidden self-stretch"
+        style={{ height: "600px", aspectRatio: "1 / 1" }}
+      >
         <Image
           src={mainImage.src}
           alt={mainImage.alt}
