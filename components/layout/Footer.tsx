@@ -20,12 +20,14 @@ const BRAND_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-background-primary border-t border-surface-tint-white">
-      <div className="mx-auto max-w-container px-container-mobile lg:px-container py-section-y-mobile lg:py-section-y">
+    <footer className="bg-background-primary border-t border-surface-tint-white"
+      style={{ background: "linear-gradient(180deg, #150C2D 0%, #000 100%)" }}
+      >
+     <div className="mx-auto max-w-container px-container-mobile lg:px-container py-10 lg:py-16">
         {/* Top section */}
         <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
           {/* Brand column */}
-          <div className="lg:max-w-xs shrink-0">
+          <div className="lg:max-w-[500px] shrink-0">
             <Link
               href="/"
               className="block mb-md"
@@ -39,7 +41,7 @@ export default function Footer() {
                 className="h-8 w-auto"
               />
             </Link>
-            <p className="font-body text-body text-text-secondary leading-relaxed mb-lg">
+            <p className="font-body text-[18px] text-text-secondary leading-relaxed mb-lg">
               An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.
             </p>
 
@@ -51,7 +53,7 @@ export default function Footer() {
           </div>
 
           {/* Nav columns */}
-          <div className="flex flex-col sm:flex-row gap-10 lg:gap-16">
+          <div className="flex flex-col md:flex-row gap-5 md:gap-8">
             <NavColumn heading="Explore" links={EXPLORE_LINKS} />
             <NavColumn heading="Support" links={SUPPORT_LINKS} />
             <NavColumn heading="Brand" links={BRAND_LINKS} />
@@ -79,7 +81,7 @@ export default function Footer() {
 
           {/* Copyright + policy links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm">
-            <p className="font-label text-eyebrow text-text-muted tracking-wide">
+            <p className="font-label text-[14px] text-text-muted tracking-wide">
               © 2026 INNOVAPE CONCEPTS · LOS ANGELES
             </p>
             <div className="flex items-center gap-xs flex-wrap">
@@ -92,7 +94,7 @@ export default function Footer() {
                 <span key={link.href} className="flex items-center gap-xs">
                   <Link
                     href={link.href}
-                    className="font-label text-eyebrow text-text-muted hover:text-text-secondary transition-colors duration-200 tracking-widest"
+                    className="font-label text-[14px] text-text-muted hover:text-text-accent transition-colors duration-200 tracking-widest"
                   >
                     {link.label}
                   </Link>
