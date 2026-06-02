@@ -3,6 +3,8 @@
 import { useState } from "react";
 import type { Edition } from "./editions.content";
 import EditionActionButton from "./EditionActionButton";
+import { useModalActions } from "@/lib/ui/store";
+import type { ModalName } from "@/lib/ui/store";
 
 type Props = Pick<
   Edition,
@@ -38,22 +40,20 @@ export default function EditionCard({
   action,
 }: Props) {
   const [hovered, setHovered] = useState(false);
+  const { openModal } = useModalActions();
 
-  return (
-    <div
-      className="flex flex-col justify-between p-[30px]"
-      style={{
-        background: "#111026",
-        border: `1px solid ${hovered ? cardBorderColor : cardBorderColorResting}`,
-        boxShadow: hovered
-          ? `inset 0 0 60px rgba(${hoverGlowRgb}, 0.08), inset 0 0 20px rgba(${hoverGlowRgb}, 0.06)`
-          : "none",
-        transition: "border-color 0.25s ease, box-shadow 0.25s ease",
-        cursor: "pointer",
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+  const cardStyle = {
+    background: "#111026",
+    border: `1px solid ${hovered ? cardBorderColor : cardBorderColorResting}`,
+    boxShadow: hovered
+      ? `inset 0 0 60px rgba(${hoverGlowRgb}, 0.08), inset 0 0 20px rgba(${hoverGlowRgb}, 0.06)`
+      : "none",
+    transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+    cursor: "pointer",
+  };
+
+  const cardInner = (
+    <>
       {/* Top: text group */}
       <div className="flex flex-col gap-[15px]">
         {/* Badge */}
@@ -102,8 +102,36 @@ export default function EditionCard({
           label={actionLabel}
           ctaColor={ctaColor}
           arrowSrc={arrowSrc}
+          visualOnly={action.type === "modal"}
         />
       </div>
+    </>
+  );
+
+  if (action.type === "modal") {
+    return (
+      <button
+        type="button"
+        className="flex flex-col justify-between p-[30px] w-full text-left"
+        style={cardStyle}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => openModal(action.name as ModalName)}
+        aria-label={actionLabel}
+      >
+        {cardInner}
+      </button>
+    );
+  }
+
+  return (
+    <div
+      className="flex flex-col justify-between p-[30px]"
+      style={cardStyle}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {cardInner}
     </div>
   );
 }

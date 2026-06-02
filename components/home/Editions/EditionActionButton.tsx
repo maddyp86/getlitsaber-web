@@ -10,6 +10,7 @@ interface EditionActionButtonProps {
   label: string;
   ctaColor: string;
   arrowSrc: string;
+  visualOnly?: boolean;
 }
 
 export default function EditionActionButton({
@@ -17,6 +18,7 @@ export default function EditionActionButton({
   label,
   ctaColor,
   arrowSrc,
+  visualOnly,
 }: EditionActionButtonProps) {
   const { openModal } = useModalActions();
 
@@ -40,6 +42,14 @@ export default function EditionActionButton({
       >
         {inner}
       </Link>
+    );
+  }
+
+  if (visualOnly) {
+    return (
+      <div className="flex items-center justify-between w-full">
+        {inner}
+      </div>
     );
   }
 
