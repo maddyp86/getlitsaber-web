@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getProductByHandle } from "@/lib/shopify/queries";
-import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
+import ProductDisplay from "@/components/product/ProductDisplay/ProductDisplay";
 import PdpViewTracker from "@/components/pdp/PdpViewTracker";
 
 export const metadata: Metadata = {
