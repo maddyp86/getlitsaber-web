@@ -12,7 +12,7 @@ export default function WholesaleCTABanner() {
       {/* Thin top border to separate from section above */}
       <div className="absolute inset-x-0 top-0 h-px bg-white/5" aria-hidden="true" />
 
-      <div className="mx-auto max-w-screen-xl px-6 lg:px-16 py-8 lg:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12">
+      <div className="mx-auto max-w-screen-2xl px-6 lg:px-16 py-8 lg:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12">
         {/* Left: headline + sub-copy */}
         <div className="flex flex-col gap-2 text-center lg:text-left">
           <h2
