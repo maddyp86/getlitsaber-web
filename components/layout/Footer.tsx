@@ -92,7 +92,7 @@ export default function Footer() {
                 <span key={link.href} className="flex items-center gap-xs">
                   <Link
                     href={link.href}
-                    className="font-label text-[14px] text-text-muted hover:text-text-primary transition-colors duration-200 tracking-widest"
+                    className="font-label text-[14px] text-text-muted hover:text-text-accent transition-colors duration-200 tracking-widest"
                   >
                     {link.label}
                   </Link>
