@@ -29,7 +29,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           alt={mainImage.alt}
           fill
           className="object-cover"
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          sizes="(min-width: 600px) 50vw, 100vw"
           priority
         />
 
