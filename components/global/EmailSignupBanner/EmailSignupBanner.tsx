@@ -169,9 +169,9 @@ export default function EmailSignupBanner() {
     backdropFilter: "blur(8px)",
     borderRadius: 4,
   }}
-  onFocus={(e) => {
-    if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)";
-  }}
+onFocus={(e) => {
+  if (state !== "error") e.currentTarget.style.borderColor = "#00E5FF";
+}}
   onBlur={(e) => {
     if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
   }}
