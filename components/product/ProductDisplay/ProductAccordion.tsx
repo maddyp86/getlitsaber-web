@@ -44,7 +44,7 @@ function ProseBody({ blocks }: { blocks: AccordionProseBlock[] }) {
       {blocks.map((block, i) => (
         <div key={i}>
           {block.lead && !block.bullets && (
-            <p className="font-body text-[20px] text-white leading-relaxed">
+            <p className="font-body text-[18px] text-white leading-relaxed">
               <span className="font-bold">{block.lead}</span>
               {block.text && (
                 <>
@@ -59,7 +59,7 @@ function ProseBody({ blocks }: { blocks: AccordionProseBlock[] }) {
           )}
           {!block.lead && block.text && (
             <p
-              className="font-body font-normal text-[20px] text-white leading-relaxed"
+              className="font-body font-normal text-[18px] text-white leading-relaxed"
               dangerouslySetInnerHTML={{ __html: block.text }}
             />
           )}
@@ -115,7 +115,7 @@ export default function ProductAccordion() {
               onClick={() => toggle(item.id)}
               className="w-full flex items-center justify-between py-[30px] border-t border-[#383838] text-left cursor-pointer"
             >
-              <span className="font-body font-semibold text-[25px] text-white leading-tight">
+              <span className="font-body font-semibold text-[22px] text-white leading-tight">
                 {item.title}
               </span>
               <span className="flex-shrink-0 ml-4 text-white" aria-hidden="true">
