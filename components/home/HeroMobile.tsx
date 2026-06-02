@@ -87,6 +87,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               transition-all duration-200 ease-in-out
               hover:-translate-y-px hover:shadow-glow-cta-hover
             "
+                     style={{ maxwidth: "250px" }}
           >
             {CTA_PRIMARY.label}
      
