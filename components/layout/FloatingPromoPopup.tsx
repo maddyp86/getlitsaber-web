@@ -13,7 +13,7 @@ export default function FloatingPromoPopup() {
 
   // Lock scroll on mobile only while visible
   useEffect(() => {
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 500px)").matches;
+    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
     if (shouldShow && isMobile) {
       document.body.classList.add("scroll-locked");
     } else {
