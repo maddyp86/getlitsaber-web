@@ -3,7 +3,7 @@ import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 
 export default function WaitlistCard() {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-4">
       <WaitlistForm
         list="gold"
         source={WAITLIST_SOURCES.pdpGold}
