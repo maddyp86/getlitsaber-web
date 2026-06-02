@@ -130,7 +130,7 @@ export default function EmailSignupBanner() {
           className="font-body text-white max-w-lg leading-relaxed"
           style={{
             fontSize: "clamp(15px, 1.8vw, 18px)",
-            fontcolor:"#CCCCCC",
+            fontColor:"#CCCCCC",
           }}
         >
           Get $10 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
