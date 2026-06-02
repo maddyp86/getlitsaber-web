@@ -216,13 +216,16 @@ function PaymentBadge({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PayPalBadge() {
+function VisaBadge() {
   return (
     <PaymentBadge>
-      <svg width="52" height="14" viewBox="0 0 52 14" aria-label="PayPal" role="img">
-        <text y="11" fontFamily="Arial, sans-serif" fontSize="11" fontWeight="bold" fill="#003087">Pay</text>
-        <text x="20" y="11" fontFamily="Arial, sans-serif" fontSize="11" fontWeight="bold" fill="#009cde">Pal</text>
-      </svg>
+      <Image
+        src="/images/global/Visa.jpg"
+        alt="Visa"
+        width={70}
+        height={48}
+        className="object-contain"
+      />
     </PaymentBadge>
   );
 }
@@ -230,21 +233,13 @@ function PayPalBadge() {
 function MastercardBadge() {
   return (
     <PaymentBadge>
-      <svg width="36" height="22" viewBox="0 0 36 22" aria-label="Mastercard" role="img">
-        <circle cx="13" cy="11" r="9" fill="#EB001B" />
-        <circle cx="23" cy="11" r="9" fill="#F79E1B" />
-        <path d="M18 3.8a9 9 0 0 1 0 14.4A9 9 0 0 1 18 3.8z" fill="#FF5F00" />
-      </svg>
-    </PaymentBadge>
-  );
-}
-
-function VisaBadge() {
-  return (
-    <PaymentBadge>
-      <svg width="40" height="14" viewBox="0 0 40 14" aria-label="Visa" role="img">
-        <text y="12" fontFamily="Arial, sans-serif" fontSize="15" fontWeight="bold" fontStyle="italic" fill="#1A1F71">VISA</text>
-      </svg>
+      <Image
+        src="/images/global/Mastercard.jpg"
+        alt="Mastercard"
+        width={70}
+        height={48}
+        className="object-contain"
+      />
     </PaymentBadge>
   );
 }
@@ -252,10 +247,13 @@ function VisaBadge() {
 function AmexBadge() {
   return (
     <PaymentBadge>
-      <svg width="62" height="22" viewBox="0 0 62 22" aria-label="American Express" role="img">
-        <text y="10" fontFamily="Arial, sans-serif" fontSize="8.5" fontWeight="bold" fill="#007BC1">AMERICAN</text>
-        <text y="20" fontFamily="Arial, sans-serif" fontSize="8.5" fontWeight="bold" fill="#007BC1">EXPRESS</text>
-      </svg>
+      <Image
+        src="/images/global/Amex.jpg"
+        alt="American Express"
+        width={70}
+        height={48}
+        className="object-contain"
+      />
     </PaymentBadge>
   );
 }
@@ -263,10 +261,13 @@ function AmexBadge() {
 function DiscoverBadge() {
   return (
     <PaymentBadge>
-      <svg width="72" height="22" viewBox="0 0 72 22" aria-label="Discover" role="img">
-        <text y="14" fontFamily="Arial, sans-serif" fontSize="10" fontWeight="bold" fill="#231F20">DISCOVER</text>
-        <circle cx="65" cy="11" r="8" fill="#F76F20" />
-      </svg>
+      <Image
+        src="/images/global/Discover.jpg"
+        alt="Discover"
+        width={70}
+        height={48}
+        className="object-contain"
+      />
     </PaymentBadge>
   );
 }
