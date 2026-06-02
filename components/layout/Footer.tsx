@@ -208,66 +208,51 @@ function TikTokIcon() {
   );
 }
 
-function PaymentBadge({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex items-center justify-center h-8 px-3 bg-white rounded-sm">
-      {children}
-    </div>
-  );
-}
-
 function VisaBadge() {
   return (
-    <PaymentBadge>
-      <Image
-        src="/images/global/Visa.jpg"
-        alt="Visa"
-        width={70}
-        height={48}
-        className="object-contain"
-      />
-    </PaymentBadge>
+    <Image
+      src="/images/global/Visa.jpg"
+      alt="Visa"
+      width={70}
+      height={48}
+      className="object-contain"
+    />
   );
 }
 
 function MastercardBadge() {
   return (
-    <PaymentBadge>
-      <Image
-        src="/images/global/Mastercard.jpg"
-        alt="Mastercard"
-        width={70}
-        height={48}
-        className="object-contain"
-      />
-    </PaymentBadge>
+    <Image
+      src="/images/global/Mastercard.jpg"
+      alt="Mastercard"
+      width={70}
+      height={48}
+      className="object-contain"
+    />
   );
 }
 
 function AmexBadge() {
   return (
-    <PaymentBadge>
-      <Image
-        src="/images/global/Amex.jpg"
-        alt="American Express"
-        width={70}
-        height={48}
-        className="object-contain"
-      />
-    </PaymentBadge>
+    <Image
+      src="/images/global/Amex.jpg"
+      alt="American Express"
+      width={70}
+      height={48}
+      className="object-contain"
+    />
   );
 }
 
 function DiscoverBadge() {
   return (
-    <PaymentBadge>
-      <Image
-        src="/images/global/Discover.jpg"
-        alt="Discover"
-        width={70}
-        height={48}
-        className="object-contain"
-      />
-    </PaymentBadge>
+    <Image
+      src="/images/global/Discover.jpg"
+      alt="Discover"
+      width={70}
+      height={48}
+      className="object-contain"
+    />
   );
 }
+
