@@ -59,6 +59,3 @@ export default function WholesaleCTABanner() {
     </section>
   );
 }
-
-
-export default WholesaleCTABanner
