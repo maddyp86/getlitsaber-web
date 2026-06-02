@@ -113,14 +113,14 @@ export default function ProductAccordion() {
               aria-expanded={isOpen}
               aria-controls={panelId}
               onClick={() => toggle(item.id)}
-              className="w-full flex items-center justify-between py-[30px] border-t border-[#383838] text-left cursor-pointer"
+              className="w-full flex items-center justify-between py-[20px] border-t border-[#383838] text-left cursor-pointer"
             >
-              <span className="font-body font-semibold text-[22px] text-white leading-tight">
+              <span className="font-body font-semibold text-[20px] text-white leading-tight">
                 {item.title}
               </span>
               <span className="flex-shrink-0 ml-4 text-white" aria-hidden="true">
                 {isOpen ? (
-                  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="2" y1="12.5" x2="23" y2="12.5" stroke="white" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 ) : (
