@@ -23,9 +23,9 @@ export default function Footer() {
     <footer className="bg-background-primary border-t border-surface-tint-white">
       <div className="mx-auto max-w-container px-container-mobile lg:px-container py-section-y-mobile lg:py-section-y">
         {/* Top section */}
-        <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
+        <div className="flex flex-col  lg:flex-row lg:justify-between gap-10">
           {/* Brand column */}
-          <div className="lg:max-w-m shrink-0">
+          <div className="lg:max-w-xs shrink-0">
             <Link
               href="/"
               className="block mb-md"
