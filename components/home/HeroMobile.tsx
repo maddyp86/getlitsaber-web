@@ -149,7 +149,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             src="/images/home/litsaber-hero-image.png"
             alt="Litsaber device"
             fill
-            sizes="335px"
+
             className="object-contain object-center"
           />
         </motion.div>
