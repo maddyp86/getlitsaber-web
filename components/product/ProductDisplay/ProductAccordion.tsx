@@ -8,7 +8,7 @@ function BulletsBody({ items }: { items: AccordionBullet[] }) {
   return (
     <ul className="list-disc pl-[30px] flex flex-col gap-3">
       {items.map((item, i) => (
-        <li key={i} className="font-body text-[20px] text-white leading-relaxed">
+        <li key={i} className="font-body text-[16px] text-white leading-relaxed">
           <span className="font-bold">{item.lead}</span>{" "}
           <span className="font-normal">{item.text}</span>
         </li>
