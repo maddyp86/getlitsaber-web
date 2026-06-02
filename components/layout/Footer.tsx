@@ -25,7 +25,7 @@ export default function Footer() {
         {/* Top section */}
         <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
           {/* Brand column */}
-          <div className="lg:max-w-xl shrink-0">
+          <div className="lg:max-w shrink-0">
             <Link
               href="/"
               className="block mb-md"
