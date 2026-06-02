@@ -130,6 +130,7 @@ export default function EmailSignupBanner() {
           className="font-body text-white max-w-lg leading-relaxed"
           style={{
             fontSize: "clamp(15px, 1.8vw, 18px)",
+            fontcolor:"#CCCCCC",
             opacity: 0.9,
           }}
         >
