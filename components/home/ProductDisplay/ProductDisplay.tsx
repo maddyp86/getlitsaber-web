@@ -87,18 +87,22 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
           <StyleSelector activeStyle={activeStyle} onStyleChange={setActiveStyle} />
 
           {activeStyle === "gold" ? (
-            <WaitlistCard />
+            <div className="w-full">
+              <WaitlistCard />
+            </div>
           ) : (
-            <BundleAndCTA
-              activeBundle={activeBundle}
-              onBundleChange={setActiveBundle}
-              moreQty={moreQty}
-              onMoreQtyChange={setMoreQty}
-              selectedQty={selectedQty}
-              variantId={variantId}
-              available={available}
-              surface={surface}
-            />
+            <div className="w-full">
+              <BundleAndCTA
+                activeBundle={activeBundle}
+                onBundleChange={setActiveBundle}
+                moreQty={moreQty}
+                onMoreQtyChange={setMoreQty}
+                selectedQty={selectedQty}
+                variantId={variantId}
+                available={available}
+                surface={surface}
+              />
+            </div>
           )}
         </div>
     </div>
