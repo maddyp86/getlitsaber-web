@@ -89,7 +89,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             "
           >
             {CTA_PRIMARY.label}
-              style={{ maxwidth: "250px" }}
+     
           </Link>
 
           <Link
@@ -102,6 +102,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               transition-all duration-200 ease-in-out
               hover:-translate-y-px hover:bg-surface-tint-cyan hover:shadow-glow-cyan
             "
+                     style={{ maxwidth: "250px" }}
           >
             {CTA_SECONDARY.label}
           </Link>
