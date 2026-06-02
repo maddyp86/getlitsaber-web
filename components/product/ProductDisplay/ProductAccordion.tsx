@@ -25,7 +25,7 @@ function SpecsBody({ groups }: { groups: AccordionSpecGroup[] }) {
           <p className="font-body font-bold text-[16px] text-white uppercase mb-2">
             {group.label}
           </p>
-          <ul className="list-disc pl-[30px] flex flex-col gap-1">
+          <ul className="list-disc pl-[22px] flex flex-col gap-1">
             {group.bullets.map((b, i) => (
               <li key={i} className="font-body font-normal text-[16px] text-white leading-relaxed">
                 {b}
