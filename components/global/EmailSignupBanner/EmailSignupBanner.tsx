@@ -131,7 +131,6 @@ export default function EmailSignupBanner() {
           style={{
             fontSize: "clamp(15px, 1.8vw, 18px)",
             fontcolor:"#CCCCCC",
-            opacity: 0.9,
           }}
         >
           Get $10 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
