@@ -161,7 +161,7 @@ export default function EmailSignupBanner() {
   disabled={state === "submitting"}
   aria-label="Email address"
   aria-describedby={state === "error" ? "email-banner-error" : undefined}
-  className="w-full px-5 py-4 font-label uppercase tracking-widest placeholder:text-white/50 text-white outline-none transition-colors disabled:opacity-50"
+  className="w-full px-5 py-4 font-label tracking-widest placeholder:text-white/50 text-white outline-none transition-colors disabled:opacity-50"
   style={{
     fontSize: "13px",
     background: "rgba(0,0,0,0.45)",
