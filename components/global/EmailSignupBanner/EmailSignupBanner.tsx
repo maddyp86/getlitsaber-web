@@ -127,7 +127,7 @@ export default function EmailSignupBanner() {
         </h2>
 
         <p
-          className="font-body text-secondary max-w-lg leading-relaxed"
+          className="font-body text-secondary max-w-2xl leading-relaxed"
           style={{
             fontSize: "clamp(15px, 1.8vw, 18px)",
           }}
