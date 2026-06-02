@@ -166,7 +166,7 @@ export default function WaitlistForm({
             disabled={state === "submitting"}
             aria-label="Email address"
             aria-describedby={state === "error" ? "waitlist-error" : undefined}
-            className="w-full rounded-md px-4 py-3 font-body text-text-primary placeholder:text-text-muted outline-none transition-colors disabled:opacity-50"
+            className="w-full min-w-0 rounded-md px-4 py-3 font-body text-text-primary placeholder:text-text-muted outline-none transition-colors disabled:opacity-50"
             style={{
               fontSize: "14px",
               background: "rgba(255, 255, 255, 0.06)",
