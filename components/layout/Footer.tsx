@@ -212,8 +212,8 @@ function VisaBadge() {
     <Image
       src="/images/global/Visa.png"
       alt="Visa"
-      width={70}
-      height={48}
+      width={50}
+      height={34}
       className="object-contain"
     />
   );
@@ -224,8 +224,8 @@ function MastercardBadge() {
     <Image
       src="/images/global/Mastercard.png"
       alt="Mastercard"
-      width={70}
-      height={48}
+      width={50}
+      height={34}
       className="object-contain"
     />
   );
@@ -236,8 +236,8 @@ function AmexBadge() {
     <Image
       src="/images/global/Amex.png"
       alt="American Express"
-      width={70}
-      height={48}
+      width={50}
+      height={34}
       className="object-contain"
     />
   );
@@ -248,8 +248,8 @@ function DiscoverBadge() {
     <Image
       src="/images/global/Discover.png"
       alt="Discover"
-      width={70}
-      height={48}
+      width={50}
+      height={34}
       className="object-contain"
     />
   );
