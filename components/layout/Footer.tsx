@@ -61,7 +61,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="mt-section-y-mobile lg:mt-xl border-t border-surface-tint-white pt-lg space-y-lg">
           {/* Compliance disclaimer */}
-          <p className="font-body text-eyebrow text-text-muted leading-relaxed text-center">
+          <p className="font-body-[16px] text-eyebrow text-text-muted leading-relaxed text-center">
             Litsaber is sold as a 510-thread battery accessory. We do not produce, manufacture, or distribute cannabis. The device is not intended for use with nicotine, e-juice, or e-liquids. Not for sale to minors. Use responsibly and in accordance with local laws.
           </p>
 
