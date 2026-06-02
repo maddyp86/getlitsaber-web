@@ -44,7 +44,7 @@ function ProseBody({ blocks }: { blocks: AccordionProseBlock[] }) {
       {blocks.map((block, i) => (
         <div key={i}>
           {block.lead && !block.bullets && (
-            <p className="font-body text-[18px] text-white leading-relaxed">
+            <p className="font-body text-[16px] text-white leading-relaxed">
               <span className="font-bold">{block.lead}</span>
               {block.text && (
                 <>
@@ -59,18 +59,18 @@ function ProseBody({ blocks }: { blocks: AccordionProseBlock[] }) {
           )}
           {!block.lead && block.text && (
             <p
-              className="font-body font-normal text-[18px] text-white leading-relaxed"
+              className="font-body font-normal text-[16px] text-white leading-relaxed"
               dangerouslySetInnerHTML={{ __html: block.text }}
             />
           )}
           {block.bullets && (
             <>
               {block.lead && (
-                <p className="font-body font-bold text-[20px] text-white mb-2">
+                <p className="font-body font-bold text-[16px] text-white mb-2">
                   {block.lead}
                 </p>
               )}
-              <ul className="list-disc pl-[30px] flex flex-col gap-1">
+              <ul className="list-disc pl-[16px] flex flex-col gap-1">
                 {block.bullets.map((b, j) => (
                   <li key={j} className="font-body font-normal text-[20px] text-white leading-relaxed">
                     {b}
