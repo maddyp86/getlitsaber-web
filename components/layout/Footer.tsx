@@ -9,7 +9,7 @@ const EXPLORE_LINKS = [
 
 const SUPPORT_LINKS = [
   { label: "Contact Us", href: "/contact" },
-  { label: "Refund and Returns", href: "/policies/refunds" },
+  { label: "Refund & Returns", href: "/policies/refunds" },
   { label: "Warranty", href: "/policies/warranty" },
 ] as const;
 
@@ -23,7 +23,7 @@ export default function Footer() {
     <footer className="bg-background-primary border-t border-surface-tint-white">
       <div className="mx-auto max-w-container px-container-mobile lg:px-container py-section-y-mobile lg:py-section-y">
         {/* Top section */}
-        <div className="flex flex-col lg:flex-row lg:gap-16 gap-10">
+        <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
           {/* Brand column */}
           <div className="lg:max-w-xs shrink-0">
             <Link
@@ -43,17 +43,15 @@ export default function Footer() {
               An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.
             </p>
 
-            {/* Social icons — shown on both mobile and desktop */}
             <SocialIconRow />
 
-            {/* Made-in tagline — shown on both mobile and desktop */}
-            <p className="font-label text-eyebrow text-text-muted tracking-widest uppercase mt-md">
+            <p className="font-label text-eyebrow text-accent-cyan tracking-widest uppercase mt-md">
               DESIGNED IN LA | ASSEMBLED IN ASIA
             </p>
           </div>
 
           {/* Nav columns */}
-          <div className="flex flex-col sm:flex-row gap-10 lg:gap-16 lg:flex-1">
+          <div className="flex flex-col sm:flex-row gap-10 lg:gap-16">
             <NavColumn heading="Explore" links={EXPLORE_LINKS} />
             <NavColumn heading="Support" links={SUPPORT_LINKS} />
             <NavColumn heading="Brand" links={BRAND_LINKS} />
@@ -61,51 +59,49 @@ export default function Footer() {
         </div>
 
         {/* Bottom section */}
-        <div className="mt-section-y-mobile lg:mt-xl pt-lg border-t border-surface-tint-white space-y-md">
-          {/* Copyright and 21+ disclaimer */}
+        <div className="mt-section-y-mobile lg:mt-xl border-t border-surface-tint-white pt-lg space-y-lg">
+          {/* Compliance disclaimer */}
+          <p className="font-body text-eyebrow text-text-muted leading-relaxed text-center">
+            Litsaber is sold as a 510-thread battery accessory. We do not produce, manufacture, or distribute cannabis. The device is not intended for use with nicotine, e-juice, or e-liquids. Not for sale to minors. Use responsibly and in accordance with local laws.
+          </p>
+
+          {/* Payment badges */}
+          <div className="flex items-center justify-center gap-sm flex-wrap">
+            <PayPalBadge />
+            <MastercardBadge />
+            <VisaBadge />
+            <AmexBadge />
+            <DiscoverBadge />
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-surface-tint-white" />
+
+          {/* Copyright + policy links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm">
             <p className="font-label text-eyebrow text-text-muted tracking-wide">
               © 2026 INNOVAPE CONCEPTS · LOS ANGELES
             </p>
-            <p className="font-label text-eyebrow text-text-muted tracking-wide">
-              21+ ONLY — DO NOT SHARE WITH MINORS
-            </p>
-          </div>
-
-          {/* Compliance disclaimer */}
-          <p className="font-body text-eyebrow text-text-muted leading-relaxed max-w-2xl">
-            Litsaber is a rechargeable 510-thread battery accessory. It does not contain cannabis, CBD, nicotine, or any controlled substance. This site does not sell cartridges, oil, or any cannabis product. Intended for adult use only. Use responsibly and in compliance with all applicable local laws.
-          </p>
-
-          {/* Policy links */}
-          <div className="flex flex-wrap gap-sm">
-            {[
-              { label: "Terms of Service", href: "/policies/terms" },
-              { label: "Privacy Policy", href: "/policies/privacy" },
-              { label: "Shipping Policy", href: "/policies/shipping" },
-              { label: "Refund Policy", href: "/policies/refunds" },
-            ].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-label text-eyebrow text-text-muted hover:text-text-secondary transition-colors duration-200 tracking-wide"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Payment / Klarna strip */}
-          <div className="flex items-center gap-sm pt-xs">
-            <span className="font-label text-eyebrow text-text-muted tracking-wide uppercase">
-              Secure Checkout
-            </span>
-            {/* Authorize.net processes payment via Shopify hosted checkout */}
-            <span className="font-label text-eyebrow text-text-muted">·</span>
-            <span className="font-label text-eyebrow text-text-muted tracking-wide">
-              Authorize.net · Free 14-day returns
-            </span>
-            {/* Klarna logo slot — add SVG/image when asset is available */}
+            <div className="flex items-center gap-xs flex-wrap">
+              {[
+                { label: "PRIVACY", href: "/policies/privacy" },
+                { label: "TERMS", href: "/policies/terms" },
+                { label: "SHIPPING", href: "/policies/shipping" },
+                { label: "REFUNDS", href: "/policies/refunds" },
+              ].map((link, i, arr) => (
+                <span key={link.href} className="flex items-center gap-xs">
+                  <Link
+                    href={link.href}
+                    className="font-label text-eyebrow text-text-muted hover:text-text-secondary transition-colors duration-200 tracking-widest"
+                  >
+                    {link.label}
+                  </Link>
+                  {i < arr.length - 1 && (
+                    <span className="font-label text-eyebrow text-text-muted select-none">·</span>
+                  )}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -122,7 +118,7 @@ function NavColumn({
 }) {
   return (
     <div className="min-w-[120px]">
-      <h3 className="font-label text-label text-text-primary tracking-widest uppercase mb-md font-bold">
+      <h3 className="font-label text-label text-accent-cyan tracking-widest uppercase mb-md font-bold">
         {heading}
       </h3>
       <ul className="space-y-sm">
@@ -143,14 +139,14 @@ function NavColumn({
 
 function SocialIconRow() {
   return (
-    <div className="flex items-center gap-md" role="list" aria-label="Social media links">
+    <div className="flex items-center gap-sm" role="list" aria-label="Social media links">
       <a
         href="https://www.instagram.com/getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
         role="listitem"
         aria-label="Litsaber on Instagram"
-        className="text-text-muted hover:text-accent-cyan transition-colors duration-200"
+        className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
       >
         <InstagramIcon />
       </a>
@@ -160,7 +156,7 @@ function SocialIconRow() {
         rel="noopener noreferrer"
         role="listitem"
         aria-label="Litsaber on YouTube"
-        className="text-text-muted hover:text-accent-cyan transition-colors duration-200"
+        className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
       >
         <YouTubeIcon />
       </a>
@@ -170,7 +166,7 @@ function SocialIconRow() {
         rel="noopener noreferrer"
         role="listitem"
         aria-label="Litsaber on TikTok"
-        className="text-text-muted hover:text-accent-cyan transition-colors duration-200"
+        className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
       >
         <TikTokIcon />
       </a>
@@ -207,5 +203,68 @@ function TikTokIcon() {
         strokeLinejoin="round"
       />
     </svg>
+  );
+}
+
+function PaymentBadge({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-center h-8 px-3 bg-white rounded-sm">
+      {children}
+    </div>
+  );
+}
+
+function PayPalBadge() {
+  return (
+    <PaymentBadge>
+      <svg width="52" height="14" viewBox="0 0 52 14" aria-label="PayPal" role="img">
+        <text y="11" fontFamily="Arial, sans-serif" fontSize="11" fontWeight="bold" fill="#003087">Pay</text>
+        <text x="20" y="11" fontFamily="Arial, sans-serif" fontSize="11" fontWeight="bold" fill="#009cde">Pal</text>
+      </svg>
+    </PaymentBadge>
+  );
+}
+
+function MastercardBadge() {
+  return (
+    <PaymentBadge>
+      <svg width="36" height="22" viewBox="0 0 36 22" aria-label="Mastercard" role="img">
+        <circle cx="13" cy="11" r="9" fill="#EB001B" />
+        <circle cx="23" cy="11" r="9" fill="#F79E1B" />
+        <path d="M18 3.8a9 9 0 0 1 0 14.4A9 9 0 0 1 18 3.8z" fill="#FF5F00" />
+      </svg>
+    </PaymentBadge>
+  );
+}
+
+function VisaBadge() {
+  return (
+    <PaymentBadge>
+      <svg width="40" height="14" viewBox="0 0 40 14" aria-label="Visa" role="img">
+        <text y="12" fontFamily="Arial, sans-serif" fontSize="15" fontWeight="bold" fontStyle="italic" fill="#1A1F71">VISA</text>
+      </svg>
+    </PaymentBadge>
+  );
+}
+
+function AmexBadge() {
+  return (
+    <PaymentBadge>
+      <svg width="62" height="22" viewBox="0 0 62 22" aria-label="American Express" role="img">
+        <text y="10" fontFamily="Arial, sans-serif" fontSize="8.5" fontWeight="bold" fill="#007BC1">AMERICAN</text>
+        <text y="20" fontFamily="Arial, sans-serif" fontSize="8.5" fontWeight="bold" fill="#007BC1">EXPRESS</text>
+      </svg>
+    </PaymentBadge>
+  );
+}
+
+function DiscoverBadge() {
+  return (
+    <PaymentBadge>
+      <svg width="72" height="22" viewBox="0 0 72 22" aria-label="Discover" role="img">
+        <text y="14" fontFamily="Arial, sans-serif" fontSize="10" fontWeight="bold" fill="#231F20">DISCOVER</text>
+        <circle cx="65" cy="11" r="8" fill="#F76F20" />
+      </svg>
+    </PaymentBadge>
   );
 }
