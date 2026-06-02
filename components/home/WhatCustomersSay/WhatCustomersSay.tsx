@@ -35,9 +35,9 @@ export default function WhatCustomersSay() {
             textShadow: "0 0 28px rgba(0,229,255,0.40), 0 0 60px rgba(0,229,255,0.18)",
           }}
         >
-          WHAT CUSTOMERS SAY
+          AS SEEN ON TIKTOK
         </h2>
-        <p className="font-body text-body text-text-muted">The internet is talking.</p>
+        <p className="font-body text-body text-text-muted">See what we've been up to lately!</p>
       </div>
 
       <TikTokRail videos={VIDEOS} />
