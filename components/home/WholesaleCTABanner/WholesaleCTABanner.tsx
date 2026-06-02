@@ -25,7 +25,7 @@ export default function WholesaleCTABanner() {
             STOCK LITSABER IN YOUR{" "}
             <span
               className="font-accent"
-              style={{ color: "#EC5793", fontWeight: 400; }}
+              style={{ color: "#EC5793", fontWeight: "400" }}
             >
               SHOP.
             </span>
