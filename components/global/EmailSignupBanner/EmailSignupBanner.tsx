@@ -165,13 +165,13 @@ export default function EmailSignupBanner() {
   style={{
     fontSize: "13px",
     background: "rgba(0,0,0,0.45)",
-    border: `1px solid ${state === "error" ? "#F56565" : "rgba(255,255,255,0.25)"}`,
+    border: `1px solid ${state === "error" ? "#F56565" : "#00E5FF"}`,
     backdropFilter: "blur(8px)",
     borderRadius: 4,
   }}
-onFocus={(e) => {
-  if (state !== "error") e.currentTarget.style.borderColor = "#00E5FF";
-}}
+  onFocus={(e) => {
+    if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)";
+  }}
   onBlur={(e) => {
     if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
   }}
