@@ -38,13 +38,19 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
 
   return (
     <div className="flex flex-col lg:flex-row items-start" style={{ gap: "50px" }}>
-      {/* Left: image gallery — flex: 1 0 0, fills remaining space */}
-      <div className="w-full lg:flex-1 min-w-0 flex flex-col items-start gap-5">
+      {/* Left: image gallery — flex: 1 0 0 */}
+      <div
+        className="flex flex-col items-start w-full lg:w-auto"
+        style={{ gap: "20px", flex: "1 0 0" }}
+      >
         <GalleryBlock activeThumb={activeThumb} onThumbClick={setActiveThumb} />
       </div>
 
-      {/* Right: product info — fixed 600px on desktop */}
-      <div className="w-full lg:w-[600px] lg:flex-shrink-0 flex flex-col" style={{ gap: "33px" }}>
+      {/* Right: product info — max-width 600px, width auto, no shrink */}
+      <div
+        className="w-full lg:max-w-[600px] lg:w-auto lg:flex-shrink-0 flex flex-col items-start"
+        style={{ gap: "33px" }}
+      >
           {/* Title + subtitle + price */}
           <div className="flex flex-col gap-2">
             <h1
@@ -65,7 +71,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
           </div>
 
           {/* Spec pills — 2 rows × 3, rectangular (no border radius) */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 w-full">
             {SPEC_PILLS.map((pill) => (
               <div
                 key={pill}
