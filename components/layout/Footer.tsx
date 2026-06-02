@@ -20,7 +20,9 @@ const BRAND_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-background-primary border-t border-surface-tint-white">
+    <footer className="bg-background-primary border-t border-surface-tint-white"
+      style={{ background: "linear-gradient(180deg, #150C2D 0%, #000 100%)" }}
+      >
       <div className="mx-auto max-w-container px-container-mobile lg:px-container py-section-y-mobile lg:py-section-y">
         {/* Top section */}
         <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
