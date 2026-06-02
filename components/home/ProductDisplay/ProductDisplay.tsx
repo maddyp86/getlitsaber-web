@@ -48,7 +48,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
 
       {/* Right: product info — max-width 600px, width auto, no shrink */}
       <div
-        className="w-full lg:w-[550px] lg:flex-shrink-0 min-w-0 flex flex-col items-stretch"
+        className="w-full lg:w-[525px] lg:flex-shrink-0 min-w-0 flex flex-col items-stretch"
         style={{ gap: "33px" }}
       >
           {/* Title + subtitle + price */}
