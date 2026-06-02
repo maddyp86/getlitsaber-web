@@ -69,7 +69,6 @@ export default function Footer() {
 
           {/* Payment badges */}
           <div className="flex items-center justify-center gap-sm flex-wrap">
-            <PayPalBadge />
             <MastercardBadge />
             <VisaBadge />
             <AmexBadge />
