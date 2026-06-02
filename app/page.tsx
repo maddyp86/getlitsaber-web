@@ -12,6 +12,7 @@ import EditionsSection from "@/components/home/Editions/EditionsSection";
 import ProductDisplay from "@/components/home/ProductDisplay/ProductDisplay";
 import HomepageEngagementTracker from "@/components/home/HomepageEngagementTracker";
 import WhatCustomersSay from "@/components/home/WhatCustomersSay/WhatCustomersSay";
+import WholesaleCTABanner from "@/components/home/WholesaleCTABanner/WholesaleCTABanner";
 import { getProductByHandle } from "@/lib/shopify/queries";
 
 export const metadata: Metadata = {
@@ -51,6 +52,7 @@ export default async function HomePage() {
         />
       </WhatWereShipping>
       <WhatCustomersSay />
+      <WholesaleCTABanner />
     </>
   );
 }
