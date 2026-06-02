@@ -128,6 +128,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             text-text-primary w-full
             drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
           "
+          style={{ height: "150px" }}
           variants={variants}
           initial="hidden"
           animate="visible"
