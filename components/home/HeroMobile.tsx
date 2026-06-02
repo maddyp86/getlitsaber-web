@@ -112,7 +112,6 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         style={{
           display: "flex",
           width: "auto",
-          height: "679px",
           padding: "50px 20px",
           flexDirection: "column",
           justifyContent: "center",
