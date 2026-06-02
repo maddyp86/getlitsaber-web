@@ -153,29 +153,40 @@ export default function EmailSignupBanner() {
           />
 
           <div className="flex flex-col gap-1 flex-1">
-            <input
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="ENTER YOUR EMAIL"
-              disabled={state === "submitting"}
-              aria-label="Email address"
-              aria-describedby={state === "error" ? "email-banner-error" : undefined}
-              className="w-full px-5 py-4 font-label uppercase tracking-widest placeholder:text-white/50 text-white outline-none transition-colors disabled:opacity-50"
-              style={{
-                fontSize: "13px",
-                background: "rgba(0,0,0,0.45)",
-                border: `1px solid ${state === "error" ? "#F56565" : "rgba(255,255,255,0.25)"}`,
-                backdropFilter: "blur(8px)",
-                borderRadius: 4,
-              }}
-              onFocus={(e) => {
-                if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)";
-              }}
-              onBlur={(e) => {
-                if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
-              }}
-            />
+         <input
+  type="email"
+  value={email}
+  onChange={handleEmailChange}
+  placeholder="ENTER YOUR EMAIL"
+  disabled={state === "submitting"}
+  aria-label="Email address"
+  aria-describedby={state === "error" ? "email-banner-error" : undefined}
+  className="w-full px-5 py-4 font-label uppercase tracking-widest placeholder:text-white/50 text-white outline-none transition-colors disabled:opacity-50"
+  style={{
+    fontSize: "13px",
+    background: "rgba(0,0,0,0.45)",
+    border: `1px solid ${state === "error" ? "#F56565" : "rgba(255,255,255,0.25)"}`,
+    backdropFilter: "blur(8px)",
+    borderRadius: 4,
+  }}
+  onFocus={(e) => {
+    if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)";
+  }}
+  onBlur={(e) => {
+    if (state !== "error") e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+  }}
+  onMouseEnter={(e) => {
+    if (state !== "error") {
+      e.currentTarget.style.borderColor = "#00E5FF";
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (state !== "error") {
+      const isFocused = e.currentTarget === document.activeElement;
+      e.currentTarget.style.borderColor = isFocused ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)";
+    }
+  }}
+/>
             {state === "error" && (
               <p
                 id="email-banner-error"
