@@ -23,7 +23,7 @@ export default function Footer() {
     <footer className="bg-background-primary border-t border-surface-tint-white"
       style={{ background: "linear-gradient(180deg, #150C2D 0%, #000 100%)" }}
       >
-     <div className="mx-auto max-w-container px-container-mobile lg:px-container py-8 lg:py-12">
+     <div className="mx-auto max-w-container px-container-mobile lg:px-container py-10 lg:py-12">
         {/* Top section */}
         <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
           {/* Brand column */}
