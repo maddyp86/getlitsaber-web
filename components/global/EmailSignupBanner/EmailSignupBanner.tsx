@@ -138,7 +138,7 @@ export default function EmailSignupBanner() {
         <form
           onSubmit={handleSubmit}
           noValidate
-          className="flex flex-col sm:flex-row gap-3 w-full max-w-xl mt-2"
+          className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl mt-2"
         >
           {/* Honeypot */}
           <input
