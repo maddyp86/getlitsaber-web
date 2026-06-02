@@ -7,14 +7,16 @@ export default function WholesaleCTABanner() {
       style={{
         background:
           "radial-gradient(ellipse 60% 200% at 30% 50%, rgba(236,87,147,0.18) 0%, rgba(10,5,24,0) 70%), #0A0518",
+        height:"250px",
+        width:"auto"
       }}
     >
       {/* Thin top border to separate from section above */}
       <div className="absolute inset-x-0 top-0 h-px bg-white/5" aria-hidden="true" />
 
-      <div className="mx-auto max-w-screen-xl px-6 lg:px-16 py-8 lg:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12">
+      <div className="mx-auto max-w-screen-xl px-6 lg:px-16 py-8 lg:py-10 flex flex-row items-center justify-between gap-6">
         {/* Left: headline + sub-copy */}
-        <div className="flex flex-col gap-2 text-center lg:text-left">
+        <div className="flex flex-col gap-2">
           <h2
             className="font-subhead font-black uppercase leading-none text-white"
             style={{
