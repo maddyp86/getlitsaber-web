@@ -21,9 +21,9 @@ export default async function PDPPage() {
   const available = shopifyConfigured ? silverVariant?.availableForSale === true : true;
 
   return (
-    <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl">
+    <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl ml-100">
       <PdpViewTracker />
-      <div className="ml-100 w-full max-w-[1250px]">
+      <div className="mx-auto w-full max-w-[1250px]">
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
           available={available}
