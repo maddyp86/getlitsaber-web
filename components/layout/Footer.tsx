@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
 
           {/* Nav columns */}
-          <div className="flex flex-col md:flex-row gap-10 lg:gap-16">
+          <div className="flex flex-col md:flex-row gap-5 lg:gap-16">
             <NavColumn heading="Explore" links={EXPLORE_LINKS} />
             <NavColumn heading="Support" links={SUPPORT_LINKS} />
             <NavColumn heading="Brand" links={BRAND_LINKS} />
