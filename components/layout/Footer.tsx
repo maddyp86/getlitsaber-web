@@ -210,7 +210,7 @@ function TikTokIcon() {
 function VisaBadge() {
   return (
     <Image
-      src="/images/global/Visa.jpg"
+      src="/images/global/Visa.png"
       alt="Visa"
       width={70}
       height={48}
@@ -222,7 +222,7 @@ function VisaBadge() {
 function MastercardBadge() {
   return (
     <Image
-      src="/images/global/Mastercard.jpg"
+      src="/images/global/Mastercard.png"
       alt="Mastercard"
       width={70}
       height={48}
@@ -234,7 +234,7 @@ function MastercardBadge() {
 function AmexBadge() {
   return (
     <Image
-      src="/images/global/Amex.jpg"
+      src="/images/global/Amex.png"
       alt="American Express"
       width={70}
       height={48}
@@ -246,7 +246,7 @@ function AmexBadge() {
 function DiscoverBadge() {
   return (
     <Image
-      src="/images/global/Discover.jpg"
+      src="/images/global/Discover.png"
       alt="Discover"
       width={70}
       height={48}
