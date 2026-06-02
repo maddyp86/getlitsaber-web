@@ -5,6 +5,7 @@ import AgeGateModal from "@/components/modals/AgeGateModal";
 import CartDrawer from "@/components/layout/CartDrawer";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import EmailSignupBannerGuard from "@/components/global/EmailSignupBanner/EmailSignupBannerGuard";
 import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
 import FutureDropsModal from "@/components/modals/FutureDropsModal";
 import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
@@ -57,6 +58,7 @@ export default function RootLayout({
 
           <main>{children}</main>
 
+          <EmailSignupBannerGuard />
           <Footer />
 
           {/* Cart drawer sits at z-drawer (100), available on every page */}
