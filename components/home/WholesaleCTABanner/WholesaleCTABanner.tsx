@@ -33,7 +33,7 @@ export default function WholesaleCTABanner() {
 
           <p
             className="font-label uppercase text-white/55"
-            style={{ fontSize: "clamp(10px, 1.1vw, 13px)", letterSpacing: "0.12em" }}
+            style={{ fontSize: "clamp(12px, 1.1vw, 15px)", letterSpacing: "0.12em" }}
           >
             MOQ 5 &middot; FREE DISPLAY CASE AT 80+
           </p>
