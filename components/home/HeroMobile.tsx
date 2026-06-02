@@ -80,7 +80,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             href={CTA_PRIMARY.href}
             className="
               flex items-center justify-center
-              px-xl py-md rounded-sm w-full
+              px-xl py-md rounded-sm 
               border border-border-cta bg-surface-tint-cta text-text-primary
               font-label text-label tracking-widest uppercase
               shadow-glow-cta
