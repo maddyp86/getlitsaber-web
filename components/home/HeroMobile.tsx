@@ -89,6 +89,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             "
           >
             {CTA_PRIMARY.label}
+              style={{ maxwidth: "250px" }}
           </Link>
 
           <Link
