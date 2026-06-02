@@ -79,7 +79,7 @@ export default function Footer() {
 
           {/* Copyright + policy links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm">
-            <p className="font-label text-eyebrow text-text-muted tracking-wide">
+            <p className="font-label text-[14px] text-text-muted tracking-wide">
               © 2026 INNOVAPE CONCEPTS · LOS ANGELES
             </p>
             <div className="flex items-center gap-xs flex-wrap">
