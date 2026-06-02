@@ -124,7 +124,7 @@ export default function ProductAccordion() {
                     <line x1="2" y1="12.5" x2="23" y2="12.5" stroke="white" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 ) : (
-                  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="12.5" y1="2" x2="12.5" y2="23" stroke="white" strokeWidth="2" strokeLinecap="round" />
                     <line x1="2" y1="12.5" x2="23" y2="12.5" stroke="white" strokeWidth="2" strokeLinecap="round" />
                   </svg>
