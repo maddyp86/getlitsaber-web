@@ -200,7 +200,7 @@ function TikTokIcon() {
       <path
         d="M13 2c.3 2 1.5 3.2 3 3.5v2.8c-1.1 0-2.2-.4-3-1v5.2a5 5 0 1 1-3-4.6V11a2.5 2.5 0 1 0 1.5 2.3V2H13z"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1"
         strokeLinejoin="round"
       />
     </svg>
