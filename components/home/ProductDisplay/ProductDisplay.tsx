@@ -9,6 +9,7 @@ import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
 import WaitlistCard from "./WaitlistCard";
+import DescriptionSection from "./DescriptionSection";
 
 interface ProductDisplayProps {
   variantId: string;
@@ -104,6 +105,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
               />
             </div>
           )}
+          <DescriptionSection />
         </div>
     </div>
   );

@@ -85,3 +85,7 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   { src: "/images/product/litsaber-white.jpg", alt: "Litsaber in white" },
   { src: "/images/product/litsaber-red.jpg", alt: "Litsaber in red" },
 ];
+
+export const DESCRIPTION_HEADING = "The vape battery that gets people talking.";
+export const DESCRIPTION_BODY =
+  "Designed for the night. Engineered for the show. Ignite your night with Litsaber, the world's first fully automated, interactive battery that turns every session into a light show. Inspired by iconic sci-fi weapons, it's built to stand out at nightlife spots, EDM festivals, concerts, and beyond. This isn't just a battery. It's your glow-up accessory.";

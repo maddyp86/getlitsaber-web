@@ -23,11 +23,13 @@ export default async function PDPPage() {
   return (
     <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl">
       <PdpViewTracker />
-      <ProductDisplay
-        variantId={silverVariant?.id ?? ""}
-        available={available}
-        surface="pdp"
-      />
+      <div className="mx-auto w-full max-w-[1250px]">
+        <ProductDisplay
+          variantId={silverVariant?.id ?? ""}
+          available={available}
+          surface="pdp"
+        />
+      </div>
     </div>
   );
 }
