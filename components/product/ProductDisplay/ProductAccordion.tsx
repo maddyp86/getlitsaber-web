@@ -22,7 +22,7 @@ function SpecsBody({ groups }: { groups: AccordionSpecGroup[] }) {
     <div className="flex flex-col gap-5">
       {groups.map((group) => (
         <div key={group.label}>
-          <p className="font-body font-bold text-[20px] text-white uppercase mb-2">
+          <p className="font-body font-bold text-[18px] text-white uppercase mb-2">
             {group.label}
           </p>
           <ul className="list-disc pl-[30px] flex flex-col gap-1">
