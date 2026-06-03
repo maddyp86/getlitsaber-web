@@ -29,10 +29,9 @@ export default function WhatCustomersSay() {
         <h2
           className="font-display uppercase text-text-primary leading-tight"
           style={{
-            fontWeight: 800,
             fontSize: "clamp(45px, 5.5vw, 75px)",
-            letterSpacing: "0.04em",
             textShadow: "0 0 28px rgba(0,229,255,0.40), 0 0 60px rgba(0,229,255,0.18)",
+            lineHeight: "normal",
           }}
         >
           AS SEEN ON TIKTOK
