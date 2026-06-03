@@ -41,19 +41,19 @@ export default function TechHero() {
               {HERO_EYEBROW}
             </motion.p>
 
-            <motion.h1
-className="block font-display font-bold text-display-lg text-text-primary "
-              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
-            >
-              {HERO_HEADLINE_LINE1}
-              <span
-                className="block font-accent font-normal text-display-accent text-accent-cyan "
-              >
-                {HERO_HEADLINE_ACCENT}
-              </span>
-            </motion.h1>
+<motion.h1
+  className="block font-display font-bold text-display-lg text-text-primary leading-none"
+  initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
+>
+  {HERO_HEADLINE_LINE1}
+  <span
+    className="block font-accent font-normal text-display-accent text-accent-cyan leading-none"
+  >
+    {HERO_HEADLINE_ACCENT}
+  </span>
+</motion.h1>
 
             <motion.p
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
