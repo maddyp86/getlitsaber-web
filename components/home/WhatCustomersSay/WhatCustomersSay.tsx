@@ -1,5 +1,4 @@
 import TikTokRail, { TikTokVideo } from "./TikTokRail";
-import { motion, useReducedMotion } from "framer-motion";
 
 const VIDEOS: TikTokVideo[] = [
   { url: "https://www.tiktok.com/@getlitsaber/video/7599752282464455967", thumbnail: "/images/reviews/review1.jpg", caption: "", views: "" },
