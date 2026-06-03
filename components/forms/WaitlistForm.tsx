@@ -134,12 +134,12 @@ export default function WaitlistForm({
             {eyebrow}
           </p>
         )}
-        <h3
+        <h2
           className="font-subhead font-bold text-text-primary uppercase leading-tight"
-          style={{ fontSize: "20px" }}
+          style={{ fontSize: "clamp(45px, 6.5vw, 75px)", }}
         >
           {headline}
-        </h3>
+        </h2>
         <p className="font-body text-text-secondary leading-snug" style={{ fontSize: "14px" }}>
           {copy}
         </p>
