@@ -56,7 +56,7 @@ export default function InhaleVideo() {
 
         {/* 16:9 video block */}
         <motion.div
-          className="w-full aspect-video rounded-card overflow-hidden bg-surface-card border border-border-pill"
+          className="w-full aspect-video rounded-card overflow-hidden bg-surface-card border border-border-pill  max-w-[1250px] "
           initial={prefersReduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
