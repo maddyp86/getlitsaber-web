@@ -21,7 +21,7 @@ export default async function PDPPage() {
   const numericProductId = product?.id?.split("/").pop() ?? "";
 
   return (
-    <div className="pt-navbar lg:px-container-desktop py-xl">
+    <div className="pt-navbar lg:px-container-desktop py-xl px-8">
       <PdpViewTracker />
       <div className="mx-auto w-full max-w-[1250px]">
         <ProductDisplay
