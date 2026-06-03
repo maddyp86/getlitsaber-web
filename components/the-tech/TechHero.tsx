@@ -22,10 +22,10 @@ export default function TechHero() {
   };
 
   return (
-    <section
-      className="relative w-full bg-background-primary"
-      aria-label="Built to be seen"
-    >
+   <section
+  className="relative w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
+  aria-label="Built to be seen"
+>
       <div className="mx-auto w-full max-w-[1250px] px-5 lg:px-0 py-16 lg:py-24">
         {/* Mobile: text above image. Desktop: 2-col side by side */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
