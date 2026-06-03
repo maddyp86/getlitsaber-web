@@ -1,6 +1,6 @@
 interface Props {
-  productId: string;
-  productTitle: string;
+  productId: 7870095392975;
+  productTitle: "LitsaberOG";
 }
 
 export default function JudgemeReviewWidget({ productId, productTitle }: Props) {
