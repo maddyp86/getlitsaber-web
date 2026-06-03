@@ -47,7 +47,9 @@ export default function TechHero() {
             transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
           >
             {HERO_HEADLINE_LINE1}
-            <span className="block font-accent font-normal text-display-accent text-accent-cyan leading-none">
+            <span className="block font-accent font-normal text-display-accent text-accent-cyan leading-none"
+              style={{fontSize: "clamp(45px, 6.5vw, 75px)"}} 
+              >
               {HERO_HEADLINE_ACCENT}
             </span>
           </motion.h1>
