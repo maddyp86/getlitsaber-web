@@ -16,7 +16,7 @@ export default function WholesaleCTABanner() {
 
       <div className="h-full mx-auto max-w-screen-xl p-5 lg:px-16 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-6">
         {/* Left: headline + sub-copy */}
-        <div className="flex flex-col gap-4 text-center lg:text-left">
+        <div className="flex flex-col gap-2 text-center lg:text-left">
           <h2
             className="font-subhead font-black uppercase leading-none text-white"
             style={{
