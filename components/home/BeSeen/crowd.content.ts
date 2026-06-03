@@ -23,7 +23,7 @@ export const STAGES: Stage[] = [
   },
   {
     eyebrow: "THE ENDURANCE",
-    headline: "BUILT TO OUTLAST THE NIGHT.",
+    headline: "BUILT TO OUTLAST THE NIGHT",
     body: "Aluminum and brass on top. Polycarbonate and reinforced foam below. Faceted edges that won't roll off the bar. Drop-resistant grip you can trust at 3 AM. Made for the headliner, the afters, and the next weekend after that.",
     desktopImg: "/images/home/litsaber-endurance.jpg",
     mobileImg: "/images/home/litsaber-endurance-mobile.jpg",
