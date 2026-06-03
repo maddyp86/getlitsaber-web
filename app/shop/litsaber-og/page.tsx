@@ -42,7 +42,7 @@ export default async function PDPPage() {
           Customer Reviews
         </h2>
         <div className="flex justify-center mb-6">
-          <WriteReviewButton />
+        {/* <WriteReviewButton /> */}
         </div>
         <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
       </section>
