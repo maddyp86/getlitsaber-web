@@ -1,5 +1,4 @@
 import TikTokRail, { TikTokVideo } from "./TikTokRail";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 
 const VIDEOS: TikTokVideo[] = [

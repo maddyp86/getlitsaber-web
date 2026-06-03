@@ -77,7 +77,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               alt={img.alt}
               fill
               className="object-cover"
-              sizes="(min-width: 1024px) calc((50vw - 140px) / 6), calc((100vw - 26px) / 6)"
+              sizes="(min-width: 1024px) calc((50vw - 140px) / 6), calc((100vw - 56px) / 6)"
             />
           </button>
         ))}
