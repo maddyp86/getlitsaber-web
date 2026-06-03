@@ -18,10 +18,12 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const itemCount = useItemCount();
   const { openCart } = useCartUIActions();
 
   useEffect(() => {
+    setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -103,12 +105,12 @@ export default function Navbar() {
 
             {/* Cart icon */}
             <button
-              aria-label={itemCount > 0 ? `Cart — ${itemCount} item${itemCount === 1 ? "" : "s"}` : "Cart"}
+              aria-label={mounted && itemCount > 0 ? `Cart — ${itemCount} item${itemCount === 1 ? "" : "s"}` : "Cart"}
               onClick={openCart}
               className="relative flex items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <CartIcon />
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span
                   className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 rounded-full bg-cta text-text-primary font-label font-bold text-[10px] leading-none"
                   aria-hidden="true"
