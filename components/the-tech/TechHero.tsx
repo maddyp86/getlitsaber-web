@@ -48,7 +48,7 @@ export default function TechHero() {
 </motion.h1>
 
           <motion.p
-            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-2"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
