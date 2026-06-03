@@ -42,7 +42,7 @@ export default function TechHero() {
 
           <motion.h1
             className="block font-display font-bold text-display-lg text-text-primary leading-none"
-             style={{fontSize: "clamp(45px, 6.5vw, 80px)"}} 
+             style={{fontSize: "clamp(50px, 6.5vw, 75px)"}} 
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
