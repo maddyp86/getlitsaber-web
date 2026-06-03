@@ -46,7 +46,7 @@ export default function WholesaleCTABanner() {
           href="/wholesale"
           className="font-label font-bold uppercase tracking-widest text-white opacity-75 transition-opacity duration-200 hover:opacity-100 active:opacity-60 whitespace-nowrap self-center lg:self-auto flex items-center gap-3 px-8 py-4"
           style={{
-            fontSize: "clamp(11px, 1vw, 13px)",
+            fontSize: "clamp(12px, 1vw, 14px)",
             letterSpacing: "0.14em",
             background: "#EC5793",
             borderRadius: 6,
