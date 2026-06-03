@@ -91,7 +91,7 @@ export default function CommonQuestionsMobile() {
       {/* Header */}
       <div ref={ref} className="relative z-10 flex flex-col items-start text-left mb-8">
         <motion.p
-          className="font-label text-text-accent text-eyebrow uppercase tracking-widest mb-3"
+          className="font-label text-text-accent text-center text-eyebrow uppercase tracking-widest mb-3"
           initial={{ opacity: 0, y: 24 }}
           animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.7, ease: EASE }}
