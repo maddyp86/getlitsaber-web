@@ -102,7 +102,7 @@ export default function TechHero() {
         >
           {HERO_IMAGE_SRC ? (
             <Image
-              src={'images/tech/be-seen-desktop.jpg'}
+              src='images/tech/be-seen-desktop.jpg'
               alt={HERO_IMAGE_ALT}
               fill
               className="object-cover object-center"
