@@ -94,7 +94,7 @@ export default function TechHero() {
     alt={HERO_IMAGE_ALT}
     fill
     sizes="(min-width: 1024px) 0px, 100vw"
-    className="object-cover object-center lg:hidden"
+    className="object-cover object-center lg:hidden lg:rounded-none"
     priority
   />
   {/* Desktop crop — visible at lg and up */}
