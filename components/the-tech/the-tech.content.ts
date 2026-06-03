@@ -44,10 +44,10 @@ export const INHALE_BODY =
 export const BREATH_EYEBROW = "RESPONSIVE BY DESIGN";
 export const BREATH_HEADLINE = "Your breath controls the light.";
 export const BREATH_BODY_BLOCKS = [
-  "Most 510 batteries give you smoke. Litsaber gives you a light show that you make. The airflow sensor and the LED array are wired as one system,  when you pull, the lights respond in real time. Pull harder, the response intensifies. Stop pulling, the animation settles. ",
-  "This isn't a fixed pattern on a timer. It's the device responding to your breath, the same input that creates the cloud creates the light. Same draw, two outputs, one moment.",
-  "In Litsaber Mode, the response curves with you. The lights start dim and intensify the longer you hold the pull, dim, brighter, brighter, until the device peaks in a rainbow strobe that cycles through all twelve colors. Every hit is a build. The longest pulls earn the biggest payoff.",
-    "It's also how the device tells you what's happening. Pre-heat shows a different animation than a hit. The LED color tracks your voltage setting. The whole device speaks back to you as you use it.",
+  "**Most 510 batteries give you smoke. Litsaber gives you a light show that you make.** The airflow sensor and the LED array are wired as one system,  when you pull, the lights respond in real time. Pull harder, the response intensifies. Stop pulling, the animation settles. ",
+  "This isn't a fixed pattern on a timer. It's the device **responding to your breath**, the same input that creates the cloud creates the light. Same draw, two outputs, one moment.",
+  "**In Litsaber Mode,** the response curves with you. The lights start dim and intensify the longer you hold the pull, dim, brighter, brighter, until the device peaks in a rainbow strobe that cycles through all twelve colors. Every hit is a build. The longest pulls earn the biggest payoff.",
+  "It's also how the device tells you what's happening. Pre-heat shows a different animation than a hit. The LED color tracks your voltage setting. The whole device speaks back to you as you use it.",
 ];
 
 // ─── Section 4 — Power ───────────────────────────────────────────────────────
