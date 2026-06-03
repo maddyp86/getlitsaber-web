@@ -47,7 +47,7 @@ export default function LightMeetsVapor() {
         style={{ y }}
       >
         <picture className="absolute inset-0 block">
-          <source media="(min-width: 1024px)" srcSet="/images/home/light-meets-vapor.jpg" />
+          <source media="(min-width: 1025px)" srcSet="/images/home/light-meets-vapor.jpg" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/home/light-meets-vapor-mobile.jpg"
