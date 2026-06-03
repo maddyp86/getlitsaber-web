@@ -24,18 +24,22 @@ export default async function PDPPage() {
   return (
 <div className="pt-navbar lg:px-[50px] py-xl">
       <PdpViewTracker />
-      <div className="mx-auto w-full max-w-[1250px]">
+      <div className="mx-auto w-full max-w-[1250px] pb-xl">
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
           available={available}
           surface="pdp"
         />
       </div>
+      <hr className="w-full border-t border-border-divider" />
       <section className="mx-auto w-full max-w-[1250px] mt-24 px-5 lg:px-0">
-        <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
-          <div className="flex justify-center mb-10">
+        <h2 className="font-display text-h3 lg:text-h1 text-text-primary text-center mb-10">
+          Customer Reviews
+        </h2>
+        <div className="flex justify-end mb-6">
           <WriteReviewButton />
         </div>
+        <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
       </section>
     </div>
   );

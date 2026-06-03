@@ -43,6 +43,7 @@ const config: Config = {
           accent: tokens.color.border.accent.value,
           cta: tokens.color.border.cta.value,
           pill: tokens.color.border.pill.value,
+          divider: tokens.color.border.divider.value,
         },
         surface: {
           "tint-cyan": tokens.color.surface["tint-cyan"].value,
