@@ -3,7 +3,7 @@ import { getProductByHandle } from "@/lib/shopify/queries";
 import ProductDisplay from "@/components/product/ProductDisplay/ProductDisplay";
 import PdpViewTracker from "@/components/pdp/PdpViewTracker";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
-import WriteReviewButton from "@/components/reviews/WriteReviewButton";
+{/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
 
 export const metadata: Metadata = {
   title: "Litsaber OG — The Interactive 510 Battery",
