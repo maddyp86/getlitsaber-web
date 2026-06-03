@@ -107,7 +107,7 @@ export default function EmailSignupBanner() {
         className="absolute inset-0 block lg:hidden"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.50) 47.5%), url(/images/home/litsaber-festival-mobile.jpg) lightgray 50% / cover no-repeat",
+            "linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.50) 47.5%), url(images/global/litsaber-footer-background.webp) lightgray 50% / cover no-repeat",
         }}
         aria-hidden="true"
       />
