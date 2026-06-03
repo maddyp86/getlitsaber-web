@@ -9,7 +9,7 @@ export default function JudgemeScripts() {
       <Script
         id="jdgm-preloader"
         src="https://cdnwidget.judge.me/widget_preloader.js"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         data-cfasync="false"
       />
     </>
