@@ -50,7 +50,7 @@ export default function TechHero() {
               {HERO_HEADLINE_LINE1}
               <br />
               <span
-                className="text-accent-cyan"
+                className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
                 style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
               >
                 {HERO_HEADLINE_ACCENT}
