@@ -126,7 +126,6 @@ export default function InhaleVideo() {
                   className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
                   initial={prefersReduced ? false : { opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.65, delay: 0.1 + i * 0.1, ease: EASE }}
                 >
                   {block}
