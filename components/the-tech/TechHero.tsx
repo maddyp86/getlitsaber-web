@@ -8,7 +8,8 @@ import {
   HERO_HEADLINE_ACCENT,
   HERO_BODY,
   HERO_CTA,
-  HERO_IMAGE_SRC,
+  HERO_IMAGE_SRC_DESKTOP,
+  HERO_IMAGE_SRC_MOBILE,
   HERO_IMAGE_ALT,
 } from "./the-tech.content";
 
@@ -94,28 +95,23 @@ export default function TechHero() {
         </div>
 
         {/* Hero image — inset rounded card on mobile, full-bleed right on desktop */}
-        <motion.div
-          className="relative mt-10 mx-[20px] aspect-[4/5] rounded-card overflow-hidden lg:mt-0 lg:mx-0 lg:aspect-auto lg:rounded-none"
-          initial={prefersReduced ? false : { opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-        >
-          {HERO_IMAGE_SRC ? (
-            <Image
-              src={HERO_IMAGE_SRC}
-              alt={HERO_IMAGE_ALT}
-              fill
-              className="object-cover object-center"
-              priority
-            />
-          ) : (
-            <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card lg:rounded-none lg:border-0 border border-border-pill">
-              <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                Hero Image
-              </span>
-            </div>
-          )}
-        </motion.div>
+     <motion.div
+  className="relative mt-10 mx-[20px] aspect-[4/5] rounded-card overflow-hidden lg:mt-0 lg:mx-0 lg:aspect-auto lg:rounded-none"
+  initial={prefersReduced ? false : { opacity: 0, scale: 0.97 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
+>
+  <picture>
+    <source media="(min-width: 1024px)" srcSet={HERO_IMAGE_SRC_DESKTOP} />
+    <img
+      src={HERO_IMAGE_SRC_MOBILE}
+      alt={HERO_IMAGE_ALT}
+      className="absolute inset-0 h-full w-full object-cover object-center"
+      fetchPriority="high"
+      decoding="async"
+    />
+  </picture>
+</motion.div>
       </div>
     </section>
   );
