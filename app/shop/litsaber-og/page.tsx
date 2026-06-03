@@ -32,10 +32,10 @@ export default async function PDPPage() {
         />
       </div>
       <section className="mx-auto w-full max-w-[1250px] mt-24 px-5 lg:px-0">
-        <div className="flex justify-end mb-6">
+        <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
+          <div className="flex justify-end mb-6">
           <WriteReviewButton />
         </div>
-        <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
       </section>
     </div>
   );
