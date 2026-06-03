@@ -30,6 +30,7 @@ export default function WhatCustomersSay() {
           className="font-display uppercase text-text-primary leading-tight"
           style={{
             fontSize: "clamp(45px, 5.5vw, 75px)",
+            fontWeight: "700",
             textShadow: "0 0 28px rgba(0,229,255,0.40), 0 0 60px rgba(0,229,255,0.18)",
             lineHeight: "normal",
           }}
