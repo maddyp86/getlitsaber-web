@@ -10,7 +10,7 @@ interface StyleSelectorProps {
 
 export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelectorProps) {
   return (
-    <div className="flex flex-col gap-10 w-full">
+    <div className="flex flex-col gap-3 w-full">
       <p className="font-body font-medium text-[14px] text-text-secondary uppercase">
         Available Styles
       </p>
