@@ -32,20 +32,21 @@ export default function TechHero() {
         {/* Text block — owns the padding now */}
       <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 px-[20px] py-16 lg:py-24 lg:pl-[50px] lg:pr-16 lg:max-w-[560px]">
 
-          <motion.h1
-            className="block font-display font-bold text-display-lg text-center text-text-primary leading-none"
-             style={{fontSize: "clamp(50px, 6.5vw, 75px)"}} 
-            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
-          >
-            {HERO_HEADLINE_LINE1}
-            <span className="block font-accent font-normal text-center text-display-accent text-accent-cyan leading-none"
-              style={{fontSize: "clamp(45px, 6.5vw, 75px)"}} 
-              >
-              {HERO_HEADLINE_ACCENT}
-            </span>
-          </motion.h1>
+      jsx<motion.h1
+  className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
+  style={{ fontSize: "clamp(50px, 6.5vw, 75px)" }}
+  initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
+>
+  {HERO_HEADLINE_LINE1}
+  <span
+    className="block font-accent font-normal text-center lg:text-left text-display-accent text-accent-cyan leading-none"
+    style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
+  >
+    {HERO_HEADLINE_ACCENT}
+  </span>
+</motion.h1>
 
           <motion.p
             className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
