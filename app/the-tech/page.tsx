@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import TechHero from "@/components/the-tech/TechHero";
 import InhaleVideo from "@/components/the-tech/InhaleVideo";
-import BreathResponse from "@/components/the-tech/BreathResponse";
 import PowerSection from "@/components/the-tech/PowerSection";
 import VoltageSection from "@/components/the-tech/VoltageSection";
 import UniversalFit from "@/components/the-tech/UniversalFit";
@@ -18,7 +17,6 @@ export default function TheTechPage() {
     <main className="bg-background-primary pt-navbar">
       <TechHero />
       <InhaleVideo />
-      <BreathResponse />
       <PowerSection />
       <VoltageSection />
       <UniversalFit />
