@@ -31,7 +31,7 @@ export const HERO_EYEBROW = "THE ENGINEERING";
 export const HERO_HEADLINE_LINE1 = "BUILT TO";
 export const HERO_HEADLINE_ACCENT = "BE SEEN.";
 export const HERO_BODY =
-  "Most 510 batteries are engineered to disappear. Litsaber is engineered to be the opposite. Forty-one individually-addressable LEDs. Aluminum and brass at the connection. Polycarbonate diffuser that catches and holds the light. Built to be held, built to be raised, built to outlast the night.";
+  "Most 510 batteries are engineered to disappear. Litsaber was engineered to be the opposite. Built to be held, built to be raised, built to outlast the night.";
 export const HERO_CTA = "CHECK IT OUT";
 
 // ─── Section 2 — Inhale ──────────────────────────────────────────────────────
