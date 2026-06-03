@@ -119,7 +119,7 @@ export default function InhaleVideo() {
               {BREATH_HEADLINE}
             </motion.h2>
 
-            <div className="flex flex-col gap-4 mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               {BREATH_BODY_BLOCKS.map((block, i) => (
                 <motion.p
                   key={i}
