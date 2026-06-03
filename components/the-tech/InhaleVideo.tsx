@@ -113,10 +113,10 @@ export default function InhaleVideo() {
             style={{ 
               fontSize: "clamp(35px, 6.5vw, 55px)",
               fontColor:"#CCCCCC",
+              lineHeight:"1.1",
                    }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
             >
               {BREATH_HEADLINE}
