@@ -142,7 +142,6 @@ export default function InhaleVideo() {
             className="relative mt-10 lg:mt-0 lg:flex-1 w-full aspect-[3/4] lg:aspect-[4/5] rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
           >
             {BREATH_RESPONSE_IMAGE_SRC ? (
