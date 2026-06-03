@@ -32,7 +32,7 @@ export default function TechHero() {
         {/* Text block — owns the padding now */}
         <div className="flex flex-col justify-center gap-6 px-[20px] py-16 lg:py-24 lg:pl-[50px] lg:pr-16 lg:max-w-[560px]">
           <motion.p
-            className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
+            className="font-label text-eyebrow text-center tracking-[0.2em] uppercase text-accent-cyan"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE }}
@@ -41,14 +41,14 @@ export default function TechHero() {
           </motion.p>
 
           <motion.h1
-            className="block font-display font-bold text-display-lg text-text-primary leading-none"
+            className="block font-display font-bold text-display-lg text-center text-text-primary leading-none"
              style={{fontSize: "clamp(50px, 6.5vw, 75px)"}} 
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
           >
             {HERO_HEADLINE_LINE1}
-            <span className="block font-accent font-normal text-display-accent text-accent-cyan leading-none"
+            <span className="block font-accent font-normal text-center text-display-accent text-accent-cyan leading-none"
               style={{fontSize: "clamp(45px, 6.5vw, 75px)"}} 
               >
               {HERO_HEADLINE_ACCENT}
