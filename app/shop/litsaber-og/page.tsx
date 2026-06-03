@@ -33,7 +33,7 @@ export default async function PDPPage() {
       </div>
       <hr className="w-full border-t border-border-divider" />
       <section className="mx-auto w-full max-w-[1250px] mt-24 px-5 lg:px-0">
-        <h2 className="font-display text-h3 lg:text-h1 text-text-primary text-center mb-10"
+        <h2 className="font-display text-h3 lg:text-h1 text-text-primary text-center "
           style={{
               fontSize: "clamp(45px, 3.2vw, 75px)",
               fontStyle: "normal",
