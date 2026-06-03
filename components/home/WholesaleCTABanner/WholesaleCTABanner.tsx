@@ -54,7 +54,7 @@ export default function WholesaleCTABanner() {
             justifyContent: "center",
             alignItems: "center",
             gap: "10px",
-            fontSize: "clamp(11px, 1vw, 13px)",
+            fontSize: "clamp(14px, 1vw, 16px)",
             letterSpacing: "0.14em",
             background: "#EC5793",
             borderRadius: 6,
