@@ -61,7 +61,7 @@ export default function WholesaleCTABanner() {
           }}
         >
           VIEW WHOLESALE PROGRAM
-          <span aria-hidden="true" style={{ fontSize: "1.2em" }}>&rarr;</span>
+          <span aria-hidden="true" style={{ fontSize: "16px" }}>&rarr;</span>
         </Link>
       </div>
     </section>
