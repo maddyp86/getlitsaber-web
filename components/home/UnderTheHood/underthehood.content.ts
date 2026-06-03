@@ -1,6 +1,6 @@
 export const EYEBROW = "UNDER THE HOOD";
 
-export const HEADLINE = "ENGINEERED TO STAND OUT.";
+export const HEADLINE = "ENGINEERED TO STAND OUT";
 
 export const SUBHEADLINE =
   "A one of a kind interactive battery product packed with state of the art. Six components. Zero compromises. Every choice made so it earns the price.";
