@@ -37,7 +37,8 @@ export default function InhaleVideo() {
       {INHALE_HEADLINE_LINE1}
     </span>
     <br />
-    <span className="text-accent-cyan">
+    <span className="text-accent-cyan"
+         style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}>
       {INHALE_HEADLINE_LINE2}
     </span>
   </motion.h2>
