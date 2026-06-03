@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  HERO_EYEBROW,
   HERO_HEADLINE_LINE1,
   HERO_HEADLINE_ACCENT,
   HERO_BODY,
