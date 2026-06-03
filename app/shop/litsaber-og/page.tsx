@@ -23,7 +23,7 @@ export default async function PDPPage() {
   return (
     <div className="pt-navbar lg:px-container-desktop py-xl">
       <PdpViewTracker />
-      <div className="mx-auto w-full max-w-[1250px] px-8">
+      <div className="mx-auto w-full max-w-[1250px]">
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
           available={available}
