@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useToastActions } from "@/lib/toast/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
+import { motion, useReducedMotion } from "framer-motion";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
 
