@@ -7,7 +7,8 @@ export const VIDEO_SRC = "";
 // All images are remote URLs (GitHub-hosted). next.config.mjs must have
 // raw.githubusercontent.com whitelisted in images.remotePatterns.
 
-export const HERO_IMAGE_SRC = "";
+export const HERO_IMAGE_SRC_DESKTOP = "/images/tech/be-seen-desktop.jpg";
+export const HERO_IMAGE_SRC_MOBILE = "/images/tech/be-seen-mobile.jpg";
 export const HERO_IMAGE_ALT = "Litsaber OG glowing in a dark environment";
 
 export const BREATH_RESPONSE_IMAGE_SRC = "";
