@@ -97,7 +97,7 @@ export default function InhaleVideo() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
 
           {/* Copy — left on desktop, top on mobile */}
-          <div className="flex flex-col gap-2 lg:flex-1">
+          <div className="flex flex-col gap-3 lg:flex-1">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
