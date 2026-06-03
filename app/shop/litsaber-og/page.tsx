@@ -21,9 +21,9 @@ export default async function PDPPage() {
   const numericProductId = product?.id?.split("/").pop() ?? "";
 
   return (
-    <div className="pt-navbar lg:px-container-desktop py-xl px-8">
+    <div className="pt-navbar lg:px-container-desktop py-xl">
       <PdpViewTracker />
-      <div className="mx-auto w-full max-w-[1250px]">
+      <div className="mx-auto w-full max-w-[1250px] px-8">
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
           available={available}
