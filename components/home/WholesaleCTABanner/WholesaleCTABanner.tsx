@@ -16,7 +16,7 @@ export default function WholesaleCTABanner() {
 
       <div className="h-full mx-auto max-w-screen-xl p-5 lg:px-16 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-6">
         {/* Left: headline + sub-copy */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 text-center lg:text-left">
           <h2
             className="font-subhead font-black uppercase leading-none text-white"
             style={{
@@ -44,9 +44,16 @@ export default function WholesaleCTABanner() {
         {/* Right: CTA button */}
         <Link
           href="/wholesale"
-          className="font-label font-bold uppercase tracking-widest text-white opacity-75 transition-opacity duration-200 hover:opacity-100 active:opacity-60 whitespace-nowrap self-center lg:self-auto flex items-center gap-3 px-8 py-4"
+          className="font-label font-bold uppercase tracking-widest text-white opacity-75 transition-opacity duration-200 hover:opacity-100 active:opacity-60 whitespace-nowrap shrink-0"
           style={{
-            fontSize: "clamp(12px, 1vw, 14px)",
+            display: "flex",
+            width: "300px",
+            height: "60px",
+            padding: "20px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+            fontSize: "clamp(11px, 1vw, 13px)",
             letterSpacing: "0.14em",
             background: "#EC5793",
             borderRadius: 6,
