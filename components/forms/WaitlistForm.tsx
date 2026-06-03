@@ -135,7 +135,7 @@ export default function WaitlistForm({
           </p>
         )}
         <h2
-          className="font-subhead font-bold text-text-primary uppercase leading-tight"
+          className="font-display font-bold text-white uppercase text-center mb-4"
           style={{ fontSize: "clamp(45px, 6.5vw, 75px)", }}
         >
           {headline}
