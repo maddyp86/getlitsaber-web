@@ -14,6 +14,7 @@ import ToastContainer from "@/components/layout/ToastContainer";
 import PostHogProvider from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import JudgemeScripts from "@/components/reviews/JudgemeScripts";
 
 export const metadata: Metadata = {
   title: {
@@ -49,6 +50,7 @@ export default function RootLayout({
       ].join(" ")}
     >
       <body className="font-body bg-background-primary text-text-primary antialiased">
+        <JudgemeScripts />
         <PostHogProvider>
           {/* Age gate sits at z-age-gate (300) — above everything */}
           <AgeGateModal />

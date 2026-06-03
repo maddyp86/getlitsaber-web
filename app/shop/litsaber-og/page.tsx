@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getProductByHandle } from "@/lib/shopify/queries";
 import ProductDisplay from "@/components/product/ProductDisplay/ProductDisplay";
 import PdpViewTracker from "@/components/pdp/PdpViewTracker";
+import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
 
 export const metadata: Metadata = {
   title: "Litsaber OG — The Interactive 510 Battery",
@@ -16,9 +17,8 @@ export default async function PDPPage() {
     .map((e) => e.node)
     .find((v) => v.sku === SILVER_SKU) ?? null;
 
-  // If Shopify is not configured (local dev without env vars), default to
-  // showing the buy buttons rather than "Currently unavailable".
   const available = shopifyConfigured ? silverVariant?.availableForSale === true : true;
+  const numericProductId = product?.id?.split("/").pop() ?? "";
 
   return (
     <div className="pt-navbar px-container-mobile lg:px-container-desktop py-xl ">
@@ -30,6 +30,9 @@ export default async function PDPPage() {
           surface="pdp"
         />
       </div>
+      <section className="mx-auto w-full max-w-[1250px] mt-24">
+        <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
+      </section>
     </div>
   );
 }
