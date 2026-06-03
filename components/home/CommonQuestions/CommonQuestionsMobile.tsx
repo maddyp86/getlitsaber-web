@@ -89,7 +89,7 @@ export default function CommonQuestionsMobile() {
       />
 
       {/* Header */}
-      <div ref={ref} className="relative z-10 flex flex-col items-start text-center mb-8">
+      <div ref={ref} className="relative z-10 flex flex-col  text-center mb-8">
         <motion.p
           className="font-label text-text-accent text-eyebrow uppercase tracking-widest mb-3"
           initial={{ opacity: 0, y: 24 }}
