@@ -95,22 +95,30 @@ export default function TechHero() {
         </div>
 
         {/* Hero image — inset rounded card on mobile, full-bleed right on desktop */}
-     <motion.div
+  <motion.div
   className="relative mt-10 mx-[20px] aspect-[4/5] rounded-card overflow-hidden lg:mt-0 lg:mx-0 lg:aspect-auto lg:rounded-none"
   initial={prefersReduced ? false : { opacity: 0, scale: 0.97 }}
   animate={{ opacity: 1, scale: 1 }}
   transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
 >
-  <picture>
-    <source media="(min-width: 1024px)" srcSet={HERO_IMAGE_SRC_DESKTOP} />
-    <img
-      src={HERO_IMAGE_SRC_MOBILE}
-      alt={HERO_IMAGE_ALT}
-      className="absolute inset-0 h-full w-full object-cover object-center"
-      fetchPriority="high"
-      decoding="async"
-    />
-  </picture>
+  {/* Mobile crop — visible below lg */}
+  <Image
+    src={HERO_IMAGE_SRC_MOBILE}
+    alt={HERO_IMAGE_ALT}
+    fill
+    sizes="(min-width: 1024px) 0px, 100vw"
+    className="object-cover object-center lg:hidden"
+    priority
+  />
+  {/* Desktop crop — visible at lg and up */}
+  <Image
+    src={HERO_IMAGE_SRC_DESKTOP}
+    alt={HERO_IMAGE_ALT}
+    fill
+    sizes="(min-width: 1024px) 50vw, 0px"
+    className="hidden object-cover object-center lg:block"
+    priority
+  />
 </motion.div>
       </div>
     </section>
