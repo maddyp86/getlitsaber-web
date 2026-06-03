@@ -48,7 +48,7 @@ export default function TechHero() {
 </motion.h1>
 
           <motion.p
-            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-2"
+            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
@@ -66,7 +66,7 @@ export default function TechHero() {
     className="flex flex-col items-center gap-2 group"
     aria-label="Scroll to next section"
   >
-    <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors">
+    <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors mb-2">
       {HERO_CTA}
     </span>
     <Image
