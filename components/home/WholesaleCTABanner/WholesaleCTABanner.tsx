@@ -22,7 +22,7 @@ export default function WholesaleCTABanner() {
             style={{
               fontSize: "clamp(22px, 3.2vw, 35px)",
               fontStyle: "normal",
-              lineHeight:"20px"
+              lineHeight:"30px"
             }}
           >
             STOCK LITSABER IN YOUR{" "}
