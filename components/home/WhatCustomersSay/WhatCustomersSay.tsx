@@ -39,7 +39,7 @@ export default function WhatCustomersSay() {
         >
           AS SEEN ON TIKTOK
         </motion.h2>
-       <motion.p className="font-body text-body text-text-muted">{`See what we've been up to lately!`}</motion.p>
+       <motion.p className="font-body text-[16px] text-body text-text-muted">{`See what we've been up to lately!`}</motion.p>
       </div>
 
       <TikTokRail videos={VIDEOS} />
