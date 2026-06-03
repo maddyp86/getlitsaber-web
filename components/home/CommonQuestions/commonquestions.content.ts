@@ -1,5 +1,5 @@
 export const EYEBROW = "BEFORE YOUR BUY";
-export const HEADLINE = "COMMON QUESTIONS.";
+export const HEADLINE = "COMMON QUESTIONS";
 
 export interface FaqItem {
   number: string;
