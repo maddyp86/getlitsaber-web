@@ -32,7 +32,7 @@ export default function TechHero() {
         {/* Text block — owns the padding now */}
       <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 px-[20px] py-16 lg:py-24 lg:pl-[50px] lg:pr-16 lg:max-w-[560px]">
 
-      jsx<motion.h1
+    <motion.h1
   className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
   style={{ fontSize: "clamp(50px, 6.5vw, 75px)" }}
   initial={prefersReduced ? false : { opacity: 0, y: 24 }}
