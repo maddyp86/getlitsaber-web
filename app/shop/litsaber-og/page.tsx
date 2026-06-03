@@ -3,7 +3,7 @@ import { getProductByHandle } from "@/lib/shopify/queries";
 import ProductDisplay from "@/components/product/ProductDisplay/ProductDisplay";
 import PdpViewTracker from "@/components/pdp/PdpViewTracker";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
-import WriteReviewButton from "@/components/reviews/WriteReviewButton";
+{/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
 
 export const metadata: Metadata = {
   title: "Litsaber OG — The Interactive 510 Battery",
@@ -33,7 +33,7 @@ export default async function PDPPage() {
       </div>
       <hr className="w-full border-t border-border-divider" />
       <section className="mx-auto w-full max-w-[1250px] mt-24 px-5 lg:px-0">
-        <h2 className="font-display text-h3 lg:text-h1 text-text-primary text-center mb-10"
+        <h2 className="font-display text-h3 lg:text-h1 text-text-primary text-center "
           style={{
               fontSize: "clamp(45px, 3.2vw, 75px)",
               fontStyle: "normal",
@@ -42,7 +42,7 @@ export default async function PDPPage() {
           Customer Reviews
         </h2>
         <div className="flex justify-center mb-6">
-          <WriteReviewButton />
+        {/* <WriteReviewButton /> */}
         </div>
         <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
       </section>
