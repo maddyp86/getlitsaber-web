@@ -56,37 +56,29 @@ export default function TechHero() {
             {HERO_BODY}
           </motion.p>
 
-          <motion.div
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
-          >
-            <button
-              onClick={scrollToInhale}
-              className="flex flex-col items-center gap-2 group"
-              aria-label="Scroll to next section"
-            >
-              <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors">
-                {HERO_CTA}
-              </span>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="text-accent-cyan group-hover:translate-y-1 transition-transform"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 5v14M5 12l7 7 7-7"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </motion.div>
+         <motion.div
+  initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
+>
+  <button
+    onClick={scrollToInhale}
+    className="flex flex-col items-center gap-2 group"
+    aria-label="Scroll to next section"
+  >
+    <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors">
+      {HERO_CTA}
+    </span>
+    <Image
+      src="/images/icons/down-arrow-download-svgrepo-com 1.svg"
+      alt=""
+      width={24}
+      height={24}
+      aria-hidden="true"
+      className="group-hover:translate-y-1 transition-transform"
+    />
+  </button>
+</motion.div>
         </div>
 
         {/* Hero image — inset rounded card on mobile, full-bleed right on desktop */}
