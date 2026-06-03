@@ -31,14 +31,6 @@ export default function TechHero() {
 
         {/* Text block — owns the padding now */}
         <div className="flex flex-col justify-center gap-6 px-[20px] py-16 lg:py-24 lg:pl-[50px] lg:pr-16 lg:max-w-[560px]">
-          <motion.p
-            className="font-label text-eyebrow text-center tracking-[0.2em] uppercase text-accent-cyan"
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-          >
-            {HERO_EYEBROW}
-          </motion.p>
 
           <motion.h1
             className="block font-display font-bold text-display-lg text-center text-text-primary leading-none"
