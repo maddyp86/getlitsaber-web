@@ -1,4 +1,5 @@
 import TikTokRail, { TikTokVideo } from "./TikTokRail";
+import { motion, useReducedMotion } from "framer-motion";
 
 const VIDEOS: TikTokVideo[] = [
   { url: "https://www.tiktok.com/@getlitsaber/video/7599752282464455967", thumbnail: "/images/reviews/review1.jpg", caption: "", views: "" },
@@ -26,7 +27,7 @@ export default function WhatCustomersSay() {
         >
           REVIEWS
         </span>
-        <h2
+        <motion.h2
           className="font-display uppercase text-text-primary leading-tight"
           style={{
             fontSize: "clamp(45px, 5.5vw, 75px)",
@@ -36,8 +37,8 @@ export default function WhatCustomersSay() {
           }}
         >
           AS SEEN ON TIKTOK
-        </h2>
-       <p className="font-body text-body text-text-muted">{`See what we've been up to lately!`}</p>
+        </motion.h2>
+       <motion.p className="font-body text-body text-text-muted">{`See what we've been up to lately!`}</motion.p>
       </div>
 
       <TikTokRail videos={VIDEOS} />
