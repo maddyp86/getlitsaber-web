@@ -110,7 +110,10 @@ export default function InhaleVideo() {
 
             <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
-            style={{ fontSize: "clamp(35px, 6.5vw, 55px)" }}
+            style={{ 
+              fontSize: "clamp(35px, 6.5vw, 55px)",
+              fontColor:"#CCCCCC",
+                   }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
 
