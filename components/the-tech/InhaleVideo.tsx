@@ -20,19 +20,27 @@ export default function InhaleVideo() {
       aria-label="Inhale. Watch what happens."
     >
       <div className="mx-auto w-full max-w-[1250px] px-5 lg:px-0 py-16 lg:py-24">
-        {/* Centered headline */}
-        <div className="flex flex-col items-center text-center gap-5 mb-12">
-          <motion.h2
-            className="font-display text-h3 lg:text-h1 text-text-primary leading-[1.1]"
-            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.75, ease: EASE }}
-          >
-            {INHALE_HEADLINE_LINE1}
-            <br />
-            {INHALE_HEADLINE_LINE2}
-          </motion.h2>
+       {/* Centered headline */}
+<div className="flex flex-col items-center text-center gap-5 mb-12">
+  <motion.h2
+    className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
+    style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
+    initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.75, ease: EASE }}
+  >
+    <span
+      className="text-white"
+      style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
+    >
+      {INHALE_HEADLINE_LINE1}
+    </span>
+    <br />
+    <span className="text-accent-cyan">
+      {INHALE_HEADLINE_LINE2}
+    </span>
+  </motion.h2>
 
           <motion.p
             className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[640px]"
