@@ -114,14 +114,16 @@ export default function EmailSignupBanner() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-container-mobile lg:px-container py-20 lg:py-24 gap-6">
-        <h2
+        <motion.h2
           className="font-display font-black uppercase text-white leading-none"
-         style={{ fontSize: "clamp(36px, 6vw, 80px)", lineHeight: "1.05" }}
+         style={{ 
+           fontSize: "clamp(45px, 6vw, 75px)",
+         fontWeight:"700"}}
         >
           DON&rsquo;T LEAVE
           <br />
           EMPTY-HANDED.
-        </h2>
+        </motion.h2>
 
         <p
           className="font-body text-secondary max-w-2xl leading-relaxed"
