@@ -27,7 +27,7 @@ export default function WhatCustomersSay() {
         >
           REVIEWS
         </span>
-        <motion.h2
+        <h2
           className="font-display uppercase text-text-primary leading-tight"
           style={{
             fontSize: "clamp(45px, 5.5vw, 75px)",
@@ -37,8 +37,8 @@ export default function WhatCustomersSay() {
           }}
         >
           AS SEEN ON TIKTOK
-        </motion.h2>
-       <motion.p className="font-body text-body text-text-muted">{`See what we've been up to lately!`}</motion.p>
+        </h2>
+       <p className="font-body text-body text-text-muted">{`See what we've been up to lately!`}</p>
       </div>
 
       <TikTokRail videos={VIDEOS} />
