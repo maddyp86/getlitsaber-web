@@ -16,7 +16,7 @@ export default function InhaleVideo() {
   return (
     <section
       id="inhale"
-      className="relative w-full bg-background-primary"
+      className="relative isolate overflow-hidden w-full bg-background-primary"
       aria-label="Inhale. Watch what happens."
     >
       <div className="mx-auto w-full max-w-[1250px] px-[60px] py-16 ">
@@ -85,6 +85,16 @@ export default function InhaleVideo() {
             </div>
           )}
         </motion.div>
+
+        {/* Ambient glow — sits behind all section content */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute left-1/2 top-[160px] -z-10 h-[800px] w-[800px] -translate-x-1/2 rounded-full"
+  style={{
+    background: "rgba(30, 0, 77, 0.75)",
+    filter: "blur(150px)",
+  }}
+/>
       </div>
     </section>
   );
