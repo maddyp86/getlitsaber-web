@@ -125,14 +125,14 @@ export default function EmailSignupBanner() {
           EMPTY-HANDED.
         </motion.h2>
 
-        <p
+        <motion.p
           className="font-body text-secondary max-w-2xl leading-relaxed"
           style={{
             fontSize: "clamp(15px, 1.8vw, 18px)",
           }}
         >
           Get $10 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
-        </p>
+        </motion.p>
 
         <form
           onSubmit={handleSubmit}
