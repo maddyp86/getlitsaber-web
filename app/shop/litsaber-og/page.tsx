@@ -33,7 +33,7 @@ export default async function PDPPage() {
       </div>
       <section className="mx-auto w-full max-w-[1250px] mt-24 px-5 lg:px-0">
         <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-10">
           <WriteReviewButton />
         </div>
       </section>
