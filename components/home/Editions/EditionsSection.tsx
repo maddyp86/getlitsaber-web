@@ -11,8 +11,12 @@ export default function EditionsSection() {
             {EYEBROW}
           </p>
           <h2
-            className="font-display font-bold text-h1 text-white uppercase text-center mb-4"
-            style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)", lineHeight: "normal" }}
+            className="font-display font-bold text-white uppercase text-center mb-4"
+            style={{ 
+              textShadow: "0 0 50px rgba(0, 229, 255, 0.75)", 
+              lineHeight: "normal",
+              fontSize: "clamp(45px, 6.5vw, 75px)",
+            }}
           >
             {HEADLINE}
           </h2>
