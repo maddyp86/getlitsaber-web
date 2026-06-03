@@ -103,8 +103,12 @@ export default function CommonQuestionsDesktop() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold text-text-primary uppercase"
-          style={{ fontSize: "clamp(48px, 5.5vw, 80px)", lineHeight: "1.05" }}
+          className="font-display font-bold text-text-primary uppercase text-center "
+         style={{ 
+              textShadow: "0 0 50px rgba(0, 229, 255, 0.75)", 
+              lineHeight: "normal",
+              fontSize: "clamp(45px, 6.5vw, 75px)",
+            }}
           initial={{ opacity: 0, y: 28 }}
           animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
           transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
