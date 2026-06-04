@@ -65,9 +65,10 @@ export const VOLTAGE_EYEBROW = "DIALED IN";
 export const VOLTAGE_HEADLINE_LINE1 = "Tuned for";
 export const VOLTAGE_HEADLINE_ACCENT = "the Oil";
 export const VOLTAGE_BODY =
-  "Three voltage settings, mapped to what's actually in your cart.";
-export const VOLTAGE_EXTRA =
-  "Plus a pre-heat cycle for thicker products. One long-press moment to warm up. The setting you choose changes the experience and the LED color tells you exactly which voltage you're on.";
+  "Three voltage settings, mapped to what's actually in your cart.",
+  "**2.4V for rosin and live resin.** Lower power preserves terpenes and delivers smoother flavor. **2.8V for cured resin and hybrids.** Balanced vapor production and oil efficiency. **3.2V for distillate and liquid diamonds.** Dense clouds, stronger pull.",
+  "Plus a pre-heat cycle for thicker products that need a moment to warm up. The setting you choose changes the experience and the LED color tells you exactly which voltage you're on.",
+  ];
 
 export interface VoltageRow {
   voltage: string;
