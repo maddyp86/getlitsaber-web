@@ -25,7 +25,7 @@ export default function VoltageSection() {
       aria-label="Tuned for the oil"
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
+        <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-16">
 
           {/* Left: voltage table + device image, wrapped in a bordered card */}
           <motion.div
@@ -61,7 +61,7 @@ export default function VoltageSection() {
               ))}
             </div>
           {/* Device image below the table */}
-    <div className="relative w-full h-[322px] aspect-[4/5] overflow-hidden">
+    <div className="relative w-full h-[322px] overflow-hidden">
   {VOLTAGE_DEVICE_IMAGE_SRC ? (
     <Image
       src={VOLTAGE_DEVICE_IMAGE_SRC}
