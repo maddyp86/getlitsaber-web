@@ -75,7 +75,7 @@ export default function VoltageSection() {
                   src={VOLTAGE_DEVICE_IMAGE_SRC}
                   alt={VOLTAGE_DEVICE_IMAGE_ALT}
                   fill
-                  sizes="(min-width: 1024px) 460px, 100vw"
+                  sizes="(min-width: 1024px) 350px, 100vw"
                   className="object-cover object-center"
                 />
               ) : (
