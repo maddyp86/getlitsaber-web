@@ -107,7 +107,7 @@ export default function SellThrough() {
             return (
               <motion.div
                 key={card.title}
-                className="flex flex-col gap-4 p-6 lg:p-8 rounded-card border border-[#1E1040] bg-[#080215]"
+                className="flex flex-col gap-4 p-6 lg:p-8 rounded-card border border-[#1E1040]"
                 initial={prefersReduced ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
