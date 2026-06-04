@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  POWER_EYEBROW,
   POWER_HEADLINE1,
   POWER_HEADLINE2,
   POWER_BODY,
@@ -75,15 +74,6 @@ export default function PowerSection() {
 
           {/* Copy — right on desktop, below image on mobile */}
           <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
-            <motion.p
-              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {POWER_EYEBROW}
-            </motion.p>
 
             <motion.h2
               className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
