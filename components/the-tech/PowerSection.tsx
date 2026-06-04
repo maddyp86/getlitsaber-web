@@ -111,20 +111,6 @@ export default function PowerSection() {
               {renderEmphasis(block)}
             </motion.p>
   ))}
-            <div className="flex flex-col gap-3 mt-1">
-              {POWER_BULLETS.map((bullet, i) => (
-                <motion.p
-                  key={i}
-                  className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-                  initial={prefersReduced ? false : { opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6, delay: 0.25 + i * 0.1, ease: EASE }}
-                >
-                  {bullet}
-                </motion.p>
-              ))}
-            </div>
           </div>
         </div>
 
