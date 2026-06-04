@@ -7,8 +7,6 @@ import {
   FIT_HEADLINE_LINE1,
   FIT_HEADLINE_ACCENT,
   FIT_BODY,
-  FIT_BODY_2,
-  FIT_BODY_3,
   CART_SIZES_LABEL,
   CART_LINEUP_IMAGE_SRC,
   CART_LINEUP_IMAGE_ALT,
@@ -72,12 +70,6 @@ export default function UniversalFit() {
           >
             <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
               {FIT_BODY}
-            </p>
-            <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
-              {FIT_BODY_2}
-            </p>
-            <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
-              {FIT_BODY_3}
             </p>
           </motion.div>
         </div>
