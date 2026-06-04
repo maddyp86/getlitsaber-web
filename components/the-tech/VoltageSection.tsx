@@ -47,12 +47,7 @@ export default function VoltageSection() {
         {row.voltage}
       </span>
       <div className="flex flex-col">
-        <span
-          className="font-label text-eyebrow text-right  font-bold tracking-[0.15em] uppercase"
-          style={{ color: row.color }}
-        >
-          {row.label}
-        </span>
+        
         <span className="font-body text-body-sm text-right text-text-secondary">
           {row.oilType}
         </span>
