@@ -69,21 +69,22 @@ export default function UniversalFit() {
             </span>
           </motion.h2>
 
-          <div
-            className="flex flex-col gap-3 max-w-[720px]"
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-          >
-              {FIT_BODY.map((block, i) => (
-            <motion.p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-                      key={i}>
-               </motion.p>
-                 {renderEmphasis(block)}
-          </div>
-            ))}
-        </div>
+     <motion.div
+  className="flex flex-col gap-3 max-w-[720px]"
+  initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+>
+  {FIT_BODY.map((block, i) => (
+    <motion.p
+      key={i}
+      className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+    >
+      {renderEmphasis(block)}
+    </motion.p>
+  ))}
+</motion.div>
 
         {/* Cart sizes diagram */}
         <motion.div
