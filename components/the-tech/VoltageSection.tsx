@@ -27,7 +27,7 @@ export default function VoltageSection() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Left: voltage table + device image */}
-          <div className="flex flex-col gap-8 lg:flex-1">
+          <div className="flex flex-col gap-8 lg:flex-1 bg-[#0A0515]">
             {/* Voltage table */}
             <motion.div
               className="flex flex-col gap-3"
