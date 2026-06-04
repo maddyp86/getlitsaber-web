@@ -53,14 +53,14 @@ export default function TechCta() {
           >
             <Link
               href={CTA_PRIMARY_HREF}
-              className="inline-flex items-center justify-center font-label font-bold text-eyebrow uppercase tracking-wider px-8 py-4 rounded-md bg-cta text-white transition-all hover:shadow-glow-cta-hover hover:brightness-110"
+              className=" items-center justify-center font-label font-bold text-eyebrow uppercase tracking-wider px-8 py-4 rounded-md bg-cta text-white transition-all hover:shadow-glow-cta-hover hover:brightness-110"
             >
               {CTA_PRIMARY_LABEL}
             </Link>
 
             <Link
               href={CTA_SECONDARY_HREF}
-              className="inline-flex items-center justify-center font-label font-bold text-eyebrow uppercase tracking-wider px-8 py-4 rounded-md border border-text-muted text-text-secondary transition-colors hover:border-cyan hover:text-cyan"
+              className=" items-center justify-center font-label font-bold text-eyebrow uppercase tracking-wider px-8 py-4 rounded-md border border-text-muted text-text-secondary transition-colors hover:border-cyan hover:text-cyan"
             >
               {CTA_SECONDARY_LABEL}
             </Link>
