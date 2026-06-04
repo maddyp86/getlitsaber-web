@@ -114,7 +114,7 @@ export default function SellThrough() {
                 transition={{ duration: 0.65, delay: i * 0.08, ease: EASE }}
               >
                 <Icon />
-                <h3 className="font-display font-bold text-white leading-tight" style={{ fontSize: "clamp(18px, 2vw, 22px)" }}>
+                <h3 className="font-body font-bold text-white leading-tight" style={{ fontSize: "clamp(20px, 2vw, 30px)" }}>
                   {card.title}
                 </h3>
                 <p className="font-body text-body-sm text-text-secondary leading-relaxed">
