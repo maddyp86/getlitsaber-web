@@ -32,7 +32,7 @@ export default function PowerSection() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-background-primary"
+      className="relative isolate overflow-hidden w-full bg-[#100B25]"
       aria-label="Power that keeps up"
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
