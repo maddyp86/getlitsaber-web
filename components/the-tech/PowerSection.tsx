@@ -115,7 +115,7 @@ export default function PowerSection() {
 
         {/* Full-width exploded render below the 2-col */}
         <motion.div
-          className="mt-10 relative w-full mt-16 lg:mt-20 aspect-[16/7] lg:aspect-[16/6] rounded-card overflow-hidden"
+          className="relative w-full mt-20 lg:mt-20 aspect-[16/7] lg:aspect-[16/6] rounded-card overflow-hidden"
           initial={prefersReduced ? false : { opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
