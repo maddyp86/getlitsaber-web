@@ -1,15 +1,38 @@
 import type { Metadata } from "next";
+import WholesaleHero from "@/components/wholesale/WholesaleHero";
+import WholesaleStatsBar from "@/components/wholesale/WholesaleStatsBar";
+import SellsItself from "@/components/wholesale/SellsItself";
+import SellThrough from "@/components/wholesale/SellThrough";
+import DemandSection from "@/components/wholesale/DemandSection";
+import MarginsSection from "@/components/wholesale/MarginsSection";
+import RetailKit from "@/components/wholesale/RetailKit";
+import WholesaleFaq from "@/components/wholesale/WholesaleFaq";
+import WholesaleCta from "@/components/wholesale/WholesaleCta";
 
 export const metadata: Metadata = {
-  title: "Wholesale — Stock Litsaber in Your Shop",
+  title: "Wholesale — Litsaber | Stock the 510 Battery Customers Ask For",
+  description:
+    "Litsaber wholesale program. 4-tier pricing from 5 units to 10,000+. $24/unit starting price, $59.99 MSRP. Apply for the full pricing sheet and get a response within 24 hours.",
+  openGraph: {
+    title: "Wholesale — Litsaber",
+    description:
+      "4-tier wholesale pricing. Starting at $24/unit. $59.99 MSRP. Apply for the full sheet.",
+    url: "https://getlitsaber.com/wholesale",
+  },
 };
 
 export default function WholesalePage() {
   return (
-    <div className="flex items-center justify-center min-h-[60vh] pt-navbar">
-      <p className="font-label text-label text-text-muted tracking-widest uppercase">
-        Wholesale — coming in Phase 2
-      </p>
-    </div>
+    <main>
+      <WholesaleHero />
+      <WholesaleStatsBar />
+      <SellsItself />
+      <SellThrough />
+      <DemandSection />
+      <MarginsSection />
+      <RetailKit />
+      <WholesaleFaq />
+      <WholesaleCta />
+    </main>
   );
 }

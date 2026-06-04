@@ -1,0 +1,187 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { Fragment } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  MARGINS_EYEBROW,
+  MARGINS_HEADLINE_LINE1,
+  MARGINS_HEADLINE_ACCENT,
+  MARGINS_BODY,
+  MARGINS_STATS,
+  MARGINS_BAND_HEADLINE,
+  MARGINS_BAND_SUBLINE,
+  MARGINS_BAND_CTA,
+  GEOMETRIC_SHAPE_SRC,
+} from "./wholesale.content";
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+function renderEmphasis(text: string) {
+  return text.split("**").map((segment, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-bold text-white">
+        {segment}
+      </strong>
+    ) : (
+      segment
+    )
+  );
+}
+
+export default function MarginsSection() {
+  const prefersReduced = useReducedMotion();
+
+  return (
+    <section
+      id="numbers"
+      className="relative isolate overflow-hidden w-full bg-[#100B25]"
+      aria-label="Premium margins, real numbers"
+    >
+      {/* Decorative geometric shape */}
+      <div
+        className="absolute pointer-events-none -z-10"
+        style={{ width: "480px", height: "400px", bottom: 0, left: -80, opacity: 0.25 }}
+        aria-hidden="true"
+      >
+        <Image
+          src={GEOMETRIC_SHAPE_SRC}
+          alt=""
+          fill
+          sizes="480px"
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+
+      {/* Ambient glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[400px]"
+        style={{
+          background: "linear-gradient(180deg, rgba(75,47,129,0.35) 0%, transparent 100%)",
+          filter: "blur(80px)",
+        }}
+      />
+
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+        {/* Top row: copy left + stats card right */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
+          {/* Copy */}
+          <div className="flex flex-col gap-5 lg:flex-1">
+            <motion.p
+              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+            >
+              {MARGINS_EYEBROW}
+            </motion.p>
+
+            <motion.h2
+              className="font-display font-bold uppercase leading-[1.1]"
+              style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
+              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
+            >
+              <span
+                className="block text-white"
+                style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)" }}
+              >
+                {MARGINS_HEADLINE_LINE1}
+              </span>
+              <span
+                className="block text-accent-cyan"
+                style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
+              >
+                {renderEmphasis(MARGINS_HEADLINE_ACCENT)}
+              </span>
+            </motion.h2>
+
+            <motion.p
+              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[480px]"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
+            >
+              {MARGINS_BODY}
+            </motion.p>
+          </div>
+
+          {/* Stats card */}
+          <motion.div
+            className="mt-10 lg:mt-0 w-full max-w-[480px] lg:w-[460px] lg:flex-shrink-0 rounded-xl border border-[#32205A] bg-[#0A0515]"
+            initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
+          >
+            {MARGINS_STATS.map((row, i) => (
+              <Fragment key={row.label}>
+                <div className="flex flex-col gap-1 p-6">
+                  <span className="font-label text-eyebrow tracking-[0.15em] uppercase text-text-muted">
+                    {row.label}
+                  </span>
+                  <span
+                    className="font-display font-bold text-white leading-none"
+                    style={{ fontSize: "clamp(32px, 4vw, 48px)" }}
+                  >
+                    {row.value}
+                  </span>
+                </div>
+                {i < MARGINS_STATS.length - 1 && (
+                  <div className="h-px w-full bg-[#32205A]" aria-hidden="true" />
+                )}
+              </Fragment>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* CTA band */}
+        <motion.div
+          className="mt-16 lg:mt-20 rounded-xl border border-[#1E1040] bg-[#080215] px-8 py-10 flex flex-col items-center text-center gap-5"
+          initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+        >
+          <h3
+            className="font-display font-bold text-white uppercase leading-[1.1]"
+            style={{ fontSize: "clamp(22px, 3vw, 36px)" }}
+          >
+            {MARGINS_BAND_HEADLINE}
+          </h3>
+          <p className="font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan">
+            {MARGINS_BAND_SUBLINE}
+          </p>
+          <Link
+            href="#apply"
+            className="flex items-center justify-center gap-[10px] w-full sm:w-[320px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
+          >
+            {MARGINS_BAND_CTA}
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              className="shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                d="M5 12h14M13 6l6 6-6 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
