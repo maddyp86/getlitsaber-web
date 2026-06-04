@@ -39,20 +39,14 @@ export default function MarginsSection() {
      className="relative isolate overflow-hidden w-full -mt-px bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Premium margins, real numbers"
     >
-      {/* Decorative geometric shape */}
-      <div
-        className="absolute pointer-events-none -z-10"
-        style={{ width: "480px", height: "400px", bottom: 0, left: -80, opacity: 0.25 }}
-        aria-hidden="true"
-      >
-        <Image
-          src={GEOMETRIC_SHAPE_SRC}
-          alt=""
-          fill
-          sizes="480px"
-          style={{ objectFit: "contain" }}
-        />
-      </div>
+           {/* Geometric shape #1 — top-left, behind everything */}
+<div
+  className="absolute pointer-events-none -z-10"
+  style={{ width: "540px", height: "451px", top: 0, right: -100, opacity: 0.4 }}
+  aria-hidden="true"
+>
+  <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+</div>
 
    {/* Ambient glow */}
 <div
