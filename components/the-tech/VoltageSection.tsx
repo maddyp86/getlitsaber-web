@@ -41,7 +41,7 @@ export default function VoltageSection() {
                 <Fragment key={row.voltage}>
                   <div className="flex items-center justify-between gap-4 p-6">
                     <span
-                      className="font-display text-3xl lg:text-5xl font bold leading-none tabular-nums"
+                      className="font-display text-3xl lg:text-5xl font-bold leading-none tabular-nums"
                       style={{ color: row.color }}
                     >
                       {row.voltage}
