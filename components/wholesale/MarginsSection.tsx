@@ -54,15 +54,15 @@ export default function MarginsSection() {
         />
       </div>
 
-      {/* Ambient glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[400px]"
-        style={{
-          background: "linear-gradient(180deg, rgba(75,47,129,0.35) 0%, transparent 100%)",
-          filter: "blur(80px)",
-        }}
-      />
+   {/* Ambient glow */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-x-0 top-[80px] -z-10 h-[400px]"
+  style={{
+    background: "linear-gradient(180deg, rgba(75,47,129,0.35) 0%, transparent 100%)",
+    filter: "blur(80px)",
+  }}
+/>
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Top row: copy left + stats card right */}
