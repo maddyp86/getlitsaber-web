@@ -29,11 +29,10 @@ function renderEmphasis(text: string) {
 export default function DemandSection() {
   const prefersReduced = useReducedMotion();
 
-  return (
-    <section
-      className="relative isolate overflow-hidden w-full bg-[#0A0619]"
-      aria-label="Demand is already there"
-    >
+ <section
+  className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#150C2D_0%,#000_100%)]"
+  aria-label="Demand is already there"
+>
       {/* Geometric shape #1 — top-left, behind everything */}
 <div
   className="absolute pointer-events-none -z-10"
