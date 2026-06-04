@@ -17,7 +17,7 @@ export const BREATH_RESPONSE_IMAGE_ALT = "Litsaber glowing in rainbow spectrum o
 export const POWER_IMAGE_SRC = "/images/tech/litsaber-usbc-tech.jpg";
 export const POWER_IMAGE_ALT = "Litsaber device showing USB-C charging port";
 
-export const EXPLODED_RENDER_IMAGE_SRC = "/images/tech/exploded-view-tech.jpg";
+export const EXPLODED_RENDER_IMAGE_SRC = "/images/tech/exploded-view-tech.png";
 export const EXPLODED_RENDER_IMAGE_ALT = "Litsaber OG exploded 3D view showing all six internal components";
 
 export const VOLTAGE_DEVICE_IMAGE_SRC = "/images/tech/oil-desktop.jpg";
