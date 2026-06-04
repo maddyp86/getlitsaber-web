@@ -89,7 +89,7 @@ export default function VoltageSection() {
           </motion.div>
 
           {/* Right: headline + copy */}
-          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
+          <div className="flex flex-col  gap-5 mt-10 lg:mt-0  justify-center lg:flex-1">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
