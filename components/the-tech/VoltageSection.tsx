@@ -12,6 +12,7 @@ import {
   VOLTAGE_DEVICE_IMAGE_SRC,
   VOLTAGE_DEVICE_IMAGE_ALT,
 } from "./the-tech.content";
+import { Fragment } from "react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -36,6 +37,7 @@ export default function VoltageSection() {
 >
   {/* Voltage table */}
   <div className="flex flex-col gap-3 w-full  p-6">
+      <Fragment key={row.voltage}>
     {VOLTAGE_ROWS.map((row) => (
       <div key={row.voltage} className="flex items-center gap-4">
         <span
