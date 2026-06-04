@@ -37,6 +37,15 @@ export default function PowerSection() {
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
 
+ {/* Geometric shape #1 — top-right */}
+        <div
+          className="absolute pointer-events-none"
+          style={{ width: "540px", height: "451px", top: 0, left: "200px", opacity: 0.4, zIndex: 1 }}
+          aria-hidden="true"
+        >
+          <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+        </div>
+        
         {/* 2-col: image left, copy right */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
