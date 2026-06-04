@@ -26,18 +26,17 @@ export default function VoltageSection() {
     >
      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
-
-          {/* Left: voltage table + device image */}
-          <div className="flex flex-col gap-8 lg:flex-1">
-            {/* Voltage table */}
-            <motion.div
-              className="flex flex-col gap-3"
-              initial={prefersReduced ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7, ease: EASE }}
-            >
-             {VOLTAGE_ROWS.map((row, i) => (
+{/* Left: voltage table + device image, wrapped in a bordered card */}
+<motion.div
+  className="flex flex-col items-center justify-between gap-8 w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515] p-6"
+  initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.7, ease: EASE }}
+>
+  {/* Voltage table */}
+  <div className="flex flex-col gap-3 w-full">
+  {VOLTAGE_ROWS.map((row, i) => (
   <Fragment key={row.voltage}>
     <div className="flex items-center gap-4">
       <span
@@ -63,7 +62,27 @@ export default function VoltageSection() {
     )}
   </Fragment>
 ))}
-            </motion.div>
+  </div>
+
+  {/* Device image below the table */}
+  <div className="relative w-full aspect-[4/5] rounded-card overflow-hidden">
+    {VOLTAGE_DEVICE_IMAGE_SRC ? (
+      <Image
+        src={VOLTAGE_DEVICE_IMAGE_SRC}
+        alt={VOLTAGE_DEVICE_IMAGE_ALT}
+        fill
+        sizes="(min-width: 1024px) 460px, 100vw"
+        className="object-cover object-center"
+      />
+    ) : (
+      <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
+        <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+          Voltage Device Image
+        </span>
+      </div>
+    )}
+  </div>
+</motion.div>
 
             {/* Device image below the table */}
             <motion.div
