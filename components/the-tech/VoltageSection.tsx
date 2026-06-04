@@ -39,7 +39,8 @@ export default function VoltageSection() {
   <div className="flex flex-col w-full ">
    {VOLTAGE_ROWS.map((row, i) => (
   <Fragment key={row.voltage}>
-    <div className="flex items-center  p-6">
+    <div className="flex items-center 
+justify-content: space-between; p-6">
       <span
         className="font-display text-5xl font-bold lg:text-h1 leading-none tabular-nums"
         style={{ color: row.color }}
