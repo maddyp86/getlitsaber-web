@@ -4,7 +4,8 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   POWER_EYEBROW,
-  POWER_HEADLINE,
+  POWER_HEADLINE1,
+  POWER_HEADLINE2,
   POWER_BODY,
   POWER_BULLETS,
   POWER_IMAGE_SRC,
