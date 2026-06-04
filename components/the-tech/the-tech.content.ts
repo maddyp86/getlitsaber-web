@@ -107,13 +107,11 @@ export const VOLTAGE_ROWS: VoltageRow[] = [
 export const FIT_EYEBROW = "WORKS WITH WHAT YOU ALREADY BUY";
 export const FIT_HEADLINE_LINE1 = "Universal";
 export const FIT_HEADLINE_ACCENT = "Fit.";
-export const FIT_BODY =
-  "510 thread — 10.5mm to 14.5mm diameter. Half-gram, full-gram, two-gram. Roughly ninety-five percent of carts on the market screw into Litsaber and work including distillate, live resin, live rosin, liquid diamonds, hybrids.";
-export const FIT_BODY_2 =
-  "Whatever you're already buying, the device is built to accept it. No proprietary pods. No locked ecosystem. The cart you're rolling right now probably fits.";
-export const FIT_BODY_3 =
-  "The connection sits behind the aluminum and brass top: protected, threaded, made to take repeat insertions without wearing down.";
-export const CART_SIZES_LABEL = "510 CART SIZES";
+export const FIT_BODY = [
+  "510 thread, 10.5mm to 14.5mm diameter. Half-gram, full-gram, two-gram. **Roughly ninety-five percent of carts on the market screw into the Litsaber** including distillate, rosin, live resin, cured resin, liquid diamonds, hybrids.",
+  "Whatever you're already buying, the device is built to accept it. No proprietary pods. No locked ecosystem. The cart you're holding right now probably fits.",
+  "The connection sits behind the aluminum and brass top  protected, threaded, made to take repeat insertions without wearing down."
+];
 
 // ─── Section 7 — CTA ─────────────────────────────────────────────────────────
 export const CTA_HEADLINE = "Ready to see it in person?";
