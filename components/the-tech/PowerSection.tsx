@@ -7,7 +7,6 @@ import {
   POWER_HEADLINE1,
   POWER_HEADLINE2,
   POWER_BODY,
-  POWER_BULLETS,
   POWER_IMAGE_SRC,
   POWER_IMAGE_ALT,
   EXPLODED_RENDER_IMAGE_SRC,
@@ -15,6 +14,18 @@ import {
 } from "./the-tech.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+function renderEmphasis(text: string) {
+  return text.split("**").map((segment, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-bold text-white">
+        {segment}
+      </strong>
+    ) : (
+      segment
+    )
+  );
+}
 
 export default function PowerSection() {
   const prefersReduced = useReducedMotion();
@@ -24,7 +35,7 @@ export default function PowerSection() {
       className="relative w-full bg-background-primary"
       aria-label="Power that keeps up"
     >
-      <div className="mx-auto w-full max-w-[1250px] lg:px-[60px] px-[20px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
 
         {/* 2-col: image left, copy right */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
@@ -42,6 +53,7 @@ export default function PowerSection() {
                 src={POWER_IMAGE_SRC}
                 alt={POWER_IMAGE_ALT}
                 fill
+                sizes="(min-width: 1024px) 545px, 100vw"
                 className="object-cover object-center"
               />
             ) : (
@@ -66,78 +78,69 @@ export default function PowerSection() {
             </motion.p>
 
             <motion.h2
-              className="font-display text-h3 lg:text-h1 text-text-primary leading-[1.05] whitespace-pre-line"
+              className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
+              style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
             >
-               <span
-              className="text-white"
-              style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
-            >
-              {POWER_HEADLINE1}
-               </span>
-               <br />
-            <span
-              className="text-accent-cyan"
-              style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
-            >
-              {POWER_HEADLINE2}
-            </span>
+              <span
+                className="text-white"
+                style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
+              >
+                {POWER_HEADLINE1}
+              </span>
+              <br />
+              <span
+                className="text-accent-cyan"
+                style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
+              >
+                {POWER_HEADLINE2}
+              </span>
             </motion.h2>
 
-            <motion.p
-              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
-            >
-              {POWER_BODY}
-            </motion.p>
-
-            <div className="flex flex-col gap-3 mt-1">
-              {POWER_BULLETS.map((bullet, i) => (
-                <motion.p
-                  key={i}
-                  className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-                  initial={prefersReduced ? false : { opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6, delay: 0.25 + i * 0.1, ease: EASE }}
-                >
-                  {bullet}
-                </motion.p>
-              ))}
-            </div>
+            {POWER_BODY.map((block, i) => (
+              <motion.p
+                key={i}
+                className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+                initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
+              >
+                {renderEmphasis(block)}
+              </motion.p>
+            ))}
           </div>
         </div>
-
-        {/* Full-width exploded render below the 2-col */}
-        <motion.div
-          className="relative w-full mt-16 lg:mt-20 aspect-[16/7] lg:aspect-[16/6] rounded-card overflow-hidden"
-          initial={prefersReduced ? false : { opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-        >
-          {EXPLODED_RENDER_IMAGE_SRC ? (
-            <Image
-              src={EXPLODED_RENDER_IMAGE_SRC}
-              alt={EXPLODED_RENDER_IMAGE_ALT}
-              fill
-              className="object-contain object-center"
-            />
-          ) : (
-            <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
-              <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                Exploded 3D Render
-              </span>
-            </div>
-          )}
-        </motion.div>
       </div>
+
+      {/* Full-width exploded render below the 2-col */}
+      <motion.div
+        className="relative w-full py-20 px-[20px] lg:px-[60px]"
+        initial={prefersReduced ? false : { opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
+      >
+        {EXPLODED_RENDER_IMAGE_SRC ? (
+          <Image
+            src={EXPLODED_RENDER_IMAGE_SRC}
+            alt={EXPLODED_RENDER_IMAGE_ALT}
+            width={1100}
+            height={734}
+            sizes="100vw"
+            className="w-full h-auto"
+          />
+        ) : (
+          <div className="w-full aspect-[547/365] bg-surface-card flex items-center justify-center border border-border-pill">
+            <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+              Exploded 3D Render
+            </span>
+          </div>
+        )}
+      </motion.div>
     </section>
   );
 }

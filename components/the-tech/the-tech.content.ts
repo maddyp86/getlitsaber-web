@@ -17,7 +17,7 @@ export const BREATH_RESPONSE_IMAGE_ALT = "Litsaber glowing in rainbow spectrum o
 export const POWER_IMAGE_SRC = "/images/tech/litsaber-usbc-tech.jpg";
 export const POWER_IMAGE_ALT = "Litsaber device showing USB-C charging port";
 
-export const EXPLODED_RENDER_IMAGE_SRC = "/images/tech/exploded-view-tech.jpg";
+export const EXPLODED_RENDER_IMAGE_SRC = "/images/tech/exploded-view-tech.png";
 export const EXPLODED_RENDER_IMAGE_ALT = "Litsaber OG exploded 3D view showing all six internal components";
 
 export const VOLTAGE_DEVICE_IMAGE_SRC = "/images/tech/oil-desktop.jpg";
@@ -54,10 +54,9 @@ export const BREATH_BODY_BLOCKS = [
 export const POWER_EYEBROW = "BUILT FOR THE LONG NIGHT";
 export const POWER_HEADLINE1 = "Power That";
 export const POWER_HEADLINE2 = "Keeps Up!";
-export const POWER_BODY =
-  "Most vape pens are running out of battery at 9PM. Litsaber's 800mAh cobalt cell is built for the headliner, the afters, and the ride home.";
-export const POWER_BULLETS = [
-  "Full charge in under 75 minutes via USB-C. Three hundred recharge cycles about a year of experiences. No drop in performance. Breathing LED feedback while charging so you always know where you stand.",
+export const POWER_BODY = [
+  "Most vape pens are running out of battery at 9PM. Litsaber's **800mAh cobalt cell** is built for the headliner, the afters, and the ride home.",
+  "Full charge in under **75 minutes via USB-C.** Three hundred recharge cycles about a year of experiences. No drop in performance. Breathing LED feedback while charging so you always know where you stand.",
   "No proprietary connectors. No hunting for a charger that fits.",
 ];
 
