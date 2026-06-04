@@ -77,13 +77,8 @@ export default function PowerSection() {
             </motion.p>
 
             <motion.h2
-              className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
+             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
             style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
-            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.75, ease: EASE }}
-          >
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
