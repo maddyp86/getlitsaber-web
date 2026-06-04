@@ -34,20 +34,14 @@ export default function DemandSection() {
       className="relative isolate overflow-hidden w-full bg-[#0A0619]"
       aria-label="Demand is already there"
     >
-      {/* Decorative geometric shape */}
-      <div
-        className="absolute pointer-events-none -z-10"
-        style={{ width: "540px", height: "451px", top: 0, left: 0, opacity: 0.3 }}
-        aria-hidden="true"
-      >
-        <Image
-          src={GEOMETRIC_SHAPE_SRC}
-          alt=""
-          fill
-          sizes="540px"
-          style={{ objectFit: "contain" }}
-        />
-      </div>
+      {/* Geometric shape #1 — top-left, behind everything */}
+<div
+  className="absolute pointer-events-none -z-10"
+  style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.4 }}
+  aria-hidden="true"
+>
+  <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+</div>
 
       {/* Ambient glow */}
       <div
