@@ -7,8 +7,6 @@ import {
   INHALE_HEADLINE_LINE2,
   INHALE_BODY,
   VIDEO_SRC,
-  BREATH_EYEBROW,
-  BREATH_HEADLINE,
   BREATH_BODY_BLOCKS,
   BREATH_RESPONSE_IMAGE_SRC,
   BREATH_RESPONSE_IMAGE_ALT,
@@ -37,10 +35,10 @@ export default function InhaleVideo() {
       className="relative isolate overflow-hidden w-full bg-[#010101]"
       aria-label="Inhale. Watch what happens."
     >
-      <div className="mx-auto w-full max-w-[1250px] lg:px-[60px] px-[20px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
-       <motion.h2
+          <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
             style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
@@ -61,7 +59,7 @@ export default function InhaleVideo() {
             >
               {INHALE_HEADLINE_LINE2}
             </span>
-          </motion.h2> */}
+          </motion.h2>
 
           <motion.p
             className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[850px]"
@@ -108,72 +106,47 @@ export default function InhaleVideo() {
         {/* Breath response — two-column copy/image block */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
 
-             {/* Copy — left on desktop, top on mobile */}
-          {/* <div className="flex flex-col gap-3 lg:flex-1">
-            <motion.p
-              className="font-label text-eyebrow uppercase text-accent-cyan"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {BREATH_EYEBROW}
-            </motion.p>
-
-            <motion.h2
-            className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
-            style={{ 
-              fontSize: "clamp(35px, 6.5vw, 55px)",
-              color:"#CCCCCC"
-                   }}
-              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
-            >
-              {BREATH_HEADLINE}
-            </motion.h2> */}
-
-<div className="flex flex-col gap-2 ">
-  {BREATH_BODY_BLOCKS.map((block, i) => (
-    <motion.p
-      key={i}
-      className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.65, delay: 0.1 + i * 0.1, ease: EASE }}
-    >
-      {renderEmphasis(block)}
-    </motion.p>
-  ))}
-</div>
+          {/* Copy — left on desktop, top on mobile */}
+          <div className="flex flex-col gap-2 lg:flex-1">
+            {BREATH_BODY_BLOCKS.map((block, i) => (
+              <motion.p
+                key={i}
+                className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+                initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: 0.1 + i * 0.1, ease: EASE }}
+              >
+                {renderEmphasis(block)}
+              </motion.p>
+            ))}
           </div>
 
-{/* Image — right on desktop, below on mobile */}
-<motion.div
-  className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-[550px] lg:aspect-[76/101] rounded-card overflow-hidden"
-  initial={prefersReduced ? false : { opacity: 0, x: 24 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
->
-  <Image
-    src={BREATH_RESPONSE_IMAGE_SRC}
-    alt={BREATH_RESPONSE_IMAGE_ALT}
-    fill
-    sizes="(min-width: 1024px) 550px, 350px"
-    className="object-cover object-center"
-  />
-</motion.div>
+          {/* Image — right on desktop, below on mobile */}
+          <motion.div
+            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-[550px] lg:aspect-[76/101] rounded-card overflow-hidden"
+            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
+          >
+            <Image
+              src={BREATH_RESPONSE_IMAGE_SRC}
+              alt={BREATH_RESPONSE_IMAGE_ALT}
+              fill
+              sizes="(min-width: 1024px) 550px, 350px"
+              className="object-cover object-center"
+            />
+          </motion.div>
         </div>
 
-     {/* Ambient glow — sits behind all section content */}
-<div
-  aria-hidden="true"
-  className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[350px] w-[350px] lg:h-[800px] lg:w-[800px] -translate-x-1/2 rounded-full"
-  style={{
-    background: "rgba(30, 0, 77, 0.75)",
-    filter: "blur(150px)",
-  }}
-/>
+        {/* Ambient glow — sits behind all section content */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[350px] w-[350px] lg:h-[800px] lg:w-[800px] -translate-x-1/2 rounded-full"
+          style={{
+            background: "rgba(30, 0, 77, 0.75)",
+            filter: "blur(150px)",
+          }}
+        />
       </div>
     </section>
   );
