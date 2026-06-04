@@ -28,14 +28,14 @@ export default function VoltageSection() {
 
          {/* Left: voltage table + device image, wrapped in a bordered card */}
 <motion.div
-  className="flex flex-col items-center justify-between gap-8 w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515] p-6"
+  className="flex flex-col items-center justify-between gap-8 w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
   initial={prefersReduced ? false : { opacity: 0, y: 20 }}
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true, margin: "-60px" }}
   transition={{ duration: 0.7, ease: EASE }}
 >
   {/* Voltage table */}
-  <div className="flex flex-col gap-3 w-full">
+  <div className="flex flex-col gap-3 w-full  p-6">
     {VOLTAGE_ROWS.map((row) => (
       <div key={row.voltage} className="flex items-center gap-4">
         <span
