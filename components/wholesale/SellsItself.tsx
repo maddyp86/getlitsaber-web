@@ -85,7 +85,7 @@ export default function SellsItself() {
 
           {/* Video / image — right on desktop, below on mobile */}
           <motion.div
-          className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-auto lg:flex-1 lg:aspect-auto lg:self-stretch rounded-card overflow-hidden"
+            className="mt-10 lg:mt-0 w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[350px] max-w-full lg:flex-shrink-0 aspect-[9/16] rounded-card overflow-hidden bg-surface-card border border-border-pill"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
