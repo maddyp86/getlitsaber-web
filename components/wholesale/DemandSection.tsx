@@ -31,7 +31,7 @@ export default function DemandSection() {
 
   return (
   <section
-  className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#150C2D_100%,#000_0%)]"
+ className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#150C2D_0%,#000_100%)]"
   aria-label="Demand is already there"
 >
       {/* Geometric shape #1 — top-left, behind everything */}
