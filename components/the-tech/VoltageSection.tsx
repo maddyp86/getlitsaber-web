@@ -38,6 +38,16 @@ export default function VoltageSection() {
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-16">
 
+      {/* Geometric shape #1 — top-left, behind everything */}
+<div
+  className="absolute pointer-events-none -z-10"
+  style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.4 }}
+  aria-hidden="true"
+>
+  <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+</div>
+
+          
           {/* Left: voltage table + device image, wrapped in a bordered card */}
           <motion.div
             className="flex flex-col items-center w-full max-w-[506px] rounded-xl border border-[#32205A] bg-[#0A0515]"
