@@ -35,7 +35,7 @@ export default function TechCta() {
           </motion.h2>
 
           <motion.p
-            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[520px]"
+            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[700px]"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
