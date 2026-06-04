@@ -32,7 +32,6 @@ export default function VoltageSection() {
             className="flex flex-col items-center justify-between  w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, ease: EASE }}
           >
             {/* Voltage table */}
