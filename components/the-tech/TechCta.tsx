@@ -24,7 +24,8 @@ export default function TechCta() {
       <div className="mx-auto w-full max-w-[1250px] px-5 lg:px-0 py-16 lg:py-24">
         <div className="flex flex-col items-center text-center gap-6">
           <motion.h2
-            className="font-display text-h3 lg:text-h1 text-text-primary leading-[1.05]"
+            className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
+            style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
