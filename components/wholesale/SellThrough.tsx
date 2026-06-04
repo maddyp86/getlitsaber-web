@@ -71,14 +71,14 @@ export default function SellThrough() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-[#0A0518]"
+      className="relative isolate overflow-hidden w-full bg-[#150C2D]"
       aria-label="Built to sell through"
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-3 mb-16">
           <motion.h2
-            className="font-display font-bold uppercase leading-[1.1]"
+            className="font-display font-bold uppercase"
             style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function SellThrough() {
               className="text-accent-cyan"
               style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
             >
-              {renderEmphasis(SELL_THROUGH_ACCENT)}
+              {SELL_THROUGH_ACCENT}
             </span>
           </motion.h2>
         </div>
