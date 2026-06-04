@@ -108,7 +108,7 @@ export default function SellsItself() {
                 src={SELLS_ITSELF_IMAGE_SRC}
                 alt={SELLS_ITSELF_IMAGE_ALT}
                 fill
-                sizes="(min-width: 1024px) 350px, 420px"
+                sizes="(min-width: 1024px) 350px, 500px"
                 className="object-cover"
               />
             ) : (
