@@ -56,41 +56,43 @@ export const SELL_THROUGH_CARDS = [
   {
     icon: "lifestyle" as const,
     title: "Lifestyle accessory positioning",
-    body: "Priced for festivals, raves, and shows — and worn as proudly as jewelry. The customer who buys Litsaber is exactly the customer you want more of.",
+    body: "People buy Litsaber for festivals, parties, raves, and gifts. The vape function is the secondary purchase driver. The lights are the primary one.",
   },
   {
     icon: "engineered" as const,
     title: "Engineered hardware",
-    body: "Built-in 510 thread, supports 10.5mm to 14.5mm diameter carts. Half-gram, full-gram, two-gram. Roughly 95% of the market screws in without an adapter.",
+    body: "800mAh cobalt cell, 3-voltage tuning, universal 510 compatibility, USB-C, 30-day guarantee. Real product, not novelty.",
   },
   {
     icon: "gift" as const,
     title: "Natural gift item",
-    body: "The packaging, the device, and the light show all photograph well. Strong gift candidate from holiday to 4/20 to birthdays, without needing a separate gifting push.",
+    body: "Premium packaging and standout design make it a natural impulse buy and gift purchase, driving sales beyond your core vape customer.",
   },
   {
     icon: "repeat" as const,
     title: "Repeat purchase from collectors",
-    body: "The Gold Edition waitlist is already hundreds deep. Customers who buy Silver come back for Gold. They collect colorways. The first sale is rarely the last.",
+    body: "Future drops (Gold Edition in June, more colorways planned) create reasons for customers to come back. This isn't a one-and-done category.",
   },
 ] as const;
 
 // ─── Section 5 — Demand ──────────────────────────────────────────────────────
 export const DEMAND_EYEBROW = "SOCIAL PROOF";
 export const DEMAND_HEADLINE_LINE1 = "Demand is";
-export const DEMAND_HEADLINE_ACCENT = "**Already There.**";
+export const DEMAND_HEADLINE_ACCENT = "Already There.";
 export const DEMAND_BODY = [
-  "2M+ organic TikTok views and growing. Customers walk into your shop already asking for it by name. The social presence does the pre-sell — you just need to have it in stock.",
-  "Litsaber ran activations with **Waferz**, one of California's top multi-location dispensary groups. The Jack Herer Experience party-bus roadshow (April through June 2026) is putting the device in front of thousands of qualified buyers across California.",
-  "You're not building demand from scratch. You're stepping into something that's already moving.",
+  "**2M+ organic TikTok views and growing.** Customers walk into shops asking for it, you just need to have it in stock.",
+  "Litsaber ran activations with **Waferz**, one of California's top multi-location dispensary groups. **The Jack Herer Experience party-bus roadshow**is putting the device in front of thousands of qualified buyers across California.",
+  "This isn't a brand betting on retail to create demand. The demand is here. You're meeting it on your shelves.",
 ];
 
 // ─── Section 6 — Margins ─────────────────────────────────────────────────────
 export const MARGINS_EYEBROW = "THE NUMBERS";
 export const MARGINS_HEADLINE_LINE1 = "Premium margins.";
-export const MARGINS_HEADLINE_ACCENT = "**Real numbers.**";
-export const MARGINS_BODY =
-  "No mystery pricing. No lockbox tiers. Submit the form and we send you the full sheet within 24 hours.";
+export const MARGINS_HEADLINE_ACCENT = "Real numbers.";
+export const MARGINS_BODY = [
+  "Wholesale starts at **$24/unit** at the entry tier (5 units). MSRP is $59.99 That's a **$36 margin per unit at the starting tier**, roughly **60% retail margin**, well above the category average for vape hardware.", 
+  "No mystery pricing. No tier-locked surprises. Submit the form and we send the full 9-tier pricing sheet with case pack and freight estimates within 24 hours."
+  ];
 
 export const MARGINS_STATS = [
   { label: "WHOLESALE STARTING AT", value: "$24.00/unit" },
