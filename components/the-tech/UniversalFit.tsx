@@ -58,7 +58,7 @@ export default function UniversalFit() {
           </motion.h2>
 
           <motion.div
-            className="flex flex-col gap-3 max-w-[720px]"
+            className="flex flex-col gap-3 max-w-[1050px]"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
