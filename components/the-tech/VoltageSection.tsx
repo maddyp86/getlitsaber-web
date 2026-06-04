@@ -61,7 +61,7 @@ export default function VoltageSection() {
 
             {/* Device image below the table */}
             <motion.div
-              className="relative w-full aspect-[4/5] rounded-card overflow-hidden"
+              className="relative w-full flex-1 min-h-[320px] rounded-b-xl overflow-hidden"
               initial={prefersReduced ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
