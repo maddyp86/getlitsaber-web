@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  FIT_EYEBROW,
   FIT_HEADLINE_LINE1,
   FIT_HEADLINE_ACCENT,
   FIT_BODY,
@@ -37,15 +36,6 @@ export default function UniversalFit() {
        <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] pt-[100px]">
         {/* Centered header block */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
-          <motion.p
-            className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6, ease: EASE }}
-          >
-            {FIT_EYEBROW}
-          </motion.p>
 
           <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
