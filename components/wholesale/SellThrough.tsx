@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import {
   SELL_THROUGH_HEADLINE,
   SELL_THROUGH_ACCENT,
