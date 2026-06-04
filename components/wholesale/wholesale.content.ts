@@ -9,10 +9,10 @@ export const SELLS_ITSELF_VIDEO_SRC = "";
 export const SELLS_ITSELF_IMAGE_SRC = "";
 export const SELLS_ITSELF_IMAGE_ALT = "Litsaber held at a show, LED lights cycling";
 
-export const DEMAND_IMAGE_SRC = "";
+export const DEMAND_IMAGE_SRC = "/images/wholesale/jack-herer-demo-wholesale.jpg";
 export const DEMAND_IMAGE_ALT = "Jack Herer Experience demo — Litsaber in action";
 
-export const RETAIL_KIT_IMAGE_SRC = "";
+export const RETAIL_KIT_IMAGE_SRC = "images/wholesale/retail-box-wholesale.png";
 export const RETAIL_KIT_IMAGE_ALT = "Litsaber retail display case with demo unit";
 
 export const GEOMETRIC_SHAPE_SRC = "/images/home/litsaber-geometric-shape.png";
