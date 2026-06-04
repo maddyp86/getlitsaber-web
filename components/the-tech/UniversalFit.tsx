@@ -30,11 +30,9 @@ export default function UniversalFit() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section
-      className="relative w-full bg-black"
-      aria-label="Universal fit"
-    >
-       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+    <section className="relative w-full bg-black" aria-label="Universal fit">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+
         {/* Centered header block */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
           <motion.p
@@ -59,32 +57,33 @@ export default function UniversalFit() {
               className="text-white"
               style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
             >
-            {FIT_HEADLINE_LINE1}
-            </span>
-                 <span
-                className="text-accent-cyan"
-                style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
-              >
+              {FIT_HEADLINE_LINE1}
+            </span>{" "}
+            <span
+              className="text-accent-cyan"
+              style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
+            >
               {FIT_HEADLINE_ACCENT}
             </span>
           </motion.h2>
 
-     <motion.div
-  className="flex flex-col gap-3 max-w-[720px]"
-  initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-60px" }}
-  transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
->
-  {FIT_BODY.map((block, i) => (
-    <motion.p
-      key={i}
-      className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-    >
-      {renderEmphasis(block)}
-    </motion.p>
-  ))}
-</motion.div>
+          <motion.div
+            className="flex flex-col gap-3 max-w-[720px]"
+            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+          >
+            {FIT_BODY.map((block, i) => (
+              <motion.p
+                key={i}
+                className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+              >
+                {renderEmphasis(block)}
+              </motion.p>
+            ))}
+          </motion.div>
+        </div>
 
         {/* Cart sizes diagram */}
         <motion.div
