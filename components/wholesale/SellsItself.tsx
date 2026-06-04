@@ -48,7 +48,7 @@ export default function SellsItself() {
           {/* Copy — left on desktop, top on mobile */}
           <div className="flex flex-col gap-6 lg:flex-1">
             <motion.h2
-              className="font-display font-bold uppercase sm:leading-[.5]"
+              className="font-display font-bold uppercase"
               style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
