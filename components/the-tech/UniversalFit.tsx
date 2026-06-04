@@ -100,7 +100,7 @@ export default function UniversalFit() {
                   src={CART_LINEUP_IMAGE_SRC}
                   alt={CART_LINEUP_IMAGE_ALT}
                   fill
-                  className="object-contain object-center"
+                  className="object-cover object-bottom"
                 />
               </div>
             ) : (
