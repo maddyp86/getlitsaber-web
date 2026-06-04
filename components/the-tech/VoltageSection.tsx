@@ -29,7 +29,7 @@ export default function VoltageSection() {
 
          {/* Left: voltage table + device image, wrapped in a bordered card */}
 <motion.div
-  className="flex flex-col items-center justify-between gap-8 w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
+  className="flex flex-col items-center justify-between w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
   initial={prefersReduced ? false : { opacity: 0, y: 20 }}
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true, margin: "-60px" }}
