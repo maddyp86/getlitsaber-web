@@ -36,7 +36,7 @@ export default function MarginsSection() {
   return (
     <section
       id="numbers"
-      className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
+     className="relative isolate overflow-hidden w-full -mt-px bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Premium margins, real numbers"
     >
       {/* Decorative geometric shape */}
