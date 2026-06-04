@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { Fragment } from "react";
 import {
   VOLTAGE_EYEBROW,
   VOLTAGE_HEADLINE_LINE1,
@@ -12,7 +13,7 @@ import {
   VOLTAGE_DEVICE_IMAGE_SRC,
   VOLTAGE_DEVICE_IMAGE_ALT,
 } from "./the-tech.content";
-import { Fragment } from "react";
+
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -21,7 +22,7 @@ export default function VoltageSection() {
 
   return (
     <section
-      className="relative w-full bg-background-primary"
+      className="relative w-full bg-[#0A0619]"
       aria-label="Tuned for the oil"
     >
      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
