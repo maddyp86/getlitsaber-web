@@ -116,7 +116,7 @@ export default function PowerSection() {
 
       {/* Full-width exploded render below the 2-col */}
       <motion.div
-        className="relative w-full lg:py-20 py-10 px-[20px] lg:px-[60px]"
+        className="relative w-full lg:py-20  px-[20px] lg:px-[60px]"
         initial={prefersReduced ? false : { opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
