@@ -23,7 +23,7 @@ export default function PowerSection() {
       className="relative w-full bg-background-primary"
       aria-label="Power that keeps up"
     >
-      <div className="mx-auto w-full max-w-[1250px] px-5 lg:px-0 py-16 lg:py-24">
+      <div className="mx-auto w-full max-w-[1250px] lg:px-[60px] px-[20px] py-[100px]">
 
         {/* 2-col: image left, copy right */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
