@@ -54,7 +54,7 @@ export const BREATH_BODY_BLOCKS = [
 export const POWER_EYEBROW = "BUILT FOR THE LONG NIGHT";
 export const POWER_HEADLINE1 = "Power That";
 export const POWER_HEADLINE2 = "Keeps Up!";
-export const POWER_BODY =
+export const POWER_BODY = [
   "Most vape pens are running out of battery at 9PM. Litsaber's **800mAh cobalt cell** is built for the headliner, the afters, and the ride home.",
   "Full charge in under **75 minutes via USB-C.** Three hundred recharge cycles about a year of experiences. No drop in performance. Breathing LED feedback while charging so you always know where you stand.",
   "No proprietary connectors. No hunting for a charger that fits.",
