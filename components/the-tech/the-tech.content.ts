@@ -81,7 +81,7 @@ export const VOLTAGE_ROWS: VoltageRow[] = [
   {
     voltage: "2.4V",
     color: "#22c55e",
-    oilType: ["ROSIN", n/ "LIVE ROSIN"],
+    oilType: ["ROSIN", <br> "LIVE ROSIN"],
     ledColor: "Green",
   },
   {
