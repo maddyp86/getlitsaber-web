@@ -12,6 +12,7 @@ import {
   VOLTAGE_DEVICE_IMAGE_SRC,
   VOLTAGE_DEVICE_IMAGE_ALT,
 } from "./the-tech.content";
+import { Fragment } from "react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
