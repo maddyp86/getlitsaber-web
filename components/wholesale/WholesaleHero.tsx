@@ -42,6 +42,16 @@ export default function WholesaleHero() {
       "linear-gradient(180deg, rgba(0,0,0,0.50) 0%, rgba(21,12,45,0.50) 100%)",
   }}
 />
+
+  {/* Bottom purple gradient — above image + dark overlay, below content */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2"
+  style={{
+    background:
+      "linear-gradient(0deg, rgba(75,47,129,0.75) 0%, rgba(0,0,0,0.00) 69.71%)",
+  }}
+/>
       {/* Ambient glow */}
       <div
         aria-hidden="true"
