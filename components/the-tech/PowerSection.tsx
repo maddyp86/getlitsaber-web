@@ -129,7 +129,7 @@ export default function PowerSection() {
             width={1100}
             height={734}
             sizes="100vw"
-            className="w-auto mx-auto h-auto"
+            className="w-full max-w-[1100px] h-auto mx-auto"
           />
         ) : (
           <div className="w-full aspect-[547/365] bg-surface-card flex items-center justify-center border border-border-pill">

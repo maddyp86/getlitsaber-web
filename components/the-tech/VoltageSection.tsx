@@ -32,7 +32,7 @@ export default function VoltageSection() {
 
   return (
     <section
-      className="relative isolate w-full bg-[#0A0619]"
+      className="relative isolate overflow-hidden w-full bg-[#0A0619]"
       aria-label="Tuned for the oil"
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">

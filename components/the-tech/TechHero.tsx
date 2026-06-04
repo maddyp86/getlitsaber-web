@@ -23,7 +23,7 @@ export default function TechHero() {
 
   return (
     <section
-      className="relative w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
+      className="relative overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Built to be seen"
     >
       <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch">
