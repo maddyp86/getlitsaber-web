@@ -11,7 +11,7 @@ export const HERO_IMAGE_SRC_DESKTOP = "/images/tech/be-seen-desktop.jpg";
 export const HERO_IMAGE_SRC_MOBILE = "/images/tech/be-seen-mobile.jpg";
 export const HERO_IMAGE_ALT = "Litsaber OG glowing in a dark environment";
 
-export const BREATH_RESPONSE_IMAGE_SRC = "";
+export const BREATH_RESPONSE_IMAGE_SRC = "/images/tech/litsaber-multi-tech.jpg";
 export const BREATH_RESPONSE_IMAGE_ALT = "Litsaber glowing in rainbow spectrum of colors";
 
 export const POWER_IMAGE_SRC = "";
