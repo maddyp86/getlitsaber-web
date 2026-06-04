@@ -36,10 +36,10 @@ export default function SellThrough() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section
-      className="relative isolate overflow-hidden w-full bg-[#150C2D]"
-      aria-label="Built to sell through"
-    >
+ <section
+  className="relative isolate overflow-hidden w-full bg-[#150C2D]"
+  aria-label="Built to sell through"
+>
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-3 mb-16">
