@@ -57,31 +57,31 @@ export default function WholesaleHero() {
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px] lg:py-[140px]">
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto">
           <motion.h1
-            className="font-display font-bold uppercase leading-[1.0]"
-            style={{ fontSize: "clamp(50px, 8vw, 90px)" }}
-            initial={prefersReduced ? false : { opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: EASE }}
-          >
-            <span
-              className="block text-white"
-              style={{ textShadow: "0 0 60px rgba(0,229,255,0.5)" }}
-            >
-              {HERO_HEADLINE_LINE1}
-            </span>
-            <span
-              className="block text-white"
-              style={{ textShadow: "0 0 60px rgba(0,229,255,0.5)" }}
-            >
-              {HERO_HEADLINE_LINE2}
-            </span>
-            <span
-              className="block text-accent-cyan"
-              style={{ textShadow: "0 0 60px rgba(0,229,255,0.6)" }}
-            >
-              {HERO_HEADLINE_ACCENT}
-            </span>
-          </motion.h1>
+  className="font-display font-bold uppercase text-center"
+  style={{ fontSize: "clamp(54px, 8vw, 110px)", lineHeight: "1.09" }}
+  initial={prefersReduced ? false : { opacity: 0, y: 32 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, ease: EASE }}
+>
+  <span
+    className="block text-white"
+    style={{ textShadow: "0 0 50px rgba(255,255,255,0.25)" }}
+  >
+    {HERO_HEADLINE_LINE1}
+  </span>
+  <span
+    className="block font-accent text-accent-cyan"
+    style={{ fontSize: "clamp(48px, 7.3vw, 100px)" }}
+  >
+    {HERO_HEADLINE_LINE2}
+  </span>
+  <span
+    className="block font-accent text-accent-cyan"
+    style={{ fontSize: "clamp(48px, 7.3vw, 100px)" }}
+  >
+    {HERO_HEADLINE_ACCENT}
+  </span>
+</motion.h1>
 
           <motion.p
             className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[640px]"
