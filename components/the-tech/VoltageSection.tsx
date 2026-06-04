@@ -20,7 +20,7 @@ export default function VoltageSection() {
 
   return (
     <section
-      className="relative w-full bg-background-primary"
+      className="relative w-full bg-[#0A0619]"
       aria-label="Tuned for the oil"
     >
        <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[150px]">
