@@ -93,7 +93,7 @@ export default function UniversalFit() {
           transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
         >
 
-          <div className="relative w-full">
+          <div className="relative w-auto">
             {CART_LINEUP_IMAGE_SRC ? (
               <div className="relative w-full aspect-[16/5]">
                 <Image
