@@ -83,35 +83,31 @@ export default function UniversalFit() {
             </motion.p>
                   ))}
         </div>
-
-        {/* Cart sizes diagram */}
-        <motion.div
-          className="flex flex-col items-center gap-4"
-          initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-        >
-
-          <div className="relative w-auto">
-            {CART_LINEUP_IMAGE_SRC ? (
-              <div className="relative w-full aspect-[16/5]">
-                <Image
-                  src={CART_LINEUP_IMAGE_SRC}
-                  alt={CART_LINEUP_IMAGE_ALT}
-                  fill
-                  className="object-cover object-bottom"
-                />
-              </div>
-            ) : (
-              <div className="w-full aspect-[16/5] bg-surface-card flex items-center justify-center">
-                <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                  Cart Lineup Diagram
-                </span>
-              </div>
-            )}
-          </div>
-        </motion.div>
+{/* Cart sizes diagram */}
+<motion.div
+  className="flex flex-col items-center"
+  initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+>
+  {CART_LINEUP_IMAGE_SRC ? (
+    <Image
+      src={CART_LINEUP_IMAGE_SRC}
+      alt={CART_LINEUP_IMAGE_ALT}
+      width={880}
+      height={587}
+      sizes="(min-width: 1024px) 880px, 100vw"
+      className="w-full max-w-[880px] h-auto"
+    />
+  ) : (
+    <div className="w-full max-w-[880px] aspect-[880/587] bg-surface-card flex items-center justify-center">
+      <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+        Cart Lineup Diagram
+      </span>
+    </div>
+  )}
+</motion.div>
       </div>
     </section>
   );
