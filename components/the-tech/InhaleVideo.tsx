@@ -38,7 +38,7 @@ export default function InhaleVideo() {
       <div className="mx-auto w-full max-w-[1250px] lg:px-[60px] px-[20px] py-[100px]">
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
-         {/* <motion.h2
+        <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
             style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
@@ -59,7 +59,7 @@ export default function InhaleVideo() {
             >
               {INHALE_HEADLINE_LINE2}
             </span>
-          </motion.h2> */}
+          </motion.h2> 
 
           <motion.p
             className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[850px]"
@@ -118,7 +118,7 @@ export default function InhaleVideo() {
               {BREATH_EYEBROW}
             </motion.p>
 
-            <motion.h2
+             {/* <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
             style={{ 
               fontSize: "clamp(35px, 6.5vw, 55px)",
@@ -129,7 +129,7 @@ export default function InhaleVideo() {
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
             >
               {BREATH_HEADLINE}
-            </motion.h2>
+            </motion.h2>   */}
 
 <div className="flex flex-col gap-2 ">
   {BREATH_BODY_BLOCKS.map((block, i) => (
