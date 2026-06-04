@@ -53,10 +53,10 @@ export default function VoltageSection() {
                       >
                         {row.label}
                       </span>
-                      <span className="font-body text-body-sm text-text-secondary">
+                      <span className="font-body text-body-sm  text-right text-text-secondary">
           {row.oilType1}
         </span>
-<span className="font-body text-body-sm text-text-secondary">
+<span className="font-body text-body-sm  text-right text-text-secondary">
           {row.oilType2}
         </span>
                     </div>
