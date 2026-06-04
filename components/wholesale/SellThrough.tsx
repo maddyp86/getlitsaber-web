@@ -21,50 +21,15 @@ function renderEmphasis(text: string) {
   );
 }
 
-function IconLifestyle() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <circle cx="14" cy="14" r="13" stroke="#00E5FF" strokeWidth="1.5" />
-      <path d="M9 14l3.5 3.5L19 10" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
-function IconEngineered() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <path d="M14 4v4M14 20v4M4 14h4M20 14h4" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="14" cy="14" r="4" stroke="#00E5FF" strokeWidth="1.5" />
-    </svg>
-  );
-}
 
-function IconGift() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <rect x="4" y="13" width="20" height="12" rx="1.5" stroke="#00E5FF" strokeWidth="1.5" />
-      <rect x="7" y="9" width="14" height="4" rx="1" stroke="#00E5FF" strokeWidth="1.5" />
-      <path d="M14 9V25M14 9c0 0-2-5 2-5s2 5 2 5" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function IconRepeat() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <path d="M6 14a8 8 0 0116 0" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M22 14a8 8 0 01-16 0" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M19 10l3 4-4 1M9 18l-3-4 4-1" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-const ICONS = {
-  lifestyle: IconLifestyle,
-  engineered: IconEngineered,
-  gift: IconGift,
-  repeat: IconRepeat,
-} as const;
+// Maps card.icon → asset path. Keys must match the `icon` values in SELL_THROUGH_CARDS.
+const ICONS: Record<string, string> = {
+  lifestyle: "/images/icons/heart-like-svgrepo-com 1.png",
+  engineered: "/images/icons/tools-svgrepo-com 1.svg",
+  gift: "/images/icons/gift-svgrepo-com 1.svg",
+  repeat: "/images/icons/repeat-svgrepo-com 1.svg",
+};
 
 export default function SellThrough() {
   const prefersReduced = useReducedMotion();
@@ -102,27 +67,34 @@ export default function SellThrough() {
 
         {/* 2×2 card grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {SELL_THROUGH_CARDS.map((card, i) => {
-            const Icon = ICONS[card.icon];
-            return (
-              <motion.div
-                key={card.title}
-                className="flex flex-col gap-4 p-6 lg:p-8 rounded-card border border-[#113757]"
-                initial={prefersReduced ? false : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.65, delay: i * 0.08, ease: EASE }}
+          {SELL_THROUGH_CARDS.map((card, i) => (
+            <motion.div
+              key={card.title}
+              className="flex flex-col gap-4 p-6 lg:p-8 rounded-card border border-[#113757]"
+              initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65, delay: i * 0.08, ease: EASE }}
+            >
+              <Image
+                src={ICONS[card.icon]}
+                alt=""
+                width={28}
+                height={28}
+                aria-hidden="true"
+                className="shrink-0"
+              />
+              <h3
+                className="font-body font-bold text-white leading-tight"
+                style={{ fontSize: "clamp(20px, 2vw, 30px)" }}
               >
-                <Icon />
-                <h3 className="font-body font-bold text-white leading-tight" style={{ fontSize: "clamp(20px, 2vw, 30px)" }}>
-                  {card.title}
-                </h3>
-                <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-                  {card.body}
-                </p>
-              </motion.div>
-            );
-          })}
+                {card.title}
+              </h3>
+              <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+                {renderEmphasis(card.body)}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
