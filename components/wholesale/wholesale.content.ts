@@ -41,10 +41,11 @@ export const STATS_BAR = [
 
 // ─── Section 3 — Sells Itself ────────────────────────────────────────────────
 export const SELLS_HEADLINE_PART1 = "It doesn't sit on shelves.";
-export const SELLS_HEADLINE_PART2 = "**It sells itself.**";
+export const SELLS_HEADLINE_PART2 = "It sells itself.";
 export const SELLS_BODY = [
-  "Customers don't just buy it. They show it off. The interactive LED light show makes every purchase a conversation. Dispensaries, smoke shops, and convenience stores all report the same thing: the device does the selling once a customer sees it work.",
-  "They show it to their friends. They come back for a second one as a gift. They film it before they leave the parking lot. It's not a product you have to explain — it's a product that explains itself the moment it lights up.",
+  "Litsaber is built to shine, spark curiosity, and start conversations. Where most 510 batteries prioritize discretion, Litsaber leans into culture — nightlife, sessions, festivals, conversation pieces.",
+  "Customers don't just buy it. They show it off. Every use is a micro-advertisement for your store. The pen lights up at the bar, in the smoke session, at the festival and the next person in line asks where they got it.",
+  "This isn't a commodity 510 battery competing on price. It's a category of one.",
 ];
 
 // ─── Section 4 — Sell Through ────────────────────────────────────────────────
