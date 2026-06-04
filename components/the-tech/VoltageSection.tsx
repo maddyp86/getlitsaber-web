@@ -53,13 +53,13 @@ export default function VoltageSection() {
                       >
                         {row.label}
                       </span>
-                      {row.oilType.map((oil) => (
-                        <span
-                          key={oil}
-                          className="font-body text-body-sm text-text-secondary leading-tight"
-                        >
-                          {oil}
-                        </span>
+                      <span className="font-body text-body-sm text-text-secondary">
+          {row.oilType1}
+        </span>
+<span className="font-body text-body-sm text-text-secondary">
+          {row.oilType2}
+        </span>
+                    
                       ))}
                     </div>
                   </div>
