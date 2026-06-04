@@ -14,16 +14,16 @@ export const HERO_IMAGE_ALT = "Litsaber OG glowing in a dark environment";
 export const BREATH_RESPONSE_IMAGE_SRC = "/images/tech/litsaber-multi-tech.jpg";
 export const BREATH_RESPONSE_IMAGE_ALT = "Litsaber glowing in rainbow spectrum of colors";
 
-export const POWER_IMAGE_SRC = "";
+export const POWER_IMAGE_SRC = "images/tech/litsaber-usbc-tech.jpg";
 export const POWER_IMAGE_ALT = "Litsaber device showing USB-C charging port";
 
-export const EXPLODED_RENDER_IMAGE_SRC = "";
+export const EXPLODED_RENDER_IMAGE_SRC = "images/tech/exploded-view-tech.jpg";
 export const EXPLODED_RENDER_IMAGE_ALT = "Litsaber OG exploded 3D view showing all six internal components";
 
-export const VOLTAGE_DEVICE_IMAGE_SRC = "";
+export const VOLTAGE_DEVICE_IMAGE_SRC = "images/tech/oil-desktop.jpg";
 export const VOLTAGE_DEVICE_IMAGE_ALT = "Litsaber held in hand, LED lit to indicate voltage setting";
 
-export const CART_LINEUP_IMAGE_SRC = "";
+export const CART_LINEUP_IMAGE_SRC = "images/tech/cart-sizes.jpg";
 export const CART_LINEUP_IMAGE_ALT = "510 cart size comparison from 10.5mm to 14.5mm — half-gram, full-gram, two-gram";
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────
@@ -47,12 +47,13 @@ export const BREATH_BODY_BLOCKS = [
   "**Most 510 batteries give you smoke. Litsaber gives you a light show that you make.** The airflow sensor and the LED array are wired as one system,  when you pull, the lights respond in real time. Pull harder, the response intensifies. Stop pulling, the animation settles. ",
   "This isn't a fixed pattern on a timer. It's the device **responding to your breath**, the same input that creates the cloud creates the light. Same draw, two outputs, one moment.",
   "**In Litsaber Mode,** the response curves with you. The lights start dim and intensify the longer you hold the pull, dim, brighter, brighter, until the device peaks in a rainbow strobe that cycles through all twelve colors. Every hit is a build. The longest pulls earn the biggest payoff.",
-  "It's also how the device tells you what's happening. Pre-heat shows a different animation than a hit. The LED color tracks your voltage setting. The whole device speaks back to you as you use it.",
+  "It's also how the device tells you what's happening. Pre-heat shows a different animation than a hit. The LED color tracks your voltage setting. **The whole device speaks back to you as you use it.**",
 ];
 
 // ─── Section 4 — Power ───────────────────────────────────────────────────────
 export const POWER_EYEBROW = "BUILT FOR THE LONG NIGHT";
-export const POWER_HEADLINE = "Power That\nKeeps UP!";
+export const POWER_HEADLINE1 = "Power That Keeps Up!";
+export const POWER_HEADLINE2 = "Keeps Up!";
 export const POWER_BODY =
   "Most vape pens are running out of battery at 9PM. Litsaber's 800mAh cobalt cell is built for the headliner, the afters, and the ride home.";
 export const POWER_BULLETS = [
