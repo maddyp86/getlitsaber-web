@@ -29,7 +29,7 @@ export default function VoltageSection() {
 
           {/* Left: voltage table + device image, wrapped in a bordered card */}
           <motion.div
-            className="flex flex-col items-center w-full max-w-[506px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
+            className="flex flex-col items-center w-full max-w-[506px] rounded-xl border border-[#32205A] bg-[#0A0515]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE }}
@@ -68,7 +68,7 @@ export default function VoltageSection() {
       alt={VOLTAGE_DEVICE_IMAGE_ALT}
       fill
       sizes="(min-width: 1024px) 460px, 100vw"
-      className="object-cover object-center rounded-b-lg"
+      className="object-cover object-center rounded-b-xl"
     />
   ) : (
     <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
