@@ -72,7 +72,19 @@ export default function PowerSection() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
             >
-              {POWER_HEADLINE}
+               <span
+              className="text-white"
+              style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
+            >
+              {POWER_HEADLINE1}
+               </span>
+               <br />
+            <span
+              className="text-accent-cyan"
+              style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
+            >
+              {POWER_HEADLINE2}
+            </span>
             </motion.h2>
 
             <motion.p
