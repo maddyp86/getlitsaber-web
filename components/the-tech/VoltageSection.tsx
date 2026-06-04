@@ -8,7 +8,6 @@ import {
   VOLTAGE_HEADLINE_LINE1,
   VOLTAGE_HEADLINE_ACCENT,
   VOLTAGE_BODY,
-  VOLTAGE_EXTRA,
   VOLTAGE_ROWS,
   VOLTAGE_DEVICE_IMAGE_SRC,
   VOLTAGE_DEVICE_IMAGE_ALT,
@@ -123,16 +122,6 @@ export default function VoltageSection() {
               transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
             >
               {VOLTAGE_BODY}
-            </motion.p>
-
-            <motion.p
-              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.65, delay: 0.3, ease: EASE }}
-            >
-              {VOLTAGE_EXTRA}
             </motion.p>
           </div>
         </div>
