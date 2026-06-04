@@ -50,7 +50,7 @@ export const SELLS_BODY = [
 
 // ─── Section 4 — Sell Through ────────────────────────────────────────────────
 export const SELL_THROUGH_HEADLINE = "Built to";
-export const SELL_THROUGH_ACCENT = "**Sell Through.**";
+export const SELL_THROUGH_ACCENT = "Sell Through";
 
 export const SELL_THROUGH_CARDS = [
   {
