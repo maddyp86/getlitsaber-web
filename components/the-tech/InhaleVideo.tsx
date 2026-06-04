@@ -34,7 +34,7 @@ export default function InhaleVideo() {
   return (
     <section
       id="inhale"
-      className="relative isolate overflow-hidden w-full bg-background-[#010101]"
+      className="relative isolate overflow-hidden w-full bg-background-primary"
       aria-label="Inhale. Watch what happens."
     >
       <div className="mx-auto w-full max-w-[1250px] px-[60px] py-[100px]">
