@@ -37,27 +37,32 @@ export default function VoltageSection() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: EASE }}
             >
-              {VOLTAGE_ROWS.map((row) => (
-                <div key={row.voltage} className="flex items-center gap-4">
-                  <span
-                    className="font-display text-h2 lg:text-h1 leading-none tabular-nums"
-                    style={{ color: row.color }}
-                  >
-                    {row.voltage}
-                  </span>
-                  <div className="flex flex-col">
-                    <span
-                      className="font-label text-eyebrow font-bold tracking-[0.15em] uppercase"
-                      style={{ color: row.color }}
-                    >
-                      {row.oilType1}
-                    </span>
-                    <span className="font-body text-body-sm text-text-secondary">
-                      {row.oilType2}
-                    </span>
-                  </div>
-                </div>
-              ))}
+             {VOLTAGE_ROWS.map((row, i) => (
+  <Fragment key={row.voltage}>
+    <div className="flex items-center gap-4">
+      <span
+        className="font-display text-h2 lg:text-h1 leading-none tabular-nums"
+        style={{ color: row.color }}
+      >
+        {row.voltage}
+      </span>
+      <div className="flex flex-col">
+        <span
+          className="font-label text-eyebrow font-bold tracking-[0.15em] uppercase"
+          style={{ color: row.color }}
+        >
+          {row.label}
+        </span>
+        <span className="font-body text-body-sm text-text-secondary">
+          {row.oilType}
+        </span>
+      </div>
+    </div>
+    {i < VOLTAGE_ROWS.length - 1 && (
+      <div className="h-px w-full bg-[#32205A]" aria-hidden="true" />
+    )}
+  </Fragment>
+))}
             </motion.div>
 
             {/* Device image below the table */}
