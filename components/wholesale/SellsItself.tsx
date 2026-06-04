@@ -49,7 +49,7 @@ export default function SellsItself() {
           <div className="flex flex-col gap-6 lg:flex-1">
             <motion.h2
               className="font-display font-bold uppercase leading-[1.1]"
-              style={{ fontSize: "clamp(38px, 5vw, 65px)" }}
+              style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -69,23 +69,26 @@ export default function SellsItself() {
               </span>
             </motion.h2>
 
-            {SELLS_BODY.map((block, i) => (
-              <motion.p
-                key={i}
-                className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-                initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.65, delay: 0.1 + i * 0.1, ease: EASE }}
-              >
-                {renderEmphasis(block)}
-              </motion.p>
-            ))}
+            {/* Body copy group — 575px cap, 20px gap */}
+            <div className="flex flex-col items-start gap-5 w-full max-w-[575px]">
+              {SELLS_BODY.map((block, i) => (
+                <motion.p
+                  key={i}
+                  className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+                  initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.65, delay: 0.1 + i * 0.1, ease: EASE }}
+                >
+                  {renderEmphasis(block)}
+                </motion.p>
+              ))}
+            </div>
           </div>
 
           {/* Video / image — right on desktop, below on mobile */}
           <motion.div
-            className="mt-10 lg:mt-0 w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[350px] max-w-full lg:flex-shrink-0 aspect-[9/16] rounded-card overflow-hidden bg-surface-card border border-border-pill"
+            className="mt-10 lg:mt-0 w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[350px] lg:flex-shrink-0 aspect-[9/16] rounded-card overflow-hidden bg-surface-card border border-border-pill"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -105,7 +108,7 @@ export default function SellsItself() {
                 src={SELLS_ITSELF_IMAGE_SRC}
                 alt={SELLS_ITSELF_IMAGE_ALT}
                 fill
-                sizes="(min-width: 1024px) 420px, 100vw"
+                sizes="(min-width: 1024px) 350px, 420px"
                 className="object-cover"
               />
             ) : (
