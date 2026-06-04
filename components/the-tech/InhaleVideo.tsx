@@ -122,7 +122,7 @@ export default function InhaleVideo() {
             />
           </motion.div> 
           {/* Copy — left on desktop, top on mobile */}
-          <div className="flex flex-col gap-2 lg:flex-1">
+          <div className="flex mt-10 flex-col gap-2 lg:flex-1">
             {BREATH_BODY_BLOCKS.map((block, i) => (
               <motion.p
                 key={i}
