@@ -165,7 +165,7 @@ export default function InhaleVideo() {
 </motion.div>
         </div>
 
-   {/* Ambient glow — sits behind all section content */}
+     {/* Ambient glow — sits behind all section content */}
 <div
   aria-hidden="true"
   className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[350px] w-[350px] lg:h-[800px] lg:w-[800px] -translate-x-1/2 rounded-full"
@@ -174,6 +174,7 @@ export default function InhaleVideo() {
     filter: "blur(150px)",
   }}
 />
+      </div>
     </section>
   );
 }
