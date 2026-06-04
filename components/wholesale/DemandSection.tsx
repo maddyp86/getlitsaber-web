@@ -29,7 +29,8 @@ function renderEmphasis(text: string) {
 export default function DemandSection() {
   const prefersReduced = useReducedMotion();
 
- <section
+  return (
+  <section
   className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#150C2D_0%,#000_100%)]"
   aria-label="Demand is already there"
 >
