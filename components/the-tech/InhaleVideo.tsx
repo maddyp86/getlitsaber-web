@@ -33,7 +33,7 @@ export default function InhaleVideo() {
 
   return (
     <section
-      id="inhale"
+
       className="relative isolate overflow-hidden w-full bg-[#010101]"
       aria-label="Inhale. Watch what happens."
     >
