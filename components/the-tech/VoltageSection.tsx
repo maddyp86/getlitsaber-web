@@ -125,7 +125,7 @@ export default function VoltageSection() {
                 {VOLTAGE_HEADLINE_ACCENT}
               </span>
             </motion.h2>
-
+  {BREATH_BODY_BLOCKS.map((block, i) => (
             <motion.p
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -134,7 +134,9 @@ export default function VoltageSection() {
               transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
             >
               {VOLTAGE_BODY}
+               {renderEmphasis(block)}
             </motion.p>
+                  ))}
           </div>
         </div>
       </div>
