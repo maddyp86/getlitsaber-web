@@ -60,7 +60,7 @@ export default function VoltageSection() {
   </div>
 
   {/* Device image below the table */}
-  <div className="relative w-full aspect-[4/5] rounded-card overflow-hidden">
+  <div className="relative w-full aspect-[4/5] overflow-hidden">
     {VOLTAGE_DEVICE_IMAGE_SRC ? (
       <Image
         src={VOLTAGE_DEVICE_IMAGE_SRC}
