@@ -41,19 +41,19 @@ export default function VoltageSection() {
   <Fragment key={row.voltage}>
     <div className="flex items-center justify-between p-6">
       <span
-        className="font-display text-5xl text-right font-bold lg:text-h1 leading-none tabular-nums"
+        className="font-display text-5xl font-bold lg:text-h1 leading-none tabular-nums"
         style={{ color: row.color }}
       >
         {row.voltage}
       </span>
       <div className="flex flex-col">
         <span
-          className="font-label text-eyebrow font-bold tracking-[0.15em] uppercase"
+          className="font-label text-eyebrow text-right  font-bold tracking-[0.15em] uppercase"
           style={{ color: row.color }}
         >
           {row.label}
         </span>
-        <span className="font-body text-body-sm text-text-secondary">
+        <span className="font-body text-body-sm text-right text-text-secondary">
           {row.oilType}
         </span>
       </div>
