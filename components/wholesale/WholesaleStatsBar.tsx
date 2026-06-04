@@ -10,11 +10,11 @@ export default function WholesaleStatsBar() {
 
   return (
     <section
-      className="relative w-full bg-[#050210]"
+      className="relative w-full bg-[#150C2D]"
       aria-label="Wholesale at a glance"
     >
       {/* Top rule */}
-      <div className="h-px w-full bg-[#1E1040]" aria-hidden="true" />
+      <div className="h-px w-full bg-[#2D1C53]" aria-hidden="true" />
 
       <motion.div
         className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px]"
@@ -53,7 +53,7 @@ export default function WholesaleStatsBar() {
       </motion.div>
 
       {/* Bottom rule */}
-      <div className="h-px w-full bg-[#1E1040]" aria-hidden="true" />
+      <div className="h-px w-full bg-[#2D1C53]" aria-hidden="true" />
     </section>
   );
 }
