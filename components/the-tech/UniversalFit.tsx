@@ -21,10 +21,10 @@ export default function UniversalFit() {
 
   return (
     <section
-      className="relative w-full bg-background-primary"
+      className="relative w-full bg-black"
       aria-label="Universal fit"
     >
-      <div className="mx-auto w-full max-w-[1250px] px-5 lg:px-0 py-16 lg:py-24">
+       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Centered header block */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
           <motion.p
