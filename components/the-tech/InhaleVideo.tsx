@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-   {/* INHALE_HEADLINE_LINE1,*/}
-    {/*INHALE_HEADLINE_LINE2,*/}
   INHALE_BODY,
   VIDEO_SRC,
   BREATH_EYEBROW,
