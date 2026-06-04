@@ -54,7 +54,7 @@ export default function TechCta() {
   {/* Primary — GET YOURS */}
   <Link
     href={CTA_PRIMARY_HREF}
-    className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
+    className="flex items-center justify-center gap-[10px] w-full sm:w-[350px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
   >
     {CTA_PRIMARY_LABEL}
     <svg
@@ -78,7 +78,7 @@ export default function TechCta() {
  {/* Secondary — VIEW WHOLESALE */}
 <Link
   href={CTA_SECONDARY_HREF}
-  className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 rounded-[5px] border border-[#00E5FF] bg-transparent text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors duration-200 hover:bg-[#00E5FF] hover:text-white"
+  className="flex items-center justify-center gap-[10px] w-full sm:w-[350px] p-5 rounded-[5px] border border-[#00E5FF] bg-transparent text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors duration-200 hover:bg-[#00E5FF] hover:text-white"
 >
   {CTA_SECONDARY_LABEL}
 </Link>
