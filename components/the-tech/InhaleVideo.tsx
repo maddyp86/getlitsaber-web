@@ -106,6 +106,21 @@ export default function InhaleVideo() {
         {/* Breath response — two-column copy/image block */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
 
+          {/* Image — right on desktop, below on mobile */}
+          <motion.div
+            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-[550px] lg:aspect-[76/101] rounded-card overflow-hidden"
+            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
+          >
+            <Image
+              src={BREATH_RESPONSE_IMAGE_SRC}
+              alt={BREATH_RESPONSE_IMAGE_ALT}
+              fill
+              sizes="(min-width: 1024px) 550px, 350px"
+              className="object-cover object-center"
+            />
+          </motion.div> 
           {/* Copy — left on desktop, top on mobile */}
           <div className="flex flex-col gap-2 lg:flex-1">
             {BREATH_BODY_BLOCKS.map((block, i) => (
@@ -121,21 +136,7 @@ export default function InhaleVideo() {
             ))}
           </div>
 
-          {/* Image — right on desktop, below on mobile */}
-          <motion.div
-            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-[550px] lg:aspect-[76/101] rounded-card overflow-hidden"
-            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
-          >
-            <Image
-              src={BREATH_RESPONSE_IMAGE_SRC}
-              alt={BREATH_RESPONSE_IMAGE_ALT}
-              fill
-              sizes="(min-width: 1024px) 550px, 350px"
-              className="object-cover object-center"
-            />
-          </motion.div>
+ 
         </div>
 
         {/* Ambient glow — sits behind all section content */}
