@@ -7,7 +7,6 @@ import {
   FIT_HEADLINE_LINE1,
   FIT_HEADLINE_ACCENT,
   FIT_BODY,
-  CART_SIZES_LABEL,
   CART_LINEUP_IMAGE_SRC,
   CART_LINEUP_IMAGE_ALT,
 } from "./the-tech.content";
@@ -82,9 +81,6 @@ export default function UniversalFit() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
         >
-          <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-text-muted">
-            {CART_SIZES_LABEL}
-          </p>
 
           <div className="relative w-full rounded-card overflow-hidden border border-border-pill">
             {CART_LINEUP_IMAGE_SRC ? (
