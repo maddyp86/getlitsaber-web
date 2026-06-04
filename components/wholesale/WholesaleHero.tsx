@@ -74,7 +74,7 @@ export default function WholesaleHero() {
     {HERO_HEADLINE_LINE2}
   </span>
   <span
-    className="block font-accent text-accent-cyan"
+    className="block font-normal font-accent text-accent-cyan"
     style={{ fontSize: "clamp(48px, 7.3vw, 100px)" }}
   >
     {HERO_HEADLINE_ACCENT}
