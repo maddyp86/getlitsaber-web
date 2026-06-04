@@ -65,7 +65,7 @@ export default function SellsItself() {
                 className="block text-accent-cyan"
                 style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
               >
-                {renderEmphasis(SELLS_HEADLINE_PART2)}
+                {SELLS_HEADLINE_PART2}
               </span>
             </motion.h2>
 
