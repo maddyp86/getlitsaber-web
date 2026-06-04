@@ -72,7 +72,7 @@ export default function VoltageSection() {
               ))}
             </div>
 {/* Device image below the table */}
-<div className="relative w-full overflow-hidden rounded-b-xl">
+<div className="relative w-full flex-1 min-h-[322px] overflow-hidden rounded-b-xl">
   {VOLTAGE_DEVICE_IMAGE_SRC ? (
     <Image
       src={VOLTAGE_DEVICE_IMAGE_SRC}
