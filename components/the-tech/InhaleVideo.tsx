@@ -7,7 +7,6 @@ import {
   INHALE_HEADLINE_LINE2,
   INHALE_BODY,
   VIDEO_SRC,
-  BREATH_EYEBROW,
   BREATH_BODY_BLOCKS,
   BREATH_RESPONSE_IMAGE_SRC,
   BREATH_RESPONSE_IMAGE_ALT,
@@ -108,7 +107,7 @@ export default function InhaleVideo() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
 
           {/* Copy — left on desktop, top on mobile */}
-          <div className="flex flex-col gap-3 lg:flex-1">
+             {/* <div className="flex flex-col gap-3 lg:flex-1">
             <motion.p
               className="font-label text-eyebrow uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -119,7 +118,7 @@ export default function InhaleVideo() {
               {BREATH_EYEBROW}
             </motion.p>
 
-             {/*  <motion.h2
+           <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
             style={{ 
               fontSize: "clamp(35px, 6.5vw, 55px)",
