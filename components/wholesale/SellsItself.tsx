@@ -44,7 +44,7 @@ export default function SellsItself() {
       />
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-10">
           {/* Copy — left on desktop, top on mobile */}
           <div className="flex flex-col gap-6 lg:flex-1">
             <motion.h2
