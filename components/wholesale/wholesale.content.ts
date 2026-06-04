@@ -44,7 +44,7 @@ export const SELLS_HEADLINE_PART1 = "It doesn't sit on shelves.";
 export const SELLS_HEADLINE_PART2 = "It sells itself.";
 export const SELLS_BODY = [
   "Litsaber is built to shine, spark curiosity, and start conversations. Where most 510 batteries prioritize discretion, Litsaber leans into culture — nightlife, sessions, festivals, conversation pieces.",
-  "Customers don't just buy it. They show it off. Every use is a micro-advertisement for your store. The pen lights up at the bar, in the smoke session, at the festival and the next person in line asks where they got it.",
+  "**Customers don't just buy it. They show it off.** Every use is a micro-advertisement for your store. The pen lights up at the bar, in the smoke session, at the festival and the next person in line asks where they got it.",
   "This isn't a commodity 510 battery competing on price. It's a category of one.",
 ];
 
