@@ -40,31 +40,6 @@ export default function PowerSection() {
         {/* 2-col: image left, copy right */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
-          {/* Image — left on desktop, top on mobile */}
-          <motion.div
-            className="relative w-full aspect-[3/4] lg:aspect-[4/5] lg:flex-1 rounded-card overflow-hidden"
-            initial={prefersReduced ? false : { opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.85, ease: EASE }}
-          >
-            {POWER_IMAGE_SRC ? (
-              <Image
-                src={POWER_IMAGE_SRC}
-                alt={POWER_IMAGE_ALT}
-                fill
-                sizes="(min-width: 1024px) 545px, 100vw"
-                className="object-cover object-center"
-              />
-            ) : (
-              <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
-                <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                  Power Image
-                </span>
-              </div>
-            )}
-          </motion.div>
-
           {/* Copy — right on desktop, below image on mobile */}
           <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
             <motion.p
@@ -113,6 +88,31 @@ export default function PowerSection() {
               </motion.p>
             ))}
           </div>
+  {/* Image — left on desktop, top on mobile */}
+          <motion.div
+            className="relative w-full aspect-[3/4] lg:aspect-[4/5] lg:flex-1 rounded-card overflow-hidden"
+            initial={prefersReduced ? false : { opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.85, ease: EASE }}
+          >
+            {POWER_IMAGE_SRC ? (
+              <Image
+                src={POWER_IMAGE_SRC}
+                alt={POWER_IMAGE_ALT}
+                fill
+                sizes="(min-width: 1024px) 545px, 100vw"
+                className="object-cover object-center"
+              />
+            ) : (
+              <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
+                <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+                  Power Image
+                </span>
+              </div>
+            )}
+          </motion.div>
+          
         </div>
       </div>
 
