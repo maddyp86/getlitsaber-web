@@ -127,6 +127,7 @@ export default function VoltageSection() {
             </motion.h2>
   {VOLTAGE_BODY.map((block, i) => (
             <motion.p
+                 key={i}
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
