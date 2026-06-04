@@ -13,6 +13,19 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+function renderEmphasis(text: string) {
+  return text.split("**").map((segment, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-bold text-white">
+        {segment}
+      </strong>
+    ) : (
+      segment
+    )
+  );
+}
+
+
 export default function UniversalFit() {
   const prefersReduced = useReducedMotion();
 
@@ -57,17 +70,18 @@ export default function UniversalFit() {
             </span>
           </motion.h2>
 
-          <motion.div
-            className="flex flex-col gap-3 max-w-[1050px]"
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-          >
-            <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
-              {FIT_BODY}
-            </p>
-          </motion.div>
+           {FIT_BODY_BODY.map((block, i) => (
+            <motion.p
+                 key={i}
+              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
+            >
+               {renderEmphasis(block)}
+            </motion.p>
+                  ))}
         </div>
 
         {/* Cart sizes diagram */}
