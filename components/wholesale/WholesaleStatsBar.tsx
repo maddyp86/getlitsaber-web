@@ -38,7 +38,7 @@ export default function WholesaleStatsBar() {
         .filter(Boolean)
         .join(" ")}
     >
-              <span className="font-label font-bold text-accent-cyan leading-none" style={{ fontSize: "clamp(28px, 3.5vw, 42px)" }}>
+              <span className="font-body font-bold text-accent-cyan leading-none" style={{ fontSize: "clamp(28px, 3.5vw, 42px)" }}>
                 {stat.value}
               </span>
               <span className="font-label text-eyebrow text-text-muted tracking-[0.15em] uppercase mt-1">
