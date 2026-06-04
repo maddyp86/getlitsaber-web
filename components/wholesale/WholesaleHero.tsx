@@ -52,8 +52,6 @@ export default function WholesaleHero() {
       "linear-gradient(0deg, rgba(75,47,129,0.75) 0%, rgba(0,0,0,0.00) 69.71%)",
   }}
 />
- 
-
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px] lg:py-[140px]">
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto">
           <motion.h1
@@ -70,8 +68,8 @@ export default function WholesaleHero() {
     {HERO_HEADLINE_LINE1}
   </span>
   <span
-    className="block font-accent text-accent-cyan"
-    style={{ fontSize: "clamp(48px, 7.3vw, 100px)" }}
+    className="block font-normal font-accent text-accent-cyan"
+    style={{ fontSize: "clamp(48px, 7.3vw, 100px)"}}
   >
     {HERO_HEADLINE_LINE2}
   </span>
