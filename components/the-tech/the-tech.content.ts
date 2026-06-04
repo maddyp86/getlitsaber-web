@@ -52,7 +52,7 @@ export const BREATH_BODY_BLOCKS = [
 
 // ─── Section 4 — Power ───────────────────────────────────────────────────────
 export const POWER_EYEBROW = "BUILT FOR THE LONG NIGHT";
-export const POWER_HEADLINE1 = "Power That Keeps Up!";
+export const POWER_HEADLINE1 = "Power That";
 export const POWER_HEADLINE2 = "Keeps Up!";
 export const POWER_BODY =
   "Most vape pens are running out of battery at 9PM. Litsaber's 800mAh cobalt cell is built for the headliner, the afters, and the ride home.";
