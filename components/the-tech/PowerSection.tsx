@@ -43,7 +43,7 @@ export default function PowerSection() {
       {/* Geometric shape #1 — top-left, behind everything */}
 <div
   className="absolute pointer-events-none -z-10"
-  style={{ width: "540px", height: "451px", top: 0, left: 0, opacity: 0.4 }}
+  style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.4 }}
   aria-hidden="true"
 >
   <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
