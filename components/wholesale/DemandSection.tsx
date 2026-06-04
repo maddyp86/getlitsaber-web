@@ -9,7 +9,6 @@ import {
   DEMAND_BODY,
   DEMAND_IMAGE_SRC,
   DEMAND_IMAGE_ALT,
-  GEOMETRIC_SHAPE_SRC,
 } from "./wholesale.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
