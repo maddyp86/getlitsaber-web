@@ -108,7 +108,7 @@ export default function InhaleVideo() {
 
           {/* Image — right on desktop, below on mobile */}
           <motion.div
-            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-[550px] lg:aspect-[76/101] mb-8 rounded-card overflow-hidden"
+            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-auto lg:flex-1 lg:aspect-auto lg:self-stretch rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
