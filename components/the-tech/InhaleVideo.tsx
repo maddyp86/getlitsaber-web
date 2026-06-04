@@ -108,8 +108,8 @@ export default function InhaleVideo() {
         {/* Breath response — two-column copy/image block */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
 
-          {/* Copy — left on desktop, top on mobile */}
-          <div className="flex flex-col gap-3 lg:flex-1">
+             {/* Copy — left on desktop, top on mobile */}
+          {/* <div className="flex flex-col gap-3 lg:flex-1">
             <motion.p
               className="font-label text-eyebrow uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -131,7 +131,7 @@ export default function InhaleVideo() {
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
             >
               {BREATH_HEADLINE}
-            </motion.h2>
+            </motion.h2> */}
 
 <div className="flex flex-col gap-2 ">
   {BREATH_BODY_BLOCKS.map((block, i) => (
