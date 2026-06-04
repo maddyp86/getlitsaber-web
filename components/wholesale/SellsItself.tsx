@@ -44,11 +44,11 @@ export default function SellsItself() {
       />
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-10">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
           {/* Copy — left on desktop, top on mobile */}
           <div className="flex flex-col gap-6 lg:flex-1">
             <motion.h2
-              className="font-display font-bold uppercase"
+              className="font-display font-bold uppercase leading-[1.1]"
               style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
