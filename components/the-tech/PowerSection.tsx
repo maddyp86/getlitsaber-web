@@ -114,28 +114,31 @@ export default function PowerSection() {
         </div>
 
         {/* Full-width exploded render below the 2-col */}
-        <motion.div
-          className="relative w-full mt-20 lg:mt-25 aspect-[16/7] lg:aspect-[16/6] overflow-hidden"
-          initial={prefersReduced ? false : { opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-        >
-          {EXPLODED_RENDER_IMAGE_SRC ? (
-            <Image
-              src={EXPLODED_RENDER_IMAGE_SRC}
-              alt={EXPLODED_RENDER_IMAGE_ALT}
-              fill
-              className="object-contain object-center"
-            />
-          ) : (
-            <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
-              <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                Exploded 3D Render
-              </span>
-            </div>
-          )}
-        </motion.div>
+        {/* Full-width exploded render below the 2-col */}
+<motion.div
+  className="relative w-full py-20 overflow-hidden"
+  initial={prefersReduced ? false : { opacity: 0, y: 32 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
+>
+  {EXPLODED_RENDER_IMAGE_SRC ? (
+    <Image
+      src={EXPLODED_RENDER_IMAGE_SRC}
+      alt={EXPLODED_RENDER_IMAGE_ALT}
+      width={1100}
+      height={734}
+      sizes="100vw"
+      className="w-full h-auto"
+    />
+  ) : (
+    <div className="w-full aspect-[547/365] bg-surface-card flex items-center justify-center border border-border-pill">
+      <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+        Exploded 3D Render
+      </span>
+    </div>
+  )}
+</motion.div>
       </div>
     </section>
   );
