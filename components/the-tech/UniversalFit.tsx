@@ -70,7 +70,7 @@ export default function UniversalFit() {
             </span>
           </motion.h2>
 
-           {FIT_BODY_BODY.map((block, i) => (
+           {FIT_BODY.map((block, i) => (
             <motion.p
                  key={i}
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
