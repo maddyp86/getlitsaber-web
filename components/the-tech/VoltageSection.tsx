@@ -133,7 +133,6 @@ export default function VoltageSection() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
             >
-              {VOLTAGE_BODY}
                {renderEmphasis(block)}
             </motion.p>
                   ))}
