@@ -132,7 +132,7 @@ export default function PowerSection() {
             className="w-auto mx-auto h-auto"
           />
         ) : (
-          <div className="w-full  bg-surface-card flex items-center justify-center border border-border-pill">
+          <div className="w-full aspect-[547/365] bg-surface-card flex items-center justify-center border border-border-pill">
             <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
               Exploded 3D Render
             </span>
