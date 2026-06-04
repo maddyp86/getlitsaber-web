@@ -17,10 +17,30 @@ export default function WholesaleHero() {
   const prefersReduced = useReducedMotion();
 
   return (
-    <section
-      className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#0A0518_100%)]"
-      aria-label="The 510 battery you've been looking for"
-    >
+<section
+  className="relative isolate overflow-hidden w-full bg-[#0A0518]"
+  aria-label="The 510 battery you've been looking for"
+>
+  {/* Background image — backmost layer */}
+<Image
+  src="/images/wholesale/smoke-background.jpg"
+  alt=""
+  fill
+  priority
+  sizes="100vw"
+  aria-hidden="true"
+  className="object-cover object-center -z-20 pointer-events-none"
+/>
+
+{/* Gradient overlay — translucent, sits over the image */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-0 -z-10"
+  style={{
+    background:
+      "linear-gradient(180deg, rgba(0,0,0,0.50) 0%, rgba(21,12,45,0.50) 100%)",
+  }}
+/>
       {/* Ambient glow */}
       <div
         aria-hidden="true"
