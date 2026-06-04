@@ -29,7 +29,7 @@ export default function VoltageSection() {
 
           {/* Left: voltage table + device image, wrapped in a bordered card */}
           <motion.div
-            className="flex flex-col items-center justify-between  w-full max-w-[506px] lg:h-[668px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
+            className="flex flex-col items-center w-full max-w-[506px] rounded-[5px] border border-[#32205A] bg-[#0A0515]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE }}
@@ -45,19 +45,13 @@ export default function VoltageSection() {
                     >
                       {row.voltage}
                     </span>
-                    <div className="flex flex-col">
-                      <span
-                        className="font-label text-eyebrow font-bold tracking-[0.15em] uppercase"
-                        style={{ color: row.color }}
-                      >
-                        {row.label}
+                    <div className="flex flex-col items-end">
+                      <span className="font-body text-body-sm text-right text-text-secondary">
+                        {row.oilType1}
                       </span>
-                      <span className="font-body text-body-sm  text-right text-text-secondary">
-          {row.oilType1}
-        </span>
-<span className="font-body text-body-sm  text-right text-text-secondary">
-          {row.oilType2}
-        </span>
+                      <span className="font-body text-body-sm text-right text-text-secondary">
+                        {row.oilType2}
+                      </span>
                     </div>
                   </div>
                   {i < VOLTAGE_ROWS.length - 1 && (

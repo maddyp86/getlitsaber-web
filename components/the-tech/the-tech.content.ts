@@ -72,8 +72,9 @@ export const VOLTAGE_EXTRA =
 export interface VoltageRow {
   voltage: string;
   color: string;
-  label: string;
-  oilType: string;
+  label?: string;
+  oilType1: string;
+  oilType2: string;
   ledColor: string;
 }
 
