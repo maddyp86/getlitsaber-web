@@ -16,6 +16,18 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+function renderEmphasis(text: string) {
+  return text.split("**").map((segment, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-bold text-white">
+        {segment}
+      </strong>
+    ) : (
+      segment
+    )
+  );
+}
+
 export default function PowerSection() {
   const prefersReduced = useReducedMotion();
 
@@ -87,6 +99,7 @@ export default function PowerSection() {
             </span>
             </motion.h2>
 
+              {POWER_BODY.map((block, i) => (
             <motion.p
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -95,8 +108,9 @@ export default function PowerSection() {
               transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
             >
               {POWER_BODY}
+              {renderEmphasis(block)}
             </motion.p>
-
+  ))}
             <div className="flex flex-col gap-3 mt-1">
               {POWER_BULLETS.map((bullet, i) => (
                 <motion.p
