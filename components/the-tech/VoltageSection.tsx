@@ -68,24 +68,24 @@ export default function VoltageSection() {
               ))}
             </div>
 
-            {/* Device image below the table */}
-            <div className="relative w-full h-[350px] aspect-[4/5] overflow-hidden">
-              {VOLTAGE_DEVICE_IMAGE_SRC ? (
-                <Image
-                  src={VOLTAGE_DEVICE_IMAGE_SRC}
-                  alt={VOLTAGE_DEVICE_IMAGE_ALT}
-                  fill
-                  sizes="(min-width: 1024px) 350px, 100vw"
-                  className="object-cover object-center"
-                />
-              ) : (
-                <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
-                  <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                    Voltage Device Image
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* Device image below the table */}
+<div className="relative self-stretch shrink-0 h-[322px] overflow-hidden">
+  {VOLTAGE_DEVICE_IMAGE_SRC ? (
+    <Image
+      src={VOLTAGE_DEVICE_IMAGE_SRC}
+      alt={VOLTAGE_DEVICE_IMAGE_ALT}
+      fill
+      sizes="(min-width: 1024px) 460px, 100vw"
+      className="object-cover object-center"
+    />
+  ) : (
+    <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
+      <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+        Voltage Device Image
+      </span>
+    </div>
+  )}
+</div>
           </motion.div>
 
           {/* Right: headline + copy */}
