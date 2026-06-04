@@ -39,7 +39,7 @@ export default function VoltageSection() {
     {VOLTAGE_ROWS.map((row) => (
       <div key={row.voltage} className="flex items-center gap-4">
         <span
-          className="font-display text-5xl lg:text-5xl leading-none tabular-nums"
+          className="font-display text-5xl lg:text-5xl font-bold leading-none tabular-nums"
           style={{ color: row.color }}
         >
           {row.voltage}
