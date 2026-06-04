@@ -165,16 +165,15 @@ export default function InhaleVideo() {
 </motion.div>
         </div>
 
-        {/* Ambient glow — sits behind all section content */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[800px] w-[800px] -translate-x-1/2 rounded-full"
-          style={{
-            background: "rgba(30, 0, 77, 0.75)",
-            filter: "blur(150px)",
-          }}
-        />
-      </div>
+   {/* Ambient glow — sits behind all section content */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute left-1/2 top-[200px] -z-10 h-[350px] w-[350px] lg:h-[800px] lg:w-[800px] -translate-x-1/2 rounded-full"
+  style={{
+    background: "rgba(30, 0, 77, 0.75)",
+    filter: "blur(150px)",
+  }}
+/>
     </section>
   );
 }
