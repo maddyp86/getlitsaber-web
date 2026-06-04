@@ -46,6 +46,16 @@ export default function VoltageSection() {
 >
   <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
 </div>
+
+          {/* Ambient gradient — sits behind content, anchored to section bottom */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[472px] w-full"
+  style={{
+    background: "linear-gradient(0deg, #4B2F81 0%, #0A0619 100%)",
+    filter: "blur(200px)",
+  }}
+/>
           
           {/* Left: voltage table + device image, wrapped in a bordered card */}
           <motion.div
