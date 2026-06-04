@@ -148,28 +148,29 @@ export default function InhaleVideo() {
 </div>
           </div>
 
-          {/* Image — right on desktop, below on mobile */}
-          <motion.div
-            className="relative mt-10 lg:mt-0 lg:flex-1 w-full aspect-[3/4] lg:aspect-[4/5] rounded-card overflow-hidden"
-            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
-          >
-            {BREATH_RESPONSE_IMAGE_SRC ? (
-              <Image
-                src={BREATH_RESPONSE_IMAGE_SRC}
-                alt={BREATH_RESPONSE_IMAGE_ALT}
-                fill
-                className="object-cover object-center"
-              />
-            ) : (
-              <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
-                <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
-                  Rainbow Device Image
-                </span>
-              </div>
-            )}
-          </motion.div>
+         {/* Image — right on desktop, below on mobile */}
+<motion.div
+  className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[70/93] lg:w-[550px] lg:aspect-[76/101] rounded-card overflow-hidden"
+  initial={prefersReduced ? false : { opacity: 0, x: 24 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
+>
+  {BREATH_RESPONSE_IMAGE_SRC ? (
+    <Image
+      src={BREATH_RESPONSE_IMAGE_SRC}
+      alt={BREATH_RESPONSE_IMAGE_ALT}
+      fill
+      sizes="(min-width: 1024px) 550px, 350px"
+      className="object-cover object-center"
+    />
+  ) : (
+    <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
+      <span className="font-label text-eyebrow text-text-muted tracking-widest uppercase">
+        Rainbow Device Image
+      </span>
+    </div>
+  )}
+</motion.div>
         </div>
 
         {/* Ambient glow — sits behind all section content */}
