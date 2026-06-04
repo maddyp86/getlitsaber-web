@@ -14,16 +14,16 @@ export const HERO_IMAGE_ALT = "Litsaber OG glowing in a dark environment";
 export const BREATH_RESPONSE_IMAGE_SRC = "/images/tech/litsaber-multi-tech.jpg";
 export const BREATH_RESPONSE_IMAGE_ALT = "Litsaber glowing in rainbow spectrum of colors";
 
-export const POWER_IMAGE_SRC = "images/tech/litsaber-usbc-tech.jpg";
+export const POWER_IMAGE_SRC = "/images/tech/litsaber-usbc-tech.jpg";
 export const POWER_IMAGE_ALT = "Litsaber device showing USB-C charging port";
 
-export const EXPLODED_RENDER_IMAGE_SRC = "images/tech/exploded-view-tech.jpg";
+export const EXPLODED_RENDER_IMAGE_SRC = "/images/tech/exploded-view-tech.jpg";
 export const EXPLODED_RENDER_IMAGE_ALT = "Litsaber OG exploded 3D view showing all six internal components";
 
-export const VOLTAGE_DEVICE_IMAGE_SRC = "images/tech/oil-desktop.jpg";
+export const VOLTAGE_DEVICE_IMAGE_SRC = "/images/tech/oil-desktop.jpg";
 export const VOLTAGE_DEVICE_IMAGE_ALT = "Litsaber held in hand, LED lit to indicate voltage setting";
 
-export const CART_LINEUP_IMAGE_SRC = "images/tech/cart-sizes.jpg";
+export const CART_LINEUP_IMAGE_SRC = "/images/tech/cart-sizes.jpg";
 export const CART_LINEUP_IMAGE_ALT = "510 cart size comparison from 10.5mm to 14.5mm — half-gram, full-gram, two-gram";
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────
