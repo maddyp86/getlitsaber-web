@@ -30,11 +30,11 @@ export default function WholesaleStatsBar() {
               className={[
                 "flex flex-col items-center justify-center text-center gap-1 py-8 px-4",
                 // vertical divider — right border on all except last in row
-                i % 2 === 0 ? "border-r border-[#1E1040]" : "",
+                i % 2 === 0 ? "border-r border-[#4A4A4A]" : "",
                 // on desktop override: right border on first 3
                 i < 3 ? "lg:border-r" : "lg:border-r-0",
                 // remove right border on even items at desktop (override 2-col rule)
-                i % 2 === 0 ? "lg:border-r border-[#1E1040]" : "lg:border-r-0",
+                i % 2 === 0 ? "lg:border-r border-[#4A4A4A]" : "lg:border-r-0",
                 // top border for the second row on mobile (items 2 and 3)
                 i >= 2 ? "border-t border-[#1E1040] lg:border-t-0" : "",
               ]
