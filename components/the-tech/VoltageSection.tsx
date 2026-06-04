@@ -79,7 +79,7 @@ export default function VoltageSection() {
       alt={VOLTAGE_DEVICE_IMAGE_ALT}
       fill
       sizes="(min-width: 1024px) 460px, 100vw"
-      className="object-cover object-end rounded-b-xl"
+      className="object-cover object-bottom rounded-b-xl"
     />
   ) : (
     <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
