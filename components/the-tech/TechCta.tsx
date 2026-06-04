@@ -75,13 +75,13 @@ export default function TechCta() {
     </svg>
   </Link>
 
-  {/* Secondary — VIEW WHOLESALE */}
-  <Link
-    href={CTA_SECONDARY_HREF}
-    className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 rounded-[5px] border border-[#00E5FF] text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors hover:bg-[#00E5FF]/10"
-  >
-    {CTA_SECONDARY_LABEL}
-  </Link>
+ {/* Secondary — VIEW WHOLESALE */}
+<Link
+  href={CTA_SECONDARY_HREF}
+  className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 rounded-[5px] border border-[#00E5FF] bg-transparent text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors duration-200 hover:bg-[#00E5FF] hover:text-white"
+>
+  {CTA_SECONDARY_LABEL}
+</Link>
 </motion.div>
         </div>
       </div>
