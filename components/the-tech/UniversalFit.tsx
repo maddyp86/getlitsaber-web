@@ -38,17 +38,23 @@ export default function UniversalFit() {
           </motion.p>
 
           <motion.h2
-            className="font-display text-h3 lg:text-h1 text-text-primary leading-[1.05]"
+            className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
+            style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
           >
-            {FIT_HEADLINE_LINE1}{" "}
             <span
-              className="text-accent-cyan"
-              style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
+              className="text-white"
+              style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
             >
+            {FIT_HEADLINE_LINE1}
+            </span>
+                 <span
+                className="text-accent-cyan"
+                style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
+              >
               {FIT_HEADLINE_ACCENT}
             </span>
           </motion.h2>
