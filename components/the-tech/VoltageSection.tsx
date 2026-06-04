@@ -69,7 +69,7 @@ export default function VoltageSection() {
             </div>
 
             {/* Device image below the table */}
-            <div className="relative w-full h-[350px] aspect-[4/5] overflow-hidden">
+            <div className="relative w-full h-[350px] aspect-[274/173] overflow-hidden">
               {VOLTAGE_DEVICE_IMAGE_SRC ? (
                 <Image
                   src={VOLTAGE_DEVICE_IMAGE_SRC}
