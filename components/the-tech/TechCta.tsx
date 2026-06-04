@@ -60,7 +60,7 @@ export default function TechCta() {
 
             <Link
               href={CTA_SECONDARY_HREF}
-              className="inline-flex items-center justify-center font-label font-bold text-eyebrow uppercase tracking-wider px-8 py-4 rounded-md border border-text-muted text-text-secondary transition-colors hover:border-text-primary hover:text-text-primary"
+              className="inline-flex items-center justify-center font-label font-bold text-eyebrow uppercase tracking-wider px-8 py-4 rounded-md border border-text-muted text-text-secondary transition-colors hover:border-text-cyan hover:text-text-cyan"
             >
               {CTA_SECONDARY_LABEL}
             </Link>
