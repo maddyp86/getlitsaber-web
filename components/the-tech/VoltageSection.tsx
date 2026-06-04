@@ -71,15 +71,15 @@ export default function VoltageSection() {
                 </Fragment>
               ))}
             </div>
-          {/* Device image below the table */}
-    <div className="relative w-full h-[322px] overflow-hidden">
+{/* Device image below the table */}
+<div className="relative w-full flex-1 overflow-hidden rounded-b-xl">
   {VOLTAGE_DEVICE_IMAGE_SRC ? (
     <Image
       src={VOLTAGE_DEVICE_IMAGE_SRC}
       alt={VOLTAGE_DEVICE_IMAGE_ALT}
       fill
       sizes="(min-width: 1024px) 460px, 100vw"
-      className="object-cover object-bottom rounded-b-xl"
+      className="object-cover object-bottom"
     />
   ) : (
     <div className="w-full h-full bg-surface-card flex items-center justify-center rounded-card border border-border-pill">
