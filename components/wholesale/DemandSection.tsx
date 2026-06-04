@@ -37,7 +37,7 @@ export default function DemandSection() {
       {/* Decorative geometric shape */}
       <div
         className="absolute pointer-events-none -z-10"
-        style={{ width: "540px", height: "451px", top: -60, right: -120, opacity: 0.3 }}
+        style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.3 }}
         aria-hidden="true"
       >
         <Image
