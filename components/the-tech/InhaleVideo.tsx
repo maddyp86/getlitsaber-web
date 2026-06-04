@@ -37,7 +37,7 @@ export default function InhaleVideo() {
       className="relative isolate overflow-hidden w-full bg-[#010101]"
       aria-label="Inhale. Watch what happens."
     >
-      <div className="mx-auto w-full max-w-[1250px] px-[60px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] lg:px-[60px] py-[100px]">
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
           <motion.h2
