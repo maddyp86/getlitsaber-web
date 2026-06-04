@@ -52,15 +52,7 @@ export default function WholesaleHero() {
       "linear-gradient(0deg, rgba(75,47,129,0.75) 0%, rgba(0,0,0,0.00) 69.71%)",
   }}
 />
-      {/* Ambient glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,229,255,0.08) 0%, transparent 70%)",
-        }}
-      />
+ 
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px] lg:py-[140px]">
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto">
