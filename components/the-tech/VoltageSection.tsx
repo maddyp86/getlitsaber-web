@@ -24,13 +24,13 @@ export default function VoltageSection() {
       aria-label="Tuned for the oil"
     >
        <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[150px]">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 bg-[#0A0515] outline-[#32205A]">
 
           {/* Left: voltage table + device image */}
           <div className="flex flex-col gap-8 lg:flex-1 ">
             {/* Voltage table */}
             <motion.div
-              className="flex flex-col gap-3 bg-[#0A0515] outline-[#32205A]"
+              className="flex flex-col gap-3 "
               initial={prefersReduced ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
