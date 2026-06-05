@@ -47,28 +47,21 @@ export default function SellsItself() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
           {/* Copy — left on desktop, top on mobile */}
           <div className="flex flex-col gap-6 lg:flex-1">
-            <motion.h2
-              className="font-display font-bold uppercase leading-[1.1]"
-              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.75, ease: EASE }}
-            >
-              <span
-                className="block text-white"
-                style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)",
-                       fontSize: "clamp(45px, 5vw, 75px)" }}
-              >
-                {SELLS_HEADLINE_PART1}
-              </span>
-              <span
-                className="block text-accent-cyan"
-                style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)",
-                       fontSize: "clamp(45px, 5vw, 75px)" }}
-              >
-                {SELLS_HEADLINE_PART2}
-              </span>
-            </motion.h2>
+     <motion.h2
+  className="font-display font-bold uppercase leading-[1.1]"
+  style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
+  initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.75, ease: EASE }}
+>
+  <span className="block text-white" style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}>
+    {SELLS_HEADLINE_PART1}
+  </span>
+  <span className="block text-accent-cyan" style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}>
+    {SELLS_HEADLINE_PART2}
+  </span>
+</motion.h2>
 
             {/* Body copy group — 575px cap, 20px gap */}
             <div className="flex flex-col items-start gap-5 w-full max-w-[575px]">
