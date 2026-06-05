@@ -17,14 +17,7 @@ export default function ManufacturingImageBand() {
         sizes="100vw"
         className="object-cover object-center"
       />
-      {/* Bottom fade into next section */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 0%, #0A0518 100%)",
-        }}
-      />
+      
     </div>
   );
 }
