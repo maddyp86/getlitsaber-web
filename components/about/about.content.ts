@@ -1,5 +1,5 @@
 // ─── Image — Journey band ────────────────────────────────────────────────────
-export const BAND_IMAGE_SRC = "mages/about/litsaber-assembly.jpg";
+export const BAND_IMAGE_SRC = "images/about/litsaber-assembly.jpg";
 export const BAND_IMAGE_ALT = "Litsaber components laid out for assembly";
 
 // ─── Images — Hero ───────────────────────────────────────────────────────────
