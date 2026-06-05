@@ -151,11 +151,11 @@ export default function PrototypeTimeline() {
             >
               {/* Text — above image on mobile */}
               <div className="flex flex-col gap-2">
-                <h4 className="font-display font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+                <h4 className="font-display font-subhead uppercase font-bold text-[18px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
                   <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
                   <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
                 </h4>
-                <p className="font-body text-body text-text-secondary leading-relaxed">
+                <p className="font-body text-[16px] text-text-secondary leading-relaxed">
                   {PROTOTYPES[current].blurb}
                 </p>
               </div>
