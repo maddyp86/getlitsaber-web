@@ -59,9 +59,7 @@ export default function AboutHero() {
               transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
             >
               <span className="block text-white"
-                 style={{ textShadow: "0 0 50px rgba(255,255,255,0.25)",
-                            fontSize: "clamp(55px, 7vw, 100px)"
-                        }}>
+                 style={{ textShadow: "0 0 50px rgba(255,255,255,0.25)",}}>
                 {HERO_HEADLINE_LINE1}
               </span>
               <span
