@@ -38,7 +38,7 @@ className="relative isolate overflow-hidden w-full lg:min-h-[900px] bg-[linear-g
 
       {/* Full-bleed: no max-width, no right padding, so the photo reaches the viewport edge */}
       <div className="w-full px-[20px] lg:pl-[70px] lg:pr-0">
-        <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(400px,28vw,515px)] lg:items-end lg:gap-x-10 lg:pt-[100px] lg:pb-0">
+        <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(400px,28vw,515px)] lg:items-end lg:gap-x-10 lg:pt-[50px] lg:pb-0">
 
           {/* Left — text (vertically centered against the taller image column) */}
           <div className="flex flex-col justify-center gap-6 max-w-[800px] lg:self-center lg:pb-16">
