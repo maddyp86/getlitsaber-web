@@ -46,27 +46,23 @@ export default function RetailKit() {
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
   {/* Section headline */}
   <div className="flex flex-col items-center text-center gap-4 mb-16">
-    <motion.h2
-      className="font-display font-bold uppercase leading-[1.1] max-w-[820px]"
-      style={{ fontSize: "clamp(38px, 5.5vw, 70px)" }}
-      initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.75, ease: EASE }}
-    >
-      <span
-        className="text-white"
-        style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}
-      >
-        {KIT_HEADLINE_PART1}
-      </span>{" "}
-      <span
-        className="text-accent-cyan"
-        style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
-      >
-        {KIT_HEADLINE_ACCENT}
-      </span>
-    </motion.h2>
+   <motion.h2
+  className="font-display font-bold uppercase leading-[1.1] max-w-[820px]"
+  style={{ fontSize: "clamp(38px, 5.5vw, 70px)" }}
+  initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.75, ease: EASE }}
+>
+  <span className="text-white" style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}>
+    {KIT_HEADLINE_LINE1}
+    <br />
+    {KIT_HEADLINE_LINE2}
+  </span>{" "}
+  <span className="text-accent-cyan" style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}>
+    {KIT_HEADLINE_ACCENT}
+  </span>
+</motion.h2>
 
     <motion.p
       className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[600px]"
