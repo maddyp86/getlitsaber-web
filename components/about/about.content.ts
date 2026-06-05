@@ -33,7 +33,7 @@ export const PRODUCTION_IMAGES = [
 ] as const;
 
 // ─── Images — Manufacturing band ─────────────────────────────────────────────
-export const MFG_BAND_SRC = "/images/about/collage-litsaber-about.jpg";
+export const MFG_BAND_SRC = "/images/about/mfg-band-line.jpg";
 export const MFG_BAND_ALT = "Litsaber devices glowing on a surface";
 
 // ─── Images — Now / Events ───────────────────────────────────────────────────
