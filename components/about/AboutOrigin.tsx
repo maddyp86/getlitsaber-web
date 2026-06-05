@@ -57,7 +57,7 @@ export default function AboutOrigin() {
 
       {/* Pull-quote — centered bordered card (Figma: 1000px, 20/50 pad, cyan 20% border) */}
 <motion.blockquote
-  className="mx-auto my-12 flex w-full max-w-[1000px] flex-col items-center gap-5 rounded-[10px] border border-[rgba(0,229,255,0.20)] px-6 py-5 lg:px-[50px]"
+  className="mx-auto my-12 flex w-full flex-col items-center gap-5 rounded-[10px] border border-[rgba(0,229,255,0.20)] px-6 py-5 lg:px-[50px]"
   initial={prefersReduced ? false : { opacity: 0, y: 20 }}
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true, margin: "-60px" }}
