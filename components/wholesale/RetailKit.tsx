@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  KIT_HEADLINE_PART1,
+  KIT_HEADLINE_LINE1,
+  KIT_HEADLINE_LINE2,
   KIT_HEADLINE_ACCENT,
   KIT_BODY,
   KIT_ITEMS,
