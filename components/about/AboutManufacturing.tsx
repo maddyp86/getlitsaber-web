@@ -123,12 +123,7 @@ export default function AboutManufacturing() {
           <p className="font-body text-body-sm text-text-secondary leading-relaxed mb-4">
             {DOPEX_CARD_BODY}
           </p>
-          <a>
-            href={DOPEX_CARD_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-label text-eyebrow text-accent-cyan tracking-[0.1em] uppercase hover:underline underline-offset-4 transition-colors"
-          >
+                 <a href={DOPEX_CARD_HREF} target="_blank" rel="noopener noreferrer" className="font-label text-eyebrow text-accent-cyan tracking-[0.1em] uppercase hover:underline underline-offset-4 transition-colors">
             {DOPEX_CARD_LINK}
           </a>
         </motion.div>
