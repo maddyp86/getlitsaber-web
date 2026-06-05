@@ -133,7 +133,7 @@ export default function MarginsSection() {
           {/* Blur element behind the band */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full max-w-[1186px] h-full min-h-[350px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full max-w-[1150px] h-full min-h-[350px]"
             style={{
               background:
                 "linear-gradient(180deg, rgba(21,12,45,0.50) -23.86%, rgba(0,229,255,0.30) 130.46%)",
@@ -143,7 +143,7 @@ export default function MarginsSection() {
 
           {/* CTA band */}
           <motion.div
-            className="rounded-xl border  min-h-[350px] border-[#1E1040] bg-[#080215] px-10 py-10 flex flex-col items-center justify-center text-center gap-5"
+            className="rounded-xl border  min-h-[350px] border-[#113757] bg-[#080215] px-10 py-10 flex flex-col items-center justify-center text-center gap-5"
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
