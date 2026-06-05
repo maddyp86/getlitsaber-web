@@ -123,7 +123,7 @@ export default function AboutManufacturing() {
           <p className="font-body text-body-sm text-text-secondary leading-relaxed mb-4">
             {DOPEX_CARD_BODY}
           </p>
-          <a
+          
             href={DOPEX_CARD_HREF}
             target="_blank"
             rel="noopener noreferrer"
@@ -133,47 +133,49 @@ export default function AboutManufacturing() {
           </a>
         </motion.div>
 
-       {/* Production photo gallery */}
+        {/* Production photo gallery */}
 
-{/* Mobile: uniform 2-col grid (existing 10 images) */}
-<div className="grid grid-cols-2 gap-3 lg:hidden">
-  {PRODUCTION_IMAGES.map((img, i) => (
-    <motion.div
-      key={img.src}
-      className="relative aspect-square overflow-hidden rounded-md bg-surface-card"
-      initial={prefersReduced ? false : { opacity: 0, scale: 0.96 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: i * 0.04, ease: EASE }}
-    >
-      <Image src={img.src} alt={img.alt} fill sizes="50vw" className="object-cover object-center" />
-    </motion.div>
-  ))}
-</div>
+        {/* Mobile: uniform 2-col grid (existing 10 images) */}
+        <div className="grid grid-cols-2 gap-3 lg:hidden">
+          {PRODUCTION_IMAGES.map((img, i) => (
+            <motion.div
+              key={img.src}
+              className="relative aspect-square overflow-hidden rounded-md bg-surface-card"
+              initial={prefersReduced ? false : { opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: i * 0.04, ease: EASE }}
+            >
+              <Image src={img.src} alt={img.alt} fill sizes="50vw" className="object-cover object-center" />
+            </motion.div>
+          ))}
+        </div>
 
-{/* Desktop: asymmetric collage (6 images) matching Figma */}
-<div className="hidden lg:flex lg:flex-col lg:gap-3">
-  {/* Top region: tall left + two stacked right */}
-  <div className="grid grid-cols-[40%_1fr] gap-3 h-[clamp(480px,46vw,670px)]">
-    <CollageTile
-      img={PRODUCTION_IMAGES_DESKTOP[0]}
-      index={0}
-      sizes="40vw"
-      prefersReduced={prefersReduced}
-    />
-    <div className="grid grid-rows-2 gap-3 h-full">
-      <CollageTile img={PRODUCTION_IMAGES_DESKTOP[1]} index={1} sizes="55vw" prefersReduced={prefersReduced} />
-      <CollageTile img={PRODUCTION_IMAGES_DESKTOP[2]} index={2} sizes="55vw" prefersReduced={prefersReduced} />
-    </div>
-  </div>
+        {/* Desktop: asymmetric collage (6 images) matching Figma */}
+        <div className="hidden lg:flex lg:flex-col lg:gap-3">
+          {/* Top region: tall left + two stacked right */}
+          <div className="grid grid-cols-[40%_1fr] gap-3 h-[clamp(480px,46vw,670px)]">
+            <CollageTile
+              img={PRODUCTION_IMAGES_DESKTOP[0]}
+              index={0}
+              sizes="40vw"
+              prefersReduced={prefersReduced}
+            />
+            <div className="grid grid-rows-2 gap-3 h-full">
+              <CollageTile img={PRODUCTION_IMAGES_DESKTOP[1]} index={1} sizes="55vw" prefersReduced={prefersReduced} />
+              <CollageTile img={PRODUCTION_IMAGES_DESKTOP[2]} index={2} sizes="55vw" prefersReduced={prefersReduced} />
+            </div>
+          </div>
 
-  {/* Bottom row: three equal */}
-  <div className="grid grid-cols-3 gap-3 h-[clamp(220px,21vw,322px)]">
-    <CollageTile img={PRODUCTION_IMAGES_DESKTOP[3]} index={3} sizes="33vw" prefersReduced={prefersReduced} />
-    <CollageTile img={PRODUCTION_IMAGES_DESKTOP[4]} index={4} sizes="33vw" prefersReduced={prefersReduced} />
-    <CollageTile img={PRODUCTION_IMAGES_DESKTOP[5]} index={5} sizes="33vw" prefersReduced={prefersReduced} />
-  </div>
-</div>
+          {/* Bottom row: three equal */}
+          <div className="grid grid-cols-3 gap-3 h-[clamp(220px,21vw,322px)]">
+            <CollageTile img={PRODUCTION_IMAGES_DESKTOP[3]} index={3} sizes="33vw" prefersReduced={prefersReduced} />
+            <CollageTile img={PRODUCTION_IMAGES_DESKTOP[4]} index={4} sizes="33vw" prefersReduced={prefersReduced} />
+            <CollageTile img={PRODUCTION_IMAGES_DESKTOP[5]} index={5} sizes="33vw" prefersReduced={prefersReduced} />
+          </div>
+        </div>
+
+      </div>
     </section>
   );
 }
