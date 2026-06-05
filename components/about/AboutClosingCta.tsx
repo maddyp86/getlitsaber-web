@@ -27,7 +27,7 @@ export default function AboutClosingCta() {
 
           <motion.h2
             className="font-display font-bold uppercase leading-[1.1] max-w-[800px]"
-            style={{ fontSize: "clamp(45px, 7vw, 75px)" }}
+            style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
