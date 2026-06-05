@@ -62,7 +62,7 @@ export default function AboutHero() {
               <span
                 className="block font-normal font-accent text-accent-cyan"
                 style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)",
-                       fontSize: "clamp(50px, 7.3vw, 100px)"}}
+                       fontSize: "clamp(50px, 7.3vw, 90px)"}}
               >
                 {HERO_HEADLINE_ACCENT}
               </span>
