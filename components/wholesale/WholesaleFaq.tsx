@@ -38,7 +38,7 @@ export default function WholesaleFaq() {
         {/* Header */}
         <div className="flex item-center flex-col gap-3 mb-14">
           <motion.p
-            className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
+            className="font-label text-center text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
