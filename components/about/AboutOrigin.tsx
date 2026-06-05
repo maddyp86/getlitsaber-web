@@ -21,7 +21,7 @@ export default function AboutOrigin() {
       className="relative w-full bg-[#000000]"
       aria-label="Origin story"
     >
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[40px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
 
         <motion.p
           className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
@@ -54,41 +54,37 @@ export default function AboutOrigin() {
           {ORIGIN_BODY_INTRO}
         </motion.p>
 
-        {/* Pull-quote */}
-        <motion.blockquote
-          className="relative my-12 pl-6 border-l-2 border-accent-cyan"
-          initial={prefersReduced ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
-        >
-          {/* Large decorative quote mark */}
-          <span
-            className="block font-display font-bold text-accent-cyan leading-none mb-3 select-none"
-            style={{
-              fontSize: "clamp(60px, 8vw, 100px)",
-              lineHeight: 0.75,
-              textShadow: "0 0 40px rgba(0,229,255,0.4)",
-            }}
-            aria-hidden="true"
-          >
-            &ldquo;
-          </span>
-          <p
-            className="font-display font-bold text-white leading-[1.15] italic"
-            style={{
-              fontSize: "clamp(22px, 3.5vw, 42px)",
-              textShadow: "0 0 30px rgba(0,229,255,0.2)",
-            }}
-          >
-            {ORIGIN_PULLQUOTE}
-          </p>
-          <footer className="mt-4">
-            <cite className="font-label text-eyebrow tracking-[0.15em] uppercase text-text-muted not-italic">
-              — {ORIGIN_PULLQUOTE_ATTRIBUTION}
-            </cite>
-          </footer>
-        </motion.blockquote>
+      {/* Pull-quote — centered bordered card (Figma: 1000px, 20/50 pad, cyan 20% border) */}
+<motion.blockquote
+  className="mx-auto my-12 flex w-full max-w-[1000px] flex-col items-center gap-5 rounded-[10px] border border-[rgba(0,229,255,0.20)] px-6 py-5 lg:px-[50px]"
+  initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
+>
+  {/* Quote mark (Figma "Quote Left", 50x50, centered) */}
+  <span
+    className="block select-none font-display font-bold leading-none text-accent-cyan"
+    style={{ fontSize: "50px", lineHeight: 1 }}
+    aria-hidden="true"
+  >
+    &ldquo;
+  </span>
+
+  <p
+    className="text-center font-display leading-normal"
+    style={{ fontSize: "clamp(26px, 4.5vw, 45px)" }}
+  >
+    <span className="font-normal text-white">{ORIGIN_PULLQUOTE} </span>
+    <span className="font-extrabold text-accent-cyan">{ORIGIN_PULLQUOTE_ACCENT}</span>
+  </p>
+
+  <footer>
+    <cite className="font-label text-eyebrow uppercase tracking-[0.15em] text-text-muted not-italic">
+      — {ORIGIN_PULLQUOTE_ATTRIBUTION}
+    </cite>
+  </footer>
+</motion.blockquote>
 
         <motion.p
           className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
