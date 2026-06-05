@@ -45,6 +45,13 @@ type FunnelEvents = {
   promo_popup_dismissed: {
     method: "close_button" | "backdrop" | "escape";
   };
+  contact_form_submitted: {
+    reason: string;
+    source: string;
+  };
+  festival_droplist_signup: {
+    source: string;
+  };
 };
 
 export type PayloadFor<E extends keyof FunnelEvents> = FunnelEvents[E];
@@ -62,6 +69,8 @@ export const EVENTS = {
   promo_email_submitted: "promo_email_submitted",
   promo_code_captured: "promo_code_captured",
   promo_popup_dismissed: "promo_popup_dismissed",
+  contact_form_submitted: "contact_form_submitted",
+  festival_droplist_signup: "festival_droplist_signup",
 } as const satisfies Record<keyof FunnelEvents, string>;
 
 // ---------------------------------------------------------------------------
