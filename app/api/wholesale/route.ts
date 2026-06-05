@@ -7,12 +7,12 @@ const PORTAL_ID = process.env.HUBSPOT_PORTAL_ID ?? "244547358";
 const FORM_ID =
   process.env.HUBSPOT_FORM_WHOLESALE ?? "f4b0a43c-c1e0-4452-a5ce-48d36ae56f57";
 
-// TODO: confirm custom HubSpot property internal names for these three fields
-// in the HubSpot form editor before going live, or the data silently drops.
-// Current names are best-guess camelCase; the real names may differ.
+// number_of_retail_locations + estimated_first_order_size confirmed from
+// HubSpot 400 error (2026-06-04). referralSource internal name STILL UNVERIFIED —
+// confirm in HubSpot form editor and check a test contact record, or it silently drops.
 const CUSTOM_FIELD_MAP: Record<string, string> = {
-  retailLocations: "retail_locations",
-  firstOrderSize: "first_order_size",
+  retailLocations: "number_of_retail_locations",
+  firstOrderSize: "estimated_first_order_size",
   referralSource: "how_did_you_hear_about_us",
 };
 
