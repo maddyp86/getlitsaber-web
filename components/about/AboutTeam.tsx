@@ -16,7 +16,7 @@ function RoleTags({ roles, accent }: { roles: string[]; accent: string }) {
     <>
       {/* Desktop: single inline string, member-colored */}
       <p
-        className="hidden lg:block font-label text-[14px] tracking-[0.05em] uppercase"
+        className="hidden lg:block font-label text-[14px] uppercase"
         style={{ color: accent }}
       >
         {roles.join(" · ")}
@@ -26,7 +26,7 @@ function RoleTags({ roles, accent }: { roles: string[]; accent: string }) {
         {roles.map((role) => (
           <span
             key={role}
-            className="px-2.5 py-1 rounded-pill font-label text-[10px] tracking-[0.12em] uppercase"
+            className="px-2.5 py-1 rounded-pill font-label text-[10px] uppercase"
             style={{
               color: accent,
               borderWidth: 1,
