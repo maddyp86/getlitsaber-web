@@ -227,7 +227,7 @@ export default function WholesaleCta() {
       if (data.ok) {
         addToast({
           variant: "success",
-          message: "You're in, check your inbox within 24 hours for the full pricing sheet.",
+          message: "Your pricing sheet is on its way — check your inbox now for the full deck and a link to book a call.",
         });
         setSubmitted(true);
       } else {
@@ -366,7 +366,7 @@ export default function WholesaleCta() {
                   Application received.
                 </p>
                 <p className="font-body text-body-sm text-text-secondary leading-relaxed max-w-[360px]">
-                  We&apos;ll follow up within 24 hours with your pricing sheet and next steps.
+                  Your pricing sheet is in your inbox now, along with a link to book a call with our wholesale team.
                 </p>
               </div>
             ) : (

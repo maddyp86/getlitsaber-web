@@ -90,7 +90,7 @@ export const MARGINS_HEADLINE_LINE1 = "Premium margins.";
 export const MARGINS_HEADLINE_ACCENT = "Real numbers.";
 export const MARGINS_BODY = [
   "Wholesale starts at **$24/unit** at the entry tier (5 units). MSRP is $59.99 That's a **$36 margin per unit at the starting tier**, roughly **60% retail margin**, well above the category average for vape hardware.", 
-  "No mystery pricing. No tier-locked surprises. Submit the form and we send the full 9-tier pricing sheet with case pack and freight estimates within 24 hours."
+  "No mystery pricing. No tier-locked surprises. Submit the form and the full pricing sheet — with case pack details and freight estimates — lands in your inbox the moment you hit send."
   ];
 
 export const MARGINS_STATS = [
@@ -194,10 +194,10 @@ export const CTA_EYEBROW = "BECOME A RETAILER";
 export const CTA_HEADLINE_PART1 = "Get the full pricing sheet.";
 export const CTA_HEADLINE_ACCENT = "Let's talk.";
 export const CTA_BODY =
-  "Submit your details. We'll get back to you within 24 hours with the complete tier pricing, sample options, and anything else you need to make the call.";
+  "Submit your details. Your complete pricing sheet lands in your inbox the moment you hit send, along with a link to book a call with our wholesale team.";
 
 export const CTA_BULLETS = [
-  "Full pricing sheet emailed within 24 hours of submission",
+  "Full pricing sheet in your inbox the moment you submit",
   "6 volume-based pricing tiers from 25 to 10,000+ units",
   "Free display case + demo unit with 100+ unit orders",
   "Dedicated account support and marketing assets included",
@@ -207,7 +207,7 @@ export const CTA_BULLETS = [
 ] as const;
 
 export const FORM_CARD_TITLE = "Apply for wholesale access";
-export const FORM_CARD_SUBTITLE = "WE'LL FOLLOW UP WITHIN 24 HOURS";
+export const FORM_CARD_SUBTITLE = "PRICING SHEET SENT INSTANTLY";
 
 export const RETAIL_LOCATION_OPTIONS = [
   "1 location",
