@@ -11,18 +11,6 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function renderEmphasis(text: string) {
-  return text.split("**").map((segment, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} className="font-bold text-white">
-        {segment}
-      </strong>
-    ) : (
-      segment
-    )
-  );
-}
-
 export default function WholesaleFaq() {
   const prefersReduced = useReducedMotion();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -60,8 +48,8 @@ export default function WholesaleFaq() {
           </motion.p>
 
           <motion.h2
-            className="font-display font-bold uppercase leading-[1.1]"
-            style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
+            className="font-display font-bold text-center mx-auto uppercase leading-[1.1]"
+            style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
