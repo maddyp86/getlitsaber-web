@@ -65,7 +65,7 @@ export default function AboutOrigin() {
 >
   {/* Quote mark (Figma "Quote Left", 50x50, centered) */}
   <span
-    className="block select-none font-display font-bold leading-none text-accent-cyan"
+    className="block select-none font-accent font-bold leading-none text-accent-cyan"
     style={{ fontSize: "50px", lineHeight: 1 }}
     aria-hidden="true"
   >
@@ -73,7 +73,7 @@ export default function AboutOrigin() {
   </span>
 
   <p
-    className="text-center font-display leading-normal"
+    className="text-center font-accent leading-normal"
     style={{ fontSize: "clamp(26px, 4.5vw, 45px)" }}
   >
     <span className="font-normal text-white">{ORIGIN_PULLQUOTE} </span>
@@ -81,7 +81,7 @@ export default function AboutOrigin() {
   </p>
 
   <footer>
-    <cite className="font-label text-eyebrow uppercase tracking-[0.15em] text-text-muted not-italic">
+    <cite className="font-body text-eyebrow uppercase tracking-[0.15em] text-text-muted not-italic">
       — {ORIGIN_PULLQUOTE_ATTRIBUTION}
     </cite>
   </footer>
