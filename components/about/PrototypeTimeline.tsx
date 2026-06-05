@@ -36,7 +36,7 @@ export default function PrototypeTimeline() {
     <div className="mt-10 mb-12">
       {/* Header row — cyan bottom border */}
       <div className="flex items-center justify-between pb-5 mb-8 border-b border-[rgba(0,229,255,0.20)]">
-        <span className="font-label text-accent-cyan text-eyebrow tracking-[0.18em] uppercase">
+        <span className="font-label text-accent-cyan text-eyebrow uppercase">
           6 YEARS OF PROTOTYPES
         </span>
         <span className="font-label text-eyebrow tracking-[0.18em] uppercase text-text-muted">
