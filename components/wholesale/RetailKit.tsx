@@ -43,7 +43,7 @@ export default function RetailKit() {
         }}
       />
 
-<div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
   {/* Section headline */}
   <div className="flex flex-col items-center text-center gap-4 mb-16">
     <motion.h2
@@ -78,7 +78,6 @@ export default function RetailKit() {
       {KIT_BODY}
     </motion.p>
   </div>
-        </div>
 
         {/* Sticky scroll layout */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
