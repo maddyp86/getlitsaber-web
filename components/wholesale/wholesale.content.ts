@@ -15,7 +15,6 @@ export const DEMAND_IMAGE_ALT = "Jack Herer Experience demo — Litsaber in acti
 export const RETAIL_KIT_IMAGE_SRC = "/images/wholesale/retail-box-wholesale.png";
 export const RETAIL_KIT_IMAGE_ALT = "Litsaber retail display case with demo unit";
 
-export const GEOMETRIC_SHAPE_SRC = "/images/home/litsaber-geometric-shape.png";
 
 // ─── HubSpot ─────────────────────────────────────────────────────────────────
 export const HS_PORTAL_ID = "244547358";
