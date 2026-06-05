@@ -23,7 +23,7 @@ export default function AboutHero() {
 
   return (
     <section
-className="relative isolate overflow-hidden w-full  bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
+      className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
       aria-label="Built for the night you came to be a part of"
     >
       {/* Ambient glow */}
@@ -38,7 +38,7 @@ className="relative isolate overflow-hidden w-full  bg-[linear-gradient(180deg,#
 
       {/* Full-bleed: no max-width, no right padding, so the photo reaches the viewport edge */}
       <div className="w-full px-[20px] lg:pl-[60px] lg:pr-0">
-        <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(400px,28vw,515px)] lg:items-end lg:gap-x-10 lg:pt-[50px] lg:pb-0">
+        <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-end lg:gap-x-10 lg:pt-[50px] lg:pb-0">
 
           {/* Left — text (vertically centered against the taller image column) */}
           <div className="flex flex-col justify-center gap-6 max-w-[800px] lg:self-center lg:pb-16">
@@ -118,7 +118,7 @@ className="relative isolate overflow-hidden w-full  bg-[linear-gradient(180deg,#
               src={HERO_IMAGE_SRC}
               alt={HERO_IMAGE_ALT}
               fill
-              sizes="(min-width: 1024px) 515px, 100vw"
+              sizes="(min-width: 1024px) 38vw, 100vw"
               className="object-cover object-center"
               priority
             />
