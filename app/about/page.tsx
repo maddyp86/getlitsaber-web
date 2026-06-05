@@ -28,7 +28,6 @@ export default function AboutPage() {
       <ManufacturingImageBand />
       <AboutNow />
       <AboutClosingCta />
-      <EmailSignupBanner />
     </main>
   );
 }
