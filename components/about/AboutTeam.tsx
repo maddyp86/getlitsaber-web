@@ -84,7 +84,7 @@ function BioCard({
 
         <div className="flex flex-col gap-3">
           <h3
-            className="font-display font-bold text-white leading-normal"
+            className="font-subhead font-bold text-white leading-normal"
             style={{ fontSize: "clamp(26px, 3vw, 35px)" }}
           >
             {member.name}
