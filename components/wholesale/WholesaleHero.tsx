@@ -56,7 +56,7 @@ export default function WholesaleHero() {
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto">
           <motion.h1
   className="font-display font-bold uppercase text-center"
-  style={{ fontSize: "clamp(55px, 8vw, 110px)", lineHeight: "1.09" }}
+  style={{ fontSize: "clamp(55px, 8vw, 110px)", lineHeight: "1.1" }}
   initial={prefersReduced ? false : { opacity: 0, y: 32 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, ease: EASE }}
