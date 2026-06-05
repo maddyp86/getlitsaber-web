@@ -39,7 +39,7 @@ export default function PrototypeTimeline() {
         <span className="font-label text-accent-cyan text-eyebrow uppercase">
           6 YEARS OF PROTOTYPES
         </span>
-        <span className="font-label text-eyebrow tracking-[0.18em] uppercase text-text-muted">
+        <span className="font-label text-eyebrow uppercase text-text-muted">
           2019 — 2024
         </span>
       </div>
