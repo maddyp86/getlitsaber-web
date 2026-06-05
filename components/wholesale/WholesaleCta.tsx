@@ -478,7 +478,7 @@ export default function WholesaleCta() {
                     value={fields.referralSource}
                     onChange={(e) => handleChange("referralSource", e.target.value)}
                     rows={3}
-                    className={`${FIELD_BASE} placeholder:text-text-muted resize-none border-[#32205A] focus:border-[#00E5FF] focus:ring-[#00E5FF]`}
+                    className={`${FIELD_BASE} placeholder:text-text-muted resize-none border-[#113757] focus:border-[#00E5FF] focus:ring-[#00E5FF]`}
                     placeholder="TikTok, a rep, a show..."
                   />
                 </div>
@@ -492,7 +492,7 @@ export default function WholesaleCta() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="mt-2 flex items-center justify-center gap-[10px] w-full p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="mt-2 flex items-center justify-center gap-[10px] w-full p-5 rounded-[5px] border border-[#113757] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {submitting ? "Submitting..." : "SUBMIT APPLICATION"}
                   {!submitting && (
