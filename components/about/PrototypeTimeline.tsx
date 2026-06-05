@@ -155,7 +155,7 @@ export default function PrototypeTimeline() {
                   <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
                   <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
                 </h4>
-                <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+                <p className="font-body text-body text-text-secondary leading-relaxed">
                   {PROTOTYPES[current].blurb}
                 </p>
               </div>
