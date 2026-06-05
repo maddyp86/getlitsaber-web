@@ -22,12 +22,12 @@ export default function AboutClosingCta() {
       className="relative w-full bg-background-primary"
       aria-label="Get yours"
     >
-      <div className="mx-auto w-full max-w-[1000px] px-[20px] lg:px-[40px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         <div className="flex flex-col items-center text-center gap-6">
 
           <motion.h2
-            className="font-display font-bold uppercase leading-[1.05] max-w-[700px]"
-            style={{ fontSize: "clamp(32px, 4.5vw, 60px)" }}
+            className="font-display font-bold uppercase leading-[1.1] max-w-[800px]"
+            style={{ fontSize: "clamp(45px, 7vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
