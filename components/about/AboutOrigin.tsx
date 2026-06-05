@@ -18,10 +18,10 @@ export default function AboutOrigin() {
   return (
     <section
       id="origin"
-      className="relative w-full bg-background-primary"
+      className="relative w-full bg-[#000000]"
       aria-label="Origin story"
     >
-      <div className="mx-auto w-full max-w-[1000px] px-[20px] lg:px-[40px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[40px] py-[100px]">
 
         <motion.p
           className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
