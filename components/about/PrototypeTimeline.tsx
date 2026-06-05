@@ -133,7 +133,6 @@ export default function PrototypeTimeline() {
     </motion.div>
   </AnimatePresence>
 </div>
-        </div>
 
         {/* Prev / Next */}
         <div className="flex items-center justify-between mt-2">
