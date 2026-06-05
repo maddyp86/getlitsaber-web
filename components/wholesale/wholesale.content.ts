@@ -94,9 +94,9 @@ export const MARGINS_BODY = [
   ];
 
 export const MARGINS_STATS = [
-  { label: "WHOLESALE STARTING AT", value: "$24.00/unit" },
-  { label: "MSRP", value: "$59.99/unit" },
-  { label: "YOUR MARGIN", value: "25%" },
+ { label: "WHOLESALE STARTING AT", value: "$24.00/unit", color: "#00E5FF" },
+  { label: "MSRP",                  value: "$59.99/unit", color: "#FFFFFF" },
+  { label: "YOUR MARGIN",           value: "25%",         color: "#EB3D7B" },
 ] as const;
 
 export const MARGINS_BAND_HEADLINE =
