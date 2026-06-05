@@ -3,13 +3,11 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  DEMAND_EYEBROW,
   DEMAND_HEADLINE_LINE1,
   DEMAND_HEADLINE_ACCENT,
   DEMAND_BODY,
   DEMAND_IMAGE_SRC,
   DEMAND_IMAGE_ALT,
-  GEOMETRIC_SHAPE_SRC,
 } from "./wholesale.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
