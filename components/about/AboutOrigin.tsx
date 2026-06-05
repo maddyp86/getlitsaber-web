@@ -36,7 +36,7 @@ export default function AboutOrigin() {
 
         <motion.h2
           className="font-display font-bold leading-[1.1] text-white mb-8"
-          style={{ fontSize: "clamp(45px, 4vw, 75px)" }}
+          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
