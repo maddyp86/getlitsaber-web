@@ -96,7 +96,7 @@ export default function WholesaleFaq() {
             </span>
             <span
               className="font-label font-bold text-white leading-tight group-hover:text-accent-cyan transition-colors duration-200"
-              style={{ fontSize: "clamp(15px, 1.8vw, 20px)" }}
+              style={{ fontSize: "clamp(15px, 1.8vw, 18px)" }}
             >
               {item.question}
             </span>
