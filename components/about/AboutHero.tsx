@@ -79,47 +79,31 @@ export default function AboutHero() {
               {HERO_BODY}
             </motion.p>
 
+            {/* Learn More — text + chevron, stacked (replaces old box button + chevron) */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 mt-2"
-              initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+              className="mt-4"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.35, ease: EASE }}
+              transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
             >
-              {/* Ghost/secondary CTA */}
               <button
                 onClick={scrollToOrigin}
-                className="flex items-center justify-center gap-[10px] w-full sm:w-[220px] p-4 rounded-[5px] border border-[#00E5FF] bg-transparent text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors duration-200 hover:bg-[#00E5FF] hover:text-[#0A0518]"
+                className="flex flex-col items-center gap-2 group"
+                aria-label="Scroll to our story"
               >
-                {HERO_CTA}
+                <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors mb-2">
+                  {HERO_CTA}
+                </span>
+                <Image
+                  src="/images/icons/down-arrow-download-svgrepo-com 1.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  aria-hidden="true"
+                  className="group-hover:translate-y-1 transition-transform"
+                />
               </button>
             </motion.div>
-
-            {/* Scroll chevron */}
-            <motion.button
-              onClick={scrollToOrigin}
-              className="flex flex-col items-start gap-2 group mt-4 w-fit"
-              aria-label="Scroll to our story"
-              initial={prefersReduced ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
-            >
-              <svg
-                width="24"
-                height="14"
-                viewBox="0 0 24 14"
-                fill="none"
-                aria-hidden="true"
-                className="text-text-muted group-hover:text-accent-cyan transition-colors group-hover:translate-y-1 duration-200"
-              >
-                <path
-                  d="M2 2l10 10L22 2"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.button>
           </div>
 
           {/* Right — image: flush to viewport right + hero bottom on desktop, stacked on mobile */}
