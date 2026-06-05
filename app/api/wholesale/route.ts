@@ -11,9 +11,9 @@ const FORM_ID =
 // HubSpot 400 error (2026-06-04). referralSource internal name STILL UNVERIFIED —
 // confirm in HubSpot form editor and check a test contact record, or it silently drops.
 const CUSTOM_FIELD_MAP: Record<string, string> = {
-  retailLocations: "number_of_retail_locations",
-  firstOrderSize: "estimated_first_order_size",
-  referralSource: "how_did_you_hear_about_us",
+  retailLocations: "0-2/number_of_retail_locations",
+  firstOrderSize: "0-2/estimated_first_order_size",
+  referralSource: "how_did_you_hear_about_us_",
 };
 
 const RATE_LIMIT = 5;
