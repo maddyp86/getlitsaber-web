@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useToastActions } from "@/lib/toast/store";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   CTA_EYEBROW,
@@ -188,6 +189,7 @@ function SelectField({
 
 export default function WholesaleCta() {
   const prefersReduced = useReducedMotion();
+  const { addToast } = useToastActions();
   const [fields, setFields] = useState<FormFields>(EMPTY_FORM);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -223,6 +225,10 @@ export default function WholesaleCta() {
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (data.ok) {
+        addToast({
+          variant: "success",
+          message: "You're in, check your inbox within 24 hours for the full pricing sheet.",
+        });
         setSubmitted(true);
       } else {
         setServerError(data.error ?? "Something went wrong. Please try again.");
