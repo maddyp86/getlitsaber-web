@@ -136,7 +136,7 @@ export default function MarginsSection() {
             className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full max-w-[1186px] h-full min-h-[350px]"
             style={{
               background:
-                "linear-gradient(180deg, rgba(21,12,45,0.20) -23.86%, rgba(0,229,255,0.20) 130.46%)",
+                "linear-gradient(180deg, rgba(21,12,45,0.50) -23.86%, rgba(0,229,255,0.30) 130.46%)",
               filter: "blur(100px)",
             }}
           />
