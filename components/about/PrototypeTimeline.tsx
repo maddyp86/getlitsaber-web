@@ -34,8 +34,8 @@ export default function PrototypeTimeline() {
 
   return (
     <div className="mt-10 mb-12">
-      {/* Header row */}
-      <div className="flex items-center justify-between mb-6">
+      {/* Header row — cyan bottom border */}
+      <div className="flex items-center justify-between pb-5 mb-8 border-b border-[rgba(0,229,255,0.20)]">
         <span className="font-label text-accent-cyan text-eyebrow tracking-[0.18em] uppercase">
           6 YEARS OF PROTOTYPES
         </span>
@@ -44,44 +44,44 @@ export default function PrototypeTimeline() {
         </span>
       </div>
 
-      {/* Desktop: 6-column static row */}
-      <div className="hidden lg:grid grid-cols-6 gap-4">
-        {PROTOTYPES.map((proto, i) => (
-          <motion.div
-            key={proto.version}
-            className="flex h-full flex-col gap-3"
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
-          >
-            {/* Text above image */}
-            <div className="flex flex-col gap-1">
-              <h4 className="font-label font-bold text-white text-[14px] leading-tight">
-                {proto.title}
-              </h4>
-              <p className="font-body text-[12px] text-text-muted leading-relaxed">
-                {proto.blurb}
-              </p>
-            </div>
-
-            {/* Image with year chip — fixed ratio, cyan border, bottom-aligned */}
-            <div className="relative mt-auto aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
-              <Image
-                src={proto.imageSrc}
-                alt={proto.imageAlt}
-                fill
-                sizes="(min-width: 1024px) 16vw, 0px"
-                className="object-cover object-center"
-              />
-              <div className="absolute top-2 right-2">
-                <span className="inline-block rounded-sm border border-[rgba(0,229,255,0.3)] bg-[rgba(0,0,0,0.7)] px-2 py-0.5 font-label text-[10px] tracking-[0.12em] uppercase text-accent-cyan backdrop-blur-sm">
-                  {proto.year}
+      {/* Desktop: horizontal scroller, larger fixed-width cards */}
+      <div className="hidden lg:block -mx-[60px] px-[60px] overflow-x-auto scrollbar-thin">
+        <div className="flex gap-6 w-max pb-4">
+          {PROTOTYPES.map((proto, i) => (
+            <motion.div
+              key={proto.version}
+              className="flex w-[300px] shrink-0 flex-col gap-3"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+            >
+              {/* Text above image */}
+              <div className="flex flex-col gap-1">
+                <span className="font-display font-bold text-accent-cyan text-[14px] tracking-[0.04em] uppercase">
+                  {proto.version}
                 </span>
+                <h4 className="font-label font-bold text-white text-[15px] leading-tight">
+                  {proto.title}
+                </h4>
+                <p className="font-body text-[13px] text-text-muted leading-relaxed">
+                  {proto.blurb}
+                </p>
               </div>
-            </div>
-          </motion.div>
-        ))}
+
+              {/* Image — bigger, fixed ratio, cyan border (no year overlay) */}
+              <div className="relative mt-auto aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
+                <Image
+                  src={proto.imageSrc}
+                  alt={proto.imageAlt}
+                  fill
+                  sizes="300px"
+                  className="object-cover object-center"
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* Mobile: single-card stepper */}
@@ -112,7 +112,7 @@ export default function PrototypeTimeline() {
               transition={{ duration: 0.35, ease: EASE }}
               className="flex flex-col gap-4"
             >
-              {/* Image with year chip */}
+              {/* Image (no year overlay — burned into photo) */}
               <div className="relative w-full aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
                 <Image
                   src={PROTOTYPES[current].imageSrc}
@@ -121,15 +121,13 @@ export default function PrototypeTimeline() {
                   sizes="100vw"
                   className="object-cover object-center"
                 />
-                <div className="absolute top-3 right-3">
-                  <span className="inline-block rounded-sm border border-[rgba(0,229,255,0.3)] bg-[rgba(0,0,0,0.75)] px-2.5 py-1 font-label text-[11px] tracking-[0.15em] uppercase text-accent-cyan backdrop-blur-sm">
-                    {PROTOTYPES[current].year}
-                  </span>
-                </div>
               </div>
 
               {/* Text */}
               <div className="flex flex-col gap-2">
+                <span className="font-display font-bold text-accent-cyan text-[13px] tracking-[0.04em] uppercase">
+                  {PROTOTYPES[current].version}
+                </span>
                 <h4
                   className="font-label font-bold text-white leading-tight"
                   style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
