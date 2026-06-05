@@ -58,8 +58,8 @@ export const ORIGIN_EYEBROW = "/ 01 — ORIGIN";
 export const ORIGIN_HEADLINE = "It started with a question.";
 export const ORIGIN_BODY_INTRO =
   "In 2020, the two of us were hanging out one night. Brendan was a raver at heart, deep in his lightshow community, and on this particular night he'd lost his vape. He picked up his LED glowstick. He started thinking about hardware for a while. Matt had four years in consumer electronics, including a smart fashion accessory called Luched, and factory connections in China. He knew this was buildable. What we didn't know was how long it would actually take us to build.";
-export const ORIGIN_PULLQUOTE =
-  "What if you could smoke a glowstick?";
+export const ORIGIN_PULLQUOTE = "What if you could";
+export const ORIGIN_PULLQUOTE_ACCENT = "smoke a glowstick?";
 export const ORIGIN_PULLQUOTE_ATTRIBUTION = "Brendan Friedrich, 2020";
 export const ORIGIN_BODY_CLOSING =
   "We'd been thinking about hardware for a while. Matt had four years in consumer electronics, including a smart fashion accessory called Luched. We knew this was buildable. What we didn't know was how long it would actually take us.";
