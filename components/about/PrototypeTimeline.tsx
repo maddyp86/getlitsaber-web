@@ -58,7 +58,7 @@ export default function PrototypeTimeline() {
             >
           {/* Text above image */}
 <div className="flex flex-col gap-1">
-  <h4 className="font-display font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+  <h4 className="font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
     <span className="text-accent-cyan">{proto.title.split(":")[0]}:</span>
     <span className="text-white"> {proto.title.split(":").slice(1).join(":").trim()}</span>
   </h4>
@@ -122,7 +122,7 @@ export default function PrototypeTimeline() {
 
          {/* Text */}
 <div className="flex flex-col gap-2">
-  <h4 className="font-display font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+  <h4 className="font-display font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
     <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
     <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
   </h4>
