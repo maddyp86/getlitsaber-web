@@ -192,7 +192,7 @@ export const DOPEX_CARD_HREF = "https://www.dopex.com";
 export const NOW_EYEBROW = "/ 05 — WHERE WE ARE NOW";
 export const NOW_HEADLINE = "Iterating in public.";
 export const NOW_BODY =
-  "**Gold Edition launches summer of 2026.** Festivals, events, the cannabis circuit. This year the calendar gets full through summer and beyond. We're doing every major show we can get into. The Jack Herer Experience party-bus roadshow is putting the device in front of thousands of qualified buyers across California.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
+  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition launches this summer 2026**. We're at festivals, events, the cannabis party bus circuit through summer. We're doing collabs with SoCal dispensaries. We're at trade shows in Jedi robes because that's the energy of this brand and we own it..\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
 export const NOW_WILD_EYEBROW = "OUT IN THE WILD";
 
 // ─── Section 7 — Closing CTA ─────────────────────────────────────────────────
