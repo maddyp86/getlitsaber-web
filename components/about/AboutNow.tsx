@@ -85,25 +85,25 @@ export default function AboutNow() {
         </motion.p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {EVENT_IMAGES.map((img, i) => (
-            <motion.div
-              key={img.src}
-              className="relative aspect-square rounded-md overflow-hidden bg-surface-card"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover object-center"
-              />
-            </motion.div>
-          ))}
-        </div>
+  {EVENT_IMAGES.map((img, i) => (
+    <motion.div
+      key={img.src}
+      className="relative h-[313px] aspect-[3/4] rounded-md overflow-hidden bg-surface-card"
+      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+    >
+      <Image
+        src={img.src}
+        alt={img.alt}
+        fill
+        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+        className="object-cover object-center"
+      />
+    </motion.div>
+  ))}
+</div>
       </div>
     </section>
   );
