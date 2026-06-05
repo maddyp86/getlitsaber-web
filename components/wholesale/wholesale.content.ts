@@ -100,7 +100,7 @@ export const MARGINS_STATS = [
 ] as const;
 
 export const MARGINS_BAND_HEADLINE =
-  "Four pricing tiers. From 5 units to 10,000+.";
+  "Four pricing tiers. From 5 units to 10,000+";
 export const MARGINS_BAND_SUBLINE =
   "FULL PRICING SHEET INCLUDED WITH APPLICATION";
 export const MARGINS_BAND_CTA = "GET FULL PRICING SHEET";
