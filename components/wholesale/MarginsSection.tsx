@@ -61,7 +61,7 @@ export default function MarginsSection() {
         {/* Top row: copy left + stats card right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Copy */}
-          <div className="flex flex-col gap-5 lg:flex-1">
+           <div className="flex flex-col gap-6 lg:flex-1">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
