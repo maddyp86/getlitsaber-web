@@ -45,9 +45,9 @@ export default function RetailKit() {
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Section headline */}
-        <div className="flex flex-col mx-auto gap-4 mb-16">
+        <div className="flex flex-col justify-center mx-auto gap-4 mb-16">
           <motion.h2
-            className="font-display justify-center text-center font-bold uppercase leading-[1.1]"
+            className="font-display  text-center font-bold uppercase leading-[1.1]"
             style={{ fontSize: "clamp(38px, 5.5vw, 70px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
