@@ -238,7 +238,7 @@ export default function WholesaleCta() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Left panel */}
           <motion.div
-            className="flex flex-col gap-6 lg:flex-1 lg:pt-2"
+            className="flex flex-col gap-6 min-w-[600px] lg:flex-1 lg:pt-2"
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -300,7 +300,7 @@ export default function WholesaleCta() {
 
           {/* Right panel — form card */}
           <motion.div
-            className="mt-12 lg:mt-0 w-full lg:w-[560px] lg:flex-shrink-0 rounded-xl border border-[#32205A] bg-[#0A0515] p-6 lg:p-8"
+            className="mt-12 lg:mt-0 w-full lg:w-[550px] lg:flex-shrink-0 rounded-xl border border-[#32205A] bg-[#0A0515] p-6 lg:p-8"
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
