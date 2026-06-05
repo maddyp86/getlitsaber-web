@@ -81,7 +81,7 @@ export default function AboutHero() {
 
             {/* Learn More — text + chevron, stacked (replaces old box button + chevron) */}
             <motion.div
-              className="mt-4"
+              className="mt-4 self-center lg:self-start"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
