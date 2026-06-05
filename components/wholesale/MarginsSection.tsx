@@ -157,7 +157,7 @@ export default function MarginsSection() {
           >
             <h3
               className="font-label font-bold text-white uppercase leading-[1.1]"
-              style={{ fontSize: "clamp(20px, 3vw, 35px)" }}
+              style={{ fontSize: "clamp(25px, 3vw, 35px)" }}
             >
               {MARGINS_BAND_HEADLINE}
             </h3>
