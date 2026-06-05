@@ -113,7 +113,7 @@ function InputField({
           "placeholder:text-text-muted",
           error
             ? "border-[#EC5793] focus:ring-[#EC5793]"
-            : "border-[#32205A] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
+            : "border-[#113757] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
         ].join(" ")}
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
@@ -163,7 +163,7 @@ function SelectField({
           "appearance-none",
           error
             ? "border-[#EC5793] focus:ring-[#EC5793]"
-            : "border-[#32205A] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
+            : "border-[#113757] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
           value === "" ? "text-text-muted" : "text-white",
         ].join(" ")}
         aria-invalid={!!error}
@@ -342,7 +342,7 @@ export default function WholesaleCta() {
 
             {submitted ? (
               <div className="flex flex-col items-center text-center gap-4 py-10">
-                <div className="w-14 h-14 rounded-full border-2 border-[#113757] flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full border-2 border-[#00E5FF] flex items-center justify-center">
                   <svg
                     width="24"
                     height="24"
@@ -352,7 +352,7 @@ export default function WholesaleCta() {
                   >
                     <path
                       d="M5 12l4.5 4.5 9.5-10"
-                      stroke="#113757"
+                      stroke="#00E5FF"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -492,7 +492,7 @@ export default function WholesaleCta() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="mt-2 flex items-center justify-center gap-[10px] w-full p-5 rounded-[5px] border border-[#113757] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="mt-2 flex items-center justify-center gap-[10px] w-full p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {submitting ? "Submitting..." : "SUBMIT APPLICATION"}
                   {!submitting && (
