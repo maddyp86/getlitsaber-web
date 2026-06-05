@@ -61,7 +61,7 @@ export default function AboutClosingCta() {
           >
             <Link
               href={CLOSING_CTA_PRIMARY_HREF}
-              className="flex items-center justify-center gap-[10px] w-full sm:w-[240px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
+className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
             >
               {CLOSING_CTA_PRIMARY}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden="true">
