@@ -122,23 +122,29 @@ export default function AboutHero() {
             </motion.button>
           </div>
 
-          {/* Right — image */}
-          <motion.div
-            className="relative mt-10 lg:mt-0 w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[420px] aspect-[4/5] rounded-card overflow-hidden"
-            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-          >
-            <Image
-              src={HERO_IMAGE_SRC}
-              alt={HERO_IMAGE_ALT}
-              fill
-              sizes="(min-width: 1024px) 420px, 100vw"
-              className="object-cover object-center"
-              priority
-            />
-            
-          </motion.div>
+       {/* Right — image: flush to viewport right + hero bottom on desktop, stacked on mobile */}
+<motion.div
+  className="relative mt-10 w-full aspect-[3/4] overflow-hidden rounded-card
+             lg:mt-0 lg:self-end lg:aspect-auto lg:h-[687px] lg:w-full lg:rounded-none"
+  initial={prefersReduced ? false : { opacity: 0, x: 24 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
+>
+  <Image
+    src={HERO_IMAGE_SRC}
+    alt={HERO_IMAGE_ALT}
+    fill
+    sizes="(min-width: 1024px) 515px, 100vw"
+    className="object-cover object-center"
+    priority
+  />
+  {/* Caption chip — bottom-left inside the image (it's in Figma; drop if handling separately) */}
+  <div className="absolute bottom-6 left-6">
+    <span className="inline-block rounded-pill border border-[#2D1C53] bg-[rgba(10,5,24,0.75)] px-3 py-1.5 font-label text-[11px] uppercase tracking-[0.1em] text-text-secondary backdrop-blur-sm">
+      {HERO_IMAGE_CAPTION}
+    </span>
+  </div>
+</motion.div>
         </div>
       </div>
     </section>
