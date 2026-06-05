@@ -137,12 +137,7 @@ export default function AboutHero() {
               className="object-cover object-center"
               priority
             />
-            {/* Caption chip */}
-            <div className="absolute bottom-4 left-4 right-4">
-              <span className="inline-block px-3 py-1.5 rounded-pill bg-[rgba(10,5,24,0.75)] backdrop-blur-sm border border-[#2D1C53] font-label text-[11px] tracking-[0.1em] uppercase text-text-secondary">
-                {HERO_IMAGE_CAPTION}
-              </span>
-            </div>
+            
           </motion.div>
         </div>
       </div>
