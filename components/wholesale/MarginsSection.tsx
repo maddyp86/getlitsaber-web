@@ -40,8 +40,8 @@ export default function MarginsSection() {
     >
 {/* Geometric shape — top-right, behind everything */}
 <div
-  className="absolute pointer-events-none -z-10 bottom-[-25px] lg:top-0"
-  style={{ width: "540px", height: "451px", right: -100, opacity: 0.4 }}
+  className="absolute pointer-events-none -z-10 bottom-[0px] lg:top-0"
+  style={{ width: "540px", height: "451px", right: -100, opacity: 0.5 }}
   aria-hidden="true"
 >
   <Image
