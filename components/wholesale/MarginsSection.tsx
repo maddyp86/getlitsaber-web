@@ -137,7 +137,7 @@ export default function MarginsSection() {
             style={{
               background:
                 "linear-gradient(180deg, rgba(21,12,45,0.30) -23.86%, rgba(0,229,255,0.50) 130.46%)",
-              filter: "blur(150px)",
+              filter: "blur(100px)",
             }}
           />
 
