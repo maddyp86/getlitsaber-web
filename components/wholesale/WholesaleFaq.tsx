@@ -21,7 +21,7 @@ export default function WholesaleFaq() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-[#0A0518]"
+      className="relative isolate overflow-hidden w-full bg-[#120C27;]"
       aria-label="Frequently asked questions"
     >
       {/* Ambient glow */}
