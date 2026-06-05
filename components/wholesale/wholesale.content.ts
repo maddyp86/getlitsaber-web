@@ -107,7 +107,7 @@ export const MARGINS_BAND_CTA = "GET FULL PRICING SHEET";
 
 // ─── Section 7 — Retail Kit ──────────────────────────────────────────────────
 export const KIT_HEADLINE_PART1 = "You don't just get a case of";
-export const KIT_HEADLINE_ACCENT = "**pens.**";
+export const KIT_HEADLINE_ACCENT = "pens";
 export const KIT_BODY =
   "Orders of 10+ units come with a full retail kit designed to turn the box into the display from the moment it lands.";
 
