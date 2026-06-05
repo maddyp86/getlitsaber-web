@@ -197,12 +197,13 @@ export const CTA_BODY =
   "Submit your details. We'll get back to you within 24 hours with the complete tier pricing, sample options, and anything else you need to make the call.";
 
 export const CTA_BULLETS = [
-  "Full 4-tier pricing sheet sent immediately",
-  "Sample unit available at wholesale cost",
-  "Net-30 terms for established accounts",
-  "Display case included at 80+ units",
-  "No minimums beyond the 5-unit MOQ",
-  "Dedicated account support from day one",
+  "Full pricing sheet emailed within 24 hours of submission",
+  "6 volume-based pricing tiers from 25 to 10,000+ units",
+  "Free display case + demo unit with 100+ unit orders",
+  "Dedicated account support and marketing assets included",
+  "No commitment required! Exploring is fine, we'll send the deck anyway",
+  "Sample units available at cost",
+    "Net-30 terms for established accounts",
 ] as const;
 
 export const FORM_CARD_TITLE = "Apply for wholesale access";
