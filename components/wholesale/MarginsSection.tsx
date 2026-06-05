@@ -87,7 +87,6 @@ export default function MarginsSection() {
               </span>
             </motion.h2>
 
-              {MARGINS_BODY.map((block, i) => (
             <motion.p
               key={i}
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[480px]"
@@ -96,9 +95,8 @@ export default function MarginsSection() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
             >
- {renderEmphasis(block)}
+              {MARGINS_BODY}
             </motion.p>
-     ))}
           </div>
 
           {/* Stats card */}
