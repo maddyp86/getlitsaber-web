@@ -90,16 +90,19 @@ export default function MarginsSection() {
                 {MARGINS_HEADLINE_ACCENT}
               </span>
             </motion.h2>
-
+            
+ {MARGINS_BODY.map((block, i) => (
             <motion.p
+                 key={i}
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[480px]"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
             >
-              {MARGINS_BODY}
+               {renderEmphasis(block)}
             </motion.p>
+             ))}
           </div>
 
           {/* Stats card */}
