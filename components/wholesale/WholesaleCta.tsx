@@ -16,18 +16,6 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function renderEmphasis(text: string) {
-  return text.split("**").map((segment, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} className="font-bold text-white">
-        {segment}
-      </strong>
-    ) : (
-      segment
-    )
-  );
-}
-
 interface FormFields {
   firstname: string;
   lastname: string;
@@ -262,7 +250,7 @@ export default function WholesaleCta() {
 
             <h2
               className="font-display font-bold uppercase leading-[1.1]"
-              style={{ fontSize: "clamp(38px, 5vw, 65px)" }}
+              style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             >
               <span
                 className="block text-white"
@@ -274,7 +262,7 @@ export default function WholesaleCta() {
                 className="block text-accent-cyan"
                 style={{ textShadow: "0 0 50px rgba(0,229,255,0.4)" }}
               >
-                {renderEmphasis(CTA_HEADLINE_ACCENT)}
+                {CTA_HEADLINE_ACCENT}
               </span>
             </h2>
 
