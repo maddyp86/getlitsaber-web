@@ -65,7 +65,7 @@ export default function WholesaleFaq() {
               className="text-accent-cyan"
               style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
             >
-              {renderEmphasis(FAQ_HEADLINE_ACCENT)}
+              {FAQ_HEADLINE_ACCENT}
             </span>
           </motion.h2>
         </div>
