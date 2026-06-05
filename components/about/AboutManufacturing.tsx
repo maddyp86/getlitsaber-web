@@ -123,7 +123,7 @@ export default function AboutManufacturing() {
           <p className="font-body text-body-sm text-text-secondary leading-relaxed mb-4">
             {DOPEX_CARD_BODY}
           </p>
-          
+          <a>
             href={DOPEX_CARD_HREF}
             target="_blank"
             rel="noopener noreferrer"
