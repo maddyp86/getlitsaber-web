@@ -51,7 +51,7 @@ export default function MarginsSection() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] pt-[100px] pb-[200px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] pt-[100px] pb-[250px]">
         {/* Top row: copy left + stats card right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Copy */}
