@@ -71,7 +71,7 @@ className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 r
 
             <Link
               href={CLOSING_CTA_SECONDARY_HREF}
-              className="flex items-center justify-center gap-[10px] w-full sm:w-[240px] p-5 rounded-[5px] border border-[#00E5FF] bg-transparent text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors duration-200 hover:bg-[#00E5FF] hover:text-[#0A0518]"
+  className="flex items-center justify-center gap-[10px] w-full sm:w-[300px] p-5 rounded-[5px] border border-[#00E5FF] bg-transparent text-[#00E5FF] font-label font-bold text-eyebrow uppercase tracking-wider transition-colors duration-200 hover:bg-[#00E5FF] hover:text-white"
             >
               {CLOSING_CTA_SECONDARY}
             </Link>
