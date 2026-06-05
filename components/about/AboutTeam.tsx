@@ -16,7 +16,7 @@ function RoleTags({ roles, accent }: { roles: string[]; accent: string }) {
     <>
       {/* Desktop: single inline string, member-colored */}
       <p
-        className="hidden lg:block font-label text-[16px] tracking-[0.05em] uppercase"
+        className="hidden lg:block font-label text-[14px] tracking-[0.05em] uppercase"
         style={{ color: accent }}
       >
         {roles.join(" · ")}
