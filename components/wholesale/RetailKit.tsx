@@ -31,50 +31,52 @@ export default function RetailKit() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-[#010101]"
+      className="relative isolate w-full bg-[#010101]"
       aria-label="You don't just get a case of pens"
     >
-      {/* Ellipse glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 -z-10 h-[600px] w-[600px] rounded-full"
-        style={{
-          background: "rgba(0, 229, 255, 0.04)",
-          filter: "blur(180px)",
-        }}
-      />
+      {/* Glow wrapper — clips the blur without putting overflow-hidden on the section */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full"
+          style={{
+            background: "rgba(0, 229, 255, 0.04)",
+            filter: "blur(180px)",
+          }}
+        />
+      </div>
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
-  {/* Section headline */}
-  <div className="flex flex-col items-center text-center gap-4 mb-16">
-   <motion.h2
-  className="font-display font-bold uppercase leading-[1.1] max-w-[820px]"
-  style={{ fontSize: "clamp(38px, 5.5vw, 70px)" }}
-  initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-60px" }}
-  transition={{ duration: 0.75, ease: EASE }}
->
-  <span className="text-white" style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}>
-    {KIT_HEADLINE_LINE1}
-    <br />
-    {KIT_HEADLINE_LINE2}
-  </span>{" "}
-  <span className="text-accent-cyan" style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}>
-    {KIT_HEADLINE_ACCENT}
-  </span>
-</motion.h2>
+        {/* Section headline */}
+        <div className="flex flex-col items-center text-center gap-4 mb-16">
+          <motion.h2
+            className="font-display font-bold uppercase leading-[1.1] max-w-[820px]"
+            style={{ fontSize: "clamp(38px, 5.5vw, 70px)" }}
+            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.75, ease: EASE }}
+          >
+            <span className="text-white" style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}>
+              {KIT_HEADLINE_LINE1}
+              <br />
+              {KIT_HEADLINE_LINE2}
+            </span>{" "}
+            <span className="text-accent-cyan" style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}>
+              {KIT_HEADLINE_ACCENT}
+            </span>
+          </motion.h2>
 
-    <motion.p
-      className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[600px]"
-      initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
-    >
-      {KIT_BODY}
-    </motion.p>
-  </div>
+          <motion.p
+            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[600px]"
+            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
+          >
+            {KIT_BODY}
+          </motion.p>
+        </div>
 
         {/* Sticky scroll layout */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
