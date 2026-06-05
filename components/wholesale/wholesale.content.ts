@@ -148,7 +148,7 @@ export const KIT_ITEMS = [
 // ─── Section 8 — FAQ ─────────────────────────────────────────────────────────
 export const FAQ_EYEBROW = "FAQs";
 export const FAQ_HEADLINE_PART1 = "What you need to";
-export const FAQ_HEADLINE_ACCENT = "**know.**";
+export const FAQ_HEADLINE_ACCENT = "know";
 
 export const FAQ_ITEMS = [
   {
