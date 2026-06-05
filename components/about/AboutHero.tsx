@@ -41,7 +41,7 @@ export default function AboutHero() {
         <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(400px,28vw,515px)] lg:items-end lg:gap-x-10 lg:pt-[100px] lg:pb-0">
 
           {/* Left — text (vertically centered against the taller image column) */}
-          <div className="flex flex-col justify-center gap-6 max-w-[700px] lg:self-center lg:pb-16">
+          <div className="flex flex-col justify-center gap-6 max-w-[750px] lg:self-center lg:pb-16">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 12 }}
