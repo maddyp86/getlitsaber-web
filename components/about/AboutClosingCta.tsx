@@ -53,7 +53,7 @@ export default function AboutClosingCta() {
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 sm:gap-5 w-full sm:w-auto mt-2"
+ className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-[50px] mt-2 w-full sm:w-auto"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
