@@ -55,7 +55,7 @@ function BioCard({
   const prefersReduced = useReducedMotion();
   return (
     <motion.div
-      className="flex w-full lg:w-[475px] flex-col gap-2"
+      className="flex w-full lg:w-[475px] flex-col"
       initial={prefersReduced ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
