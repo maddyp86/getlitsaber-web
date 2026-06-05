@@ -42,15 +42,7 @@ export default function DemandSection() {
   <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
 </div>
 
-   {/* Ambient glow */}
-<div
-  aria-hidden="true"
-  className="pointer-events-none absolute inset-x-0 top-[80px] -z-10 h-[400px]"
-  style={{
-    background: "linear-gradient(180deg, rgba(75,47,129,0.35) 0%, transparent 100%)",
-    filter: "blur(80px)",
-  }}
-/>
+  
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
