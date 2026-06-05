@@ -71,7 +71,7 @@ className="relative isolate overflow-hidden w-full lg:min-h-[900px] bg-[linear-g
               </span>
             </motion.h1>
             <motion.p
-              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[520px]"
+              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[720px]"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
