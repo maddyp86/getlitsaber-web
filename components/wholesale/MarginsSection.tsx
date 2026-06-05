@@ -119,7 +119,7 @@ export default function MarginsSection() {
             {MARGINS_STATS.map((row, i) => (
               <Fragment key={row.label}>
                 <div className="flex flex-col gap-1 p-10">
-                  <span className="font-body text-[14px] tracking-[0.15em] uppercase text-text-muted">
+                  <span className="font-body text-[14px] uppercase text-text-muted">
                     {row.label}
                   </span>
                   <span
