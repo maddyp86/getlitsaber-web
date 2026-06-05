@@ -88,7 +88,7 @@ export default function AboutNow() {
   {EVENT_IMAGES.map((img, i) => (
     <motion.div
       key={img.src}
-      className="relative h-[313px] aspect-[3/4] rounded-md overflow-hidden bg-surface-card"
+      className="relative h-[313px] aspect-[3/4] rounded-md overflow-hidden "
       initial={prefersReduced ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
