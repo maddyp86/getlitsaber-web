@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  MARGINS_EYEBROW,
   MARGINS_HEADLINE_LINE1,
   MARGINS_HEADLINE_ACCENT,
   MARGINS_BODY,
@@ -56,16 +55,7 @@ export default function MarginsSection() {
         <div className="flex flex-col pb-10 lg:flex-row lg:items-start lg:gap-16">
           {/* Copy */}
           <div className="flex flex-col gap-6 lg:flex-1">
-            <motion.p
-              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {MARGINS_EYEBROW}
-            </motion.p>
-
+  
             <motion.h2
               className="font-display font-bold uppercase leading-[1.1]"
               style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
