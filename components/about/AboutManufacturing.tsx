@@ -44,14 +44,14 @@ function CollageTile({
   );
 }
 
-function renderEmphasis(text: string) {
+function renderEmphasis(text: string): React.ReactNode[] {
   return text.split("**").map((segment, i) =>
     i % 2 === 1 ? (
       <strong key={i} className="font-bold text-white">
         {segment}
       </strong>
     ) : (
-      segment
+      <span key={i}>{segment}</span>
     )
   );
 }
