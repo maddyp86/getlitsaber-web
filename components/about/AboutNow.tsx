@@ -37,7 +37,7 @@ export default function AboutNow() {
 
   return (
     <section
-      className="relative w-full bg-background-primary"
+      className="relative w-full bg-[#000000]"
       aria-label="Where we are now"
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
