@@ -17,6 +17,12 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+export const MARGINS_STATS = [
+  { label: "WHOLESALE STARTING AT", value: "$24.00/unit", color: "#00E5FF" },
+  { label: "MSRP",                  value: "$59.99/unit", color: "#FFFFFF" },
+  { label: "YOUR MARGIN",           value: "25%",         color: "#EB3D7B" },
+];
+
 function renderEmphasis(text: string) {
   return text.split("**").map((segment, i) =>
     i % 2 === 1 ? (
@@ -116,24 +122,24 @@ export default function MarginsSection() {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
           >
-            {MARGINS_STATS.map((row, i) => (
-              <Fragment key={row.label}>
-                <div className="flex flex-col gap-1 p-10">
-                  <span className="font-body text-[14px] pb-2 uppercase text-text-muted">
-                    {row.label}
-                  </span>
-                  <span
-                    className="font-label font-bold text-white leading-none"
-                    style={{ fontSize: "clamp(30px, 3vw, 45px)" }}
-                  >
-                    {row.value}
-                  </span>
-                </div>
-                {i < MARGINS_STATS.length - 1 && (
-                  <div className="h-px w-full bg-[#32205A]" aria-hidden="true" />
-                )}
-              </Fragment>
-            ))}
+          {MARGINS_STATS.map((row, i) => (
+  <Fragment key={row.label}>
+    <div className="flex flex-col gap-1 p-10">
+      <span className="font-body text-[14px] pb-2 uppercase text-text-muted">
+        {row.label}
+      </span>
+      <span
+        className="font-label font-bold leading-none"
+        style={{ fontSize: "clamp(30px, 3vw, 45px)", color: row.color }}
+      >
+        {row.value}
+      </span>
+    </div>
+    {i < MARGINS_STATS.length - 1 && (
+      <div className="h-px w-full bg-[#32205A]" aria-hidden="true" />
+    )}
+  </Fragment>
+))}
           </motion.div>
         </div>
 
