@@ -124,7 +124,7 @@ export default function MarginsSection() {
                   </span>
                   <span
                     className="font-label font-bold text-white leading-none"
-                    style={{ fontSize: "clamp(32px, 4vw, 48px)" }}
+                    style={{ fontSize: "clamp(30px, 3vw, 45px)" }}
                   >
                     {row.value}
                   </span>
