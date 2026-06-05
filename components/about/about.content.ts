@@ -52,7 +52,6 @@ export const HERO_HEADLINE_ACCENT = "BE A PART OF.";
 export const HERO_BODY =
   "A small family team in Los Angeles. Five years of engineering. One vape battery that actually gets noticed. Not for being first to the party. For being the reason people remembered they showed up.";
 export const HERO_CTA = "LEARN MORE";
-export const HERO_IMAGE_CAPTION = "Matt & Brendan — ComicCon 2025";
 
 // ─── Section 2 — Origin ──────────────────────────────────────────────────────
 export const ORIGIN_EYEBROW = "/ 01 — ORIGIN";
