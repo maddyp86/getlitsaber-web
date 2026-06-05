@@ -122,7 +122,7 @@ export default function AboutHero() {
             </motion.button>
           </div>
 
-          {/* Right — image with caption chip */}
+          {/* Right — image */}
           <motion.div
             className="relative mt-10 lg:mt-0 w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[420px] aspect-[4/5] rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
