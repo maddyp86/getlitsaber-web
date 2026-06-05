@@ -23,7 +23,7 @@ export default function AboutHero() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
+className="relative isolate overflow-hidden w-full lg:min-h-[900px] bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
       aria-label="Built for the night you came to be a part of"
     >
       {/* Ambient glow */}
