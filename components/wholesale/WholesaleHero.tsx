@@ -56,7 +56,7 @@ export default function WholesaleHero() {
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto">
           <motion.h1
   className="font-display font-bold uppercase text-center"
-  style={{ fontSize: "clamp(55px, 5vw, 100px)", lineHeight: "1.1" }}
+  style={{ fontSize: "clamp(55px, 7vw, 100px)", lineHeight: "1.1" }}
   initial={prefersReduced ? false : { opacity: 0, y: 32 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, ease: EASE }}
@@ -69,13 +69,13 @@ export default function WholesaleHero() {
   </span>
   <span
     className="block font-normal font-accent text-accent-cyan"
-    style={{ fontSize: "clamp(50px, 5vw, 90px)"}}
+    style={{ fontSize: "clamp(50px, 7vw, 90px)"}}
   >
     {HERO_HEADLINE_LINE2}
   </span>
   <span
     className="block font-normal font-accent text-accent-cyan"
-    style={{ fontSize: "clamp(50px, 5vw, 90px)" }}
+    style={{ fontSize: "clamp(50px, 7vw, 90px)" }}
   >
     {HERO_HEADLINE_ACCENT}
   </span>
