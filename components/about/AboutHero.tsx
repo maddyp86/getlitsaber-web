@@ -10,7 +10,6 @@ import {
   HERO_CTA,
   HERO_IMAGE_SRC,
   HERO_IMAGE_ALT,
-  HERO_IMAGE_CAPTION,
 } from "./about.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -37,11 +36,12 @@ export default function AboutHero() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px]">
-        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_auto] lg:items-stretch lg:gap-12 py-16 lg:py-24">
+      {/* Full-bleed: no max-width, no right padding, so the photo reaches the viewport edge */}
+      <div className="w-full px-[20px] lg:pl-[70px] lg:pr-0">
+        <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_clamp(440px,36vw,560px)] lg:items-end lg:pt-[100px] lg:pb-0">
 
-          {/* Left — text */}
-          <div className="flex flex-col justify-center gap-6 max-w-[700px]">
+          {/* Left — text (vertically centered against the taller image column) */}
+          <div className="flex flex-col justify-center gap-6 max-w-[700px] lg:self-center lg:pb-16">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 12 }}
@@ -122,23 +122,23 @@ export default function AboutHero() {
             </motion.button>
           </div>
 
-       {/* Right — image: flush to viewport right + hero bottom on desktop, stacked on mobile */}
-<motion.div
-  className="relative mt-10 w-full aspect-[3/4] overflow-hidden rounded-card
-             lg:mt-0 lg:self-end lg:aspect-auto lg:h-[687px] lg:w-full lg:rounded-none"
-  initial={prefersReduced ? false : { opacity: 0, x: 24 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
->
-  <Image
-    src={HERO_IMAGE_SRC}
-    alt={HERO_IMAGE_ALT}
-    fill
-    sizes="(min-width: 1024px) 515px, 100vw"
-    className="object-cover object-center"
-    priority
-  />
-</motion.div>
+          {/* Right — image: flush to viewport right + hero bottom on desktop, stacked on mobile */}
+          <motion.div
+            className="relative mt-10 w-full aspect-[3/4] overflow-hidden rounded-card
+                       lg:mt-0 lg:self-end lg:aspect-auto lg:h-[687px] lg:w-full lg:rounded-none"
+            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
+          >
+            <Image
+              src={HERO_IMAGE_SRC}
+              alt={HERO_IMAGE_ALT}
+              fill
+              sizes="(min-width: 1024px) 515px, 100vw"
+              className="object-cover object-center"
+              priority
+            />
+          </motion.div>
         </div>
       </div>
     </section>
