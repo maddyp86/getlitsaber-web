@@ -72,7 +72,7 @@ function BioCard({
       {/* Card */}
       <div className="flex flex-1 flex-col items-start gap-[18px] rounded-[10px] border border-[rgba(75,47,129,0.50)] bg-[#150C2D] p-5">
         {/* Square headshot, stretched to card content width */}
-        <div className="relative w-full aspect-square self-stretch overflow-hidden bg-surface-card">
+        <div className="relative w-full aspect-square w-[clamp(220px,28vw,340px)] overflow-hidden bg-surface-card">
           <Image
             src={member.imageSrc}
             alt={member.imageAlt}
