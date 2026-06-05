@@ -308,12 +308,12 @@ export default function WholesaleCta() {
           >
             <div className="flex flex-col gap-1 mb-6">
               <h3
-                className="font-display font-bold text-white uppercase"
+                className="font-label font-bold text-white"
                 style={{ fontSize: "clamp(18px, 2vw, 24px)" }}
               >
                 {FORM_CARD_TITLE}
               </h3>
-              <p className="font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan text-xs">
+              <p className="font-body text-eyebrow tracking-[0.15em] uppercase text-accent-cyan text-xs">
                 {FORM_CARD_SUBTITLE}
               </p>
             </div>
