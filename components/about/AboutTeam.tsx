@@ -16,7 +16,7 @@ function RoleTags({ roles }: { roles: string[] }) {
   return (
     <>
       {/* Desktop: single inline string */}
-      <p className="hidden lg:block font-label text-[11px] tracking-[0.18em] uppercase text-text-muted">
+      <p className="hidden lg:block font-label text-[12px] tracking-[0.18em] uppercase text-text-muted">
         {roles.join(" · ")}
       </p>
       {/* Mobile: pill chips */}
@@ -80,10 +80,10 @@ export default function AboutTeam() {
       className="relative w-full bg-[#080516]"
       aria-label="The team"
     >
-      <div className="mx-auto w-full max-w-[1000px] px-[20px] lg:px-[40px] py-[100px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
 
         <motion.p
-          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
+          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-magenta mb-4"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -94,7 +94,7 @@ export default function AboutTeam() {
 
         <motion.h2
           className="font-display font-bold leading-[1.1] text-white mb-6"
-          style={{ fontSize: "clamp(34px, 4vw, 55px)" }}
+          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
