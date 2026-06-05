@@ -44,7 +44,7 @@ export default function SellThrough() {
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-3 mb-16">
           <motion.h2
-            className="font-display font-bold uppercase"
+            className="font-display font-bold uppercase leading-[1.1]"
             style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
