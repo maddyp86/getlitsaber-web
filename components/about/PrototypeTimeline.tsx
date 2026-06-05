@@ -56,19 +56,16 @@ export default function PrototypeTimeline() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
             >
-              {/* Text above image */}
-              <div className="flex flex-col gap-1">
-                <span className="font-display font-bold text-accent-cyan text-[14px] tracking-[0.04em] uppercase">
-                  {proto.version}
-                </span>
-                <h4 className="font-label font-bold text-white text-[15px] leading-tight">
-                  {proto.title}
-                </h4>
-                <p className="font-body text-[13px] text-text-muted leading-relaxed">
-                  {proto.blurb}
-                </p>
-              </div>
-
+          {/* Text above image */}
+<div className="flex flex-col gap-1">
+  <h4 className="font-display font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+    <span className="text-accent-cyan">{proto.title.split(":")[0]}:</span>
+    <span className="text-white"> {proto.title.split(":").slice(1).join(":").trim()}</span>
+  </h4>
+  <p className="font-body text-[13px] text-text-muted leading-relaxed">
+    {proto.blurb}
+  </p>
+</div>
               {/* Image — bigger, fixed ratio, cyan border (no year overlay) */}
               <div className="relative mt-auto aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
                 <Image
@@ -123,21 +120,16 @@ export default function PrototypeTimeline() {
                 />
               </div>
 
-              {/* Text */}
-              <div className="flex flex-col gap-2">
-                <span className="font-display font-bold text-accent-cyan text-[13px] tracking-[0.04em] uppercase">
-                  {PROTOTYPES[current].version}
-                </span>
-                <h4
-                  className="font-label font-bold text-white leading-tight"
-                  style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
-                >
-                  {PROTOTYPES[current].title}
-                </h4>
-                <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-                  {PROTOTYPES[current].blurb}
-                </p>
-              </div>
+         {/* Text */}
+<div className="flex flex-col gap-2">
+  <h4 className="font-display font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+    <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
+    <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
+  </h4>
+  <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+    {PROTOTYPES[current].blurb}
+  </p>
+</div>
             </motion.div>
           </AnimatePresence>
         </div>
