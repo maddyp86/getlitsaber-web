@@ -24,7 +24,7 @@ export default function ManufacturingImageBand() {
     <motion.div
       ref={sectionRef}
       className="relative hidden lg:block w-full overflow-hidden"
-      style={{ height: "clamp(400px, 35vw, 500px)" }}
+        style={{ height: "clamp(300px, 56vw, 810px)" }}
       aria-hidden="true"
       initial={prefersReduced ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
