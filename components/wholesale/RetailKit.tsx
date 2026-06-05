@@ -31,7 +31,7 @@ export default function RetailKit() {
 
   return (
     <section
-      className="relative isolate w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
+      className="relative isolate w-full bg-[linear-gradient(180deg,#150C2D_100%,#000_0%)]"
       aria-label="You don't just get a case of pens"
     >
       {/* Glow wrapper — clips the blur without putting overflow-hidden on the section */}
