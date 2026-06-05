@@ -1,23 +1,58 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { BAND_IMAGE_SRC, BAND_IMAGE_ALT } from "./about.content";
 
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function JourneyImageBand() {
+  const prefersReduced = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Track scroll progress while the band moves through the viewport
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Gentle vertical parallax — image drifts up as you scroll past
+  const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
   return (
-    <section
+    <motion.section
+      ref={sectionRef}
       className="relative w-full overflow-hidden"
       aria-label="Litsaber components"
       style={{ height: "clamp(300px, 56vw, 810px)" }}
+      initial={prefersReduced ? false : { opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.9, ease: EASE }}
     >
-      <Image
-        src={BAND_IMAGE_SRC}
-        alt={BAND_IMAGE_ALT}
-        fill
-        sizes="100vw"
-        className="object-cover object-center"
-        priority={false}
-      />
-    </section>
+      {/* Oversized wrapper so the parallax shift never exposes an edge */}
+      <motion.div
+        className="absolute inset-0 will-change-transform"
+        style={{
+          y: prefersReduced ? 0 : y,
+          top: "-8%",
+          height: "116%",
+        }}
+        initial={prefersReduced ? false : { scale: 1.08 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 1.4, ease: EASE }}
+      >
+        <Image
+          src={BAND_IMAGE_SRC}
+          alt={BAND_IMAGE_ALT}
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+          priority={false}
+        />
+      </motion.div>
+    </motion.section>
   );
 }
