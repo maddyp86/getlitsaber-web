@@ -238,7 +238,7 @@ export default function WholesaleCta() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Left panel */}
           <motion.div
-            className="flex flex-col gap-6 min-w-[600px] lg:flex-1 lg:pt-2"
+            className="flex flex-col gap-6 min-w-[550px] lg:flex-1 lg:pt-2"
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
