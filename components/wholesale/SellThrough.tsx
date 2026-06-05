@@ -45,7 +45,7 @@ export default function SellThrough() {
         <div className="flex flex-col items-center text-center gap-3 mb-16">
           <motion.h2
             className="font-display font-bold uppercase"
-            style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
+            style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
