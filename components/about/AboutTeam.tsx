@@ -135,7 +135,7 @@ export default function AboutTeam() {
         </motion.p>
 
         {/* Outer: flex, centered, 50px gap, equal-height cards */}
-        <div className="flex flex-col items-stretch gap-[50px] lg:flex-row lg:justify-center">
+        <div className="flex flex-col items-stretch gap-[50px] lg:flex-row lg:justify-between">
           {TEAM_MEMBERS.map((member, i) => (
             <BioCard
               key={member.name}
