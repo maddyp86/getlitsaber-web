@@ -58,11 +58,11 @@ export default function PrototypeTimeline() {
             >
               {/* Text above image */}
               <div className="flex flex-col gap-1">
-                <h4 className="font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+                <h4 className="font-subhead uppercase font-bold text-[18px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
                   <span className="text-accent-cyan">{proto.title.split(":")[0]}:</span>
                   <span className="text-white"> {proto.title.split(":").slice(1).join(":").trim()}</span>
                 </h4>
-                <p className="font-body text-[13px] text-text-muted leading-relaxed">
+                <p className="font-body text-[16px] text-text-muted leading-relaxed">
                   {proto.blurb}
                 </p>
               </div>
