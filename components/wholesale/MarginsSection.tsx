@@ -119,11 +119,11 @@ export default function MarginsSection() {
             {MARGINS_STATS.map((row, i) => (
               <Fragment key={row.label}>
                 <div className="flex flex-col gap-1 p-8">
-                  <span className="font-display text-eyebrow tracking-[0.15em] uppercase text-text-muted">
+                  <span className="font-body text-eyebrow tracking-[0.15em] uppercase text-text-muted">
                     {row.label}
                   </span>
                   <span
-                    className="font-display font-bold text-white leading-none"
+                    className="font-label font-bold text-white leading-none"
                     style={{ fontSize: "clamp(32px, 4vw, 48px)" }}
                   >
                     {row.value}
