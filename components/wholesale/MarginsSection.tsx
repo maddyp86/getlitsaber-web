@@ -22,17 +22,6 @@ export const MARGINS_STATS = [
   { label: "YOUR MARGIN",           value: "25%",         color: "#EB3D7B" },
 ];
 
-function renderEmphasis(text: string) {
-  return text.split("**").map((segment, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} className="font-bold text-white">
-        {segment}
-      </strong>
-    ) : (
-      segment
-    )
-  );
-}
 
 export default function MarginsSection() {
   const prefersReduced = useReducedMotion();
