@@ -73,7 +73,7 @@ export default function AboutOrigin() {
   </span>
 
   <p
-    className="text-center font-accent leading-normal"
+    className="text-center font-subhead leading-normal"
     style={{ fontSize: "clamp(26px, 4.5vw, 45px)" }}
   >
     <span className="font-normal text-white">{ORIGIN_PULLQUOTE} </span>
