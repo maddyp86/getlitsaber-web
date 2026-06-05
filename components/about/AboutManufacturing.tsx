@@ -61,7 +61,7 @@ export default function AboutManufacturing() {
 
   return (
     <section
-      className="relative w-full bg-[#080516]"
+      className="relative w-full bg-[#150C2D]"
       aria-label="Manufacturing"
     >
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[150px]">
