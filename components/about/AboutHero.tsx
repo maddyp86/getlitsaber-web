@@ -108,8 +108,7 @@ className="relative isolate overflow-hidden w-full lg:min-h-[900px] bg-[linear-g
 
           {/* Right — image: flush to viewport right + hero bottom on desktop, stacked on mobile */}
           <motion.div
-            className="relative mt-10 w-full aspect-[3/4] overflow-hidden rounded-card
-                       lg:mt-0 lg:self-end lg:aspect-auto lg:h-[687px] lg:w-full lg:rounded-none"
+            className="lg:mt-0 lg:self-stretch lg:aspect-auto lg:h-full lg:w-full lg:rounded-none"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
