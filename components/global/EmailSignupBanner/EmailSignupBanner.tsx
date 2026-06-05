@@ -118,7 +118,7 @@ export default function EmailSignupBanner() {
         <motion.h2
           className="font-display font-black uppercase text-white leading-none"
          style={{ 
-           fontSize: "clamp(45px, 6vw, 75px)",
+           fontSize: "clamp(45px, 5vw, 75px)",
          fontWeight:"700"}}
         >
           DON&rsquo;T LEAVE
