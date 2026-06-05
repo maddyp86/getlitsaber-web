@@ -77,7 +77,7 @@ export default function WholesaleFaq() {
             return (
               <motion.div
                 key={item.num}
-                className="border-b border-[#1E1040] first:border-t"
+                className="border-b border-[#4B2F81] bg-[#0E0826] first:border-t"
                 initial={prefersReduced ? false : { opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
