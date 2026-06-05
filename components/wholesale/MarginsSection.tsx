@@ -155,7 +155,7 @@ export default function MarginsSection() {
             >
               {MARGINS_BAND_HEADLINE}
             </h3>
-            <p className="font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan">
+            <p className="font-label text-eyebrow tracking-[0.15em] mb-4 uppercase text-accent-cyan">
               {MARGINS_BAND_SUBLINE}
             </p>
             <Link
