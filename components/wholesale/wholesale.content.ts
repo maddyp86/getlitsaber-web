@@ -155,7 +155,7 @@ export const FAQ_ITEMS = [
     num: "/01",
     question: "What's the lead time after I order?",
     answer:
-      "Standard ground ships within 24 to 48 hours from our Los Angeles fulfillment center. Standard freight is available for larger orders. International freight lead times vary by destination — contact us for a quote.",
+      "Orders ship within 48 hours of payment confirmation from our SoCal 3PL fulfillment center. Standard ground delivery reaches the East Coast in 3–5 business days. Expedited freight available for larger orders.",
   },
   {
     num: "/02",
@@ -167,25 +167,25 @@ export const FAQ_ITEMS = [
     num: "/03",
     question: "Can I get a sample unit before committing to MOQ?",
     answer:
-      "Yes. Single sample units are available at wholesale cost plus shipping. Apply through the form and note that you'd like a sample. We'll route your request accordingly and credit the sample cost toward your first full order.",
+      "Yes. Request a sample through the application form and we'll send a single demo unit (at cost + shipping) so you can evaluate the product in person. Sample cost credits toward your first wholesale order.",
   },
   {
     num: "/04",
     question: "Do you support drop-ship?",
     answer:
-      "Not at this time. All orders ship to the retailer. Drop-ship capabilities are on the product roadmap for a later phase. If that's a priority for your operation, note it in your application and we'll keep you informed.",
+      "Yes. We're a verified supplier on Crowdship for retailers who want to dropship without holding inventory. Supplier pricing and shipping rules are controlled per account. Application form has a dropship option.",
   },
   {
     num: "/05",
     question: "Is there an exclusivity arrangement?",
     answer:
-      "Regional exclusivity is available for accounts at the Archon tier (26+ units per order) and above. Territory exclusivity is evaluated case by case based on geography and volume commitment. Include a note in your application if this is relevant.",
+      "Open distribution by default. Regional exclusivity is available case-by-case for accounts committing to Tier 5+ volume (500+ units) with mutually agreed performance benchmarks. Contact us to discuss.",
   },
   {
     num: "/06",
     question: "Are you California-compliant? Can I ship Litsaber in regulated states?",
     answer:
-      "Litsaber is the device only — a 510-thread battery accessory. It contains no cannabis, no oil, and no cartridge. Regulations governing cannabis hardware vary by state; verify your local requirements before stocking. We're happy to provide product specs and compliance documentation to support your review.",
+      "Litsaber is sold as a 510-thread battery accessory. It does not contain cannabis, nicotine, or e-liquid. The device itself is legal to ship and sell in all 50 states. Your local cart sales remain subject to your state's regulations.",
   },
 ] as const;
 
