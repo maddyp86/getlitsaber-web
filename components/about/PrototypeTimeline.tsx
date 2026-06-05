@@ -36,17 +36,17 @@ export default function PrototypeTimeline() {
     <div className="mt-10 mb-12">
       {/* Header row — cyan bottom border */}
       <div className="flex items-center justify-between pb-5 mb-8 border-b border-[rgba(0,229,255,0.20)]">
-        <span className="font-label text-accent-cyan text-eyebrow tracking-[0.18em] uppercase">
+        <span className="font-label text-accent-cyan text-eyebrow uppercase">
           6 YEARS OF PROTOTYPES
         </span>
-        <span className="font-label text-eyebrow tracking-[0.18em] uppercase text-text-muted">
+        <span className="font-label text-eyebrow uppercase text-text-muted">
           2019 — 2024
         </span>
       </div>
 
-      {/* Desktop: horizontal scroller, larger fixed-width cards */}
-      <div className="hidden lg:block -mx-[60px] px-[60px] overflow-x-auto scrollbar-thin">
-        <div className="flex gap-6 w-max pb-4">
+      {/* Desktop: horizontal scroller (scrollbar hidden), larger fixed-width cards */}
+      <div className="hidden lg:block -mx-[60px] px-[60px] overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex w-max gap-6 pb-4">
           {PROTOTYPES.map((proto, i) => (
             <motion.div
               key={proto.version}
@@ -56,16 +56,17 @@ export default function PrototypeTimeline() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
             >
-          {/* Text above image */}
-<div className="flex flex-col gap-1">
-  <h4 className="font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
-    <span className="text-accent-cyan">{proto.title.split(":")[0]}:</span>
-    <span className="text-white"> {proto.title.split(":").slice(1).join(":").trim()}</span>
-  </h4>
-  <p className="font-body text-[13px] text-text-muted leading-relaxed">
-    {proto.blurb}
-  </p>
-</div>
+              {/* Text above image */}
+              <div className="flex flex-col gap-1">
+                <h4 className="font-subhead uppercase font-bold text-[18px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+                  <span className="text-accent-cyan">{proto.title.split(":")[0]}:</span>
+                  <span className="text-white"> {proto.title.split(":").slice(1).join(":").trim()}</span>
+                </h4>
+                <p className="font-body text-[16px] text-text-muted leading-relaxed">
+                  {proto.blurb}
+                </p>
+              </div>
+
               {/* Image — bigger, fixed ratio, cyan border (no year overlay) */}
               <div className="relative mt-auto aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
                 <Image
@@ -83,56 +84,95 @@ export default function PrototypeTimeline() {
 
       {/* Mobile: single-card stepper */}
       <div className="lg:hidden flex flex-col gap-4">
-        {/* Segmented progress bar */}
-        <div className="flex gap-1.5">
-          {PROTOTYPES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              className="h-[3px] flex-1 rounded-full transition-colors duration-300"
-              style={{ background: i === current ? "#00E5FF" : "rgba(255,255,255,0.15)" }}
-              aria-label={`Go to prototype ${i + 1}`}
-            />
-          ))}
+        {/* Progress track — filled bar, glowing knob, step dots */}
+        <div className="relative h-6 mb-2">
+          {/* Base track */}
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[3px] rounded-full bg-[rgba(255,255,255,0.12)]" />
+          {/* Filled portion */}
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 h-[3px] rounded-full bg-accent-cyan transition-all duration-300"
+            style={{
+              width:
+                PROTOTYPES.length > 1
+                  ? `${(current / (PROTOTYPES.length - 1)) * 100}%`
+                  : "0%",
+            }}
+          />
+          {/* Step dots */}
+          {PROTOTYPES.map((_, i) => {
+            const pos =
+              PROTOTYPES.length > 1 ? (i / (PROTOTYPES.length - 1)) * 100 : 0;
+            const active = i === current;
+            const passed = i < current;
+            return (
+              <button
+                key={i}
+                onClick={() => go(i)}
+                aria-label={`Go to prototype ${i + 1}`}
+                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
+                style={{ left: `${pos}%`, width: 24, height: 24 }}
+              >
+                <span
+                  className="rounded-full transition-all duration-300"
+                  style={
+                    active
+                      ? {
+                          width: 14,
+                          height: 14,
+                          background: "#00E5FF",
+                          boxShadow: "0 0 12px 2px rgba(0,229,255,0.7)",
+                        }
+                      : {
+                          width: 9,
+                          height: 9,
+                          background: passed
+                            ? "#00E5FF"
+                            : "rgba(255,255,255,0.25)",
+                        }
+                  }
+                />
+              </button>
+            );
+          })}
         </div>
 
-{/* Card */}
-<div className="relative overflow-hidden" style={{ minHeight: 480 }}>
-  <AnimatePresence initial={false} custom={direction} mode="wait">
-    <motion.div
-      key={current}
-      custom={direction}
-      variants={variants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={{ duration: 0.35, ease: EASE }}
-      className="flex flex-col gap-4"
-    >
-      {/* Text — above image on mobile */}
-      <div className="flex flex-col gap-2">
-        <h4 className="font-display font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
-          <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
-          <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
-        </h4>
-        <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-          {PROTOTYPES[current].blurb}
-        </p>
-      </div>
+        {/* Card */}
+        <div className="relative overflow-hidden min-h-[480px]">
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={current}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.35, ease: EASE }}
+              className="flex flex-col gap-4"
+            >
+              {/* Text — above image on mobile */}
+              <div className="flex flex-col gap-2">
+                <h4 className="font-display font-subhead uppercase font-bold text-[18px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+                  <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
+                  <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
+                </h4>
+                <p className="font-body text-[16px] text-text-secondary leading-relaxed">
+                  {PROTOTYPES[current].blurb}
+                </p>
+              </div>
 
-      {/* Image (no year overlay — burned into photo) */}
-      <div className="relative w-full aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
-        <Image
-          src={PROTOTYPES[current].imageSrc}
-          alt={PROTOTYPES[current].imageAlt}
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-    </motion.div>
-  </AnimatePresence>
-</div>
+              {/* Image (no year overlay — burned into photo) */}
+              <div className="relative w-full aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
+                <Image
+                  src={PROTOTYPES[current].imageSrc}
+                  alt={PROTOTYPES[current].imageAlt}
+                  fill
+                  sizes="100vw"
+                  className="object-cover object-center"
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Prev / Next */}
         <div className="flex items-center justify-between mt-2">

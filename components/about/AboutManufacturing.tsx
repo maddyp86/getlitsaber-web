@@ -40,7 +40,7 @@ export default function AboutManufacturing() {
       <div className="mx-auto w-full max-w-[1000px] px-[20px] lg:px-[40px] py-[100px]">
 
         <motion.p
-          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
+          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-magenta mb-4"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -50,8 +50,8 @@ export default function AboutManufacturing() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold leading-[1.1] text-white mb-8"
-          style={{ fontSize: "clamp(34px, 4vw, 55px)" }}
+          className="font-display font-bold text-white mb-8"
+          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -84,11 +84,11 @@ export default function AboutManufacturing() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
         >
-          <p className="font-label text-[10px] tracking-[0.2em] uppercase text-text-muted mb-3">
+          <p className="font-label text-[12px] uppercase text-text-muted mb-3">
             {DOPEX_CARD_EYEBROW}
           </p>
           <h3
-            className="font-display font-bold text-white mb-3"
+            className="font-subhead font-bold text-white mb-3"
             style={{ fontSize: "clamp(22px, 2.8vw, 34px)" }}
           >
             {DOPEX_CARD_NAME}
