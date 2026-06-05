@@ -46,7 +46,7 @@ export default function PrototypeTimeline() {
 
       {/* Desktop: horizontal scroller, larger fixed-width cards */}
       <div className="hidden lg:block -mx-[60px] px-[60px] overflow-x-auto scrollbar-thin">
-        <div className="flex gap-6 w-max pb-4">
+        <div className="flex gap-6 overflow-hidden pb-4">
           {PROTOTYPES.map((proto, i) => (
             <motion.div
               key={proto.version}
