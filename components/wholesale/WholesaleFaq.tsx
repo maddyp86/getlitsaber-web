@@ -70,81 +70,81 @@ export default function WholesaleFaq() {
           </motion.h2>
         </div>
 
-        {/* Accordion */}
-        <div className="flex flex-col">
-          {FAQ_ITEMS.map((item, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <motion.div
-                key={item.num}
-                className="border-b border-[#4B2F81] bg-[#0E0826] first:border-t"
-                initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.05, ease: EASE }}
-              >
-                <button
-                  onClick={() => toggle(i)}
-                  className="w-full flex items-center justify-between gap-4 py-6 text-left group"
-                  aria-expanded={isOpen}
-                >
-                  <div className="flex items-start gap-4 min-w-0">
-                    <span className="font-label text-eyebrow tracking-[0.2em] text-accent-cyan uppercase flex-shrink-0 pt-0.5">
-                      {item.num}
-                    </span>
-                    <span
-                      className="font-display font-bold text-white uppercase leading-tight group-hover:text-accent-cyan transition-colors duration-200"
-                      style={{ fontSize: "clamp(15px, 1.8vw, 20px)" }}
-                    >
-                      {item.question}
-                    </span>
-                  </div>
-
-                  <motion.svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="flex-shrink-0 text-text-muted group-hover:text-accent-cyan transition-colors duration-200"
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: EASE }}
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M6 9l6 6 6-6"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </motion.svg>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="answer"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        height: { duration: prefersReduced ? 0 : 0.35, ease: EASE },
-                        opacity: { duration: prefersReduced ? 0 : 0.25 },
-                      }}
-                      style={{ overflow: "hidden" }}
-                    >
-                      <div className="pb-6 pl-[52px] pr-8">
-                        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
-                          {item.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
+{/* Accordion */}
+<div className="flex flex-col gap-4">
+  {FAQ_ITEMS.map((item, i) => {
+    const isOpen = openIndex === i;
+    return (
+      <motion.div
+        key={item.num}
+        className={`rounded-[5px] border bg-[#0E0826] transition-colors duration-200 ${
+          isOpen ? "border-[#4B2F81]" : "border-[#313131]"
+        }`}
+        initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.5, delay: i * 0.05, ease: EASE }}
+      >
+        <button
+          onClick={() => toggle(i)}
+          className="w-full flex items-center justify-between gap-4 p-[30px] text-left group"
+          aria-expanded={isOpen}
+        >
+          <div className="flex items-start gap-4 min-w-0">
+            <span className="font-label text-eyebrow tracking-[0.2em] text-accent-cyan uppercase flex-shrink-0 pt-0.5">
+              {item.num}
+            </span>
+            <span
+              className="font-display font-bold text-white uppercase leading-tight group-hover:text-accent-cyan transition-colors duration-200"
+              style={{ fontSize: "clamp(15px, 1.8vw, 20px)" }}
+            >
+              {item.question}
+            </span>
+          </div>
+          <motion.svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="flex-shrink-0 text-text-muted group-hover:text-accent-cyan transition-colors duration-200"
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            aria-hidden="true"
+          >
+            <path
+              d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </motion.svg>
+        </button>
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              key="answer"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{
+                height: { duration: prefersReduced ? 0 : 0.35, ease: EASE },
+                opacity: { duration: prefersReduced ? 0 : 0.25 },
+              }}
+              style={{ overflow: "hidden" }}
+            >
+              <div className="px-[30px] pb-[30px] pl-[52px]">
+                <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
+                  {item.answer}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
+  })}
+</div>
       </div>
     </section>
   );
