@@ -37,7 +37,7 @@ export default function AboutManufacturing() {
       className="relative w-full bg-[#080516]"
       aria-label="Manufacturing"
     >
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[40px] py-[150px]">
+      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[150px]">
 
         <motion.p
           className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-magenta mb-4"
