@@ -342,7 +342,7 @@ export default function WholesaleCta() {
 
             {submitted ? (
               <div className="flex flex-col items-center text-center gap-4 py-10">
-                <div className="w-14 h-14 rounded-full border-2 border-[#00E5FF] flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full border-2 border-[#113757] flex items-center justify-center">
                   <svg
                     width="24"
                     height="24"
