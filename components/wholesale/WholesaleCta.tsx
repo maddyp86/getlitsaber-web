@@ -352,7 +352,7 @@ export default function WholesaleCta() {
                   >
                     <path
                       d="M5 12l4.5 4.5 9.5-10"
-                      stroke="#00E5FF"
+                      stroke="#113757"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
