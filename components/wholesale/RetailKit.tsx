@@ -14,17 +14,6 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function renderEmphasis(text: string) {
-  return text.split("**").map((segment, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} className="font-bold text-white">
-        {segment}
-      </strong>
-    ) : (
-      segment
-    )
-  );
-}
 
 export default function RetailKit() {
   const prefersReduced = useReducedMotion();
