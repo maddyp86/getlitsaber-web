@@ -60,13 +60,13 @@ export default function AboutHero() {
             >
               <span className="block text-white">{HERO_HEADLINE_LINE1}</span>
               <span
-                className="block text-accent-cyan"
-                style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)" }}
+                className="block font-normal font-accent text-accent-cyan"
+                style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)",
+                       fontSize: "clamp(50px, 7.3vw, 100px)"}}
               >
                 {HERO_HEADLINE_ACCENT}
               </span>
             </motion.h1>
-
             <motion.p
               className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[520px]"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
