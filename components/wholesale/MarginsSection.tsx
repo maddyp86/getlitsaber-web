@@ -122,7 +122,7 @@ export default function MarginsSection() {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
           >
-          {MARGINS_STATS.map((row, i) => (
+       {MARGINS_STATS.map((row, i) => (
   <Fragment key={row.label}>
     <div className="flex flex-col gap-1 p-10">
       <span className="font-body text-[14px] pb-2 uppercase text-text-muted">
