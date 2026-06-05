@@ -1,4 +1,4 @@
-"use client";
+\"use client";
 
 import Image from "next/image";
 import { useState } from "react";
@@ -49,7 +49,7 @@ export default function PrototypeTimeline() {
         {PROTOTYPES.map((proto, i) => (
           <motion.div
             key={proto.version}
-            className="flex flex-col gap-3"
+            className="flex h-full flex-col gap-3"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -57,10 +57,7 @@ export default function PrototypeTimeline() {
           >
             {/* Text above image */}
             <div className="flex flex-col gap-1">
-              <span className="font-label text-[10px] tracking-[0.15em] uppercase text-accent-cyan">
-                {proto.version}
-              </span>
-              <h4 className="font-label font-bold text-white text-[13px] leading-tight">
+              <h4 className="font-label font-bold text-white text-[14px] leading-tight">
                 {proto.title}
               </h4>
               <p className="font-body text-[12px] text-text-muted leading-relaxed">
@@ -68,8 +65,8 @@ export default function PrototypeTimeline() {
               </p>
             </div>
 
-            {/* Image with year chip */}
-            <div className="relative aspect-[3/4] rounded-md overflow-hidden bg-surface-card">
+            {/* Image with year chip — fixed ratio, cyan border, bottom-aligned */}
+            <div className="relative mt-auto aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
               <Image
                 src={proto.imageSrc}
                 alt={proto.imageAlt}
@@ -77,8 +74,8 @@ export default function PrototypeTimeline() {
                 sizes="(min-width: 1024px) 16vw, 0px"
                 className="object-cover object-center"
               />
-              <div className="absolute bottom-2 left-2">
-                <span className="inline-block px-2 py-0.5 rounded-sm bg-[rgba(0,0,0,0.7)] backdrop-blur-sm font-label text-[10px] tracking-[0.12em] uppercase text-accent-cyan border border-[rgba(0,229,255,0.3)]">
+              <div className="absolute top-2 right-2">
+                <span className="inline-block rounded-sm border border-[rgba(0,229,255,0.3)] bg-[rgba(0,0,0,0.7)] px-2 py-0.5 font-label text-[10px] tracking-[0.12em] uppercase text-accent-cyan backdrop-blur-sm">
                   {proto.year}
                 </span>
               </div>
@@ -116,7 +113,7 @@ export default function PrototypeTimeline() {
               className="flex flex-col gap-4"
             >
               {/* Image with year chip */}
-              <div className="relative w-full aspect-[4/5] rounded-card overflow-hidden bg-surface-card">
+              <div className="relative w-full aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
                 <Image
                   src={PROTOTYPES[current].imageSrc}
                   alt={PROTOTYPES[current].imageAlt}
@@ -124,8 +121,8 @@ export default function PrototypeTimeline() {
                   sizes="100vw"
                   className="object-cover object-center"
                 />
-                <div className="absolute bottom-3 left-3">
-                  <span className="inline-block px-2.5 py-1 rounded-sm bg-[rgba(0,0,0,0.75)] backdrop-blur-sm font-label text-[11px] tracking-[0.15em] uppercase text-accent-cyan border border-[rgba(0,229,255,0.3)]">
+                <div className="absolute top-3 right-3">
+                  <span className="inline-block rounded-sm border border-[rgba(0,229,255,0.3)] bg-[rgba(0,0,0,0.75)] px-2.5 py-1 font-label text-[11px] tracking-[0.15em] uppercase text-accent-cyan backdrop-blur-sm">
                     {PROTOTYPES[current].year}
                   </span>
                 </div>
@@ -133,9 +130,6 @@ export default function PrototypeTimeline() {
 
               {/* Text */}
               <div className="flex flex-col gap-2">
-                <span className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan">
-                  {PROTOTYPES[current].version}
-                </span>
                 <h4
                   className="font-label font-bold text-white leading-tight"
                   style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
