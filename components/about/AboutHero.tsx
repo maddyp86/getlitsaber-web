@@ -138,12 +138,6 @@ export default function AboutHero() {
     className="object-cover object-center"
     priority
   />
-  {/* Caption chip — bottom-left inside the image (it's in Figma; drop if handling separately) */}
-  <div className="absolute bottom-6 left-6">
-    <span className="inline-block rounded-pill border border-[#2D1C53] bg-[rgba(10,5,24,0.75)] px-3 py-1.5 font-label text-[11px] uppercase tracking-[0.1em] text-text-secondary backdrop-blur-sm">
-      {HERO_IMAGE_CAPTION}
-    </span>
-  </div>
 </motion.div>
         </div>
       </div>
