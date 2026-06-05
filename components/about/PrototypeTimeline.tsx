@@ -96,42 +96,43 @@ export default function PrototypeTimeline() {
           ))}
         </div>
 
-        {/* Card */}
-        <div className="relative overflow-hidden" style={{ minHeight: 480 }}>
-          <AnimatePresence initial={false} custom={direction} mode="wait">
-            <motion.div
-              key={current}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.35, ease: EASE }}
-              className="flex flex-col gap-4"
-            >
-              {/* Image (no year overlay — burned into photo) */}
-              <div className="relative w-full aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
-                <Image
-                  src={PROTOTYPES[current].imageSrc}
-                  alt={PROTOTYPES[current].imageAlt}
-                  fill
-                  sizes="100vw"
-                  className="object-cover object-center"
-                />
-              </div>
+{/* Card */}
+<div className="relative overflow-hidden" style={{ minHeight: 480 }}>
+  <AnimatePresence initial={false} custom={direction} mode="wait">
+    <motion.div
+      key={current}
+      custom={direction}
+      variants={variants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{ duration: 0.35, ease: EASE }}
+      className="flex flex-col gap-4"
+    >
+      {/* Text — above image on mobile */}
+      <div className="flex flex-col gap-2">
+        <h4 className="font-display font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
+          <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
+          <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
+        </h4>
+        <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+          {PROTOTYPES[current].blurb}
+        </p>
+      </div>
 
-         {/* Text */}
-<div className="flex flex-col gap-2">
-  <h4 className="font-display font-subhead uppercase font-bold text-[16px] leading-[28px]" style={{ fontFeatureSettings: "'dlig' on" }}>
-    <span className="text-accent-cyan">{PROTOTYPES[current].title.split(":")[0]}:</span>
-    <span className="text-white"> {PROTOTYPES[current].title.split(":").slice(1).join(":").trim()}</span>
-  </h4>
-  <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-    {PROTOTYPES[current].blurb}
-  </p>
+      {/* Image (no year overlay — burned into photo) */}
+      <div className="relative w-full aspect-[200/339] overflow-hidden rounded-[10px] border border-[rgba(0,229,255,0.20)] bg-surface-card">
+        <Image
+          src={PROTOTYPES[current].imageSrc}
+          alt={PROTOTYPES[current].imageAlt}
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </div>
+    </motion.div>
+  </AnimatePresence>
 </div>
-            </motion.div>
-          </AnimatePresence>
         </div>
 
         {/* Prev / Next */}
