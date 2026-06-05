@@ -32,6 +32,16 @@ export const PRODUCTION_IMAGES = [
   { src: "/images/about/litsaber-production-10.jpg", alt: "Litsaber production — step 10" },
 ] as const;
 
+// ─── Images — Manufacturing Gallery (desktop collage, 6 images) ──────────────
+export const PRODUCTION_IMAGES_DESKTOP = [
+  { src: "/images/about/litsaber-production-desktop-1.jpg", alt: "Litsaber assembly — LED strip test" },   // tall left
+  { src: "/images/about/litsaber-production-desktop-2.jpg", alt: "Litsaber assembly — PCB hand assembly" }, // top-right (upper)
+  { src: "/images/about/litsaber-production-desktop-3.jpg", alt: "Litsaber assembly — housing fit" },        // top-right (lower)
+  { src: "/images/about/litsaber-production-desktop-4.jpg", alt: "Litsaber assembly — CNC end caps" },       // bottom-left
+  { src: "/images/about/litsaber-production-desktop-5.jpg", alt: "Litsaber QC — finished units tray" },      // bottom-center
+  { src: "/images/about/litsaber-production-desktop-6.jpg", alt: "Litsaber assembly — final lit unit" },     // bottom-right
+] as const;
+
 // ─── Images — Manufacturing band ─────────────────────────────────────────────
 export const MFG_BAND_SRC = "/images/about/mfg-band-line.jpg";
 export const MFG_BAND_ALT = "Litsaber devices glowing on a surface";
