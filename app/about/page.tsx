@@ -8,7 +8,6 @@ import AboutManufacturing from "@/components/about/AboutManufacturing";
 import ManufacturingImageBand from "@/components/about/ManufacturingImageBand";
 import AboutNow from "@/components/about/AboutNow";
 import AboutClosingCta from "@/components/about/AboutClosingCta";
-import EmailSignupBanner from "@/components/global/EmailSignupBanner/EmailSignupBanner";
 
 export const metadata: Metadata = {
   title: "Our Story | Litsaber",
