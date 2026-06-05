@@ -143,7 +143,7 @@ export default function MarginsSection() {
 
         {/* CTA band */}
         <motion.div
-          className="mt-16 lg:mt-20 rounded-xl border border-[#1E1040] bg-[#080215] px-8 py-10 flex flex-col items-center text-center gap-5"
+          className="mt-16 lg:mt-20 rounded-xl border border-[#1E1040] bg-[#080215] px-10 py-10 flex flex-col items-center text-center gap-5"
           initial={prefersReduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
