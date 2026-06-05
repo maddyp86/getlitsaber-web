@@ -84,7 +84,7 @@ export default function AboutManufacturing() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
         >
-          <p className="font-label text-[10px] tracking-[0.2em] uppercase text-text-muted mb-3">
+          <p className="font-label text-[12px] uppercase text-text-muted mb-3">
             {DOPEX_CARD_EYEBROW}
           </p>
           <h3
