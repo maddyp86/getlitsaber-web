@@ -53,7 +53,7 @@ export default function AboutHero() {
 
             <motion.h1
               className="font-display font-bold uppercase leading-[1.05]"
-              style={{ fontSize: "clamp(55px, 7vw, 90px)" }}
+              style={{ fontSize: "clamp(50px, 7vw, 90px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
