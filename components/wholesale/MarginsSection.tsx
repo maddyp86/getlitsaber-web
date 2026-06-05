@@ -9,6 +9,7 @@ import {
   MARGINS_HEADLINE_LINE1,
   MARGINS_HEADLINE_ACCENT,
   MARGINS_BODY,
+  MARGINS_STATS,
   MARGINS_BAND_HEADLINE,
   MARGINS_BAND_SUBLINE,
   MARGINS_BAND_CTA,
@@ -16,45 +17,45 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-export const MARGINS_STATS = [
-  { label: "WHOLESALE STARTING AT", value: "$24.00/unit", color: "#00E5FF" },
-  { label: "MSRP",                  value: "$59.99/unit", color: "#FFFFFF" },
-  { label: "YOUR MARGIN",           value: "25%",         color: "#EB3D7B" },
-];
-
-
 export default function MarginsSection() {
   const prefersReduced = useReducedMotion();
 
   return (
     <section
       id="numbers"
-     className="relative isolate overflow-hidden w-full -mt-px bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
+      className="relative isolate overflow-hidden w-full -mt-px bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Premium margins, real numbers"
     >
-           {/* Geometric shape #1 — top-left, behind everything */}
-<div
-  className="absolute pointer-events-none -z-10"
-  style={{ width: "540px", height: "451px", top: 0, right: -100, opacity: 0.4 }}
-  aria-hidden="true"
->
-  <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
-</div>
+      {/* Geometric shape — top-right, behind everything */}
+      <div
+        className="absolute pointer-events-none -z-10"
+        style={{ width: "540px", height: "451px", top: 0, right: -100, opacity: 0.4 }}
+        aria-hidden="true"
+      >
+        <Image
+          src="/images/tech/geometric-shape.png"
+          alt=""
+          fill
+          sizes="540px"
+          style={{ objectFit: "contain" }}
+        />
+      </div>
 
-   {/* Ambient glow */}
-<div
-  aria-hidden="true"
-  className="pointer-events-none absolute inset-x-0 top-[80px] -z-10 h-[400px]"
-  style={{
-    background: "linear-gradient(180deg, rgba(75,47,129,0.35) 0%, transparent 100%)",
-    filter: "blur(80px)",
-  }}
-/>
+      {/* Ambient glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-[80px] -z-10 h-[400px]"
+        style={{
+          background: "linear-gradient(180deg, rgba(75,47,129,0.35) 0%, transparent 100%)",
+          filter: "blur(80px)",
+        }}
+      />
+
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Top row: copy left + stats card right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Copy */}
-           <div className="flex flex-col gap-6 lg:flex-1">
+          <div className="flex flex-col gap-6 lg:flex-1">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -106,81 +107,82 @@ export default function MarginsSection() {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
           >
-       {MARGINS_STATS.map((row, i) => (
-  <Fragment key={row.label}>
-    <div className="flex flex-col gap-1 p-10">
-      <span className="font-body text-[14px] pb-2 uppercase text-text-muted">
-        {row.label}
-      </span>
-      <span
-        className="font-label font-bold leading-none"
-        style={{ fontSize: "clamp(30px, 3vw, 45px)", color: row.color }}
-      >
-        {row.value}
-      </span>
-    </div>
-    {i < MARGINS_STATS.length - 1 && (
-      <div className="h-px w-full bg-[#32205A]" aria-hidden="true" />
-    )}
-  </Fragment>
-))}
+            {MARGINS_STATS.map((row, i) => (
+              <Fragment key={row.label}>
+                <div className="flex flex-col gap-1 p-10">
+                  <span className="font-body text-[14px] pb-2 uppercase text-text-muted">
+                    {row.label}
+                  </span>
+                  <span
+                    className="font-label font-bold leading-none"
+                    style={{ fontSize: "clamp(30px, 3vw, 45px)", color: row.color }}
+                  >
+                    {row.value}
+                  </span>
+                </div>
+                {i < MARGINS_STATS.length - 1 && (
+                  <div className="h-px w-full bg-[#32205A]" aria-hidden="true" />
+                )}
+              </Fragment>
+            ))}
           </motion.div>
         </div>
 
-{/* CTA band + blur backdrop */}
-<div className="relative isolate mt-16 lg:mt-20">
-  {/* Blur element behind the band */}
-  <div
-    aria-hidden="true"
-    className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full max-w-[1186px] h-full min-h-[350px]"
-    style={{
-      background:
-        "linear-gradient(180deg, rgba(21,12,45,0.50) -23.86%, rgba(0,229,255,0.50) 130.46%)",
-      filter: "blur(150px)",
-    }}
-  />
+        {/* CTA band + blur backdrop */}
+        <div className="relative isolate mt-16 lg:mt-20">
+          {/* Blur element behind the band */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-full max-w-[1186px] h-full min-h-[350px]"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(21,12,45,0.50) -23.86%, rgba(0,229,255,0.50) 130.46%)",
+              filter: "blur(150px)",
+            }}
+          />
 
-     {/* CTA band */}
-  <motion.div
-    className="rounded-xl border border-[#1E1040] bg-[#080215] px-10 py-10 flex flex-col items-center text-center gap-5"
-    initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-  >
-    <h3
-      className="font-label font-bold text-white uppercase leading-[1.1]"
-      style={{ fontSize: "clamp(20px, 3vw, 35px)" }}
-    >
-      {MARGINS_BAND_HEADLINE}
-    </h3>
-    <p className="font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan">
-      {MARGINS_BAND_SUBLINE}
-    </p>
-    <Link
-      href="#apply"
-      className="flex items-center justify-center gap-[10px] w-full sm:w-[320px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
-    >
-      {MARGINS_BAND_CTA}
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        className="shrink-0"
-        aria-hidden="true"
-      >
-        <path
-          d="M5 12h14M13 6l6 6-6 6"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </Link>
-  </motion.div>
-</div>
+          {/* CTA band */}
+          <motion.div
+            className="rounded-xl border border-[#1E1040] bg-[#080215] px-10 py-10 flex flex-col items-center text-center gap-5"
+            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+          >
+            <h3
+              className="font-label font-bold text-white uppercase leading-[1.1]"
+              style={{ fontSize: "clamp(20px, 3vw, 35px)" }}
+            >
+              {MARGINS_BAND_HEADLINE}
+            </h3>
+            <p className="font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan">
+              {MARGINS_BAND_SUBLINE}
+            </p>
+            <Link
+              href="#apply"
+              className="flex items-center justify-center gap-[10px] w-full sm:w-[320px] p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110"
+            >
+              {MARGINS_BAND_CTA}
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="shrink-0"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }
