@@ -36,7 +36,7 @@ export default function WholesaleFaq() {
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         {/* Header */}
-        <div className="flex flex-col gap-3 mb-14">
+        <div className="flex align-start flex-col gap-3 mb-14">
           <motion.p
             className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
