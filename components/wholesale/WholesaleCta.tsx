@@ -16,6 +16,9 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+const FIELD_BASE =
+  "w-full px-4 py-3 rounded-[5px] border bg-[#0A0515] text-white font-body text-body-sm focus:outline-none focus:ring-1 transition-colors";
+
 interface FormFields {
   firstname: string;
   lastname: string;
@@ -75,6 +78,7 @@ function InputField({
   error,
   required,
   placeholder,
+  autoComplete,
 }: {
   label: string;
   name: keyof FormFields;
@@ -84,21 +88,28 @@ function InputField({
   error?: string;
   required?: boolean;
   placeholder?: string;
+  autoComplete?: string;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs">
+      <label
+        htmlFor={name}
+        className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs"
+      >
         {label}
         {required && <span className="text-[#EC5793] ml-1">*</span>}
       </label>
       <input
+        id={name}
         type={type}
         name={name}
         value={value}
         onChange={(e) => onChange(name, e.target.value)}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className={[
-          "w-full px-4 py-3 rounded-[5px] border bg-[#0A0515] text-white font-body text-body-sm placeholder:text-text-muted focus:outline-none focus:ring-1 transition-colors",
+          FIELD_BASE,
+          "placeholder:text-text-muted",
           error
             ? "border-[#EC5793] focus:ring-[#EC5793]"
             : "border-[#32205A] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
@@ -134,16 +145,21 @@ function SelectField({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs">
+      <label
+        htmlFor={name}
+        className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs"
+      >
         {label}
         {required && <span className="text-[#EC5793] ml-1">*</span>}
       </label>
       <select
+        id={name}
         name={name}
         value={value}
         onChange={(e) => onChange(name, e.target.value)}
         className={[
-          "w-full px-4 py-3 rounded-[5px] border bg-[#0A0515] text-white font-body text-body-sm focus:outline-none focus:ring-1 transition-colors appearance-none",
+          FIELD_BASE,
+          "appearance-none",
           error
             ? "border-[#EC5793] focus:ring-[#EC5793]"
             : "border-[#32205A] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
@@ -238,7 +254,7 @@ export default function WholesaleCta() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Left panel */}
           <motion.div
-            className="flex w-auto flex-col gap-6 min-w-[500px] lg:flex-1 lg:pt-2"
+            className="flex w-full flex-col gap-6 lg:flex-1 lg:pt-2"
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -369,6 +385,7 @@ export default function WholesaleCta() {
                     onChange={handleChange}
                     error={errors.firstname}
                     required
+                    autoComplete="given-name"
                   />
                   <InputField
                     label="Last Name"
@@ -377,6 +394,7 @@ export default function WholesaleCta() {
                     onChange={handleChange}
                     error={errors.lastname}
                     required
+                    autoComplete="family-name"
                   />
                 </div>
 
@@ -388,6 +406,7 @@ export default function WholesaleCta() {
                   onChange={handleChange}
                   error={errors.email}
                   required
+                  autoComplete="email"
                 />
 
                 <InputField
@@ -397,6 +416,7 @@ export default function WholesaleCta() {
                   onChange={handleChange}
                   error={errors.company}
                   required
+                  autoComplete="organization"
                 />
 
                 <InputField
@@ -405,6 +425,7 @@ export default function WholesaleCta() {
                   type="tel"
                   value={fields.phone}
                   onChange={handleChange}
+                  autoComplete="tel"
                 />
 
                 <InputField
@@ -415,6 +436,7 @@ export default function WholesaleCta() {
                   error={errors.state}
                   required
                   placeholder="e.g. California"
+                  autoComplete="address-level1"
                 />
 
                 <SelectField
@@ -438,55 +460,6 @@ export default function WholesaleCta() {
                 />
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs">
-                    How did you hear about us?
-                  </label>
-                  <textarea
-                    name="referralSource"
-                    value={fields.referralSource}
-                    onChange={(e) => handleChange("referralSource", e.target.value)}
-                    rows={3}
-                    className="w-full px-4 py-3 rounded-[5px] border border-[#32205A] bg-[#0A0515] text-white font-body text-body-sm placeholder:text-text-muted focus:outline-none focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] transition-colors resize-none"
-                    placeholder="TikTok, a rep, a show..."
-                  />
-                </div>
-
-                {serverError && (
-                  <p className="font-body text-[13px] text-[#EC5793] leading-snug">
-                    {serverError}
-                  </p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="mt-2 flex items-center justify-center gap-[10px] w-full p-5 rounded-[5px] border border-[#EC5793] bg-[#EB3D7B] text-white font-label font-bold text-eyebrow uppercase tracking-wider shadow-[0_0_50px_0_rgba(235,62,124,0.50)] transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {submitting ? "Submitting..." : "SUBMIT APPLICATION"}
-                  {!submitting && (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="shrink-0"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M5 12h14M13 6l6 6-6 6"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </button>
-              </form>
-            )}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
+                  <label
+                    htmlFor="referralSource"
+                    className="font-label text-eyebrow text-text-mute
