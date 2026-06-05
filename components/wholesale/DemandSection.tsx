@@ -3,11 +3,13 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
+  DEMAND_EYEBROW,
   DEMAND_HEADLINE_LINE1,
   DEMAND_HEADLINE_ACCENT,
   DEMAND_BODY,
   DEMAND_IMAGE_SRC,
   DEMAND_IMAGE_ALT,
+  GEOMETRIC_SHAPE_SRC,
 } from "./wholesale.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -28,18 +30,34 @@ export default function DemandSection() {
   const prefersReduced = useReducedMotion();
 
   return (
-  <section
- className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#150C2D_0%,#000_100%)]"
-  aria-label="Demand is already there"
->
-      {/* Geometric shape #1 — top-left, behind everything */}
-<div
-  className="absolute pointer-events-none -z-10"
-  style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.4 }}
-  aria-hidden="true"
->
-  <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
-</div>
+    <section
+      className="relative isolate overflow-hidden w-full bg-[#0A0619]"
+      aria-label="Demand is already there"
+    >
+      {/* Decorative geometric shape */}
+      <div
+        className="absolute pointer-events-none -z-10"
+        style={{ width: "540px", height: "451px", top: -60, right: -120, opacity: 0.3 }}
+        aria-hidden="true"
+      >
+        <Image
+          src={GEOMETRIC_SHAPE_SRC}
+          alt=""
+          fill
+          sizes="540px"
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+
+      {/* Ambient glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[400px]"
+        style={{
+          background: "linear-gradient(0deg, rgba(75,47,129,0.4) 0%, transparent 100%)",
+          filter: "blur(80px)",
+        }}
+      />
 
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
@@ -70,11 +88,20 @@ export default function DemandSection() {
           </motion.div>
 
           {/* Copy — right on desktop, below on mobile */}
-           <div className="flex flex-col pt-6 gap-2 lg:flex-1">
+          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
+            <motion.p
+              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+            >
+              {DEMAND_EYEBROW}
+            </motion.p>
 
             <motion.h2
               className="font-display font-bold uppercase leading-[1.1]"
-              style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
+              style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
