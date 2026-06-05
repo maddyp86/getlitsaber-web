@@ -82,7 +82,7 @@ export default function RetailKit() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Left — sticky on desktop, static on mobile */}
           <motion.div
-            className="w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[420px] lg:flex-shrink-0 lg:sticky lg:top-[120px] lg:self-start aspect-[3/4] rounded-card overflow-hidden"
+            className="w-full max-w-[350px] mx-auto lg:mx-0 lg:w-[350px] lg:flex-shrink-0 lg:sticky lg:top-[120px] lg:self-start aspect-[3/4] rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
