@@ -192,7 +192,7 @@ export const FAQ_ITEMS = [
 // ─── Section 9 — CTA / Form ──────────────────────────────────────────────────
 export const CTA_EYEBROW = "BECOME A RETAILER";
 export const CTA_HEADLINE_PART1 = "Get the full pricing sheet.";
-export const CTA_HEADLINE_ACCENT = "**Let's talk.**";
+export const CTA_HEADLINE_ACCENT = "Let's talk.";
 export const CTA_BODY =
   "Submit your details. We'll get back to you within 24 hours with the complete tier pricing, sample options, and anything else you need to make the call.";
 
