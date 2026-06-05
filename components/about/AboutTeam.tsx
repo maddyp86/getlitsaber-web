@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -12,11 +11,14 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function RoleTags({ roles }: { roles: string[] }) {
+function RoleTags({ roles, accent }: { roles: string[]; accent: string }) {
   return (
     <>
-      {/* Desktop: single inline string */}
-      <p className="hidden lg:block font-label text-[12px] tracking-[0.18em] uppercase text-text-muted">
+      {/* Desktop: single inline string, member-colored */}
+      <p
+        className="hidden lg:block font-label text-[16px] tracking-[0.05em] uppercase"
+        style={{ color: accent }}
+      >
         {roles.join(" · ")}
       </p>
       {/* Mobile: pill chips */}
@@ -24,7 +26,14 @@ function RoleTags({ roles }: { roles: string[] }) {
         {roles.map((role) => (
           <span
             key={role}
-            className="px-2.5 py-1 rounded-pill border border-[#2D1C53] bg-[#110826] font-label text-[10px] tracking-[0.12em] uppercase text-text-muted"
+            className="px-2.5 py-1 rounded-pill font-label text-[10px] tracking-[0.12em] uppercase"
+            style={{
+              color: accent,
+              borderWidth: 1,
+              borderStyle: "solid",
+              borderColor: `${accent}40`,
+              backgroundColor: "#110826",
+            }}
           >
             {role}
           </span>
@@ -34,54 +43,68 @@ function RoleTags({ roles }: { roles: string[] }) {
   );
 }
 
-function BioCard({ member, index }: { member: TeamMember; index: number }) {
+function BioCard({
+  member,
+  index,
+  accent,
+}: {
+  member: TeamMember;
+  index: number;
+  accent: string;
+}) {
   const prefersReduced = useReducedMotion();
   return (
     <motion.div
-      className="flex flex-col gap-4"
+      className="flex w-full lg:w-[475px] flex-col gap-2"
       initial={prefersReduced ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, delay: index * 0.12, ease: EASE }}
     >
-      {/* Square headshot */}
-      <div className="relative w-full aspect-square max-w-[320px] mx-auto lg:mx-0 rounded-card overflow-hidden bg-surface-card">
-        <Image
-          src={member.imageSrc}
-          alt={member.imageAlt}
-          fill
-          sizes="(min-width: 1024px) 320px, 80vw"
-          className="object-cover object-top"
-        />
-      </div>
+      {/* Top accent line (475px × 2px, member-colored gradient) */}
+      <div
+        className="h-[2px] w-full shrink-0"
+        style={{
+          background: `linear-gradient(90deg, #150C2D 0%, ${accent} 49.04%, #150C2D 97.6%)`,
+        }}
+      />
 
-      <div className="flex flex-col gap-1.5">
-        <h3
-          className="font-display font-bold text-white"
-          style={{ fontSize: "clamp(20px, 2.2vw, 26px)" }}
-        >
-          {member.name}
-        </h3>
-        <RoleTags roles={member.roles} />
-      </div>
+      {/* Card */}
+      <div className="flex flex-1 flex-col items-start gap-[18px] rounded-[10px] border border-[rgba(75,47,129,0.50)] bg-[#150C2D] p-5">
+        {/* Square headshot, stretched to card content width */}
+        <div className="relative w-full aspect-square self-stretch overflow-hidden bg-surface-card">
+          <Image
+            src={member.imageSrc}
+            alt={member.imageAlt}
+            fill
+            sizes="(min-width: 1024px) 435px, 90vw"
+            className="object-cover object-top"
+          />
+        </div>
 
-      <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-        {member.bio}
-      </p>
+        <div className="flex flex-col gap-3">
+          <h3
+            className="font-display font-bold text-white leading-normal"
+            style={{ fontSize: "clamp(26px, 3vw, 35px)" }}
+          >
+            {member.name}
+          </h3>
+          <RoleTags roles={member.roles} accent={accent} />
+        </div>
+
+        <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+          {member.bio}
+        </p>
+      </div>
     </motion.div>
   );
 }
 
 export default function AboutTeam() {
   const prefersReduced = useReducedMotion();
-
   return (
-    <section
-      className="relative w-full bg-[#080516]"
-      aria-label="The team"
-    >
+    <section className="relative w-full bg-[#080516]" aria-label="The team">
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
-
         <motion.p
           className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-magenta mb-4"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
@@ -91,7 +114,6 @@ export default function AboutTeam() {
         >
           {TEAM_EYEBROW}
         </motion.p>
-
         <motion.h2
           className="font-display font-bold leading-[1.1] text-white mb-6"
           style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
@@ -102,7 +124,6 @@ export default function AboutTeam() {
         >
           {TEAM_HEADLINE}
         </motion.h2>
-
         <motion.p
           className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[680px] mb-14"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
@@ -113,9 +134,15 @@ export default function AboutTeam() {
           {TEAM_INTRO}
         </motion.p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        {/* Outer: flex, centered, 50px gap, equal-height cards */}
+        <div className="flex flex-col items-stretch gap-[50px] lg:flex-row lg:justify-center">
           {TEAM_MEMBERS.map((member, i) => (
-            <BioCard key={member.name} member={member} index={i} />
+            <BioCard
+              key={member.name}
+              member={member}
+              index={i}
+              accent={i === 0 ? "#00E5FF" : "#EC5793"}
+            />
           ))}
         </div>
       </div>
