@@ -146,7 +146,7 @@ export default function MarginsSection() {
           transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
         >
           <h3
-            className="font-display font-bold text-white uppercase leading-[1.1]"
+            className="font-label font-bold text-white uppercase leading-[1.1]"
             style={{ fontSize: "clamp(22px, 3vw, 36px)" }}
           >
             {MARGINS_BAND_HEADLINE}
