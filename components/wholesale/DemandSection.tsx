@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  DEMAND_EYEBROW,
   DEMAND_HEADLINE_LINE1,
   DEMAND_HEADLINE_ACCENT,
   DEMAND_BODY,
@@ -72,15 +71,6 @@ export default function DemandSection() {
 
           {/* Copy — right on desktop, below on mobile */}
            <div className="flex flex-col pt-6 gap-2 lg:flex-1">
-            <motion.p
-              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {DEMAND_EYEBROW}
-            </motion.p>
 
             <motion.h2
               className="font-display font-bold uppercase leading-[1.1]"
