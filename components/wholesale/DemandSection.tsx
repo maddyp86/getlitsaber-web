@@ -42,8 +42,6 @@ export default function DemandSection() {
   <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
 </div>
 
-  
-
       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
           {/* Image — left on desktop, top on mobile */}
