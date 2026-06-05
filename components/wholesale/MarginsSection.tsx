@@ -13,7 +13,6 @@ import {
   MARGINS_BAND_HEADLINE,
   MARGINS_BAND_SUBLINE,
   MARGINS_BAND_CTA,
-  GEOMETRIC_SHAPE_SRC,
 } from "./wholesale.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
