@@ -26,6 +26,7 @@ export default function TechHero() {
       className="relative overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Built to be seen"
     >
+      <div className="mx-auto w-full max-w-[1250px]">
       <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch">
 
         {/* Text block — owns the padding now */}
@@ -107,6 +108,7 @@ export default function TechHero() {
     priority
   />
 </motion.div>
+      </div>
       </div>
     </section>
   );
