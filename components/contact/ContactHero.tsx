@@ -154,7 +154,7 @@ export default function ContactHero() {
               {HERO_HEADLINE_LINE1}
             </span>
             <span
-              className="block font-display text-cyan"
+              className="block font-accent text-cyan"
               style={{
                 fontSize: "clamp(55px, 5vw, 90px)",
                 lineHeight: "1",
