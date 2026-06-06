@@ -48,7 +48,6 @@ function ContactCard({
           alt=""
           width={28}
           height={28}
-          className="brightness-0 invert [filter:invert(1)_sepia(1)_saturate(3)_hue-rotate(155deg)_brightness(1.2)]"
         />
       </div>
 
