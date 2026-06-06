@@ -53,7 +53,7 @@ export default function AboutHero() {
 
             <motion.h1
               className="font-display font-bold uppercase leading-[1.05]"
-              style={{ fontSize: "clamp(45px, 7vw, 90px)" }}
+              style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
@@ -65,7 +65,7 @@ export default function AboutHero() {
               <span
                 className="block font-normal font-accent text-accent-cyan"
                 style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)",
-                       fontSize: "clamp(45px, 7vw, 90px)"}}
+                       fontSize: "clamp(45px, 6.5vw, 90px)"}}
               >
                 {HERO_HEADLINE_ACCENT}
               </span>
