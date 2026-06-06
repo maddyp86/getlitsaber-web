@@ -26,11 +26,11 @@ export default function TechHero() {
       className="relative overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Built to be seen"
     >
-      <div className="mx-auto w-full max-w-[1250px]">
+      <div className="mx-auto w-full max-w-container">
       <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch">
 
         {/* Text block — owns the padding now */}
-      <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 px-[20px] py-16 lg:py-24 lg:pl-[60px] lg:pr-16 lg:max-w-[600px]">
+      <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 px-[20px] py-16 lg:py-24 lg:pl-container lg:pr-16 lg:max-w-[600px]">
 
     <motion.h1
   className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
