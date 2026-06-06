@@ -35,14 +35,20 @@ function ContactCard({
 
   return (
     <motion.div
-      className="flex flex-col gap-4 rounded-xl border border-[#1A1035] bg-[#0A0515]/80 p-6 lg:p-8"
+      className="flex flex-col gap-4 rounded-xl border border-[#1A1035] bg-[#0A0515]/80 p-6 lg:p-8 h-full"
       initial={prefersReduced ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
     >
       {/* Icon circle */}
-      <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(0,229,255,0.3)] bg-[rgba(0,229,255,0.05)]">
+      <div
+        className="flex h-14 w-14 items-center justify-center rounded-full"
+        style={{
+          border: isChat ? "1px solid #EC5793" : "1px solid rgba(0,229,255,0.3)",
+          background: isChat ? "rgba(236,87,147,0.08)" : "rgba(0,229,255,0.05)",
+        }}
+      >
         <Image
           src={ICON_SRC[method.icon]}
           alt=""
@@ -51,18 +57,11 @@ function ContactCard({
         />
       </div>
 
-      <div className="flex flex-col gap-1">
-        {/* Eyebrow + badge inline */}
-        <div className="flex items-center gap-2">
-          <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-text-muted text-xs">
-            {method.label}
-          </p>
-          {method.badge && (
-            <span className="px-2 py-0.5 rounded-full font-label text-[9px] tracking-[0.12em] uppercase border border-[rgba(255,0,229,0.4)] bg-[rgba(255,0,229,0.1)] text-[#FF00E5]">
-              {method.badge}
-            </span>
-          )}
-        </div>
+      <div className="flex flex-col gap-1 flex-1">
+        {/* Eyebrow — no badge here for chat (moved to bottom) */}
+        <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-text-muted text-xs">
+          {method.label}
+        </p>
 
         {/* Value / CTA */}
         {isChat ? (
@@ -94,6 +93,13 @@ function ContactCard({
         <p className="font-body text-body-sm text-text-secondary leading-relaxed mt-1">
           {method.description}
         </p>
+
+        {/* Badge at bottom — chat card only */}
+        {isChat && method.badge && (
+          <span className="mt-3 self-start px-3 py-1 rounded-[4px] font-label text-[10px] tracking-[0.15em] uppercase border border-[#EC5793] text-[#EC5793]">
+            {method.badge}
+          </span>
+        )}
       </div>
     </motion.div>
   );
