@@ -145,7 +145,7 @@ export default function ContactHero() {
             <span
               className="block text-white"
               style={{
-                fontSize: "clamp(45px, 5vw, 100px)",
+                fontSize: "clamp(45px, 7vw, 100px)",
                 textShadow: "0 0 50px rgba(255,255,255,0.75)",
                 WebkitTextStrokeWidth: "1px",
                 WebkitTextStrokeColor: "#000",
