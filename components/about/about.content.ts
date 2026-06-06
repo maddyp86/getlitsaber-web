@@ -66,7 +66,7 @@ export const HERO_CTA = "LEARN MORE";
 export const ORIGIN_EYEBROW = "/ 01 — ORIGIN";
 export const ORIGIN_HEADLINE = "It started with a question.";
 export const ORIGIN_BODY_INTRO =
-  "In 2020, the two of us were hanging out one night. Brendan was a raver, deep in the lightshow community, and on this particular night he'd lost his vape. So he picked up his LED glowsticks and started waving them around. Improvised a lightshow with what was in his hand. Then he asked the question.";
+  "In 2019, the two of us were hanging out one night. Brendan was a raver, deep in the lightshow community, and on this particular night he'd lost his vape. So he picked up his LED glowsticks and started waving them around. Improvised a lightshow with what was in his hand. Then he asked the question.";
 export const ORIGIN_PULLQUOTE = "What if you could";
 export const ORIGIN_PULLQUOTE_ACCENT = "smoke a glowstick?";
 export const ORIGIN_PULLQUOTE_ATTRIBUTION = "Brendan Friedrich, 2020";
