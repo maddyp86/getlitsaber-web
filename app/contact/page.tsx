@@ -3,7 +3,6 @@ import ContactHero from "@/components/contact/ContactHero";
 import ContactMethods from "@/components/contact/ContactMethods";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactFaq from "@/components/contact/ContactFaq";
-import FestivalDropList from "@/components/contact/FestivalDropList";
 
 export const metadata: Metadata = {
   title: "Contact Us | Litsaber",
@@ -24,7 +23,6 @@ export default function ContactPage() {
       <ContactMethods />
       <ContactForm />
       <ContactFaq />
-      <FestivalDropList />
     </main>
   );
 }
