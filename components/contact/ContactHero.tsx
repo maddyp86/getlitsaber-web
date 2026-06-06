@@ -145,7 +145,7 @@ export default function ContactHero() {
             <span
               className="block text-white"
               style={{
-                fontSize: "clamp(55px, 7vw, 100px)",
+                fontSize: "clamp(45px, 5vw, 100px)",
                 textShadow: "0 0 50px rgba(255,255,255,0.75)",
                 WebkitTextStrokeWidth: "1px",
                 WebkitTextStrokeColor: "#000",
@@ -154,9 +154,9 @@ export default function ContactHero() {
               {HERO_HEADLINE_LINE1}
             </span>
             <span
-              className="block text-white"
+              className="block font-display text-cyan"
               style={{
-                fontSize: "clamp(80px, 10vw, 150px)",
+                fontSize: "clamp(55px, 5vw, 90px)",
                 lineHeight: "1",
                 textShadow: "0 0 50px rgba(255,255,255,0.75)",
                 WebkitTextStrokeWidth: "1px",
