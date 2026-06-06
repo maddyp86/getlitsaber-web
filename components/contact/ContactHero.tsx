@@ -145,7 +145,7 @@ export default function ContactHero() {
             <span
               className="block text-white"
               style={{
-                fontSize: "clamp(50px, 7vw, 100px)",
+                fontSize: "clamp(50px, 7vw, 90px)",
                 textShadow: "0 0 50px rgba(255,255,255,0.75)",
                 WebkitTextStrokeWidth: "1px",
                 WebkitTextStrokeColor: "#000",
@@ -156,7 +156,7 @@ export default function ContactHero() {
             <span
                 className="block font-normal font-accent text-accent-cyan"
                 style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)",
-                       fontSize: "clamp(50px, 7vw, 100px)"}}
+                       fontSize: "clamp(50px, 7vw, 90px)"}}
             >
               {HERO_HEADLINE_ACCENT}
             </span>
