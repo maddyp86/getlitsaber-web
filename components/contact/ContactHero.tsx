@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useToastActions } from "@/lib/toast/store";
 import {
@@ -20,22 +19,24 @@ const ICON_SRC: Record<ContactMethod["icon"], string> = {
   chat: "/images/icons/radio-button-svgrepo-com 1.svg",
 };
 
-function ContactCard({
+function CardInner({
   method,
   index,
-  onChatClick,
+  hoverBorderColor,
 }: {
   method: ContactMethod;
   index: number;
-  onChatClick: () => void;
+  hoverBorderColor: string;
 }) {
   const prefersReduced = useReducedMotion();
   const isChat = method.icon === "chat";
-  const isEmail = method.icon === "email";
 
   return (
     <motion.div
-      className="flex flex-col gap-4 rounded-xl border border-[#1A1035] bg-[#0A0515]/80 p-6 lg:p-8 h-full"
+      className="flex flex-col gap-4 rounded-xl border bg-[#0A0515]/80 p-6 lg:p-8 h-full transition-colors duration-200"
+      style={{ borderColor: "#1A1035" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = hoverBorderColor; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = "#1A1035"; }}
       initial={prefersReduced ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -49,52 +50,25 @@ function ContactCard({
           background: isChat ? "rgba(236,87,147,0.08)" : "rgba(0,229,255,0.05)",
         }}
       >
-        <Image
-          src={ICON_SRC[method.icon]}
-          alt=""
-          width={28}
-          height={28}
-        />
+        <Image src={ICON_SRC[method.icon]} alt="" width={28} height={28} />
       </div>
 
       <div className="flex flex-col gap-1 flex-1">
-        {/* Eyebrow — no badge here for chat (moved to bottom) */}
         <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-text-muted text-xs">
           {method.label}
         </p>
 
-        {/* Value / CTA */}
-        {isChat ? (
-          <button
-            onClick={onChatClick}
-            className="font-subhead font-bold text-white text-left transition-colors hover:text-accent-cyan"
-            style={{ fontSize: "clamp(16px, 1.8vw, 20px)" }}
-          >
-            Chat With Us
-          </button>
-        ) : isEmail ? (
-          <Link
-            href={`mailto:${method.value}`}
-            className="font-subhead font-bold text-white transition-colors hover:text-accent-cyan"
-            style={{ fontSize: "clamp(16px, 1.8vw, 20px)" }}
-          >
-            {method.value}
-          </Link>
-        ) : (
-          <Link
-            href={`tel:${method.value.replace(/\D/g, "")}`}
-            className="font-subhead font-bold text-white transition-colors hover:text-accent-cyan"
-            style={{ fontSize: "clamp(16px, 1.8vw, 20px)" }}
-          >
-            {method.value}
-          </Link>
-        )}
+        <p
+          className="font-subhead font-bold text-white"
+          style={{ fontSize: "clamp(16px, 1.8vw, 20px)" }}
+        >
+          {isChat ? "Chat With Us" : method.value}
+        </p>
 
         <p className="font-body text-body-sm text-text-secondary leading-relaxed mt-1">
           {method.description}
         </p>
 
-        {/* Badge at bottom — chat card only */}
         {isChat && method.badge && (
           <span className="mt-3 self-start px-3 py-1 rounded-[4px] font-label text-[10px] tracking-[0.15em] uppercase border border-[#EC5793] text-[#EC5793]">
             {method.badge}
@@ -103,6 +77,44 @@ function ContactCard({
       </div>
     </motion.div>
   );
+}
+
+function ContactCard({
+  method,
+  index,
+  onChatClick,
+}: {
+  method: ContactMethod;
+  index: number;
+  onChatClick: () => void;
+}) {
+  const isChat = method.icon === "chat";
+  const isEmail = method.icon === "email";
+
+  if (isChat) {
+    return (
+      <button
+        onClick={onChatClick}
+        className="text-left w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EC5793] rounded-xl"
+        aria-label="Chat with us"
+      >
+        <CardInner method={method} index={index} hoverBorderColor="#EC5793" />
+      </button>
+    );
+  }
+
+  if (isEmail) {
+    return (
+      <a
+        href={`mailto:${method.value}`}
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] rounded-xl"
+      >
+        <CardInner method={method} index={index} hoverBorderColor="#00E5FF" />
+      </a>
+    );
+  }
+
+  return <CardInner method={method} index={index} hoverBorderColor="#1A1035" />;
 }
 
 export default function ContactHero() {
