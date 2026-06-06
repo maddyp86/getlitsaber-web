@@ -36,6 +36,8 @@ interface ContactPayload {
   lastname?: unknown;
   email?: unknown;
   reason?: unknown;
+  company?: unknown;
+  phone?: unknown;
   message?: unknown;
   source?: unknown;
   botField?: unknown;
@@ -68,7 +70,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { firstname, lastname, email, reason, message, source, botField } =
+  const { firstname, lastname, email, reason, company, phone, message, source, botField } =
     body as ContactPayload;
 
   // Honeypot
@@ -88,22 +90,27 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-  if (typeof message !== "string" || message.trim().length === 0) {
-    return NextResponse.json({ ok: false, error: "Message is required" }, { status: 400 });
-  }
 
   const reasonStr =
     typeof reason === "string" && reason.trim().length > 0 ? reason.trim() : "";
-  const messageBody = reasonStr
-    ? `[${reasonStr}] ${String(message).trim()}`
-    : String(message).trim();
+  const messageBody = (() => {
+    const msg = typeof message === "string" ? message.trim() : "";
+    return reasonStr && msg ? `[${reasonStr}] ${msg}` : reasonStr ? `[${reasonStr}]` : msg;
+  })();
 
   const fields: { name: string; value: string }[] = [
     { name: "firstname", value: String(firstname).trim() },
     { name: "lastname", value: String(lastname).trim() },
     { name: "email", value: String(email).trim() },
-    { name: "message", value: messageBody },
   ];
+
+  if (messageBody) fields.push({ name: "message", value: messageBody });
+  if (typeof company === "string" && company.trim()) {
+    fields.push({ name: "company", value: company.trim() });
+  }
+  if (typeof phone === "string" && phone.trim()) {
+    fields.push({ name: "phone", value: phone.trim() });
+  }
 
   const pageName =
     typeof source === "string" && source.length > 0 ? source : "contact-page";

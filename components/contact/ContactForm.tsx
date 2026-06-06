@@ -20,6 +20,8 @@ interface FormFields {
   lastname: string;
   email: string;
   reason: string;
+  company: string;
+  phone: string;
   message: string;
   botField: string;
 }
@@ -28,7 +30,6 @@ interface FieldErrors {
   firstname?: string;
   lastname?: string;
   email?: string;
-  message?: string;
 }
 
 const EMPTY_FORM: FormFields = {
@@ -36,6 +37,8 @@ const EMPTY_FORM: FormFields = {
   lastname: "",
   email: "",
   reason: "",
+  company: "",
+  phone: "",
   message: "",
   botField: "",
 };
@@ -47,7 +50,6 @@ function validate(f: FormFields): FieldErrors {
   if (!f.firstname.trim()) errors.firstname = "Required";
   if (!f.lastname.trim()) errors.lastname = "Required";
   if (!f.email.trim() || !EMAIL_RE.test(f.email)) errors.email = "Valid email required";
-  if (!f.message.trim()) errors.message = "Required";
   return errors;
 }
 
@@ -292,7 +294,7 @@ export default function ContactForm() {
                   htmlFor="reason"
                   className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs"
                 >
-                  Reason
+                  Reason for Contact
                 </label>
                 <select
                   id="reason"
@@ -315,13 +317,30 @@ export default function ContactForm() {
                 </select>
               </div>
 
+              <InputField
+                label="Company / Brand Name"
+                name="company"
+                value={fields.company}
+                onChange={handleChange}
+                autoComplete="organization"
+              />
+
+              <InputField
+                label="Mobile Phone Number"
+                name="phone"
+                type="tel"
+                value={fields.phone}
+                onChange={handleChange}
+                autoComplete="tel"
+              />
+
               {/* Message textarea */}
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="message"
                   className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs"
                 >
-                  Message <span className="text-[#EC5793] ml-0.5">*</span>
+                  Message
                 </label>
                 <textarea
                   id="message"
@@ -332,18 +351,9 @@ export default function ContactForm() {
                   className={[
                     FIELD_BASE,
                     "placeholder:text-text-muted resize-none",
-                    errors.message
-                      ? "border-[#EC5793] focus:ring-[#EC5793]"
-                      : "border-[#113757] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
+                    "border-[#113757] focus:border-[#00E5FF] focus:ring-[#00E5FF]",
                   ].join(" ")}
-                  aria-invalid={!!errors.message}
-                  aria-describedby={errors.message ? "message-error" : undefined}
                 />
-                {errors.message && (
-                  <span id="message-error" className="font-body text-[12px] text-[#EC5793]">
-                    {errors.message}
-                  </span>
-                )}
               </div>
 
               {serverError && (

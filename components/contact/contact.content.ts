@@ -53,10 +53,13 @@ export const QUICK_LINKS: QuickLink[] = [
 export const FORM_HEADLINE = "SEND US A MESSAGE";
 export const FORM_SUBHEAD = "We respond within 24 hours, usually faster.";
 export const FORM_REASON_OPTIONS = [
-  "Order or support",
-  "Wholesale",
-  "Press or collab",
-  "Something else",
+  "Order Issue",
+  "Product Support",
+  "Content Creator / Collaboration",
+  "Wholesale / Retail Inquiry",
+  "Press / Media",
+  "General Question",
+  "Other",
 ] as const;
 
 // ─── FAQ ──────────────────────────────────────────────────────────────────────
