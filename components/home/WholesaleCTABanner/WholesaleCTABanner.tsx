@@ -47,7 +47,7 @@ export default function WholesaleCTABanner() {
           className="font-label font-bold uppercase tracking-widest text-white opacity-75 transition-opacity duration-200 hover:opacity-100 active:opacity-60 whitespace-nowrap shrink-0"
           style={{
             display: "flex",
-            width: "300px",
+            width: "auto",
             height: "60px",
             padding: "20px",
             justifyContent: "center",
