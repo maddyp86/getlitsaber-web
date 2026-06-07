@@ -39,7 +39,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
   const displayPrice = `$${getTierPrice(selectedQty).toFixed(2)}`;
 
   return (
-    <div className="w-full px-5 lg:px-0 flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
+<div className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
       {/* Left: image gallery */}
 <div
   className="flex flex-col items-start w-full lg:w-[700px] lg:flex-shrink-0 lg:sticky lg:self-start lg:top-[100px]"
