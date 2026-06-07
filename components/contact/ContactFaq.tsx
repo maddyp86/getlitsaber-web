@@ -65,7 +65,7 @@ export default function ContactFaq() {
 
 <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Header */}
-        <div className="flex flex-col mb-14">
+        <div className="flex items-center text-center flex-col mb-14">
           <motion.h2
             className="font-display text-center uppercase font-bold leading-[1.1]"
             style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
