@@ -17,7 +17,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 // Must stay in sync with the layout tokens: max-w-content (1600px) and px-content (clamp(16px, 2vw, 32px)).
 // Mirror any token change here AND in TechHero.tsx.
 const NAVBAR_LEFT =
-  "max(clamp(16px, 2vw, 32px), calc((100vw - 1600px) / 2 + clamp(16px, 2vw, 32px)))";
+  "max(clamp(20px, 5vw, 70px), calc((100vw - 1440px) / 2 + clamp(20px, 5vw, 70px)))";
 
 export default function AboutHero() {
   const prefersReduced = useReducedMotion();
