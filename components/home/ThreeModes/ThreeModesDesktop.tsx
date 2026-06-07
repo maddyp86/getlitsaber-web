@@ -255,7 +255,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       initial={{ opacity: 0, y: 24 }}
       animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-      style={{ flex: "1 0 0", alignSelf: "stretch" }}
+     style={{ flex: "1 0 0", alignSelf: "stretch", display: "flex", flexDirection: "column" }}
     >
     <div
       role="button"
@@ -344,7 +344,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       initial={{ opacity: 0, y: 24 }}
       animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, delay: 0.28, ease: EASE }}
-     style={{ flex: "1 0 0", alignSelf: "stretch" }}
+    style={{ flex: "1 0 0", alignSelf: "stretch", display: "flex", flexDirection: "column" }}
     >
     <div
       role="button"
@@ -389,7 +389,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       initial={{ opacity: 0, y: 24 }}
       animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, delay: 0.41, ease: EASE }}
-     style={{ flex: "1 0 0", alignSelf: "stretch" }}
+   style={{ flex: "1 0 0", alignSelf: "stretch", display: "flex", flexDirection: "column" }}
     >
     <div
       role="button"
