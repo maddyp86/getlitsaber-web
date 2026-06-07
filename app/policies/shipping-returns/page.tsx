@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import PolicyHeader from "@/components/policies/PolicyHeader";
 import QuickSummary from "@/components/policies/QuickSummary";
 import PolicySection from "@/components/policies/PolicySection";
 import PolicyCallout from "@/components/policies/PolicyCallout";
 import AddressBlock from "@/components/policies/AddressBlock";
+import { renderPara } from "@/lib/policies/renderPara";
 import { POLICIES_EFFECTIVE_DATE } from "@/content/policies/shared";
 import {
-  type Para,
   QUICK_SUMMARY,
   S01_PARA1,
   S01_PARA2,
@@ -34,43 +33,6 @@ export const metadata: Metadata = {
   description:
     "Litsaber shipping timelines, return windows, and how to start a return. Plain language, no surprises.",
 };
-
-const LINK_CLASS =
-  "text-accent-cyan underline-offset-2 hover:underline transition-colors duration-150";
-
-function renderPara(para: Para): React.ReactNode[] {
-  return para.map((seg, i) => {
-    const key = i;
-    switch (seg.t) {
-      case "b":
-        return (
-          <strong key={key} className="font-bold text-text-primary">
-            {seg.v}
-          </strong>
-        );
-      case "link":
-        return (
-          <Link key={key} href={seg.href} className={LINK_CLASS}>
-            {seg.v}
-          </Link>
-        );
-      case "email":
-        return (
-          <a key={key} href={`mailto:${seg.v}`} className={LINK_CLASS}>
-            {seg.v}
-          </a>
-        );
-      case "mag":
-        return (
-          <span key={key} style={{ color: "#FF00E5" }}>
-            {seg.v}
-          </span>
-        );
-      default:
-        return <span key={key}>{seg.v}</span>;
-    }
-  });
-}
 
 const P = "font-body text-body-sm lg:text-body text-text-secondary leading-relaxed";
 

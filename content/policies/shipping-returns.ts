@@ -5,7 +5,8 @@ export type Seg =
   | { t: "b"; v: string }
   | { t: "link"; v: string; href: string }
   | { t: "email"; v: string }
-  | { t: "mag"; v: string };
+  | { t: "mag"; v: string }
+  | { t: "mag-b"; v: string };
 
 export type Para = Seg[];
 
