@@ -57,7 +57,7 @@ export default function LightMeetsVapor() {
         className="absolute inset-0 flex flex-col justify-start lg:justify-center pt-[40px] lg:pt-0"
       >
         <div className="mx-auto w-full max-w-content px-content">
-          <div className="w-full lg:max-w-[750px] lg:-translate-y-24" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div className="w-full lg:max-w-[800px] lg:-translate-y-24" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {/* Headline — Monoton (accent font), two lines */}
             <div>
               <motion.h2
