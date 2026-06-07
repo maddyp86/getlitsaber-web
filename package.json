@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^5.15.11",
     "@opentelemetry/api": "^1.9.0",
     "@supabase/supabase-js": "^2",
     "@vercel/analytics": "^1.6.1",
