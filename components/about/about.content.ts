@@ -55,7 +55,6 @@ export const EVENT_IMAGES = [
 ] as const;
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────
-export const HERO_EYEBROW = "OUR STORY";
 export const HERO_HEADLINE_LINE1 = "BUILT FOR THE NIGHT YOU CAME TO";
 export const HERO_HEADLINE_ACCENT = "BE A PART OF.";
 export const HERO_BODY =
