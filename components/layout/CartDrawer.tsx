@@ -91,7 +91,7 @@ export default function CartDrawer() {
             exit="exit"
             variants={panelVariants}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-y-0 right-0 z-drawer flex flex-col w-full sm:max-w-[450px]"
+            className="fixed inset-y-0 right-0 z-drawer flex flex-col w-full sm:max-w-[500px]"
             style={{
               backgroundColor: "#0E0825",
             }}
