@@ -114,7 +114,7 @@ export default function RetailKit() {
                   {item.num}
                 </span>
                 <h3
-                  className="font-display font-bold text-white uppercase leading-tight"
+                  className="font-label font-bold text-white uppercase leading-tight"
                   style={{ fontSize: "clamp(18px, 2.2vw, 26px)" }}
                 >
                   {item.title}
