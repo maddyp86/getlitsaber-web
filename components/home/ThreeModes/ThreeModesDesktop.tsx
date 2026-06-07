@@ -248,7 +248,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
 <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
 
   {/* Left — mode cards: hug content, even gaps across 650 to match the image */}
-<div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "20px", flex: "1 0 0", height: "700px" }}>
+<div style={{ display: "flex", flexDirection: "column", justify: "space-between", alignItems: "stretch", gap: "20px", flex: "1 0 0", height: "700px" }}>
 
     {/* Litsaber Mode card */}
     <motion.div
