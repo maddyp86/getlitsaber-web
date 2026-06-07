@@ -43,7 +43,7 @@ export default function TechHero() {
           <div className="flex flex-col justify-center gap-6 max-w-[700px]">
             <motion.h1
               className="block font-display font-bold text-text-primary leading-none"
-              style={{ fontSize: "clamp(50px, 6.5vw, 100px)" }}
+              style={{ fontSize: "clamp(55px, 7vw, 100px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
@@ -51,7 +51,7 @@ export default function TechHero() {
               {HERO_HEADLINE_LINE1}
               <span
                 className="block font-accent font-normal text-accent-cyan leading-none"
-                style={{ fontSize: "clamp(50px, 6.5vw, 100px)" }}
+                style={{ fontSize: "clamp(55px, 7vw, 100px)" }}
               >
                 {HERO_HEADLINE_ACCENT}
               </span>
