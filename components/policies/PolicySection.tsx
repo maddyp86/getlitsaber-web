@@ -14,12 +14,12 @@ export default function PolicySection({
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-baseline gap-4">
-        <span className="font-subhead font-bold text-accent-cyan text-h3 shrink-0">
+        <span className="font-subhead font-bold text-accent-cyan text-[20px] shrink-0">
           {number}
         </span>
         <h2
           className="font-subhead font-bold text-text-primary uppercase"
-          style={{ fontSize: "clamp(18px, 2vw, 24px)" }}
+          style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
         >
           {title}
         </h2>
