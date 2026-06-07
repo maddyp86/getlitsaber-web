@@ -41,7 +41,7 @@ export default function TechHero() {
           <div className="flex w-full flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 lg:max-w-[600px]">
             <motion.h1
               className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
-              style={{ fontSize: "clamp(45px, 6.5vw, 100px)" }}
+              style={{ fontSize: "clamp(45px, 6vw, 100px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
