@@ -58,7 +58,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           alt="Litsaber device floating against a starfield"
           fill
           priority
-          sizes="1440px"
+          sizes="100vw"
           className="object-cover object-center"
         />
 
