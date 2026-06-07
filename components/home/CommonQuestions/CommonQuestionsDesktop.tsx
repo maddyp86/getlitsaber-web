@@ -27,7 +27,6 @@ function useScrollReveal(threshold = 0.12) {
 }
 
 function FaqCard({ item, index, visible }: { item: FaqItem; index: number; visible: boolean }) {
-  // Cards stagger in reading order: row 0 = 0/100ms, row 1 = 200/300ms, row 2 = 400/500ms
   const row = Math.floor(index / 2);
   const col = index % 2;
   const delay = row * 200 + col * 100;
@@ -40,7 +39,6 @@ function FaqCard({ item, index, visible }: { item: FaqItem; index: number; visib
       animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
       transition={{ duration: 750 / 1000, delay: delay / 1000, ease: EASE }}
     >
-      {/* Number */}
       <span
         className="font-label text-text-accent"
         style={{ fontSize: "14px", letterSpacing: "0.08em" }}
@@ -48,7 +46,6 @@ function FaqCard({ item, index, visible }: { item: FaqItem; index: number; visib
         {item.number}
       </span>
 
-      {/* Question — Orbitron bold 18px */}
       <h3
         className="font-subhead font-bold text-text-primary"
         style={{ fontSize: "18px", lineHeight: "normal" }}
@@ -56,7 +53,6 @@ function FaqCard({ item, index, visible }: { item: FaqItem; index: number; visib
         {item.question}
       </h3>
 
-      {/* Answer — Inter regular 16px */}
       <p
         className="font-body text-text-secondary"
         style={{ fontSize: "16px", lineHeight: "normal", color: "#CCC" }}
@@ -73,7 +69,7 @@ export default function CommonQuestionsDesktop() {
   return (
     <section
       id="common-questions"
-      className="relative w-full overflow-hidden bg-background-primary py-section-y px-content"
+      className="relative w-full overflow-hidden bg-background-primary py-section-y"
       aria-label="Common Questions"
     >
       {/* Desktop background glow orb */}
@@ -91,39 +87,40 @@ export default function CommonQuestionsDesktop() {
         aria-hidden="true"
       />
 
-      {/* Header */}
-      <div ref={ref} className="relative z-10 flex flex-col items-center text-center mb-14">
-        <motion.p
-          className="font-label text-text-accent text-eyebrow uppercase tracking-widest mb-4"
-          initial={{ opacity: 0, y: 28 }}
-          animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-          transition={{ duration: 0.7, ease: EASE }}
-        >
-          {EYEBROW}
-        </motion.p>
+      {/* Single container — caps AND pads on one element, matching the navbar */}
+      <div className="relative z-10 mx-auto w-full max-w-content px-content">
+        {/* Header */}
+        <div ref={ref} className="flex flex-col items-center text-center mb-14">
+          <motion.p
+            className="font-label text-text-accent text-eyebrow uppercase tracking-widest mb-4"
+            initial={{ opacity: 0, y: 28 }}
+            animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
+            {EYEBROW}
+          </motion.p>
 
-        <motion.h2
-          className="font-display font-bold text-text-primary uppercase text-center "
-         style={{ 
-              textShadow: "0 0 50px rgba(0, 229, 255, 0.75)", 
+          <motion.h2
+            className="font-display font-bold text-text-primary uppercase text-center"
+            style={{
+              textShadow: "0 0 50px rgba(0, 229, 255, 0.75)",
               lineHeight: "normal",
               fontSize: "clamp(45px, 5vw, 75px)",
             }}
-          initial={{ opacity: 0, y: 28 }}
-          animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
-        >
-          {HEADLINE}
-        </motion.h2>
-      </div>
+            initial={{ opacity: 0, y: 28 }}
+            animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+          >
+            {HEADLINE}
+          </motion.h2>
+        </div>
 
-      {/* FAQ Grid — 2 columns */}
-      <div
-        className="relative z-10 grid grid-cols-2 gap-5 mx-auto max-w-content"
-      >
-        {FAQ_ITEMS.map((item, i) => (
-          <FaqCard key={item.number} item={item} index={i} visible={visible} />
-        ))}
+        {/* FAQ Grid — 2 columns */}
+        <div className="grid grid-cols-2 gap-5">
+          {FAQ_ITEMS.map((item, i) => (
+            <FaqCard key={item.number} item={item} index={i} visible={visible} />
+          ))}
+        </div>
       </div>
     </section>
   );
