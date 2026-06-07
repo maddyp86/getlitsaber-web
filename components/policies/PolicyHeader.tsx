@@ -18,7 +18,7 @@ export default function PolicyHeader({
       </p>
       <h1
         className="font-subhead font-bold uppercase text-text-primary mb-4"
-        style={{ fontSize: "clamp(36px, 4vw, 60px)", lineHeight: "1.1" }}
+        style={{ fontSize: "clamp(45px, 6vw, 75px)", lineHeight: "1.1" }}
       >
         {title}
       </h1>
