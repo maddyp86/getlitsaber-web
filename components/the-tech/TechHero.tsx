@@ -111,7 +111,7 @@ export default function TechHero() {
             src={HERO_IMAGE_SRC_DESKTOP}
             alt={HERO_IMAGE_ALT}
             fill
-            sizes="(min-width: 1024px) 50vw, 0px"
+            sizes="(min-width: 1024px) 38vw, 100vw"
             className="hidden object-cover object-center lg:block"
             priority
           />
