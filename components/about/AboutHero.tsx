@@ -42,8 +42,9 @@ export default function AboutHero() {
         }}
       />
 
-      {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge */}
-      <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-end lg:gap-x-10 lg:pt-[50px] lg:pb-0">
+      {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge.
+          items-stretch so the image cell fills the full row height. */}
+      <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-stretch lg:gap-x-10 lg:pt-[50px] lg:pb-0">
 
         {/* Left — text column. Outer cell owns the navbar-edge left padding + grid self-alignment. */}
         <div
@@ -122,10 +123,10 @@ export default function AboutHero() {
           </div>
         </div>
 
-        {/* Right — image: flush to viewport right + hero bottom on desktop, inset card on mobile */}
+        {/* Right — image: fills full hero height, flush to viewport right on desktop, inset card on mobile */}
         <motion.div
-          className="relative mx-[20px] aspect-[3/4] overflow-hidden rounded-card
-                     lg:mt-0 lg:mx-0 lg:self-end lg:aspect-auto lg:h-[clamp(560px,50vw,800px)] lg:w-full lg:rounded-none"
+          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden rounded-card
+                     lg:mt-0 lg:mx-0 lg:h-full lg:aspect-auto lg:w-full lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
