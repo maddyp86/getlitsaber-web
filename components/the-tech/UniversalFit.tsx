@@ -63,7 +63,7 @@ export default function UniversalFit() {
            {FIT_BODY.map((block, i) => (
             <motion.p
                  key={i}
-              className="font-body max-w-[650px] text-body-sm lg:text-body text-left text-text-secondary leading-relaxed"
+              className="font-body max-w-[1000px] text-body-sm lg:text-body text-left text-text-secondary leading-relaxed"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
