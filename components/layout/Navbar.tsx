@@ -99,7 +99,7 @@ export default function Navbar() {
             {/* User icon — mobile only */}
             <button
               aria-label="Account"
-              className="flex lg:hidden items-center justify-center w-10 h-10 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="flex lg:hidden items-center justify-center w-11 h-11 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
             </button>
@@ -108,7 +108,7 @@ export default function Navbar() {
             <button
               aria-label={mounted && itemCount > 0 ? `Cart — ${itemCount} item${itemCount === 1 ? "" : "s"}` : "Cart"}
               onClick={openCart}
-              className="relative flex items-center justify-center w-10 h-10 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="relative flex items-center justify-center w-11 h-11 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <CartIcon />
               {mounted && itemCount > 0 && (
@@ -135,7 +135,7 @@ export default function Navbar() {
 
 function UserIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <svg width="25" height="25" viewBox="0 0 20 20" fill="none" aria-hidden="true">
       <circle cx="10" cy="7" r="3.5" stroke="currentColor" strokeWidth="1.5" />
       <path
         d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6"
@@ -149,7 +149,7 @@ function UserIcon() {
 
 function CartIcon() {
   return (
-    <svg width="18" height="20" viewBox="0 0 28 32" fill="none" aria-hidden="true">
+    <svg width="24" height="26" viewBox="0 0 28 32" fill="none" aria-hidden="true">
       <path
         d="M7.78253 10.5774V6.70645C7.78253 5.16649 8.39038 3.68959 9.47232 2.60067C10.5543 1.51175 12.0217 0.900002 13.5518 0.900002C15.0819 0.900002 16.5493 1.51175 17.6312 2.60067C18.7131 3.68959 19.321 5.16649 19.321 6.70645V10.5774M1.05176 10.5774H26.0518L23.1671 28.9645C23.1671 29.4778 22.9645 29.9701 22.6039 30.3331C22.2432 30.6961 21.7541 30.9 21.2441 30.9H5.85945C5.34942 30.9 4.8603 30.6961 4.49966 30.3331C4.13901 29.9701 3.93637 29.4778 3.93637 28.9645L1.05176 10.5774Z"
         stroke="currentColor"
