@@ -33,7 +33,7 @@ export default function PolicySubNav() {
       }}
       aria-label="Policy sections"
     >
-      <div className="mx-auto w-full max-w-content px-content lg:px-[75px]">
+      <div className="mx-auto w-full max-w-content px-content ">
         <ul
           ref={listRef}
           className="no-scrollbar flex h-[70px] items-stretch justify-start gap-[35px] overflow-x-auto lg:justify-start"
