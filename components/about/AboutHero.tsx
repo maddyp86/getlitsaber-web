@@ -1,4 +1,4 @@
-"use client";
+\"use client";
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
@@ -13,6 +13,12 @@ import {
 } from "./about.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+// Tracks the navbar's left content edge at every width:
+//  - below 1440: collapses to the px-content clamp (matches the gutter)
+//  - at/above 1440: (viewport - 1440)/2 + gutter, same math as a centered max-w-content
+const NAVBAR_LEFT =
+  "max(clamp(20px, 4vw, 60px), calc((100vw - 1440px) / 2 + clamp(20px, 4vw, 60px)))";
 
 export default function AboutHero() {
   const prefersReduced = useReducedMotion();
@@ -36,12 +42,16 @@ export default function AboutHero() {
         }}
       />
 
-      {/* Full-bleed: no max-width, no right padding, so the photo reaches the viewport edge */}
-      <div className="mx-auto w-full max-w-content px-[20px] lg:pl-container lg:pr-0">
-        <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-end lg:gap-x-10 lg:pt-[50px] lg:pb-0">
+      {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge */}
+      <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-end lg:gap-x-10 lg:pt-[50px] lg:pb-0">
 
-          {/* Left — text (vertically centered against the taller image column) */}
-          <div className="flex flex-col justify-center gap-6 max-w-[800px] lg:self-center lg:pb-16">
+        {/* Left — text column. Outer cell owns the navbar-edge left padding + grid self-alignment. */}
+        <div
+          className="pr-[20px] lg:pr-0 lg:self-center lg:pb-16"
+          style={{ paddingLeft: NAVBAR_LEFT }}
+        >
+          {/* Inner — capped readable copy width, left-aligned */}
+          <div className="flex flex-col justify-center gap-6 max-w-[800px]">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
               initial={prefersReduced ? false : { opacity: 0, y: 12 }}
@@ -56,75 +66,4 @@ export default function AboutHero() {
               style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
-            >
-              <span className="block text-white"
-                 style={{ textShadow: "0 0 50px rgba(255,255,255,0.25)",}}>
-                {HERO_HEADLINE_LINE1}
-              </span>
-              <span
-                className="block font-normal font-accent text-accent-cyan"
-                style={{ textShadow: "0 0 50px rgba(0,229,255,0.75)",
-                       fontSize: "clamp(45px, 6.5vw, 90px)"}}
-              >
-                {HERO_HEADLINE_ACCENT}
-              </span>
-            </motion.h1>
-            <motion.p
-                className="text-center w-full font-body text-subhead text-text-secondary max-w-[720px]"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-            >
-              {HERO_BODY}
-            </motion.p>
-
-            {/* Learn More — text + chevron, stacked (replaces old box button + chevron) */}
-            <motion.div
-              className="mt-4 self-center lg:self-start"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
-            >
-              <button
-                onClick={scrollToOrigin}
-                className="flex flex-col items-center gap-2 group"
-                aria-label="Scroll to our story"
-              >
-                <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors mb-2">
-                  {HERO_CTA}
-                </span>
-                <Image
-                  src="/images/icons/down-arrow-download-svgrepo-com 1.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  aria-hidden="true"
-                  className="group-hover:translate-y-1 transition-transform"
-                />
-              </button>
-            </motion.div>
-          </div>
-
-          {/* Right — image: flush to viewport right + hero bottom on desktop, stacked on mobile */}
-          <motion.div
-            className="relative mt-10 w-full aspect-[3/4] overflow-hidden rounded-card
-                       lg:mt-0 lg:self-end lg:aspect-auto lg:h-[clamp(560px,50vw,800px)] lg:w-full lg:rounded-none"
-            initial={prefersReduced ? false : { opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-          >
-            <Image
-              src={HERO_IMAGE_SRC}
-              alt={HERO_IMAGE_ALT}
-              fill
-              sizes="(min-width: 1024px) 38vw, 100vw"
-              className="object-cover object-center"
-              priority
-            />
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
+              transition={{ duration: 0.8, delay: 0.1, ease: EAS
