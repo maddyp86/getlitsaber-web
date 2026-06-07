@@ -55,13 +55,13 @@ function BioCard({
   const prefersReduced = useReducedMotion();
   return (
     <motion.div
-      className="flex w-full lg:w-[475px] flex-col"
+      className="flex w-full flex-col"
       initial={prefersReduced ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, delay: index * 0.12, ease: EASE }}
     >
-      {/* Top accent line (475px × 2px, member-colored gradient) */}
+      {/* Top accent line (member-colored gradient) */}
       <div
         className="h-[2px] w-full shrink-0"
         style={{
@@ -72,12 +72,12 @@ function BioCard({
       {/* Card */}
       <div className="flex flex-1 flex-col items-start gap-[18px] rounded-[10px] border border-[rgba(75,47,129,0.50)] bg-[#150C2D] p-5">
         {/* Square headshot, stretched to card content width */}
-        <div className="relative w-full aspect-square h-[clamp(260px,32vw,360px)] self-stretch overflow-hidden bg-surface-card">
+        <div className="relative w-full aspect-square h-[clamp(300px,28vw,440px)] self-stretch overflow-hidden bg-surface-card">
           <Image
             src={member.imageSrc}
             alt={member.imageAlt}
             fill
-            sizes="(min-width: 1024px) 435px, 90vw"
+            sizes="(min-width: 1024px) 50vw, 90vw"
             className="object-cover object-top"
           />
         </div>
@@ -134,8 +134,8 @@ export default function AboutTeam() {
           {TEAM_INTRO}
         </motion.p>
 
-        {/* Outer: flex, centered, 50px gap, equal-height cards */}
-        <div className="flex flex-col items-stretch gap-[50px] lg:flex-row lg:justify-between">
+        {/* Cards — two equal columns filling the row, 50px gap, equal-height */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[50px] items-stretch">
           {TEAM_MEMBERS.map((member, i) => (
             <BioCard
               key={member.name}
