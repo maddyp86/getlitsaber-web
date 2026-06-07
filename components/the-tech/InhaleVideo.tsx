@@ -108,7 +108,7 @@ export default function InhaleVideo() {
 
           {/* Image — right on desktop, below on mobile */}
           <motion.div
-            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[76/101] lg:w-auto lg:flex-1 lg:aspect-auto lg:self-stretch rounded-card overflow-hidden"
+className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[76/101] lg:w-auto lg:flex-1 lg:aspect-auto lg:self-stretch lg:h-[700px] rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
@@ -122,7 +122,7 @@ export default function InhaleVideo() {
             />
           </motion.div> 
           {/* Copy — left on desktop, top on mobile */}
-          <div className="flex mt-10 flex-col gap-2 lg:flex-1">
+<div className="flex mt-10 flex-col justify-center gap-2 lg:flex-1">
             {BREATH_BODY_BLOCKS.map((block, i) => (
               <motion.p
                 key={i}
