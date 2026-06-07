@@ -13,12 +13,17 @@ import {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 function renderAnswer(parts: FaqAnswerPart[]) {
+  const answerFontSize = "clamp(14px, 1.4vw, 16px)";
   return (
     <div className="flex flex-col gap-3">
       {parts.map((part, i) => {
         if (part.type === "paragraph") {
           return (
-            <p key={i} className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
+            <p
+              key={i}
+              className="font-body text-text-secondary leading-relaxed"
+              style={{ fontSize: answerFontSize }}
+            >
               {part.text}
             </p>
           );
@@ -26,7 +31,11 @@ function renderAnswer(parts: FaqAnswerPart[]) {
         return (
           <ol key={i} className="list-decimal pl-5 flex flex-col gap-1.5">
             {part.items.map((item, j) => (
-              <li key={j} className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
+              <li
+                key={j}
+                className="font-body text-text-secondary leading-relaxed"
+                style={{ fontSize: answerFontSize }}
+              >
                 {item}
               </li>
             ))}
@@ -175,8 +184,7 @@ export default function ContactFaq() {
                             }}
                             style={{ overflow: "hidden" }}
                           >
-                            <div className="px-5 pb-5"
-                               style={{ fontSize: "clamp(14px, 1vw, 14px)" }}>
+                            <div className="px-5 pb-5">
                               {renderAnswer(item.answer)}
                             </div>
                           </motion.div>
