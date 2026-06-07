@@ -124,7 +124,7 @@ export default function AboutHero() {
 
         {/* Right — image: flush to viewport right + hero bottom on desktop, inset card on mobile */}
         <motion.div
-          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden rounded-card
+          className="relative mx-[20px] aspect-[3/4] overflow-hidden rounded-card
                      lg:mt-0 lg:mx-0 lg:self-end lg:aspect-auto lg:h-[clamp(560px,50vw,800px)] lg:w-full lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
