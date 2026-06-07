@@ -129,7 +129,7 @@ export default function ContactHero() {
     <section
       className="relative isolate overflow-hidden w-full"
       aria-label="Contact us"
-      style={{ background: "#050510" }}
+      style={{ background: "linear-gradient(0deg, #4B2F81 0%, rgba(0, 0, 0, 0.00) 69.71%)" }}
     >
       {/* Purple radial glow */}
       <div
