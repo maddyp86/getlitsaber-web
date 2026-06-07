@@ -83,7 +83,7 @@ export default function ContactFaq() {
             </span>
           </motion.h2>
           <motion.p
-            className="font-body text-body-sm lg:text-body text-text-secondary mt-4 max-w-[480px]"
+            className="font-body text-center text-body-sm lg:text-body text-text-secondary mt-4 max-w-[480px]"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
