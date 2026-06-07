@@ -58,10 +58,10 @@ export default function DemandSection() {
       />
 
       <div className="mx-auto w-full max-w-content px-content py-[100px]">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-16">
           {/* Image — left on desktop, top on mobile */}
           <motion.div
-            className="relative w-full max-w-[420px] mx-auto lg:mx-0 lg:w-[420px] lg:flex-shrink-0 aspect-[3/4] rounded-card overflow-hidden"
+            className="relative w-full max-w-[480px] mx-auto lg:mx-0 lg:w-[480px] lg:flex-shrink-0 aspect-[3/4] rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -72,7 +72,7 @@ export default function DemandSection() {
                 src={DEMAND_IMAGE_SRC}
                 alt={DEMAND_IMAGE_ALT}
                 fill
-                sizes="(min-width: 1024px) 420px, 100vw"
+                sizes="(min-width: 1024px) 480px, 100vw"
                 className="object-cover object-center"
               />
             ) : (
@@ -86,7 +86,7 @@ export default function DemandSection() {
           </motion.div>
 
           {/* Copy — right on desktop, below on mobile */}
-          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
+          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1 lg:max-w-[640px]">
 
             <motion.h2
               className="font-display font-bold uppercase leading-[1.1]"
