@@ -29,6 +29,7 @@ export default function TechHero() {
     <section
       className="relative overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Built to be seen"
+           style={{ minHeight: "1000px" }}
     >
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Image column widened to 45% to absorb the middle gap. */}
