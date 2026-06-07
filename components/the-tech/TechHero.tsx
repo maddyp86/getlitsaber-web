@@ -35,11 +35,11 @@ export default function TechHero() {
       <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-stretch">
         {/* Text column — owns the left alignment */}
         <div
-          className="flex justify-center lg:justify-start py-16 lg:py-24 pr-[20px] lg:pr-16"
+          className="flex justify-center lg:justify-start lg:self-start py-16 lg:py-24 pr-[20px] lg:pr-16"
           style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner content — capped so the copy column stays readable */}
-          <div className="flex w-full flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 lg:max-w-[600px]">
+          <div className="flex w-full flex-col items-center text-center lg:items-start lg:text-left justify-start gap-6 lg:max-w-[600px]">
             <motion.h1
               className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
               style={{ fontSize: "clamp(45px, 6vw, 100px)" }}
