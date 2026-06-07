@@ -39,8 +39,8 @@ export default function RetailKit() {
         {/* Section headline */}
         <div className="flex flex-col items-center text-center gap-4 mb-16">
           <motion.h2
-            className="font-display font-bold uppercase leading-[1.1] max-w-[820px]"
-            style={{ fontSize: "clamp(38px, 5.5vw, 70px)" }}
+            className="font-display font-bold uppercase  max-w-[820px]"
+            style={{ fontSize: "clamp(45px, 5.5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
