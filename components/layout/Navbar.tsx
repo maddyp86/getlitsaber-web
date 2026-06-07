@@ -47,7 +47,7 @@ export default function Navbar() {
               aria-label={drawerOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={drawerOpen}
               aria-controls="mobile-nav-drawer"
-              className="flex items-center justify-center w-8 h-8 text-text-primary hover:text-accent-cyan transition-colors duration-200"
+              className="flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-cyan transition-colors duration-200"
               onClick={() => setDrawerOpen(!drawerOpen)}
             >
               {drawerOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -79,7 +79,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="font-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
-                style={{ fontSize: "clamp(18px, 1.4vw, 22px)" }}
+                style={{ fontSize: "clamp(16px, 1.4vw, 20px)" }}
               >
                 {link.label}
               </Link>
