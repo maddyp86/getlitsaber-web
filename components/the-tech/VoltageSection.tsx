@@ -36,7 +36,7 @@ export default function VoltageSection() {
       aria-label="Tuned for the oil"
     >
       <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
-        <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-16">
+<div className="flex flex-col lg:flex-row lg:items-stretch lg:justify-between lg:gap-16">
 
           {/* Geometric shape #1 — top-left, behind everything */}
           <div
@@ -108,7 +108,7 @@ export default function VoltageSection() {
 
           {/* Left on desktop, BELOW copy on mobile: voltage table + device image card */}
           <motion.div
-            className="order-2 lg:order-1 mt-10 lg:mt-0 flex flex-col items-center w-full max-w-[506px] rounded-xl border border-[#32205A] bg-[#0A0515]"
+            className="order-2 lg:order-1 mt-10 lg:mt-0 flex flex-col  lg:flex-1 items-center w-full max-w-[600px] rounded-xl border border-[#32205A] bg-[#0A0515]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE }}
