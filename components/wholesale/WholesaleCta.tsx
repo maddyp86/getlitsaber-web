@@ -322,7 +322,7 @@ export default function WholesaleCta() {
 
           {/* Right panel — form card */}
           <motion.div
-            className="mt-12 lg:mt-0 w-full lg:w-[550px] lg:flex-shrink-0 rounded-xl border border-[#32205A] bg-[#0A0515] p-6 lg:p-8"
+            className="mt-12 lg:mt-0 w-full lg:w-[550px] lg:flex-shrink-0 rounded-xl border border-[#32205A] bg-[#0E1023] p-6 lg:p-8"
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
