@@ -1,20 +1,16 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 const TABS = [
   { label: "SHIPPING & RETURNS", href: "/policies/shipping-returns" },
   { label: "WARRANTY", href: "/policies/warranty" },
   { label: "TERMS OF SERVICE", href: "/policies/terms" },
   { label: "PRIVACY POLICY", href: "/policies/privacy" },
 ] as const;
-
 export default function PolicySubNav() {
   const pathname = usePathname();
   const listRef = useRef<HTMLUListElement>(null);
-
   useEffect(() => {
     const list = listRef.current;
     if (!list) return;
@@ -27,16 +23,20 @@ export default function PolicySubNav() {
       inline: "center",
     });
   }, [pathname]);
-
   return (
     <nav
-      className="sticky top-navbar z-sticky border-b border-surface-tint-white bg-[#150C2D]"
+      className="sticky top-navbar z-sticky"
+      style={{
+        background: "#150C2D",
+        borderTop: "1px solid rgba(0,229,255,0.20)",
+        borderBottom: "1px solid rgba(0,229,255,0.20)",
+      }}
       aria-label="Policy sections"
     >
-      <div className="mx-auto w-full max-w-content px-content">
+      <div className="mx-auto w-full max-w-content px-content lg:px-[75px]">
         <ul
           ref={listRef}
-          className="no-scrollbar flex overflow-x-auto"
+          className="no-scrollbar flex h-[70px] items-stretch justify-start gap-[35px] overflow-x-auto lg:justify-center"
           style={{ scrollSnapType: "x mandatory" }}
           role="list"
         >
@@ -45,17 +45,19 @@ export default function PolicySubNav() {
             return (
               <li
                 key={tab.href}
+                className="flex-shrink-0"
                 style={{ scrollSnapAlign: "center" }}
                 role="listitem"
               >
                 <Link
                   href={tab.href}
                   className={[
-                    "block whitespace-nowrap border-b-2 px-4 py-4 font-label text-eyebrow uppercase tracking-widest transition-colors duration-200 lg:px-6",
+                    "flex h-full w-[175px] items-center justify-center whitespace-nowrap border-b-2 px-[10px] font-label text-eyebrow uppercase tracking-widest transition-colors duration-200",
                     isActive
                       ? "border-accent-cyan text-accent-cyan"
                       : "border-transparent text-text-muted hover:text-text-secondary",
                   ].join(" ")}
+                  style={isActive ? { background: "#172543" } : undefined}
                   aria-current={isActive ? "page" : undefined}
                 >
                   {tab.label}
