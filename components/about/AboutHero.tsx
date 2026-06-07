@@ -14,10 +14,10 @@ import {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 // Tracks the navbar's left content edge at every width:
-//  - below 1440: collapses to the px-content clamp (matches the gutter)
-//  - at/above 1440: (viewport - 1440)/2 + gutter, same math as a centered max-w-content
+//  - below 1600: collapses to the px-content clamp (matches the gutter)
+//  - at/above 1600: (viewport - 1600)/2 + gutter, same math as a centered max-w-content
 const NAVBAR_LEFT =
-  "max(clamp(20px, 4vw, 60px), calc((100vw - 1440px) / 2 + clamp(20px, 4vw, 60px)))";
+  "max(clamp(16px, 2vw, 32px), calc((100vw - 1600px) / 2 + clamp(16px, 2vw, 32px)))";
 
 export default function AboutHero() {
   const prefersReduced = useReducedMotion();
@@ -44,7 +44,7 @@ export default function AboutHero() {
       {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge.
           No top padding here: the image starts at the section top; the text cell
           carries its own top padding instead. */}
-      <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:gap-x-10 lg:py-0">
+   <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
 
         {/* Left — text column. Outer cell owns the navbar-edge left padding, the 50px
             top offset, and grid self-alignment. */}
