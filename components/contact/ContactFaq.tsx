@@ -59,6 +59,7 @@ export default function ContactFaq() {
 
   return (
     <section
+      id="faq"
       className="relative w-full bg-background-primary"
       aria-label="Common questions"
     >

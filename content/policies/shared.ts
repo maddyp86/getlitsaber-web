@@ -27,12 +27,11 @@ export const RELATED_RESOURCES = [
     icon: "mail" as const,
   },
   {
-    // NOTE: No standalone /faqs route exists. FAQ section lives on the contact page.
-    // Update href when a dedicated FAQ route is created.
+    // FAQ section lives at id="faq" on the Contact page (/contact#faq)
     label: "View FAQs",
     description:
       "Answers to common questions about ordering, returns, and the device.",
-    href: "/contact",
+    href: "/contact#faq",
     icon: "faq" as const,
   },
   {
