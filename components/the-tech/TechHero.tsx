@@ -36,7 +36,7 @@ export default function TechHero() {
         {/* Left — text column. Matches the About hero: navbar-edge left padding,
             vertically centered against the image, 50px top offset. */}
         <div
-          className="pr-[20px] lg:pr-0 lg:self-center lg:pt-[50px] lg:pb-16 py-16"
+          className="pr-[20px] lg:pr-0 lg:self-center lg:pb-16 py-16"
           style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner content — capped readable copy width, left-aligned (matches About) */}
