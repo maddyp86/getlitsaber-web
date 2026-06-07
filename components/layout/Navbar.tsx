@@ -91,7 +91,7 @@ export default function Navbar() {
             {/* User icon — desktop only */}
             <button
               aria-label="Account"
-              className="hidden lg:flex items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="hidden lg:flex items-center justify-center w-10 h-10 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
             </button>
