@@ -55,7 +55,7 @@ export default function WholesaleHero() {
       />
 
       {/* Content wrapper — fills the section height and vertically centers the block */}
-      <div className="mx-auto w-full max-w-content px-content min-h-[1000px] flex items-center py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content min-h-[1000px] flex items-center py-section-y-mobile lg:py-section-y">
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto w-full">
           <motion.h1
             className="font-display font-bold uppercase text-center"

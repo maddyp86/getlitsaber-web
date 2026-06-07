@@ -34,7 +34,7 @@ export default function PowerSection() {
       className="relative isolate overflow-hidden w-full bg-[#100B25]"
       aria-label="Power that keeps up"
     >
-      <div className="mx-auto w-full max-w-content px-content py-[150px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         
         {/* 2-col: image left, copy right */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">

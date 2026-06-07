@@ -110,17 +110,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
 
       {/* Anchor zone — stacked flex column, black background, fixed dimensions per spec */}
       <div
-        style={{
-          display: "flex",
-          width: "auto",
-          padding: "50px 20px",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "39px",
-          flexShrink: 0,
-          background: "#000",
-        }}
+        className="flex w-auto py-xl px-container-mobile flex-col justify-center items-center gap-[39px] flex-shrink-0 bg-black"
       >
         <motion.p
           className="

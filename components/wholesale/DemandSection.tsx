@@ -57,7 +57,7 @@ export default function DemandSection() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-16">
           {/* Image — left on desktop, top on mobile */}
           <motion.div

@@ -13,12 +13,6 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-// Tracks the navbar's left content edge at every width:
-//  - below 1600: collapses to the px-content clamp (matches the gutter)
-//  - at/above 1600: (viewport - 1600)/2 + gutter, same math as a centered max-w-content
-const NAVBAR_LEFT =
-  "max(clamp(16px, 2vw, 32px), calc((100vw - 1600px) / 2 + clamp(16px, 2vw, 32px)))";
-
 export default function TechHero() {
   const prefersReduced = useReducedMotion();
   const scrollToInhale = () => {
@@ -34,11 +28,9 @@ export default function TechHero() {
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Image column widened to 45% to absorb the middle gap. */}
       <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
-        {/* Left — text column. Matches the About hero: navbar-edge left padding,
-            vertically centered against the image, 50px top offset. */}
+        {/* Left — text column. Uses px-content to match navbar gutter at all breakpoints. */}
         <div
-          className="pr-[20px] lg:pr-0 lg:self-center lg:pb-16 py-16"
-          style={{ paddingLeft: NAVBAR_LEFT }}
+          className="px-content lg:pr-0 lg:self-center lg:pb-16 py-16"
         >
           {/* Inner content — capped readable copy width, left-aligned (matches About) */}
           <div className="flex flex-col justify-center gap-6 max-w-[700px]">

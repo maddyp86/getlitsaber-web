@@ -256,7 +256,7 @@ export default function WholesaleCta() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
           {/* Left panel */}
           <motion.div

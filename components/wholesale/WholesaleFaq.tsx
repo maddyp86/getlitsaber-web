@@ -21,7 +21,7 @@ export default function WholesaleFaq() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-[#120C27;]"
+      className="relative isolate overflow-hidden w-full bg-[#120C27]"
       aria-label="Frequently asked questions"
     >
       {/* Ambient glow */}
@@ -34,7 +34,7 @@ export default function WholesaleFaq() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[150px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Header */}
         <div className="flex item-center flex-col gap-3 mb-14">
           <motion.p

@@ -128,8 +128,8 @@ const config: Config = {
         content: tokens.component["container-max-width"].value,
       },
  padding: {
-        // Fluid gutter for content wrappers — keep in sync with max-w-content sections
-        content: "clamp(24px, 3vw, 48px)",
+        // Fluid gutter: 20px mobile floor → 70px at ~1400px desktop
+        content: "clamp(20px, 5vw, 70px)",
       },
       width: {
         "cart-drawer": tokens.component["cart-drawer-width-desktop"].value,

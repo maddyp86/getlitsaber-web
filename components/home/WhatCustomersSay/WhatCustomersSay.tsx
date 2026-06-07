@@ -13,9 +13,8 @@ const VIDEOS: TikTokVideo[] = [
 export default function WhatCustomersSay() {
   return (
     <section
-      className="relative overflow-hidden"
+      className="relative overflow-hidden py-section-y-mobile lg:py-section-y"
       style={{
-        padding: "96px 0 110px",
         background:
           "radial-gradient(120% 90% at 50% -10%, rgba(0,229,255,0.10), transparent 55%), #04070d",
       }}

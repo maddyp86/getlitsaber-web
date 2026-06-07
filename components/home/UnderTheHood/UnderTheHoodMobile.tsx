@@ -69,7 +69,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
         aria-hidden="true"
       />
 
-      <div className="relative" style={{ zIndex: 1, padding: "80px 20px 0" }}>
+      <div className="relative pt-section-y-mobile px-container-mobile" style={{ zIndex: 1 }}>
         {/* Header group */}
         <div ref={headRef} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center", marginBottom: "40px" }}>
           <motion.p
@@ -164,7 +164,7 @@ export default function UnderTheHoodMobile({ className }: UnderTheHoodMobileProp
       </div>
 
       {/* Stats banner + spec tiles */}
-      <div style={{ padding: "0 20px 80px" }}>
+      <div className="pb-section-y-mobile px-container-mobile">
         {/* Stats callout banner */}
         <motion.div
           ref={statsRef}

@@ -14,7 +14,7 @@ export default function ContactMethods() {
 
   return (
     <section
-      className="relative w-full bg-background-[#120C27]"
+      className="relative w-full bg-background-elevated"
       aria-label="Quick links"
     >
       {/* Top divider line */}
@@ -24,7 +24,7 @@ export default function ContactMethods() {
         aria-hidden="true"
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[60px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-xl">
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}

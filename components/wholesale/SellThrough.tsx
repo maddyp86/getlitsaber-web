@@ -40,7 +40,7 @@ export default function SellThrough() {
   className="relative isolate overflow-hidden w-full bg-[#150C2D]"
   aria-label="Built to sell through"
 >
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Centered headline */}
         <div className="flex flex-col items-center text-center gap-3 mb-16">
           <motion.h2

@@ -13,12 +13,6 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-// Tracks the navbar's left content edge at every width:
-//  - below 1600: collapses to the px-content clamp (matches the gutter)
-//  - at/above 1600: (viewport - 1600)/2 + gutter, same math as a centered max-w-content
-const NAVBAR_LEFT =
-  "max(clamp(16px, 2vw, 32px), calc((100vw - 1600px) / 2 + clamp(16px, 2vw, 32px)))";
-
 export default function AboutHero() {
   const prefersReduced = useReducedMotion();
 
@@ -46,11 +40,9 @@ export default function AboutHero() {
           carries its own top padding instead. */}
    <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
 
-        {/* Left — text column. Outer cell owns the navbar-edge left padding, the 50px
-            top offset, and grid self-alignment. */}
+        {/* Left — text column. Uses px-content to match navbar gutter at all breakpoints. */}
         <div
-          className="pr-[20px] lg:pr-0 lg:self-center lg:pt-[50px] lg:pb-16"
-          style={{ paddingLeft: NAVBAR_LEFT }}
+          className="px-content lg:pr-0 lg:self-center lg:pt-[50px] lg:pb-16"
         >
           {/* Inner — capped readable copy width, left-aligned */}
           <div className="flex flex-col justify-center gap-6 max-w-[800px]">

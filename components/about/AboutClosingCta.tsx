@@ -22,7 +22,7 @@ export default function AboutClosingCta() {
       className="relative w-full bg-background-primary"
       aria-label="Get yours"
     >
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         <div className="flex flex-col items-center text-center gap-6">
 
           <motion.h2

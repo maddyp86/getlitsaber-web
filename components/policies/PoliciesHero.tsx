@@ -15,7 +15,7 @@ export default function PoliciesHero() {
     >
       {/* Cyan ambient glow at top */}
       
-      <div className="mx-auto w-full max-w-content px-content py-[100px] lg:py-[120px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         <div className="flex flex-col items-center text-center gap-6 max-w-[900px] mx-auto">
           {/* Eyebrow */}
           <motion.p

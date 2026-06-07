@@ -63,7 +63,7 @@ export default function MarginsSection() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content pt-[100px] pb-[200px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Top row: copy left + stats card right */}
         <div className="flex flex-col pb-10 lg:flex-row lg:items-stretch lg:gap-16">
           {/* Copy */}

@@ -35,7 +35,7 @@ export default function VoltageSection() {
       className="relative isolate overflow-hidden w-full bg-[#0A0619]"
       aria-label="Tuned for the oil"
     >
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-16">
 
           {/* Geometric shape #1 — top-left, behind everything */}
