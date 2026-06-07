@@ -32,7 +32,7 @@ export default function ContactMethods() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6, ease: EASE }}
         >
-          <p className="font-subhead text-eyebrow uppercase text-white text-[20px]">
+          <p className="font-subhead font-bold text-eyebrow uppercase text-white text-[20px]">
             QUICK LINKS
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
