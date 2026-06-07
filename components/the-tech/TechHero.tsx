@@ -31,18 +31,18 @@ export default function TechHero() {
       aria-label="Built to be seen"
     >
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
-          Same 38% image column as the About hero. */}
-      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-stretch">
+          Image column widened to 45% to absorb the middle gap. */}
+      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch">
         {/* Left — text column. Matches the About hero: navbar-edge left padding,
             vertically centered against the image, 50px top offset. */}
         <div
           className="pr-[20px] lg:pr-0 lg:self-center lg:pt-[50px] lg:pb-16 py-16"
           style={{ paddingLeft: NAVBAR_LEFT }}
         >
-          {/* Inner content — capped readable copy width (matches About) */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 max-w-[800px]">
+          {/* Inner content — capped readable copy width, left-aligned (matches About) */}
+          <div className="flex flex-col justify-center gap-6 max-w-[800px]">
             <motion.h1
-              className="block font-display font-bold text-center lg:text-left text-text-primary leading-none"
+              className="block font-display font-bold text-text-primary leading-none"
               style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export default function TechHero() {
             >
               {HERO_HEADLINE_LINE1}
               <span
-                className="block font-accent font-normal text-center lg:text-left text-accent-cyan leading-none"
+                className="block font-accent font-normal text-accent-cyan leading-none"
                 style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}
               >
                 {HERO_HEADLINE_ACCENT}
@@ -113,7 +113,7 @@ export default function TechHero() {
             src={HERO_IMAGE_SRC_DESKTOP}
             alt={HERO_IMAGE_ALT}
             fill
-            sizes="(min-width: 1024px) 38vw, 100vw"
+            sizes="(min-width: 1024px) 45vw, 100vw"
             className="hidden object-cover object-center lg:block"
             priority
           />
