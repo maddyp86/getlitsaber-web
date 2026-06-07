@@ -40,29 +40,31 @@ export default function BeSeenDesktop({ className }: BeSeenDesktopProps) {
               style={{ background: "linear-gradient(to right, #000 0%, transparent 55%)" }}
               aria-hidden="true"
             />
-            <div
-              className="absolute flex flex-col justify-between"
-              style={{ left: "90px", top: "50%", transform: "translateY(-50%)", width: "580px", height: "550px" }}
-            >
-              <div className="flex flex-col gap-[20px]">
-                <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
-                  {stage.eyebrow}
-                </p>
-                <h2 className="font-display font-bold text-h1 text-text-primary leading-none">
-                  {stage.headline}
-                </h2>
-                <p className="font-body text-body text-text-secondary" style={{ fontSize: "22px" }}>
-                  {stage.body}
-                </p>
-              </div>
-              <div className="flex gap-[24px]">
-                {STAGES.map((_, j) => (
-                  <div
-                    key={j}
-                    style={{ width: "40px", height: "5px", borderRadius: "2px" }}
-                    className={i === j ? "bg-accent-cyan" : "bg-text-muted"}
-                  />
-                ))}
+            {/* Text column — aligned to the site container edge */}
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2">
+              <div className="mx-auto w-full max-w-content px-content">
+                <div className="flex flex-col justify-between max-w-[580px] h-[550px]">
+                  <div className="flex flex-col gap-[20px]">
+                    <p className="font-label text-label text-accent-cyan tracking-widest uppercase">
+                      {stage.eyebrow}
+                    </p>
+                    <h2 className="font-display font-bold text-h1 text-text-primary leading-none">
+                      {stage.headline}
+                    </h2>
+                    <p className="font-body text-body text-text-secondary" style={{ fontSize: "22px" }}>
+                      {stage.body}
+                    </p>
+                  </div>
+                  <div className="flex gap-[24px]">
+                    {STAGES.map((_, j) => (
+                      <div
+                        key={j}
+                        style={{ width: "40px", height: "5px", borderRadius: "2px" }}
+                        className={i === j ? "bg-accent-cyan" : "bg-text-muted"}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -113,66 +115,67 @@ export default function BeSeenDesktop({ className }: BeSeenDesktopProps) {
           aria-hidden="true"
         />
 
-        {/* Text column */}
-        <div
-          className="absolute z-20 flex flex-col justify-between"
-          style={{ left: "90px", top: "50%", transform: "translateY(-50%)", width: "580px", height: "550px" }}
-        >
-          {/* Text group — crossfades per stage */}
-          <div className="flex flex-col gap-[20px]">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={`eyebrow-${activeStage}`}
-                className="font-label text-label text-accent-cyan tracking-widest uppercase"
-                variants={FADE}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {STAGES[activeStage].eyebrow}
-              </motion.p>
-            </AnimatePresence>
+        {/* Text column — aligned to the site container edge */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-20">
+          <div className="mx-auto w-full max-w-content px-content">
+            <div className="flex flex-col justify-between max-w-[580px] h-[550px]">
+              {/* Text group — crossfades per stage */}
+              <div className="flex flex-col gap-[20px]">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`eyebrow-${activeStage}`}
+                    className="font-label text-label text-accent-cyan tracking-widest uppercase"
+                    variants={FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {STAGES[activeStage].eyebrow}
+                  </motion.p>
+                </AnimatePresence>
 
-            <AnimatePresence mode="wait">
-              <motion.h2
-                key={`headline-${activeStage}`}
-                className="font-display font-bold text-h1 text-text-primary leading-none"
-                variants={FADE}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {STAGES[activeStage].headline}
-              </motion.h2>
-            </AnimatePresence>
+                <AnimatePresence mode="wait">
+                  <motion.h2
+                    key={`headline-${activeStage}`}
+                    className="font-display font-bold text-h1 text-text-primary leading-none"
+                    variants={FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {STAGES[activeStage].headline}
+                  </motion.h2>
+                </AnimatePresence>
 
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={`body-${activeStage}`}
-                className="font-body text-text-secondary"
-                style={{ fontSize: "22px" }}
-                variants={FADE}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {STAGES[activeStage].body}
-              </motion.p>
-            </AnimatePresence>
-          </div>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`body-${activeStage}`}
+                    className="font-body text-text-secondary"
+                    style={{ fontSize: "22px" }}
+                    variants={FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {STAGES[activeStage].body}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
 
-          {/* Progress bars */}
-          <div className="flex gap-[24px]" role="group" aria-label="Stage navigation">
-            {STAGES.map((stage, i) => (
-              <button
-                key={i}
-                onClick={() => scrollToStage(i)}
-                aria-label={`Go to stage: ${stage.eyebrow}`}
-                aria-current={activeStage === i ? "true" : undefined}
-                style={{ width: "40px", height: "5px", borderRadius: "2px", padding: 0, border: "none", cursor: "pointer" }}
-                className={`transition-colors duration-300 ${activeStage === i ? "bg-accent-cyan" : "bg-text-muted"}`}
-              />
-            ))}
+              {/* Progress bars */}
+              <div className="flex gap-[24px]" role="group" aria-label="Stage navigation">
+                {STAGES.map((stage, i) => (
+                  <button
+                    key={i}
+                    onClick={() => scrollToStage(i)}
+                    aria-label={`Go to stage: ${stage.eyebrow}`}
+                    aria-current={activeStage === i ? "true" : undefined}
+                    style={{ width: "40px", height: "5px", borderRadius: "2px", padding: 0, border: "none", cursor: "pointer" }}
+                    className={`transition-colors duration-300 ${activeStage === i ? "bg-accent-cyan" : "bg-text-muted"}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
