@@ -63,11 +63,11 @@ export default function ContactFaq() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mb-14">
           <motion.h2
-            className="font-display font-bold leading-[1.1] flex-shrink-0"
+            className="font-display uppercase font-bold leading-[1.1] flex-shrink-0"
             style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
