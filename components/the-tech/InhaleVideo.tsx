@@ -40,7 +40,7 @@ export default function InhaleVideo() {
         <div className="flex flex-col items-center text-center gap-5 mb-12">
           <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
-            style={{ fontSize: "clamp(45px, 6.5vw, 75px)" }}
+            style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
