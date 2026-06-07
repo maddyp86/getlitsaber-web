@@ -30,9 +30,10 @@ export default function TechHero() {
       className="relative overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Built to be seen"
     >
-      {/* Full-width grid — no max-w cap, so the image can reach the right edge */}
-      <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch">
-        {/* Text column — full 50%, owns the left alignment */}
+      {/* Full-width grid — no max-w cap, so the image can reach the right edge.
+          Same 38% image column as the About hero. */}
+      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-stretch">
+        {/* Text column — owns the left alignment */}
         <div
           className="flex justify-center lg:justify-start py-16 lg:py-24 pr-[20px] lg:pr-16"
           style={{ paddingLeft: NAVBAR_LEFT }}
@@ -90,9 +91,9 @@ export default function TechHero() {
           </div>
         </div>
 
-        {/* Hero image — inset rounded card on mobile, full-bleed right on desktop */}
+        {/* Hero image — inset rounded card on mobile, fixed 810px flush-right on desktop */}
         <motion.div
-          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden lg:mt-0 lg:mx-0 lg:h-[810px] lg:aspect-auto lg:rounded-none"
+          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden lg:mt-0 lg:mx-0 lg:self-start lg:h-[810px] lg:aspect-auto lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
