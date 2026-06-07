@@ -39,10 +39,10 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
   const displayPrice = `$${getTierPrice(selectedQty).toFixed(2)}`;
 
   return (
-    <div className="w-full px-5 lg:px-0 flex flex-col lg:flex-row items-center gap-6 lg:gap-[50px]">
+    <div className="w-full px-5 lg:px-0 flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
       {/* Left: image gallery */}
-      <div
-  className="flex flex-col items-center w-full lg:flex-1 lg:max-w-[700px] lg:sticky lg:self-start lg:top-[96px]"
+<div
+  className="flex flex-col items-start w-full lg:w-[700px] lg:flex-shrink-0 lg:sticky lg:self-start lg:top-[100px]"
   style={{ gap: "20px" }}
 >
         <GalleryBlock activeThumb={activeThumb} onThumbClick={setActiveThumb} />
@@ -50,7 +50,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
 
       {/* Right: product info */}
       <div
-        className="w-full lg:w-[700px] lg:flex-shrink-0 min-w-0 flex flex-col items-stretch gap-6 lg:gap-[33px]"
+        className="w-full lg:w-[700px] lg:flex-shrink-0 min-w-0 flex flex-col items-stretch gap-6 lg:gap-[40px]"
       >
           {/* Title + subtitle + price */}
           <div className="flex flex-col gap-2">
