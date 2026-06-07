@@ -51,7 +51,7 @@ export default function TechHero() {
               {HERO_HEADLINE_LINE1}
               <span
                 className="block font-accent font-normal text-accent-cyan leading-none"
-                style={{ fontSize: "clamp(55px, 7vw, 100px)" }}
+                style={{ fontSize: "clamp(50px, 7vw, 90px)" }}
               >
                 {HERO_HEADLINE_ACCENT}
               </span>
