@@ -40,7 +40,7 @@ export default function TechHero() {
           style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner content — capped readable copy width */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 max-w-[800px]">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 max-w-[750px]">
             <motion.h1
               className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
               style={{ fontSize: "clamp(45px, 6.5vw, 100px)" }}
