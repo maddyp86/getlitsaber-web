@@ -213,7 +213,7 @@ export default function ContactForm() {
 
         {/* Form card */}
         <motion.div
-          className="mx-auto w-full max-w-[700px] rounded-xl border border-[#32205A] bg-[#0A0515] p-6 lg:p-10"
+          className="mx-auto w-full max-w-[1250px] rounded-xl border border-[#32205A] bg-[#0A0515] p-6 lg:p-10"
           initial={prefersReduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
