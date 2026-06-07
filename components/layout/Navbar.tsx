@@ -99,7 +99,7 @@ export default function Navbar() {
             {/* User icon — mobile only */}
             <button
               aria-label="Account"
-              className="flex lg:hidden items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="flex lg:hidden items-center justify-center w-10 h-10 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
             </button>
@@ -108,7 +108,7 @@ export default function Navbar() {
             <button
               aria-label={mounted && itemCount > 0 ? `Cart — ${itemCount} item${itemCount === 1 ? "" : "s"}` : "Cart"}
               onClick={openCart}
-              className="relative flex items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="relative flex items-center justify-center w-10 h-10 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <CartIcon />
               {mounted && itemCount > 0 && (
