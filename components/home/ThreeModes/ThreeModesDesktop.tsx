@@ -432,15 +432,16 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     </motion.div>
   </div>
 
-  {/* Right — mode image */}
+ {/* Right — mode image */}
   <motion.div
     initial={{ opacity: 0, y: 24 }}
     animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
     transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
     style={{
       flex: "1 0 0",
-      alignSelf: "stretch",
+      alignSelf: "flex-start",
       display: "flex",
+      height: "650px",
     }}
   >
   <div
