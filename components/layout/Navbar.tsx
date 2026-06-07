@@ -87,7 +87,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right icons — user (desktop only) + cart + hamburger spacer balance */}
-          <div className="flex items-center justify-end gap-1 lg:w-40">
+          <div className="flex items-center justify-end gap-1 lg:w-20">
             {/* User icon — desktop only */}
             <button
               aria-label="Account"
