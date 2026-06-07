@@ -113,53 +113,52 @@ export default function BeSeenDesktop({ className }: BeSeenDesktopProps) {
           aria-hidden="true"
         />
 
-        {/* Text column */}
-        <div
-          className="absolute z-20 flex flex-col justify-between"
-          style={{ left: "90px", top: "50%", transform: "translateY(-50%)", width: "580px", height: "550px" }}
-        >
-          {/* Text group — crossfades per stage */}
-          <div className="flex flex-col gap-[20px]">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={`eyebrow-${activeStage}`}
-                className="font-label text-label text-accent-cyan tracking-widest uppercase"
-                variants={FADE}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {STAGES[activeStage].eyebrow}
-              </motion.p>
-            </AnimatePresence>
+        {/* Text column — aligned to the site container edge */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-20">
+          <div className="mx-auto w-full max-w-content px-content">
+            <div className="flex flex-col justify-between max-w-[580px] h-[550px]">
+              {/* Text group — crossfades per stage */}
+              <div className="flex flex-col gap-[20px]">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`eyebrow-${activeStage}`}
+                    className="font-label text-label text-accent-cyan tracking-widest uppercase"
+                    variants={FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {STAGES[activeStage].eyebrow}
+                  </motion.p>
+                </AnimatePresence>
 
-            <AnimatePresence mode="wait">
-              <motion.h2
-                key={`headline-${activeStage}`}
-                className="font-display font-bold text-h1 text-text-primary leading-none"
-                variants={FADE}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {STAGES[activeStage].headline}
-              </motion.h2>
-            </AnimatePresence>
+                <AnimatePresence mode="wait">
+                  <motion.h2
+                    key={`headline-${activeStage}`}
+                    className="font-display font-bold text-h1 text-text-primary leading-none"
+                    variants={FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {STAGES[activeStage].headline}
+                  </motion.h2>
+                </AnimatePresence>
 
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={`body-${activeStage}`}
-                className="font-body text-text-secondary"
-                style={{ fontSize: "22px" }}
-                variants={FADE}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                {STAGES[activeStage].body}
-              </motion.p>
-            </AnimatePresence>
-          </div>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`body-${activeStage}`}
+                    className="font-body text-text-secondary"
+                    style={{ fontSize: "22px" }}
+                    variants={FADE}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {STAGES[activeStage].body}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
 
           {/* Progress bars */}
           <div className="flex gap-[24px]" role="group" aria-label="Stage navigation">
