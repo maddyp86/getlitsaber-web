@@ -66,7 +66,7 @@ export default function Navbar() {
                 alt="Litsaber"
                 width={140}
                 height={40}
-                style={{ width: "clamp(130px, 12vw, 200px)", height: "auto" }}
+                style={{ width: "clamp(130px, 14vw, 200px)", height: "auto" }}
                 priority
               />
             </Link>
