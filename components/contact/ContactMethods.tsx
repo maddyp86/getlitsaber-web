@@ -40,7 +40,7 @@ export default function ContactMethods() {
               <span key={link.href} className="flex items-center gap-6">
                 <Link
                   href={link.href}
-                  className="font-label text-eyebrow uppercase text-text-secondary hover:text-accent-cyan transition-colors text-s"
+                  className="font-label text-eyebrow uppercase text-text-secondary hover:text-accent-cyan transition-colors text-sm"
                 >
                   {link.label}
                 </Link>
