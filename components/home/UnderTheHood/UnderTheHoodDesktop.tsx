@@ -173,7 +173,7 @@ export default function UnderTheHoodDesktop({ className }: UnderTheHoodDesktopPr
         aria-hidden="true"
       />
 
-      <div className="relative" style={{ zIndex: 1, padding: "120px 100px 0" }}>
+      <div className="relative mx-auto w-full max-w-content px-content" style={{ zIndex: 1, paddingTop: "120px" }}>
         {/* Header group */}
         <div ref={headRef} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", marginBottom: "60px" }}>
           <motion.p
@@ -248,8 +248,8 @@ export default function UnderTheHoodDesktop({ className }: UnderTheHoodDesktopPr
         </div>
       </div>
 
-      {/* Stats banner + spec tiles — full-width on dark bg */}
-      <div style={{ padding: "0 100px 120px" }}>
+      {/* Stats banner + spec tiles */}
+      <div className="relative mx-auto w-full max-w-content px-content" style={{ paddingBottom: "120px" }}>
         {/* Stats callout banner */}
         <motion.div
           ref={statsRef}
