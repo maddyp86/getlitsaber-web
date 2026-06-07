@@ -58,13 +58,13 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           alt="Litsaber device floating against a starfield"
           fill
           priority
-           sizes="100vw" 
+          sizes="1440px"
           className="object-cover object-center"
         />
 
         {/* Tagline + spec pills anchored within the starfield zone */}
         <div
-          className="absolute max-w-[1100px]inset-0 z-10 flex flex-col justify-between items-center"
+          className="absolute w-max-[1250px] inset-0 z-10 flex flex-col justify-between items-center"
           style={{ padding: "100px" }}
         >
           <motion.p
