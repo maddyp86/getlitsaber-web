@@ -139,7 +139,7 @@ export default function ContactFaq() {
                       >
                         <span
                           className="font-label font-bold text-white leading-snug group-hover:text-accent-cyan transition-colors duration-200"
-                          style={{ fontSize: "clamp(14px, 1.6vw, 16px)" }}
+                          style={{ fontSize: "clamp(16px, 1.6vw, 18px)" }}
                         >
                           {item.question}
                         </span>
@@ -175,7 +175,8 @@ export default function ContactFaq() {
                             }}
                             style={{ overflow: "hidden" }}
                           >
-                            <div className="px-5 pb-5">
+                            <div className="px-5 pb-5"
+                               style={{ fontSize: "clamp(14px, 1.4vw, 16px)" }}>
                               {renderAnswer(item.answer)}
                             </div>
                           </motion.div>
