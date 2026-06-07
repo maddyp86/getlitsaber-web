@@ -1,4 +1,4 @@
-\"use client";
+"use client";
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
@@ -66,4 +66,80 @@ export default function AboutHero() {
               style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: EAS
+              transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+            >
+              <span
+                className="block text-white"
+                style={{ textShadow: "0 0 50px rgba(255,255,255,0.25)" }}
+              >
+                {HERO_HEADLINE_LINE1}
+              </span>
+              <span
+                className="block font-normal font-accent text-accent-cyan"
+                style={{
+                  textShadow: "0 0 50px rgba(0,229,255,0.75)",
+                  fontSize: "clamp(45px, 6.5vw, 90px)",
+                }}
+              >
+                {HERO_HEADLINE_ACCENT}
+              </span>
+            </motion.h1>
+
+            <motion.p
+              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[720px]"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+            >
+              {HERO_BODY}
+            </motion.p>
+
+            {/* Learn More — text + chevron, stacked */}
+            <motion.div
+              className="mt-4 self-center lg:self-start"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35, ease: EASE }}
+            >
+              <button
+                onClick={scrollToOrigin}
+                className="flex flex-col items-center gap-2 group"
+                aria-label="Scroll to our story"
+              >
+                <span className="font-label font-bold text-eyebrow tracking-[0.2em] uppercase text-accent-cyan group-hover:text-white transition-colors mb-2">
+                  {HERO_CTA}
+                </span>
+                <Image
+                  src="/images/icons/down-arrow-download-svgrepo-com 1.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  aria-hidden="true"
+                  className="group-hover:translate-y-1 transition-transform"
+                />
+              </button>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Right — image: flush to viewport right + hero bottom on desktop, inset card on mobile */}
+        <motion.div
+          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden rounded-card
+                     lg:mt-0 lg:mx-0 lg:self-end lg:aspect-auto lg:h-[clamp(560px,50vw,800px)] lg:w-full lg:rounded-none"
+          initial={prefersReduced ? false : { opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
+        >
+          <Image
+            src={HERO_IMAGE_SRC}
+            alt={HERO_IMAGE_ALT}
+            fill
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            className="object-cover object-center"
+            priority
+          />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
