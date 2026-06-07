@@ -79,7 +79,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="font-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
-                style={{ fontSize: "clamp(16px, 1.1vw, 20px)" }}
+                style={{ fontSize: "clamp(16px, 1.2vw, 20px)" }}
               >
                 {link.label}
               </Link>
