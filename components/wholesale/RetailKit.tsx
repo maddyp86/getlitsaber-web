@@ -35,7 +35,7 @@ export default function RetailKit() {
         />
       </div>
 
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-[100px]">
         {/* Section headline */}
         <div className="flex flex-col items-center text-center gap-4 mb-16">
           <motion.h2

@@ -33,7 +33,7 @@ export default function UniversalFit() {
       className="relative w-full bg-black"
       aria-label="Universal fit"
     >
-       <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] pt-[100px]">
+       <div className="mx-auto w-full max-w-content px-content pt-[100px]">
         {/* Centered header block */}
         <div className="flex flex-col items-center text-center gap-5 mb-12">
 

@@ -21,7 +21,7 @@ export default function TechCta() {
       className="relative w-full bg-background-primary"
       aria-label="Ready to see it in person"
     >
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-16 lg:py-24">
+      <div className="mx-auto w-full max-w-content px-content py-16 lg:py-24">
         <div className="flex flex-col items-center text-center gap-6">
           <motion.h2
             className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"

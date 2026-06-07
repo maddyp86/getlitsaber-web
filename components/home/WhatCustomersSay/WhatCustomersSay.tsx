@@ -20,7 +20,7 @@ export default function WhatCustomersSay() {
           "radial-gradient(120% 90% at 50% -10%, rgba(0,229,255,0.10), transparent 55%), #04070d",
       }}
     >
-      <div className="flex flex-col items-center gap-3 text-center px-container-mobile lg:px-container mb-14">
+      <div className="flex flex-col items-center gap-3 text-center px-content mb-14">
         <span
           className="font-label text-eyebrow uppercase tracking-widest text-accent-cyan"
           style={{ textShadow: "0 0 14px rgba(0,229,255,0.55)" }}

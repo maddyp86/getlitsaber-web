@@ -7,7 +7,7 @@ interface WhatWereShippingProps {
 export default function WhatWereShipping({ children }: WhatWereShippingProps) {
   return (
     <section
-      className="relative py-section-y-mobile lg:py-section-y px-container-mobile lg:px-container"
+      className="relative py-section-y-mobile lg:py-section-y px-content"
       style={{
         background:
           "linear-gradient(180deg, rgba(18,8,32,0.75) 0%, rgba(15,8,36,0.75) 61.06%, rgba(45,28,83,0.75) 96.63%), #0A0518",
@@ -16,7 +16,7 @@ export default function WhatWereShipping({ children }: WhatWereShippingProps) {
     >
       {/* TODO: <Starfield /> — section-scoped animated canvas layer, Phase Motion */}
 
-      <div className="relative z-base mx-auto flex w-full max-w-[1250px] flex-col gap-section-y-mobile lg:gap-section-y">
+      <div className="relative z-base mx-auto flex w-full max-w-content flex-col gap-section-y-mobile lg:gap-section-y">
         {children}
       </div>
     </section>

@@ -34,7 +34,7 @@ export default function WholesaleFaq() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[150px]">
+      <div className="mx-auto w-full max-w-content px-content py-[150px]">
         {/* Header */}
         <div className="flex item-center flex-col gap-3 mb-14">
           <motion.p

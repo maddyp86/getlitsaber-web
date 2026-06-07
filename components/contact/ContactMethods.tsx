@@ -14,7 +14,7 @@ export default function ContactMethods() {
       className="relative w-full bg-background-primary"
       aria-label="Quick links"
     >
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[48px]">
+      <div className="mx-auto w-full max-w-content px-content py-[48px]">
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}

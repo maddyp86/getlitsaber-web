@@ -104,7 +104,7 @@ export default function AboutTeam() {
   const prefersReduced = useReducedMotion();
   return (
     <section className="relative w-full bg-[#080516]" aria-label="The team">
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-[100px]">
         <motion.p
           className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-magenta mb-4"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}

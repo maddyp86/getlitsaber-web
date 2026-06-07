@@ -4,7 +4,7 @@ import EditionCard from "./EditionCard";
 export default function EditionsSection() {
   return (
     <section id="editions">
-      <div className="max-w-container mx-auto">
+      <div className="max-w-content mx-auto">
         {/* Header */}
         <div className="text-center mb-10 lg:mb-14">
           <p className="font-label text-eyebrow text-text-accent tracking-widest mb-3">

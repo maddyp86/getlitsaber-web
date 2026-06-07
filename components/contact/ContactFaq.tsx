@@ -63,7 +63,7 @@ export default function ContactFaq() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] py-[100px]">
+      <div className="mx-auto w-full max-w-content px-content py-[100px]">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mb-14">
           <motion.h2

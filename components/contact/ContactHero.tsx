@@ -150,7 +150,7 @@ export default function ContactHero() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-[1250px] px-[20px] lg:px-[60px] pt-[100px] lg:pt-[140px] pb-[80px] lg:pb-[100px]">
+      <div className="mx-auto w-full max-w-content px-content pt-[100px] lg:pt-[140px] pb-[80px] lg:pb-[100px]">
         {/* Headline + body */}
         <div className="flex flex-col items-center text-center gap-6 max-w-[860px] mx-auto mb-[64px] lg:mb-[80px]">
           <motion.h1

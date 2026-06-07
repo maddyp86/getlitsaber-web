@@ -90,7 +90,7 @@ export default function WhereItLives() {
       {/* Header block */}
       <div
         ref={ref}
-        className="relative z-10 flex flex-col items-center text-center px-container-mobile lg:px-container mb-10 lg:mb-16"
+        className="relative z-10 flex flex-col items-center text-center px-content mb-10 lg:mb-16"
       >
         {/* Eyebrow */}
         <motion.p

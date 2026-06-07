@@ -17,7 +17,7 @@ export default function WholesaleStatsBar() {
       <div className="h-px w-full bg-[#2D1C53]" aria-hidden="true" />
 
       <motion.div
-        className="mx-auto w-full max-w-[1250px] py-8 px-[20px] lg:px-[60px]"
+        className="mx-auto w-full max-w-content py-8 px-content"
         initial={prefersReduced ? false : { opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}

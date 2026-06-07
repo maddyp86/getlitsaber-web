@@ -114,7 +114,7 @@ export default function EmailSignupBanner() {
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-container-mobile lg:px-container py-20 lg:py-24 gap-6">
+      <div className="relative z-10 flex flex-col items-center text-center px-content py-20 lg:py-24 gap-6">
         <motion.h2
           className="font-display font-black uppercase text-white leading-none"
          style={{ 
