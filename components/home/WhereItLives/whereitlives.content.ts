@@ -1,6 +1,6 @@
 export const EYEBROW = "WHERE IT LIVES";
 
-export const HEADLINE = "SAME DEVICE.\nEVERY ROOM YOU\nWALK INTO.";
+export const HEADLINE = "SAME DEVICE. EVERY ROOM YOU WALK INTO.";
 
 export const BODY =
   "Built for rooms & spaces where everything fades into dark";
