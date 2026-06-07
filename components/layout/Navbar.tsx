@@ -55,7 +55,7 @@ export default function Navbar() {
           </div>
 
           {/* Logo — centered on mobile via flex-1 + flex justify-center; fixed width on desktop to balance right icons zone */}
-          <div className="flex-1 lg:flex-none lg:w-40 flex items-center lg:justify-start justify-center">
+          <div className="flex-1 lg:flex-none lg:w-50 flex items-center lg:justify-start justify-center">
             <Link
               href="/"
               className="shrink-0"
