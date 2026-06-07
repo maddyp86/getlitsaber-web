@@ -67,7 +67,7 @@ export default function PoliciesHero() {
           </motion.h1>
           {/* Subline */}
           <motion.p
-            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[560px]"
+            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[600px]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
