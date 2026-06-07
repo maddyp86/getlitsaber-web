@@ -105,14 +105,18 @@ export default function WhereItLives() {
         {/* Headline */}
         <motion.h2
           className="font-display max-w-[700px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
-          style={{ fontSize: "clamp(45px, 5vw, 75px)", lineHeight: "1.05" }}
+          style={{
+            fontSize: "clamp(45px, 5vw, 75px)",
+            lineHeight: "1.05",
+            textShadow: "0 0 50px rgba(0, 229, 255, 0.75)",
+          }}
           initial={{ opacity: 0, y: 28 }}
           animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
           transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
         >
           {HEADLINE}
         </motion.h2>
-
+        
         {/* Body */}
         <motion.p
           className="font-body text-text-secondary"
