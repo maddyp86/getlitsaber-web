@@ -7,14 +7,14 @@ export default function WholesaleCTABanner() {
       style={{
         background:
           "radial-gradient(ellipse 60% 200% at 30% 50%, rgba(236,87,147,0.18) 0%, rgba(10,5,24,0) 70%), #0A0518",
-        height:"250px",
-        width:"auto"
+        height: "250px",
+        width: "auto",
       }}
     >
       {/* Thin top border to separate from section above */}
       <div className="absolute inset-x-0 top-0 h-px bg-white/5" aria-hidden="true" />
 
-      <div className="h-full mx-auto max-w-screen-xl p-5 lg:px-16 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-6 lg:gap-6">
+      <div className="h-full mx-auto w-full max-w-content px-content py-5 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-6 lg:gap-6">
         {/* Left: headline + sub-copy */}
         <div className="flex flex-col gap-2 text-center lg:text-left">
           <h2
@@ -22,7 +22,7 @@ export default function WholesaleCTABanner() {
             style={{
               fontSize: "clamp(22px, 3.2vw, 35px)",
               fontStyle: "normal",
-              lineHeight:"1.2"
+              lineHeight: "1.2",
             }}
           >
             STOCK LITSABER IN YOUR{" "}
@@ -33,7 +33,6 @@ export default function WholesaleCTABanner() {
               SHOP.
             </span>
           </h2>
-
           <p
             className="font-label uppercase text-white/55"
             style={{ fontSize: "clamp(14px, 1.1vw, 16px)" }}
@@ -61,7 +60,9 @@ export default function WholesaleCTABanner() {
           }}
         >
           VIEW WHOLESALE PROGRAM
-          <span aria-hidden="true" style={{ fontSize: "16px" }}>&rarr;</span>
+          <span aria-hidden="true" style={{ fontSize: "16px" }}>
+            &rarr;
+          </span>
         </Link>
       </div>
     </section>
