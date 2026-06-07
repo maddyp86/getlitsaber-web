@@ -87,7 +87,7 @@ export default function InhaleVideo() {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover"
+              className="w-full min-h-[685px] object-cover"
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center gap-4">
