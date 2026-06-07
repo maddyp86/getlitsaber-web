@@ -9,13 +9,13 @@ export const POLICIES_HERO = {
   effectiveLabel: "EFFECTIVE: MAY 15, 2026",
 } as const;
 
-// TODO: Confirm full return address with Premier Fulfillment West before populating
+// Return address confirmed with Premier Fulfillment West
 export const RETURN_ADDRESS = {
   label: "RETURN SHIPMENTS",
-  recipient: "Premier Fulfillment West",
-  attn: "ATTN: Litsaber Returns",
-  line1: "[TODO: Street Address]",
-  line2: "[TODO: City, State ZIP]",
+  recipient: "Litsaber c/o Premier Fulfillment West",
+  attn: "Attn: Rudy Tinoco",
+  line1: "19050 Messenia Ln, Building 8",
+  line2: "Perris, CA 92571, USA",
 } as const;
 
 export const RELATED_RESOURCES = [
