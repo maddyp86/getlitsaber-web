@@ -330,7 +330,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             animate="visible"
             exit="exit"
             className="font-body"
-            style={{ fontSize: "16px", color: "#F0F0F5" }}
+            style={{ fontSize: "20px", color: "#F0F0F5" }}
           >
             {PULL_BUILD[activePullBuild].description}
           </motion.p>
@@ -378,7 +378,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       >
         GLOWSTICK MODE
       </h3>
-      <p className="font-body" style={{ fontSize: "16px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
+      <p className="font-body" style={{ fontSize: "20px", color: activeMode === 1 ? "#F0F0F5" : "#CFCFCF" }}>
         {MODES[1].body}
       </p>
     </div>
@@ -423,7 +423,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       >
         STEALTH MODE
       </h3>
-      <p className="font-body" style={{ fontSize: "16px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
+      <p className="font-body" style={{ fontSize: "20px", color: activeMode === 2 ? "#F0F0F5" : "#CFCFCF" }}>
         {MODES[2].body}
       </p>
     </div>
