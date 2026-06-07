@@ -36,7 +36,7 @@ export default function PolicySubNav() {
       <div className="mx-auto w-full max-w-content px-content lg:px-[75px]">
         <ul
           ref={listRef}
-          className="no-scrollbar flex h-[70px] items-stretch justify-start gap-[35px] overflow-x-auto lg:justify-center"
+          className="no-scrollbar flex h-[70px] items-stretch justify-start gap-[35px] overflow-x-auto lg:justify-start"
           style={{ scrollSnapType: "x mandatory" }}
           role="list"
         >
