@@ -181,7 +181,7 @@ export default function ContactForm() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[100px]">
+    <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Section header */}
         <div className="flex flex-col items-center text-center gap-4 mb-12">
           <motion.h2
