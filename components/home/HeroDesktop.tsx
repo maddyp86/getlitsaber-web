@@ -78,7 +78,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           </motion.p>
 
           <motion.div
-            className="flex flex-row gap-md justify-center w-full max-w-[900px] mx-auto"
+            className="flex flex-row gap-md justify-center w-full"
             variants={variants}
             initial="hidden"
             animate="visible"
