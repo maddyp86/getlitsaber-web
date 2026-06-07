@@ -30,7 +30,7 @@ export default function PolicySubNav() {
 
   return (
     <nav
-      className="sticky top-navbar z-sticky border-b border-surface-tint-white bg-background-primary/95 backdrop-blur-sm"
+      className="sticky top-navbar z-sticky border-b border-surface-tint-white bg-[#150C2D]"
       aria-label="Policy sections"
     >
       <div className="mx-auto w-full max-w-content px-content">
