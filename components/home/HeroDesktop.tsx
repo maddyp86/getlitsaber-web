@@ -25,7 +25,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
   return (
     <section
       className={`relative w-full bg-background-primary${className ? ` ${className}` : ""}`}
-      style={{ minHeight: "1513px" }}
+      style={{ minHeight: "1500px" }}
       aria-label="Hero"
     >
       {/* Lifestyle band — 700px, transparent navbar overlaps the top 90px */}
