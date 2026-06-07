@@ -68,7 +68,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           style={{ padding: "100px" }}
         >
           <motion.p
-            className="text-center w-full font-subhead font-bold text-[55px] uppercase text-text-primary drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
+            className="text-center w-full font-subhead font-bold text-[45px] uppercase text-text-primary drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
             variants={variants}
             initial="hidden"
             animate="visible"
