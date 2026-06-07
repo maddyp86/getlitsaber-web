@@ -52,7 +52,7 @@ export default function TikTokRail({ videos }: TikTokRailProps) {
 
   return (
     <>
-      <div className="relative max-w-[1280px] mx-auto">
+      <div className="relative max-w-content mx-auto">
         {/* Prev arrow */}
         <button
           onClick={() => scrollRail(-1)}
