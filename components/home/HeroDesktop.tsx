@@ -64,11 +64,11 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
 
         {/* Tagline + spec pills anchored within the starfield zone */}
         <div
-          className="absolute inset-0 z-10 flex flex-col justify-between items-center"
+          className="absolute w-max-[1250px] inset-0 z-10 flex flex-col justify-between items-center"
           style={{ padding: "100px" }}
         >
           <motion.p
-            className="text-center w-full font-subhead font-bold text-h2 uppercase leading-tight text-text-primary drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
+            className="text-center w-full font-subhead font-bold text-h2 uppercase text-text-primary drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
             variants={variants}
             initial="hidden"
             animate="visible"
