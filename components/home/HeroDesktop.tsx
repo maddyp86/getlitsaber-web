@@ -113,7 +113,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             {HEADLINE_DESKTOP.white}
           </span>
           <span className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
-             style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}>           >
+             style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}>    
             {HEADLINE_DESKTOP.cyan}
           </span>
         </motion.h1>
