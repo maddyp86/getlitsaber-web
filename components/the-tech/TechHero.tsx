@@ -50,14 +50,14 @@ export default function TechHero() {
               {HERO_HEADLINE_LINE1}
               <span
                 className="block font-accent font-normal text-center lg:text-left text-display-accent text-accent-cyan leading-none"
-                style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}
+                style={{ fontSize: "clamp(45px, 6vw, 90px)" }}
               >
                 {HERO_HEADLINE_ACCENT}
               </span>
             </motion.h1>
 
             <motion.p
-              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
+              className="font-body text-(22px) lg:text-body text-text-secondary leading-relaxed"
               initial={prefersReduced ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
