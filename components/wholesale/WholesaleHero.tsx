@@ -20,7 +20,7 @@ export default function WholesaleHero() {
   return (
 <section
   className="relative isolate overflow-hidden w-full bg-[#0A0518]"
-   style={{ minHeight: "900px" }}
+   style={{ minHeight: "800px" }}
   aria-label="The 510 battery you've been looking for"
 >
   {/* Background image — backmost layer */}
