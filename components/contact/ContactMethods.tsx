@@ -6,14 +6,24 @@ import { QUICK_LINKS } from "./contact.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+const DIVIDER_GRADIENT =
+  "linear-gradient(90deg, #150C2D 0%, #00E5FF 48.08%, #150C2D 100%)";
+
 export default function ContactMethods() {
   const prefersReduced = useReducedMotion();
 
   return (
     <section
-      className="relative w-full bg-background-primary"
+      className="relative w-full bg-background-[#120C27]"
       aria-label="Quick links"
     >
+      {/* Top divider line */}
+      <div
+        className="mx-auto w-full max-w-content h-px"
+        style={{ background: DIVIDER_GRADIENT }}
+        aria-hidden="true"
+      />
+
       <div className="mx-auto w-full max-w-content px-content py-[48px]">
         <motion.div
           className="flex flex-col items-center gap-4"
@@ -44,6 +54,13 @@ export default function ContactMethods() {
           </div>
         </motion.div>
       </div>
+
+      {/* Bottom divider line */}
+      <div
+        className="mx-auto w-full max-w-content h-px"
+        style={{ background: DIVIDER_GRADIENT }}
+        aria-hidden="true"
+      />
     </section>
   );
 }
