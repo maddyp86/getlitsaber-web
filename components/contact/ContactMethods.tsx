@@ -24,7 +24,7 @@ export default function ContactMethods() {
         aria-hidden="true"
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-[48px]">
+      <div className="mx-auto w-full max-w-content px-content py-[60px]">
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
