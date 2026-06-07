@@ -72,7 +72,7 @@ function ProseBody({ blocks }: { blocks: AccordionProseBlock[] }) {
               )}
               <ul className="list-disc pl-[16px] flex flex-col gap-1">
                 {block.bullets.map((b, j) => (
-                  <li key={j} className="font-body font-normal text-[20px] text-white leading-relaxed">
+                  <li key={j} className="font-body font-normal text-[16px] text-white leading-relaxed">
                     {b}
                   </li>
                 ))}
