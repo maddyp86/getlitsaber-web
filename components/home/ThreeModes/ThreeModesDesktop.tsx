@@ -133,9 +133,9 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
 
         {/* Text row — headline block LEFT, body RIGHT, inline-flex gap-45 */}
         <div
-  className="relative"
-  style={{ zIndex: 2, paddingLeft: "100px", paddingRight: "100px", paddingBottom: "440px" }}
->
+          className="relative mx-auto w-full max-w-content px-content"
+          style={{ zIndex: 2, paddingBottom: "440px" }}
+        >
   <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "45px", justifyContent: "space-between" }}>
     {/* Headline block */}
     <div style={{ display: "flex", flexDirection: "column", flex: "1 0 0", justifyContent: "center", gap: "19px" }}>
@@ -183,8 +183,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
   borderRadius: "800px",
   background: "rgba(30, 0, 77, 0.50)",
   filter: "blur(150px)",
-  top: "150px",      // Changed from 0px
-  left: "320px",     // Changed from 0px
+  top: "150px",
+  left: "320px",
   zIndex: 0,
   position: "absolute"
 }}
@@ -209,23 +209,17 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           <Image src="/images/home/geometric-shape.png" alt="" fill sizes="378px" style={{ objectFit: "contain" }} />
         </div>
 
-        {/* Inner content — centered column, 280px from top */}
+        {/* Inner content — centered column, aligned to site container */}
         <div
-          className="absolute"
+          className="absolute left-1/2 -translate-x-1/2 w-full max-w-content px-content"
           style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    maxWidth: "1250px",
-    left: "50%",                    // ← ADD THIS
-    transform: "translateX(-50%)",  // ← ADD THIS
-             paddingLeft: "50px",    // ← ADD THIS
-  paddingRight: "50px",   // ← ADD THIS
-    top: "150px",
-    gap: "100px",
-    zIndex: 10,
-  }}
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            top: "150px",
+            gap: "100px",
+            zIndex: 10,
+          }}
         >
           {/* "Pick Your Energy" heading group */}
           <motion.div
@@ -246,7 +240,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             </h2>
             <p
               className="font-body"
-              style={{ fontSize: "22px", lineHeight: "normal", color: "#CCCCCC", width: "751px", textAlign: "center" }}
+              style={{ fontSize: "22px", lineHeight: "normal", color: "#CCCCCC", maxWidth: "751px", textAlign: "center" }}
             >
               Three lighting behaviors built into the device designed to be as dynamic as your social life. Whether you&apos;re at a festival, a party, or just chilling with friends, adapts to every vibe you bring.
             </p>
@@ -479,4 +473,4 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       </div>
     </section>
   );
-}       
+}
