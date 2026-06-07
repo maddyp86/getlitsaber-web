@@ -129,7 +129,7 @@ export default function ContactFaq() {
               </div>
 
               {/* Items */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-4">
                 {category.items.map((item, rowIndex) => {
                   const key = `${catIndex}-${rowIndex}`;
                   const isOpen = !!openMap[key];
