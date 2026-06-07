@@ -13,6 +13,12 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+// Reproduces the navbar's left content edge at every width.
+// Must stay in sync with the layout tokens: max-w-content (1600px) and px-content (clamp(16px, 2vw, 32px)).
+// Mirror any token change here AND in TechHero.tsx.
+const NAVBAR_LEFT =
+  "max(clamp(16px, 2vw, 32px), calc((100vw - 1600px) / 2 + clamp(16px, 2vw, 32px)))";
+
 export default function AboutHero() {
   const prefersReduced = useReducedMotion();
 
@@ -40,9 +46,10 @@ export default function AboutHero() {
           carries its own top padding instead. */}
    <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
 
-        {/* Left — text column. Uses px-content to match navbar gutter at all breakpoints. */}
+        {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
           className="px-content lg:pr-0 lg:self-center lg:pt-[50px] lg:pb-16"
+          style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner — capped readable copy width, left-aligned */}
           <div className="flex flex-col justify-center gap-6 max-w-[800px]">
@@ -121,7 +128,7 @@ export default function AboutHero() {
             src={HERO_IMAGE_SRC}
             alt={HERO_IMAGE_ALT}
             fill
-            sizes="(min-width: 1024px) 38vw, 100vw"
+            sizes="(min-width: 1024px) 45vw, 100vw"
             className="object-cover object-center"
             priority
           />
