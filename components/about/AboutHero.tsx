@@ -55,14 +55,6 @@ export default function AboutHero() {
         >
           {/* Inner — capped readable copy width, left-aligned */}
           <div className="flex flex-col justify-center gap-6 max-w-[800px]">
-            <motion.p
-              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
-              initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {HERO_EYEBROW}
-            </motion.p>
 
             <motion.h1
               className="font-display font-bold uppercase leading-[1.05]"
