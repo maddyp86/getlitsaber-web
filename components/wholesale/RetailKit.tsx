@@ -48,7 +48,6 @@ export default function RetailKit() {
           >
             <span className="text-white" style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}>
               {KIT_HEADLINE_LINE1}
-              <br />
               {KIT_HEADLINE_LINE2}
             </span>{" "}
             <span className="text-accent-cyan" style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}>
