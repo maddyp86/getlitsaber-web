@@ -3,16 +3,21 @@ import type { ReactNode } from "react";
 interface PolicySectionProps {
   number: string;
   title: string;
+  id?: string;
   children: ReactNode;
 }
 
 export default function PolicySection({
   number,
   title,
+  id,
   children,
 }: PolicySectionProps) {
   return (
-    <section className="flex flex-col gap-4">
+    <section
+      id={id ? `section-${id}` : undefined}
+      className={`flex flex-col gap-4${id ? " scroll-mt-[160px]" : ""}`}
+    >
       <div className="flex items-baseline gap-4">
         <span className="font-subhead font-bold text-accent-cyan text-[20px] shrink-0">
           {number}
