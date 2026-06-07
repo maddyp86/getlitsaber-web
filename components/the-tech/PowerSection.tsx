@@ -49,7 +49,7 @@ export default function PowerSection() {
 </div>
           {/* Image — left on desktop, top on mobile */}
           <motion.div
-className="relative w-full aspect-[3/4] lg:aspect-auto lg:h-[520px] lg:flex-1 rounded-card overflow-hidden"
+className="relative w-full aspect-[3/4] lg:aspect-auto lg:h-[700px] lg:flex-1 rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
