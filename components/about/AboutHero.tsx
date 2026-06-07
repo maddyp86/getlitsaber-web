@@ -43,12 +43,14 @@ export default function AboutHero() {
       />
 
       {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge.
-          items-stretch so the image cell fills the full row height. */}
-      <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-stretch lg:gap-x-10 lg:pt-[50px] lg:pb-0">
+          No top padding here: the image starts at the section top; the text cell
+          carries its own top padding instead. */}
+      <div className="flex flex-col py-16 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:gap-x-10 lg:py-0">
 
-        {/* Left — text column. Outer cell owns the navbar-edge left padding + grid self-alignment. */}
+        {/* Left — text column. Outer cell owns the navbar-edge left padding, the 50px
+            top offset, and grid self-alignment. */}
         <div
-          className="pr-[20px] lg:pr-0 lg:self-center lg:pb-16"
+          className="pr-[20px] lg:pr-0 lg:self-center lg:pt-[50px] lg:pb-16"
           style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner — capped readable copy width, left-aligned */}
@@ -123,10 +125,11 @@ export default function AboutHero() {
           </div>
         </div>
 
-        {/* Right — image: fills full hero height, flush to viewport right on desktop, inset card on mobile */}
+        {/* Right — image: fixed 810px tall, pinned to section top, flush to viewport right
+            on desktop; inset card on mobile. */}
         <motion.div
           className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden rounded-card
-                     lg:mt-0 lg:mx-0 lg:h-full lg:aspect-auto lg:w-full lg:rounded-none"
+                     lg:mt-0 lg:mx-0 lg:self-start lg:aspect-auto lg:h-[810px] lg:w-full lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
