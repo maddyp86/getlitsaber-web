@@ -42,9 +42,9 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
     <div className="px-5 lg:px-0 flex flex-col lg:flex-row items-start gap-6 lg:gap-[50px]">
       {/* Left: image gallery */}
       <div
-        className="flex flex-col items-start w-full lg:flex-1 lg:sticky lg:self-start lg:top-[96px]"
-        style={{ gap: "20px" }}
-      >
+  className="flex flex-col items-start w-full lg:flex-1 lg:max-w-[640px] lg:sticky lg:self-start lg:top-[96px]"
+  style={{ gap: "20px" }}
+>
         <GalleryBlock activeThumb={activeThumb} onThumbClick={setActiveThumb} />
       </div>
 
