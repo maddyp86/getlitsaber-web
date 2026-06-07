@@ -66,7 +66,7 @@ export default function Navbar() {
                 alt="Litsaber"
                 width={140}
                 height={40}
-                className="h-8 w-auto"
+                style={{ width: "clamp(112px, 11vw, 140px)", height: "auto" }}
                 priority
               />
             </Link>
@@ -78,7 +78,8 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-label text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
+                className="font-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
+                style={{ fontSize: "clamp(16px, 1.1vw, 20px)" }}
               >
                 {link.label}
               </Link>
