@@ -32,7 +32,7 @@ export default function TechHero() {
     >
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Image column widened to 45% to absorb the middle gap. */}
-      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch">
+      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
         {/* Left — text column. Matches the About hero: navbar-edge left padding,
             vertically centered against the image, 50px top offset. */}
         <div
