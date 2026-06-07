@@ -288,6 +288,15 @@ export default function ContactForm() {
                 autoComplete="email"
               />
 
+                          <InputField
+                label="Mobile Phone Number"
+                name="phone"
+                type="tel"
+                value={fields.phone}
+                onChange={handleChange}
+                autoComplete="tel"
+              />
+
               {/* Reason select */}
               <div className="flex flex-col gap-1.5">
                 <label
@@ -323,15 +332,6 @@ export default function ContactForm() {
                 value={fields.company}
                 onChange={handleChange}
                 autoComplete="organization"
-              />
-
-              <InputField
-                label="Mobile Phone Number"
-                name="phone"
-                type="tel"
-                value={fields.phone}
-                onChange={handleChange}
-                autoComplete="tel"
               />
 
               {/* Message textarea */}
