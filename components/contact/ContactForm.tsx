@@ -194,7 +194,7 @@ export default function ContactForm() {
           >
             <span
               className="text-white"
-              style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}
+              style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
             >
               {FORM_HEADLINE}
             </span>
