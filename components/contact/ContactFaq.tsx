@@ -112,8 +112,8 @@ export default function ContactFaq() {
                   {category.index}
                 </span>
                 <span
-                  className="font-label font-bold text-white uppercase tracking-[0.08em]"
-                  style={{ fontSize: "clamp(12px, 1.4vw, 14px)" }}
+                  className="font-subhead font-bold text-white uppercase tracking-[0.08em]"
+                  style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
                 >
                   {category.title}
                 </span>
