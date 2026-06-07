@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default function ShippingPage() {
+export default function PoliciesIndexPage() {
   redirect("/policies/shipping-returns");
 }

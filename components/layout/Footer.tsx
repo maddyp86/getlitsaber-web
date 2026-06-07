@@ -9,7 +9,7 @@ const EXPLORE_LINKS = [
 
 const SUPPORT_LINKS = [
   { label: "Contact Us", href: "/contact" },
-  { label: "Refund & Returns", href: "/policies/refunds" },
+  { label: "Shipping & Returns", href: "/policies/shipping-returns" },
   { label: "Warranty", href: "/policies/warranty" },
 ] as const;
 
@@ -87,8 +87,7 @@ export default function Footer() {
               {[
                 { label: "PRIVACY", href: "/policies/privacy" },
                 { label: "TERMS", href: "/policies/terms" },
-                { label: "SHIPPING", href: "/policies/shipping" },
-                { label: "REFUNDS", href: "/policies/refunds" },
+                { label: "SHIPPING & RETURNS", href: "/policies/shipping-returns" },
               ].map((link, i, arr) => (
                 <span key={link.href} className="flex items-center gap-xs">
                   <Link

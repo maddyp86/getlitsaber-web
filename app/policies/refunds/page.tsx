@@ -1,15 +1,5 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Refund and Returns Policy",
-};
+import { redirect } from "next/navigation";
 
 export default function RefundsPage() {
-  return (
-    <div className="flex items-center justify-center min-h-[60vh] pt-navbar">
-      <p className="font-label text-label text-text-muted tracking-widest uppercase">
-        Refund and Returns Policy — coming in Phase 2
-      </p>
-    </div>
-  );
+  redirect("/policies/shipping-returns");
 }
