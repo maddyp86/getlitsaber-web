@@ -33,13 +33,14 @@ export default function TechHero() {
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Same 38% image column as the About hero. */}
       <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,38%)] lg:items-stretch">
-        {/* Text column — owns the left alignment */}
+        {/* Left — text column. Outer cell owns the navbar-edge left padding and
+            vertical centering against the image, matching the About hero. */}
         <div
-          className="flex justify-center lg:justify-start py-16 lg:py-24 pr-[20px] lg:pr-16"
+          className="pr-[20px] lg:pr-0 lg:self-center py-16 lg:py-0"
           style={{ paddingLeft: NAVBAR_LEFT }}
         >
-          {/* Inner content — capped so the copy column stays readable */}
-<div className="flex w-full flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 lg:max-w-[800px]">
+          {/* Inner content — capped readable copy width */}
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left justify-center gap-6 max-w-[800px]">
             <motion.h1
               className="block font-display font-bold text-display-lg text-center lg:text-left text-text-primary leading-none"
               style={{ fontSize: "clamp(45px, 6vw, 100px)" }}
@@ -57,7 +58,7 @@ export default function TechHero() {
             </motion.h1>
 
             <motion.p
-              className="font-body text-(22px) lg:text-body text-text-secondary leading-relaxed"
+              className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
               initial={prefersReduced ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
