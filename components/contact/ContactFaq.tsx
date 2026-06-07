@@ -63,11 +63,11 @@ export default function ContactFaq() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
+<div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mb-14">
+        <div className="flex flex-col mb-14">
           <motion.h2
-            className="font-display uppercase font-bold leading-[1.1] flex-shrink-0"
+            className="font-display uppercase font-bold leading-[1.1]"
             style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -82,9 +82,8 @@ export default function ContactFaq() {
               {FAQ_HEADLINE_ACCENT}
             </span>
           </motion.h2>
-
           <motion.p
-            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mt-4 lg:mt-3 max-w-[480px]"
+            className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mt-4 max-w-[480px]"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -97,7 +96,6 @@ export default function ContactFaq() {
             .
           </motion.p>
         </div>
-
         {/* Categories */}
         <div className="flex flex-col gap-10">
           {FAQ_CATEGORIES.map((category, catIndex) => (
