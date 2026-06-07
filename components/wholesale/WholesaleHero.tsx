@@ -53,7 +53,7 @@ export default function WholesaleHero() {
       "linear-gradient(0deg, rgba(75,47,129,0.75) 0%, rgba(0,0,0,0.00) 69.71%)",
   }}
 />
-      <div className="mx-auto w-full max-w-content px-content py-[100px] lg:py-[140px]">
+      <div className="mx-auto w-full max-w-content px-content py-[100px] lg:py-[150px]">
         <div className="flex flex-col items-center text-center gap-8 max-w-[900px] mx-auto">
           <motion.h1
   className="font-display font-bold uppercase text-center"
