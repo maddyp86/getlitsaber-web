@@ -52,7 +52,7 @@ export default function PolicySubNav() {
                 <Link
                   href={tab.href}
                   className={[
-"flex h-full min-w-[175px] items-center justify-center whitespace-nowrap border-b-2 px-5 font-label text-eyebrow uppercase tracking-widest transition-colors duration-200",
+"flex h-full min-w-[175px] items-left justify-center whitespace-nowrap border-b-2 px-5 font-label text-eyebrow uppercase tracking-widest transition-colors duration-200",
                     isActive
                       ? "border-accent-cyan text-accent-cyan"
                       : "border-transparent text-text-muted hover:text-text-secondary",
