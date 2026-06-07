@@ -142,6 +142,23 @@ export default function AboutHero() {
             className="object-cover object-center"
             priority
           />
+
+          {/* Caption pill — floats near the bottom of the image */}
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 bottom-6 lg:bottom-[70px] z-10
+                       whitespace-nowrap rounded-[6px] border border-accent-cyan bg-black/90
+                       px-5 py-3"
+            initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+          >
+            <span
+              className="font-label uppercase text-accent-cyan"
+              style={{ fontSize: "clamp(12px, 1vw, 16px)", letterSpacing: "0.08em" }}
+            >
+              Matt &amp; Brendan - ComicCon 2025
+            </span>
+          </motion.div>
         </motion.div>
       </div>
     </section>
