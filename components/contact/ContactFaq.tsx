@@ -116,7 +116,7 @@ export default function ContactFaq() {
               transition={{ duration: 0.6, delay: catIndex * 0.04, ease: EASE }}
             >
               {/* Category heading */}
-              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#1A1035]">
+              <div className="flex items-center gap-3 mb-4 pb-3 ">
                 <span className="font-label text-eyebrow tracking-[0.2em] text-accent-cyan uppercase text-xs flex-shrink-0">
                   {category.index}
                 </span>
