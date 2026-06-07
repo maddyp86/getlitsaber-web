@@ -104,11 +104,11 @@ export default function InhaleVideo() {
         </motion.div>
 
         {/* Breath response — two-column copy/image block */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
+        <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-16 mt-16 lg:mt-24">
 
           {/* Image — right on desktop, below on mobile */}
           <motion.div
-className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[76/101] lg:w-auto lg:flex-1 lg:self-start rounded-card overflow-hidden"
+            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[76/101] lg:w-auto lg:flex-1 lg:aspect-auto lg:self-stretch rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
