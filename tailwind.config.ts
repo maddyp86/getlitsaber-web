@@ -129,7 +129,7 @@ const config: Config = {
       },
  padding: {
         // Fluid gutter: 20px mobile floor → 70px at ~1400px desktop
-        content: "clamp(20px, 6vw, 70px)",
+        content: "clamp(20px, 5vw, 70px)",
       },
       width: {
         "cart-drawer": tokens.component["cart-drawer-width-desktop"].value,
