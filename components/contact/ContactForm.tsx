@@ -76,7 +76,7 @@ function InputField({
     <div className="flex flex-col gap-1.5">
       <label
         htmlFor={name}
-        className="font-label text-eyebrow text-text-muted tracking-[0.1em] uppercase text-xs"
+        className="font-label text-eyebrow text-text-muted uppercase text-xs"
       >
         {label}
         {required && <span className="text-[#EC5793] ml-1">*</span>}
@@ -193,7 +193,7 @@ export default function ContactForm() {
             transition={{ duration: 0.75, ease: EASE }}
           >
             <span
-              className="text-accent-cyan"
+              className="text-white"
               style={{ textShadow: "0 0 50px rgba(0,229,255,0.6)" }}
             >
               {FORM_HEADLINE}
