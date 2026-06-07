@@ -117,7 +117,7 @@ export default function ContactFaq() {
             >
               {/* Category heading */}
               <div className="flex items-center gap-3 mb-4 pb-3 ">
-                <span className="font-label text-eyebrow tracking-[0.2em] text-accent-cyan uppercase text-xs flex-shrink-0">
+                <span className="font-label text-eyebrow text-accent-cyan uppercase text-xs flex-shrink-0">
                   {category.index}
                 </span>
                 <span
