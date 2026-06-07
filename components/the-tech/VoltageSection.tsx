@@ -108,7 +108,7 @@ export default function VoltageSection() {
 
           {/* Left on desktop, BELOW copy on mobile: voltage table + device image card */}
           <motion.div
-            className="order-2 lg:order-1 mt-10 lg:mt-0 flex flex-col items-center w-full w-[350px] rounded-xl border border-[#32205A] bg-[#0A0515]"
+            className="order-2 lg:order-1 mt-10 lg:mt-0 flex flex-col items-center w-full max-w-[506px] rounded-xl border border-[#32205A] bg-[#0A0515]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE }}
