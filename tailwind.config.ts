@@ -127,9 +127,9 @@ const config: Config = {
         // Same 1440px source — keep in sync with tokens.component["container-max-width"]
         content: tokens.component["container-max-width"].value,
       },
-      padding: {
+ padding: {
         // Fluid gutter for content wrappers — keep in sync with max-w-content sections
-        content: "clamp(20px, 4vw, 60px)",
+        content: "clamp(16px, 2vw, 32px)",
       },
       width: {
         "cart-drawer": tokens.component["cart-drawer-width-desktop"].value,
