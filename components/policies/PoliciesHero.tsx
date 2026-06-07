@@ -14,14 +14,7 @@ export default function PoliciesHero() {
       aria-label="Policies and Terms"
     >
       {/* Cyan ambient glow at top */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,229,255,0.08) 0%, transparent 70%)",
-        }}
-      />
+      
       <div className="mx-auto w-full max-w-content px-content py-[100px] lg:py-[120px]">
         <div className="flex flex-col items-center text-center gap-6 max-w-[900px] mx-auto">
           {/* Eyebrow */}
