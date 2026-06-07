@@ -248,14 +248,14 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
 <div style={{ display: "flex", width: "100%", gap: "50px", alignItems: "center", justifyContent: "center" }}>
 
   {/* Left — mode cards: hug content, even gaps across 650 to match the image */}
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "space-between", flex: "1 0 0", height: "650px" }}>
+<div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "20px", flex: "1 0 0", height: "700px" }}>
 
     {/* Litsaber Mode card */}
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-      style={{ alignSelf: "stretch" }}
+      style={{ flex: "1 0 0", alignSelf: "stretch" }}
     >
     <div
       role="button"
@@ -269,6 +269,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         ...cardBorder(0),
         display: "flex",
         flexDirection: "column",
+         flex: "1 0 0",
+        alignSelf: "stretch",
         gap: "10px",
         padding: "20px",
         background: activeMode === 0 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
@@ -342,7 +344,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       initial={{ opacity: 0, y: 24 }}
       animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, delay: 0.28, ease: EASE }}
-      style={{ alignSelf: "stretch" }}
+     style={{ flex: "1 0 0", alignSelf: "stretch" }}
     >
     <div
       role="button"
@@ -356,6 +358,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         ...cardBorder(1),
         display: "flex",
         flexDirection: "column",
+         flex: "1 0 0",
+        alignSelf: "stretch",
         gap: "5px",
         padding: "20px",
         background: activeMode === 1 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
@@ -385,7 +389,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       initial={{ opacity: 0, y: 24 }}
       animate={contentVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, delay: 0.41, ease: EASE }}
-      style={{ alignSelf: "stretch" }}
+     style={{ flex: "1 0 0", alignSelf: "stretch" }}
     >
     <div
       role="button"
@@ -401,6 +405,8 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         flexDirection: "column",
         gap: "5px",
         padding: "20px",
+         flex: "1 0 0",
+        alignSelf: "stretch",
         background: activeMode === 2 ? "rgba(0, 229, 255, 0.08)" : "#100B25",
         cursor: "pointer",
         transition: "all 0.3s ease",
@@ -433,7 +439,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       flex: "1 0 0",
       alignSelf: "flex-start",
       display: "flex",
-      height: "650px",
+      height: "700px",
     }}
   >
   <div
