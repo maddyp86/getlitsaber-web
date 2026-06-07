@@ -138,7 +138,7 @@ export default function ContactFaq() {
                     <div
                       key={key}
                       className={`rounded-[5px] border transition-colors duration-200 ${
-                        isOpen ? "border-[#4B2F81] bg-[#0E0826]" : "border-[#113757] bg-[#113757]"
+                        isOpen ? "border-[#4B2F81] bg-[#0E0826]" : "border-[#113757] bg-[#0A0515]"
                       }`}
                     >
                       <button
