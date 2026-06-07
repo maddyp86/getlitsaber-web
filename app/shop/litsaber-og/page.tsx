@@ -17,32 +17,39 @@ export default async function PDPPage() {
   const silverVariant = product?.variants.edges
     .map((e) => e.node)
     .find((v) => v.sku === SILVER_SKU) ?? null;
-
   const available = shopifyConfigured ? silverVariant?.availableForSale === true : true;
   const numericProductId = product?.id?.split("/").pop() ?? "";
 
   return (
-<div className="pt-navbar lg:px-[50px] py-xl">
+    <div className="pt-navbar py-xl">
       <PdpViewTracker />
-      <div className="mx-auto w-full max-w-[1250px] pb-xl">
+
+      <div className="mx-auto w-full max-w-content px-content pb-xl">
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
           available={available}
           surface="pdp"
         />
       </div>
-      <hr className="w-full border-t border-border-divider" />
-      <section className="mx-auto w-full max-w-[1250px] mt-24 px-5 lg:px-0">
-        <h2 className="font-display text-h3 lg:text-h1 text-text-primary text-center "
+
+      {/* Divider aligned to content edge */}
+      <div className="mx-auto w-full max-w-content px-content">
+        <hr className="w-full border-t border-border-divider" />
+      </div>
+
+      <section className="mx-auto w-full max-w-content px-content mt-24">
+        <h2
+          className="font-display text-h3 lg:text-h1 text-text-primary text-center"
           style={{
-              fontSize: "clamp(45px, 3.2vw, 75px)",
-              fontStyle: "normal",
-              fontWeight:"700"
-            }}>
+            fontSize: "clamp(45px, 3.2vw, 75px)",
+            fontStyle: "normal",
+            fontWeight: "700",
+          }}
+        >
           Customer Reviews
         </h2>
         <div className="flex justify-center mb-6">
-        {/* <WriteReviewButton /> */}
+          {/* <WriteReviewButton /> */}
         </div>
         <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
       </section>
