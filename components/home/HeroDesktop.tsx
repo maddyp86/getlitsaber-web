@@ -108,10 +108,12 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           animate="visible"
           custom={0}
         >
-          <span className="block font-display font-bold text-display-lg text-text-primary drop-shadow-[0_0_100px_rgba(255,255,255,0.75)]">
+          <span className="block font-display font-bold text-text-primary drop-shadow-[0_0_100px_rgba(255,255,255,0.75)]"
+              style={{ fontSize: "clamp(45px, 6.5vw, 100px)" }}>
             {HEADLINE_DESKTOP.white}
           </span>
-          <span className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
+          <span className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
+             style={{ fontSize: "clamp(45px, 6.5vw, 90px)" }}>           >
             {HEADLINE_DESKTOP.cyan}
           </span>
         </motion.h1>
