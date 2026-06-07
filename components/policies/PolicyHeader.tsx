@@ -17,7 +17,7 @@ export default function PolicyHeader({
         {indexLabel}
       </p>
       <h1
-        className="font-subhead font-bold uppercase text-text-primary mb-4"
+        className="font-display font-bold uppercase text-text-primary mb-4"
         style={{ fontSize: "clamp(45px, 5vw, 75px)", lineHeight: "1.1" }}
       >
         {title}
