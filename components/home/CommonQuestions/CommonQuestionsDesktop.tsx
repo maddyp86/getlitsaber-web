@@ -73,7 +73,7 @@ export default function CommonQuestionsDesktop() {
   return (
     <section
       id="common-questions"
-      className="relative w-full overflow-hidden bg-background-primary py-section-y px-container"
+      className="relative w-full overflow-hidden bg-background-primary py-section-y px-content"
       aria-label="Common Questions"
     >
       {/* Desktop background glow orb */}
@@ -107,7 +107,7 @@ export default function CommonQuestionsDesktop() {
          style={{ 
               textShadow: "0 0 50px rgba(0, 229, 255, 0.75)", 
               lineHeight: "normal",
-              fontSize: "clamp(45px, 6.5vw, 75px)",
+              fontSize: "clamp(45px, 5vw, 75px)",
             }}
           initial={{ opacity: 0, y: 28 }}
           animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
@@ -119,8 +119,7 @@ export default function CommonQuestionsDesktop() {
 
       {/* FAQ Grid — 2 columns */}
       <div
-        className="relative z-10 grid grid-cols-2 gap-5 mx-auto"
-        style={{ maxWidth: "1250px" }}
+        className="relative z-10 grid grid-cols-2 gap-5 mx-auto max-w-content"
       >
         {FAQ_ITEMS.map((item, i) => (
           <FaqCard key={item.number} item={item} index={i} visible={visible} />
