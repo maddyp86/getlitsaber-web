@@ -176,7 +176,7 @@ export default function ContactFaq() {
                             style={{ overflow: "hidden" }}
                           >
                             <div className="px-5 pb-5"
-                               style={{ fontSize: "clamp(14px, 1vw, 16px)" }}>
+                               style={{ fontSize: "clamp(14px, 1vw, 14px)" }}>
                               {renderAnswer(item.answer)}
                             </div>
                           </motion.div>
