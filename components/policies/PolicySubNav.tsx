@@ -27,7 +27,7 @@ export default function PolicySubNav() {
     <nav
       className="sticky top-navbar z-sticky"
       style={{
-        background: "#150C2D",
+        background: "#120C27;",
         borderTop: "1px solid rgba(0,229,255,0.20)",
         borderBottom: "1px solid rgba(0,229,255,0.20)",
       }}
