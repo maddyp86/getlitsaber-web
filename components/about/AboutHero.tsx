@@ -44,7 +44,7 @@ export default function AboutHero() {
       {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge.
           No top padding here: the image starts at the section top; the text cell
           carries its own top padding instead. */}
-   <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
+   <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
 
         {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
@@ -119,7 +119,7 @@ export default function AboutHero() {
             on desktop; inset card on mobile. */}
         <motion.div
           className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden rounded-card
-                     lg:mt-0 lg:mx-0 lg:self-start lg:aspect-auto lg:h-[810px] lg:w-full lg:rounded-none"
+                     lg:mt-0 lg:mx-0 lg:self-start lg:aspect-auto lg:h-[640px] lg:w-full lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}

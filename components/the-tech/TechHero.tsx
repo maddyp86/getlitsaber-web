@@ -13,6 +13,9 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+const NAVBAR_LEFT =
+  "max(clamp(20px, 5vw, 70px), calc((100vw - 1440px) / 2 + clamp(20px, 5vw, 70px)))";
+
 export default function TechHero() {
   const prefersReduced = useReducedMotion();
   const scrollToInhale = () => {
@@ -30,6 +33,7 @@ export default function TechHero() {
         {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
           className="px-content lg:pr-0 lg:self-center lg:pb-16 py-16"
+          style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner content — capped readable copy width, left-aligned (matches About) */}
           <div className="flex flex-col justify-center gap-6 max-w-[700px]">
