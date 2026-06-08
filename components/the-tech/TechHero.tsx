@@ -24,12 +24,12 @@ export default function TechHero() {
 
   return (
     <section
-      className="relative overflow-hidden w-full bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
+      className="relative overflow-hidden w-full min-h-screen bg-[linear-gradient(180deg,#000_0%,#150C2D_100%)]"
       aria-label="Built to be seen"
     >
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Image column widened to 45% to absorb the middle gap. */}
-      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
+      <div className="flex flex-col h-full lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
         {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
           className="px-content lg:pr-0 lg:self-center lg:pb-16 py-16"

@@ -28,7 +28,7 @@ export default function AboutHero() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
+      className="relative isolate overflow-hidden w-full min-h-screen bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
       aria-label="Built for the night you came to be a part of"
     >
       {/* Ambient glow */}
@@ -44,7 +44,7 @@ export default function AboutHero() {
       {/* Full-width grid — no max-w cap, so the photo reaches the viewport right edge.
           No top padding here: the image starts at the section top; the text cell
           carries its own top padding instead. */}
-   <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
+   <div className="flex flex-col h-full lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
 
         {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
