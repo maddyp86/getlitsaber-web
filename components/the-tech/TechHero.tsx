@@ -29,7 +29,7 @@ export default function TechHero() {
     >
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Image column widened to 45% to absorb the middle gap. */}
-      <div className="flex flex-col h-full lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
+      <div className="flex flex-col min-h-screen lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
         {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
           className="px-content lg:pr-0 lg:self-center lg:pb-16 py-16"
