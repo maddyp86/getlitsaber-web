@@ -37,7 +37,7 @@ export default function Navbar() {
           scrolled ? "bg-background-primary" : "bg-transparent",
         ].join(" ")}
       >
-<div className="mx-auto w-full max-w-content h-full px-content flex items-center">
+<div className=" w-full h-full px-content flex items-center">
 
           {/* ── Mobile: three-column grid ── Desktop: standard flex row ── */}
 
