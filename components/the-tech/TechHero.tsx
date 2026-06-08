@@ -13,12 +13,6 @@ import {
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-// Reproduces the navbar's left content edge at every width.
-// Must stay in sync with the layout tokens: max-w-content (1600px) and px-content (clamp(16px, 2vw, 32px)).
-// Mirror any token change here AND in AboutHero.tsx.
-const NAVBAR_LEFT =
-  "max(clamp(20px, 5vw, 70px), calc((100vw - 1440px) / 2 + clamp(20px, 5vw, 70px)))";
-
 export default function TechHero() {
   const prefersReduced = useReducedMotion();
   const scrollToInhale = () => {
@@ -32,11 +26,10 @@ export default function TechHero() {
     >
       {/* Full-width grid — no max-w cap, so the image can reach the right edge.
           Image column widened to 45% to absorb the middle gap. */}
-      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(440px,45%)] lg:items-stretch lg:gap-x-16">
+      <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(380px,38%)] lg:items-stretch lg:gap-x-16">
         {/* Left — text column. paddingLeft uses NAVBAR_LEFT to align the text's left edge to the navbar. */}
         <div
           className="px-content lg:pr-0 lg:self-center lg:pb-16 py-16"
-          style={{ paddingLeft: NAVBAR_LEFT }}
         >
           {/* Inner content — capped readable copy width, left-aligned (matches About) */}
           <div className="flex flex-col justify-center gap-6 max-w-[700px]">
@@ -93,7 +86,7 @@ export default function TechHero() {
 
         {/* Hero image — inset rounded card on mobile, fixed 810px flush-right on desktop */}
         <motion.div
-          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden lg:mt-0 lg:mx-0 lg:self-start lg:h-[810px] lg:aspect-auto lg:rounded-none"
+          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden lg:mt-0 lg:mx-0 lg:self-start lg:h-[640px] lg:aspect-auto lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
