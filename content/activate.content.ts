@@ -91,3 +91,65 @@ export const ACTIVATE_FUNCTIONS = {
     { action: "Hold 4-5 sec (in Stealth)", result: "Exit Stealth. Returns to Glowstick." },
   ],
 } as const;
+
+// ─── Modes section ────────────────────────────────────────────────────────────
+
+export const MODE_ORDER = ["glowstick", "litsaber", "stealth"] as const;
+export type ModeId = typeof MODE_ORDER[number];
+
+export const ACTIVATE_MODES = {
+  eyebrow: "LED LIGHT MODES",
+  title: "THREE MODES",
+  intro:
+    "Litsaber has three lighting behaviors. The screen cycles between them. Pick what fits the moment.",
+  tabs: [
+    { id: "glowstick" as ModeId, label: "GLOWSTICK" },
+    { id: "litsaber"  as ModeId, label: "LITSABER" },
+    { id: "stealth"   as ModeId, label: "STEALTH" },
+  ],
+  modes: {
+    glowstick: {
+      name: "Glowstick Mode",
+      badge: "DEFAULT MODE",
+      badgeColor: "magenta" as const,
+      tagline: "Continuous glow with breathing effect while you inhale.",
+      points: [
+        "This is the default mode every time the device turns on.",
+        "LEDs stay lit. They gently \u201cbreathe\u201d when you take a hit.",
+        "Lights stay on for up to 300 seconds after the last interaction.",
+        "Single-click the button to cycle through colors: green \u2192 red \u2192 blue \u2192 yellow \u2192 orange \u2192 light blue \u2192 pink \u2192 white \u2192 rainbow \u2192 red/white/blue.",
+      ],
+      callout: null as string | null,
+      media: { src: null as string | null, poster: null as string | null, alt: "Glowstick Mode demo" },
+    },
+    litsaber: {
+      name: "Litsaber Mode",
+      badge: "SIGNATURE MODE",
+      badgeColor: "cyan" as const,
+      tagline: "Cascading lightsaber effect that responds to your breath.",
+      points: [
+        "To enter: press and hold the button for 2 seconds while in Glowstick Mode.",
+        "When you inhale, LEDs cascade for 5 seconds from top to bottom.",
+        "The longer you hold the pull, the brighter the lights become. Extended inhales ramp up to a special animated effect, that\u2019s THE BUILD \u2192 BLINKER MODE.",
+        "Change color: single-click the button. LEDs flash to confirm.",
+      ],
+      callout:
+        "If your device strobes through the rainbow at max hold, that\u2019s not a malfunction. It\u2019s Blinker Mode, the safety floor turned into a hidden light show. Stop pulling and the device resets after a few seconds.",
+      media: { src: null as string | null, poster: null as string | null, alt: "Litsaber Mode demo" },
+    },
+    stealth: {
+      name: "Stealth Mode",
+      badge: "LIGHTS OFF",
+      badgeColor: "cyan" as const,
+      tagline: "No LEDs. The device still works normally, auto-draw still fires the heater.",
+      points: [
+        "To enter: press and hold the button for 5 seconds. LEDs briefly illuminate, then fade off.",
+        "The device functions normally via auto-draw. No lights during use.",
+        "To exit: press and hold the button for 4-5 seconds. Device returns to Glowstick Mode in your last-used color.",
+      ],
+      callout:
+        "Stealth always exits to Glowstick Mode. If you want Litsaber Mode after exiting, hold the button for 2 more seconds.",
+      media: { src: null as string | null, poster: null as string | null, alt: "Stealth Mode demo" },
+    },
+  },
+} as const;
