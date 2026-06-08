@@ -119,7 +119,7 @@ export default function AboutHero() {
             on desktop; inset card on mobile. */}
         <motion.div
           className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden rounded-card
-                     lg:mt-0 lg:mx-0 lg:self-start lg:aspect-auto lg:h-[640px] lg:w-full lg:rounded-none"
+                     lg:mt-0 lg:mx-0 lg:self-stretch lg:aspect-auto lg:w-full lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}

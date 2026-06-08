@@ -90,7 +90,7 @@ export default function TechHero() {
 
         {/* Hero image — inset rounded card on mobile, fixed 810px flush-right on desktop */}
         <motion.div
-          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden lg:mt-0 lg:mx-0 lg:self-start lg:h-[640px] lg:aspect-auto lg:rounded-none"
+          className="relative mt-10 mx-[20px] aspect-[3/4] overflow-hidden lg:mt-0 lg:mx-0 lg:self-stretch lg:aspect-auto lg:rounded-none"
           initial={prefersReduced ? false : { opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
