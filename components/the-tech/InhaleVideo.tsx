@@ -105,11 +105,11 @@ export default function InhaleVideo() {
         </motion.div>
 
         {/* Breath response — two-column copy/image block */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16 mt-16 lg:mt-24">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16 mt-16 lg:mt-24">
 
-          {/* Image — right on desktop, below on mobile */}
+          {/* Image — left on desktop, below on mobile */}
           <motion.div
-className="relative w-full aspect-[3/4] lg:aspect-auto w-[350px] lg:h-[700px] lg:flex-1 rounded-card overflow-hidden"
+            className="relative mt-10 lg:mt-0 mx-auto lg:mx-0 w-[350px] max-w-full aspect-[3/4] lg:w-auto lg:aspect-auto lg:h-[700px] lg:flex-1 rounded-card overflow-hidden"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
@@ -121,13 +121,10 @@ className="relative w-full aspect-[3/4] lg:aspect-auto w-[350px] lg:h-[700px] lg
               sizes="(min-width: 1024px) 550px, 350px"
               className="object-cover object-center"
             />
-          </motion.div> 
-          {/* Copy — left on desktop, top on mobile */}
-          <div className="flex mt-10 flex-col gap-2 lg:flex-1">
-            
-             {/* Copy — right on desktop, below image on mobile */}
-          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
+          </motion.div>
 
+          {/* Copy — right on desktop, below image on mobile */}
+          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
             <motion.h2
               className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
               style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
@@ -143,7 +140,7 @@ className="relative w-full aspect-[3/4] lg:aspect-auto w-[350px] lg:h-[700px] lg
                 {BREATH_HEADLINE}
               </span>
             </motion.h2>
-            
+
             {BREATH_BODY_BLOCKS.map((block, i) => (
               <motion.p
                 key={i}
@@ -157,7 +154,6 @@ className="relative w-full aspect-[3/4] lg:aspect-auto w-[350px] lg:h-[700px] lg
             ))}
           </div>
 
- 
         </div>
 
         {/* Ambient glow — sits behind all section content */}
