@@ -153,3 +153,63 @@ export const ACTIVATE_MODES = {
     },
   },
 } as const;
+
+// ─── Pre-Heat section ─────────────────────────────────────────────────────────
+
+export const ACTIVATE_PREHEAT = {
+  eyebrow: "PRE-HEAT",
+  title: "WARM THE OIL",
+  intro: "For thicker oils that need a moment to flow.",
+  cardLabel: "Pre-heat cycle",
+  cardBadge: "9 SECONDS",
+  bestFor: "Best for distillate, liquid diamonds, or any cart that pulls cold.",
+  points: [
+    "Press the button 2 times quickly to start the pre-heat cycle.",
+    "The device pre-heats for 9 seconds at low voltage, gentle enough not to scorch the oil.",
+    "Pre-heat stops automatically when you inhale or when the 9 seconds complete.",
+  ],
+  callout:
+    "You don\u2019t always need this. Pre-heat is most useful in cold weather, with high-viscosity oils, or with carts that haven\u2019t been used in a while.",
+  media: {
+    src: null as string | null,
+    poster: null as string | null,
+    alt: "Pre-heat cycle demo",
+  },
+} as const;
+
+// ─── Voltage section ──────────────────────────────────────────────────────────
+
+export const ACTIVATE_VOLTAGE = {
+  eyebrow: "VOLTAGE",
+  title: "TUNE FOR THE OIL",
+  intro:
+    "Three voltage settings. The LED color tells you which one you\u2019re on. Press the button 3 times quickly to cycle.",
+  rows: [
+    {
+      voltage: "2.4V",
+      hex: "#22C55E",
+      colorName: "GREEN",
+      oils: "Resin / Live Resin",
+      body: "Preserves terpenes. Smooth flavor. Cool burn.",
+    },
+    {
+      voltage: "2.8V",
+      hex: "#3B82F6",
+      colorName: "BLUE",
+      oils: "Cured Resin / Hybrid Oils",
+      body: "Balanced vapor and oil efficiency. Medium burn.",
+    },
+    {
+      voltage: "3.2V",
+      hex: "#EF4444",
+      colorName: "RED",
+      oils: "Distillate / Liquid Diamonds",
+      body: "Dense clouds. Stronger pull. Warm burn.",
+    },
+  ],
+  media: {
+    src: null as string | null,
+    poster: null as string | null,
+    alt: "Voltage cycling demo",
+  },
+} as const;
