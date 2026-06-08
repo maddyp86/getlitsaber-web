@@ -7,6 +7,7 @@ import {
   INHALE_HEADLINE_LINE2,
   INHALE_BODY,
   VIDEO_SRC,
+  BREATH_HEADLINE,
   BREATH_BODY_BLOCKS,
   BREATH_RESPONSE_IMAGE_SRC,
   BREATH_RESPONSE_IMAGE_ALT,
@@ -123,6 +124,26 @@ className="relative w-full aspect-[3/4] lg:aspect-auto w-[350px] lg:h-[700px] lg
           </motion.div> 
           {/* Copy — left on desktop, top on mobile */}
           <div className="flex mt-10 flex-col gap-2 lg:flex-1">
+            
+             {/* Copy — right on desktop, below image on mobile */}
+          <div className="flex flex-col gap-5 mt-10 lg:mt-0 lg:flex-1">
+
+            <motion.h2
+              className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
+              style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
+              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
+            >
+              <span
+                className="text-white"
+                style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
+              >
+                {BREATH_HEADLINE}
+              </span>
+            </motion.h2>
+            
             {BREATH_BODY_BLOCKS.map((block, i) => (
               <motion.p
                 key={i}
