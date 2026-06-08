@@ -16,6 +16,7 @@ const SUPPORT_LINKS = [
 const BRAND_LINKS = [
   { label: "About", href: "/about" },
   { label: "The Tech", href: "/the-tech" },
+  { label: "Activate", href: "/activate" },
 ] as const;
 
 export default function Footer() {
@@ -87,7 +88,6 @@ export default function Footer() {
               {[
                 { label: "PRIVACY", href: "/policies/privacy" },
                 { label: "TERMS", href: "/policies/terms" },
-                { label: "SHIPPING & RETURNS", href: "/policies/shipping-returns" },
               ].map((link, i, arr) => (
                 <span key={link.href} className="flex items-center gap-xs">
                   <Link
