@@ -77,9 +77,9 @@ export default function ActivateSubNav() {
               data-id={id}
               onClick={() => handleClick(id)}
               className={[
-                "flex h-full shrink-0 items-center justify-center gap-[10px] whitespace-nowrap border-b-2 p-[10px] font-body text-[14px] font-semibold uppercase transition-colors duration-200",
+                "flex h-full shrink-0 items-center justify-center gap-[10px] whitespace-nowrap border-b-2 p-[10px] font-body text-[14px] uppercase transition-colors duration-200",
                 isActive
-                  ? "border-accent-cyan text-accent-cyan"
+                  ? "border-accent-cyan text-accent-cyan font-semibold"
                   : "border-transparent text-[#64748B] hover:text-text-secondary",
               ].join(" ")}
               aria-current={isActive ? "true" : undefined}
