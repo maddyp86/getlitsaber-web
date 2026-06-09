@@ -85,7 +85,7 @@ export default function WholesaleHero() {
           </motion.h1>
 
           <motion.p
-            className="font-body text-subhead text-text-secondary leading-relaxed max-w-[650px]"
+                  className="font-body text-body-sm md:text-subhead text-text-secondary max-w-[650px]"
             initial={prefersReduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
