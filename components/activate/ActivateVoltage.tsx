@@ -57,7 +57,7 @@ export default function ActivateVoltage() {
             {rows.map((row, i) => (
               <motion.div
                 key={row.voltage}
-                className="flex overflow-hidden border border-[rgba(255,255,255,0.08)] bg-surface-card"
+                className="flex flex-1 overflow-hidden border border-[rgba(255,255,255,0.08)] bg-surface-card"
                 initial={prefersReduced ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -90,8 +90,8 @@ export default function ActivateVoltage() {
 
                   {/* Voltage — WHITE, not colored */}
                   <span
-                    className="font-display font-bold leading-none tabular-nums text-white"
-                    style={{ fontSize: "clamp(30px, 3.5vw, 44px)" }}
+                    className="font-subhead font-bold leading-none tabular-nums text-white"
+                    style={{ fontSize: "clamp(30px, 3.5vw, 45px)" }}
                   >
                     {row.voltage}
                   </span>
