@@ -70,7 +70,7 @@ export default function ActivatePreheat() {
               <div className="flex flex-wrap items-center gap-3">
                 <span
                   className="font-subhead font-bold text-white leading-none"
-                  style={{ fontSize: "clamp(26px, 3vw, 36px)" }}
+                  style={{ fontSize: "clamp(25px, 3vw, 35px)" }}
                 >
                   {cardLabel}
                 </span>
