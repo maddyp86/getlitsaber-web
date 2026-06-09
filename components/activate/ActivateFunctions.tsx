@@ -29,7 +29,8 @@ export default function ActivateFunctions() {
 
         <motion.h2
           className="font-display font-bold uppercase leading-[1.1] text-white"
-          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
+          style={{ fontSize: "clamp(45px, 5vw, 75px)",
+                  textShadow: "0 0 50px rgba(255, 255, 255, 0.50)"}}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
