@@ -69,7 +69,7 @@ export default function ActivateModes() {
 
         <motion.h2
           className="font-display font-bold uppercase leading-[1.1] text-center  text-white mb-2"
-          style={{ fontSize: "clamp(45px, 5vw, 75px)",
+          style={{ fontSize: "clamp(34px, 7vw, 75px)",
                   textShadow: "0 0 50px rgba(255, 255, 255, 0.50)"}}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -184,7 +184,7 @@ export default function ActivateModes() {
               {/* Callout — only when non-null, magenta left-accent border */}
               {mode.callout && (
                 <div className="rounded-md border-l-2 border-l-accent-magenta border border-[rgba(255,0,229,0.15)] bg-surface-card px-5 py-4">
-                  <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+                  <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
                     {mode.callout}
                   </p>
                 </div>
