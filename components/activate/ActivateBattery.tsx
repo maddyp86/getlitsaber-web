@@ -40,12 +40,12 @@ export default function ActivateBattery() {
               {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
                 <span
-                  className="font-display font-bold text-white leading-none"
-                  style={{ fontSize: "clamp(26px, 3vw, 36px)" }}
+                  className="font-subhead font-bold text-white leading-none"
+                  style={{ fontSize: "clamp(25px, 3vw, 35px)" }}
                 >
                   {cardLabel}
                 </span>
-                <span className="rounded-[4px] border border-accent-cyan text-accent-cyan bg-[rgba(0,229,255,0.08)] px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0">
+                <span className="rounded-[4px] border border-accent-cyan text-accent-cyan bg-[rgba(0,229,255,0.08)] px-3 py-1 font-label text-[12px] uppercase shrink-0">
                   {cardBadge}
                 </span>
               </div>
