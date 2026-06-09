@@ -13,7 +13,7 @@ export default function ActivateFunctions() {
   return (
     <section
       id={SECTION_IDS.functions}
-      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-background-elevated"
+      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-[#0F0824]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
