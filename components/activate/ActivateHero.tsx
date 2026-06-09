@@ -25,7 +25,7 @@ export default function ActivateHero() {
 
       {/* Centered content column */}
       <div className="flex min-h-screen items-center justify-center px-content">
-        <div className="flex flex-col bottom-100 items-center text-center gap-6 max-w-[820px] w-full">
+        <div className="flex flex-col bottom-200 items-center text-center gap-6 max-w-[820px] w-full">
 
           {/* Badge */}
           <motion.div
