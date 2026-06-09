@@ -52,13 +52,13 @@ export default function ActivateModes() {
   return (
     <section
       id={SECTION_IDS.modes}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-primary"
+      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
         {/* Section header */}
         <motion.p
-          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
+          className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-4"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -68,8 +68,8 @@ export default function ActivateModes() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
-          style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
+          className="font-display font-bold uppercase leading-[1.1] text-center  text-white mb-6"
+          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
