@@ -1,9 +1,8 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { ACTIVATE_SUBNAV, SECTION_IDS, type SectionId } from "@/content/activate.content";
 
-// Navbar height from tokens: 90px. Sub-nav sits directly below it via sticky top.
+// Top offset = main navbar height so the sub-nav sticks directly beneath it.
 const NAVBAR_HEIGHT = 90;
 
 export default function ActivateSubNav() {
@@ -16,12 +15,11 @@ export default function ActivateSubNav() {
     const elements = sectionIds
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
-
     if (elements.length === 0) return;
 
     // rootMargin: top offset = combined sticky bars height so detection starts
-    // just below them; bottom cutoff trims away the lower portion so only
-    // the topmost visible section triggers.
+    // just below them; bottom cutoff trims the lower portion so only the
+    // topmost visible section triggers.
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -32,12 +30,11 @@ export default function ActivateSubNav() {
       },
       { rootMargin: `-${NAVBAR_HEIGHT + 60}px 0px -60% 0px`, threshold: 0 }
     );
-
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
-  // Scroll the active pill into view inside the horizontal rail on mobile.
+  // Scroll the active item into view inside the horizontal rail on mobile.
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     const activeEl = scrollContainerRef.current.querySelector(
@@ -51,15 +48,17 @@ export default function ActivateSubNav() {
   }
 
   return (
+    // Full-bleed sticky bar. Solid #150C2D with cyan/20 top + bottom borders per Figma.
     <div
-      className="sticky z-sticky w-full bg-background-primary/95 backdrop-blur-sm border-b border-border-divider"
+      className="sticky z-sticky w-full bg-[#150C2D] border-t border-b border-accent-cyan/20"
       style={{ top: NAVBAR_HEIGHT }}
     >
-      {/* Horizontal scroll rail — no negative-margin breakout so sticky is not
-          killed by an overflow-hidden ancestor. The container itself clips. */}
+      {/* Inner rail: capped + padded on the SAME element. Centered on desktop
+          (gap 35px); left-aligned horizontal scroll on mobile. overflow-x-auto
+          lives on this child, not on a sticky ancestor, so sticky is safe. */}
       <div
         ref={scrollContainerRef}
-        className="flex flex-nowrap overflow-x-auto gap-1 px-content py-3 scrollbar-hide"
+        className="mx-auto flex h-[70px] max-w-content items-center justify-start gap-6 overflow-x-auto px-content scrollbar-hide md:justify-center md:gap-[35px]"
         style={{ WebkitOverflowScrolling: "touch" }}
         role="navigation"
         aria-label="Page sections"
@@ -72,10 +71,10 @@ export default function ActivateSubNav() {
               data-id={id}
               onClick={() => handleClick(id)}
               className={[
-                "shrink-0 rounded-pill px-4 py-1.5 font-label text-eyebrow tracking-[0.1em] uppercase transition-colors duration-200 whitespace-nowrap",
+                "flex h-full shrink-0 items-center justify-center gap-[10px] whitespace-nowrap border-b-2 p-[10px] font-body text-[14px] font-semibold uppercase transition-colors duration-200",
                 isActive
-                  ? "text-accent-cyan border border-accent-cyan bg-accent-cyan-alpha-10"
-                  : "text-text-muted border border-transparent hover:text-text-secondary",
+                  ? "border-accent-cyan text-accent-cyan"
+                  : "border-transparent text-[#64748B] hover:text-text-secondary",
               ].join(" ")}
               aria-current={isActive ? "true" : undefined}
             >
