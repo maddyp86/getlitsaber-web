@@ -94,7 +94,7 @@ export default function ActivateModes() {
           role="tablist"
           aria-label="Light modes"
           onKeyDown={handleKeyDown}
-          className="flex gap-2 mb-10 align-center justify-center"
+          className="flex gap-2 mb-16 align-center justify-center"
           initial={prefersReduced ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -111,7 +111,7 @@ export default function ActivateModes() {
                 id={`mode-tab-${tab.id}`}
                 onClick={() => setActiveMode(tab.id)}
                 className={[
-                  "rounded-pill px-5 py-2 font-label text-eyebrow tracking-[0.12em] uppercase transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary",
+                  "px-5 py-2 font-label text-body-sm md:text-body uppercase transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary",
                   isActive
                     ? "border border-accent-cyan text-accent-cyan bg-[rgba(0,229,255,0.08)]"
                     : "border border-transparent text-text-muted hover:text-text-secondary",
