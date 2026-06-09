@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ACTIVATE_HERO } from "@/content/activate.content";
 
@@ -81,12 +82,13 @@ export default function ActivateHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
           >
-            {ACTIVATE_HERO.meta.map((item) => (
+            {ACTIVATE_HERO.meta.map(({ label, icon }) => (
               <span
-                key={item}
-                className="rounded-pill border border-border-pill bg-surface-card px-4 py-1.5 font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted"
+                key={label}
+                className="inline-flex items-center gap-2 rounded-pill border border-border-pill bg-surface-card px-4 py-1.5 font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted"
               >
-                {item}
+                <Image src={icon} alt="" width={16} height={16} className="shrink-0 opacity-70" />
+                {label}
               </span>
             ))}
           </motion.div>
