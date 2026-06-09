@@ -206,7 +206,7 @@ export default function ActivateModes() {
                   className="w-full rounded-card object-cover"
                 />
               ) : (
-                <div className="w-full aspect-[9/16] rounded-card border border-border-pill bg-surface-card flex items-center justify-center">
+                   <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                   <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                     media pending hosting
                   </span>
