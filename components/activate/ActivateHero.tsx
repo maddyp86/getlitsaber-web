@@ -10,7 +10,7 @@ export default function ActivateHero() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full min-h-[1000px] bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
+      className="relative isolate overflow-hidden w-full min-h-screen bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
       aria-label="Activate your Litsaber"
     >
       {/* Ambient glow */}
@@ -25,7 +25,7 @@ export default function ActivateHero() {
 
       {/* Centered content column */}
       <div className="flex min-h-screen items-center justify-center px-content">
-        <div className="flex flex-col items-center text-center gap-6 max-w-[820px] w-full">
+        <div className="flex flex-col mb-10 items-center text-center gap-6 max-w-[820px] w-full">
 
           {/* Badge */}
           <motion.div
