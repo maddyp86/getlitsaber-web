@@ -108,9 +108,9 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
             </motion.div>
           </div>
 
-          {/* Media column — stacks below on mobile */}
+         {/* Media column — stacks below on mobile */}
           <motion.div
-            className="mt-12 px-5 min-h-[600px] lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            className="mt-12 flex min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -125,10 +125,10 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
                 autoPlay
                 loop
                 playsInline
-                className="w-full rounded-card object-cover"
+                className="w-full flex-1 rounded-card object-cover"
               />
             ) : (
-              <div className="w-full aspect-[9/16] rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+              <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
