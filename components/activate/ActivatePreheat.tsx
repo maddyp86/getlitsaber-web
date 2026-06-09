@@ -69,12 +69,12 @@ export default function ActivatePreheat() {
               {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
                 <span
-                  className="font-display font-bold text-white leading-none"
+                  className="font-subhead font-bold text-white leading-none"
                   style={{ fontSize: "clamp(26px, 3vw, 36px)" }}
                 >
                   {cardLabel}
                 </span>
-                <span className="rounded-[4px] border border-accent-magenta text-accent-magenta px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0">
+                <span className="rounded-[4px] border border-accent-magenta text-accent-magenta px-3 py-1 font-label text-[12px] uppercase shrink-0">
                   {cardBadge}
                 </span>
               </div>
@@ -94,7 +94,7 @@ export default function ActivatePreheat() {
                     <span
                       aria-hidden="true"
                       className="mt-[6px] shrink-0 text-accent-cyan"
-                      style={{ fontSize: "10px", lineHeight: 1 }}
+                      style={{ fontSize: "12px", lineHeight: 1 }}
                     >
                       &#9654;
                     </span>
