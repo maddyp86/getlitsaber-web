@@ -53,7 +53,7 @@ export default function ActivateVoltage() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Voltage cards — three separate cards stacked with gaps */}
-          <div className="flex-1 min-w-0 flex flex-col gap-4">
+                   <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch min-w-0">
             {rows.map((row, i) => (
               <motion.div
                 key={row.voltage}
