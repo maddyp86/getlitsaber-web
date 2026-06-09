@@ -3,7 +3,7 @@
 export const ACTIVATE_HERO = {
   badge: "SCANNED FROM BOX",
   headingLead: "YOUR LITSABER IS",
-  headingAccent: "HERE.",
+  headingAccent: "HERE",
   sub: "Let's get you set up. Videos and step-by-step instructions for every function below. Most people are up and running in under a minute.",
   meta: [
     { label: "POWER ON",    icon: "/images/icons/power.png"  },
