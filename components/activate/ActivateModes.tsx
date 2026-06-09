@@ -174,7 +174,7 @@ export default function ActivateModes() {
                     >
                       &#9654;
                     </span>
-                    <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
+                    <p className="font-body text-body-sm lg:text-body text-text-secondary ">
                       {renderPoint(point)}
                     </p>
                   </li>
