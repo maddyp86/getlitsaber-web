@@ -213,3 +213,61 @@ export const ACTIVATE_VOLTAGE = {
     alt: "Voltage cycling demo",
   },
 } as const;
+
+// ─── Shared LED Colors (physical device LEDs — not brand palette) ─────────────
+
+export const LED_COLORS = {
+  red:    "#FF4444",
+  orange: "#FF9933",
+  yellow: "#FFEE44",
+  blue:   "#4FB0FF",
+  green:  "#5FFFA0",
+} as const;
+
+// ─── Battery section ──────────────────────────────────────────────────────────
+
+export const ACTIVATE_BATTERY = {
+  eyebrow: "BATTERY",
+  title: "CHECK YOUR CHARGE",
+  intro: "Litsaber is an 800mAh cell built for a full festival night.",
+  cardLabel: "Check battery level",
+  cardBadge: "4 CLICKS",
+  points: [
+    "Press the button 4 times quickly.",
+    "LED segments light up to indicate remaining battery: full to empty.",
+    "After 5 seconds, the device returns to your current mode automatically.",
+  ],
+  legend: [
+    { color: "red"    as const, range: "0-20%",   status: "Critical" },
+    { color: "orange" as const, range: "20-40%",  status: "Low" },
+    { color: "yellow" as const, range: "40-60%",  status: "Medium" },
+    { color: "blue"   as const, range: "60-80%",  status: "High" },
+    { color: "green"  as const, range: "80-100%", status: "Full" },
+  ],
+  legendAxis: { left: "BUTTON", right: "TIP" },
+  caption:
+    "Five segments, 20% each. When you check the battery, the segments light up to show your current level. Red is on the button side, green is at the tip.",
+  media: {
+    src: null as string | null,
+    poster: null as string | null,
+    alt: "Check battery level demo",
+  },
+} as const;
+
+// ─── Charging section ─────────────────────────────────────────────────────────
+
+export const ACTIVATE_CHARGING = {
+  eyebrow: "CHARGING",
+  title: "FULL CHARGE IN 75 MIN.",
+  intro: "USB-C. Any cable, any adapter. No proprietary connectors.",
+  barLabel: "BUTTON          CHARGING BEHAVIOR          TIP",
+  bullet:
+    "The bar fills as the battery climbs. One segment red, two orange, three yellow, four blue, all five green.",
+  caption:
+    "Watch the bar fill up. When all five segments are green and stop breathing, you\u2019re fully charged.",
+  media: {
+    src: null as string | null,
+    poster: null as string | null,
+    alt: "Charging the device demo",
+  },
+} as const;

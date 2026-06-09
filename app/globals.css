@@ -114,3 +114,103 @@
     overflow: hidden;
   }
 }
+
+/* ─── Charging bar animation ─────────────────────────────────────────────────
+   5 segments, each with its own keyframe. 14s infinite ease-in-out loop.
+   Segments start at opacity 0 / transparent, come online sequentially as
+   the "fuel gauge" fills. Lit segments breathe in unison (opacity 1->0.55->1).
+   P5 = all-green breathing; P6 = all-green solid (fully charged).
+   IntersectionObserver in ChargingAnimation.tsx sets animation-play-state.
+   prefers-reduced-motion: ChargingAnimation renders a static all-green state.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.charging-bar .seg { opacity: 0; background: transparent; box-shadow: none; border-radius: 2px; }
+.charging-bar .seg-1 { animation: chargeSeg1 14s infinite ease-in-out; }
+.charging-bar .seg-2 { animation: chargeSeg2 14s infinite ease-in-out; }
+.charging-bar .seg-3 { animation: chargeSeg3 14s infinite ease-in-out; }
+.charging-bar .seg-4 { animation: chargeSeg4 14s infinite ease-in-out; }
+.charging-bar .seg-5 { animation: chargeSeg5 14s infinite ease-in-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .charging-bar .seg-1,
+  .charging-bar .seg-2,
+  .charging-bar .seg-3,
+  .charging-bar .seg-4,
+  .charging-bar .seg-5 {
+    animation: none;
+    opacity: 1;
+    background: #5FFFA0;
+    box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3);
+  }
+}
+
+@keyframes chargeSeg1 {
+  0%      { opacity: 0; background: #FF4444; box-shadow: 0 0 16px rgba(255,68,68,0.6), inset 0 0 8px rgba(255,200,200,0.3); }
+  1.5%    { opacity: 1; background: #FF4444; box-shadow: 0 0 16px rgba(255,68,68,0.6), inset 0 0 8px rgba(255,200,200,0.3); }
+  8.33%   { opacity: 0.55; background: #FF4444; box-shadow: 0 0 16px rgba(255,68,68,0.6), inset 0 0 8px rgba(255,200,200,0.3); }
+  15.17%  { opacity: 1; background: #FF4444; box-shadow: 0 0 16px rgba(255,68,68,0.6), inset 0 0 8px rgba(255,200,200,0.3); }
+  18.17%  { opacity: 1; background: #FF9933; box-shadow: 0 0 16px rgba(255,153,51,0.6), inset 0 0 8px rgba(255,220,180,0.3); }
+  25.00%  { opacity: 0.55; background: #FF9933; box-shadow: 0 0 16px rgba(255,153,51,0.6), inset 0 0 8px rgba(255,220,180,0.3); }
+  31.83%  { opacity: 1; background: #FF9933; box-shadow: 0 0 16px rgba(255,153,51,0.6), inset 0 0 8px rgba(255,220,180,0.3); }
+  34.83%  { opacity: 1; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  41.67%  { opacity: 0.55; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  48.50%  { opacity: 1; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  51.50%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  58.33%  { opacity: 0.55; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  65.17%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  68.17%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  75.00%  { opacity: 0.55; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  81.83%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  83.33%, 98.50% { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  100%    { opacity: 0; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+}
+@keyframes chargeSeg2 {
+  0%, 16.67%  { opacity: 0; background: transparent; box-shadow: none; }
+  18.17%  { opacity: 1; background: #FF9933; box-shadow: 0 0 16px rgba(255,153,51,0.6), inset 0 0 8px rgba(255,220,180,0.3); }
+  25.00%  { opacity: 0.55; background: #FF9933; box-shadow: 0 0 16px rgba(255,153,51,0.6), inset 0 0 8px rgba(255,220,180,0.3); }
+  31.83%  { opacity: 1; background: #FF9933; box-shadow: 0 0 16px rgba(255,153,51,0.6), inset 0 0 8px rgba(255,220,180,0.3); }
+  34.83%  { opacity: 1; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  41.67%  { opacity: 0.55; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  48.50%  { opacity: 1; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  51.50%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  58.33%  { opacity: 0.55; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  65.17%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  68.17%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  75.00%  { opacity: 0.55; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  81.83%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  83.33%, 98.50% { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  100%    { opacity: 0; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+}
+@keyframes chargeSeg3 {
+  0%, 33.33%  { opacity: 0; background: transparent; box-shadow: none; }
+  34.83%  { opacity: 1; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  41.67%  { opacity: 0.55; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  48.50%  { opacity: 1; background: #FFEE44; box-shadow: 0 0 16px rgba(255,238,68,0.6), inset 0 0 8px rgba(255,250,200,0.3); }
+  51.50%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  58.33%  { opacity: 0.55; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  65.17%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  68.17%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  75.00%  { opacity: 0.55; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  81.83%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  83.33%, 98.50% { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  100%    { opacity: 0; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+}
+@keyframes chargeSeg4 {
+  0%, 50%  { opacity: 0; background: transparent; box-shadow: none; }
+  51.50%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  58.33%  { opacity: 0.55; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  65.17%  { opacity: 1; background: #4FB0FF; box-shadow: 0 0 16px rgba(79,176,255,0.6), inset 0 0 8px rgba(200,230,255,0.3); }
+  68.17%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  75.00%  { opacity: 0.55; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  81.83%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  83.33%, 98.50% { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  100%    { opacity: 0; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+}
+@keyframes chargeSeg5 {
+  0%, 66.67%  { opacity: 0; background: transparent; box-shadow: none; }
+  68.17%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  75.00%  { opacity: 0.55; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  81.83%  { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  83.33%, 98.50% { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+  100%    { opacity: 0; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
+}
