@@ -7,18 +7,6 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const BOLD_LEAD_RE = /^([^.]+\.\s*)/;
 
-function renderPoint(text: string) {
-  const match = text.match(BOLD_LEAD_RE);
-  if (match) {
-    return (
-      <>
-        <strong className="font-semibold text-text-primary">{match[0]}</strong>
-        {text.slice(match[0].length)}
-      </>
-    );
-  }
-  return text;
-}
 
 export default function ActivatePreheat() {
   const prefersReduced = useReducedMotion();
@@ -92,8 +80,7 @@ export default function ActivatePreheat() {
               <p className="font-body text-body-sm text-text-secondary leading-relaxed">
                 {bestFor}
               </p>
-
-              {/* Points */}
+{/* Points */}
               <ul className="flex flex-col gap-3" aria-label="Pre-heat instructions">
                 {points.map((point, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -104,8 +91,15 @@ export default function ActivatePreheat() {
                     >
                       &#9654;
                     </span>
-                    <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-                      {renderPoint(point)}
+                    <p
+                      className={[
+                        "font-body text-body-sm leading-relaxed",
+                        point.emphasis
+                          ? "text-text-primary font-semibold"
+                          : "text-text-secondary",
+                      ].join(" ")}
+                    >
+                      {point.text}
                     </p>
                   </li>
                 ))}
