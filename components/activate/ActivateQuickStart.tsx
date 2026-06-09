@@ -55,7 +55,7 @@ export default function ActivateQuickStart() {
           {/* Steps column */}
           <div className="flex-1 min-w-0">
             <motion.p
-              className="font-subhead text-eyebrow uppercase text-text-muted mb-6"
+              className="font-subhead text-eyebrow uppercase text-white mb-6"
               initial={prefersReduced ? false : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
