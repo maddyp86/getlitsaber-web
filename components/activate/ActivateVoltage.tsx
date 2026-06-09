@@ -91,7 +91,7 @@ export default function ActivateVoltage() {
                   {/* Voltage — WHITE, not colored */}
                   <span
                     className="font-subhead font-bold leading-none tabular-nums text-white"
-                    style={{ fontSize: "clamp(30px, 3.5vw, 45px)" }}
+                    style={{ fontSize: "clamp(25px, 3.5vw, 35px)" }}
                   >
                     {row.voltage}
                   </span>
