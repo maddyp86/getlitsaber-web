@@ -10,7 +10,7 @@ export default function ActivateHero() {
 
   return (
     <section
-      className="relative isolate overflow-hidden w-full min-h-screen bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
+      className="relative isolate overflow-hidden w-full min-h-[1000px] bg-[linear-gradient(180deg,#0A0518_0%,#150C2D_60%,#0A0518_100%)]"
       aria-label="Activate your Litsaber"
     >
       {/* Ambient glow */}
