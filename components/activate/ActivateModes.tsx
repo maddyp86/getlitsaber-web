@@ -80,7 +80,7 @@ export default function ActivateModes() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm text-center lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content"
+          className="font-body text-body-sm text-center lg:text-body text-text-secondary leading-relaxed md:mb-16 mb-10 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -140,16 +140,16 @@ export default function ActivateModes() {
             <div className="flex-1 min-w-0 flex flex-col gap-6">
 
               {/* Mode name + badge */}
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center justify between gap-3">
                 <h3
-                  className="font-display font-bold uppercase text-white leading-none"
+                  className="font-subhead font-bold uppercase text-white leading-none"
                   style={{ fontSize: "clamp(24px, 3vw, 38px)" }}
                 >
                   {mode.name}
                 </h3>
                 <span
                   className={[
-                    "rounded-pill border px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0",
+                    "border px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0",
                     BADGE_STYLES[mode.badgeColor],
                   ].join(" ")}
                 >
