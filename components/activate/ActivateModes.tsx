@@ -193,7 +193,7 @@ export default function ActivateModes() {
             </div>
 
             {/* Media column — right on desktop, below text on mobile */}
-            <div className="mt-10 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+            <div  className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
               {mode.media.src ? (
                 <video
                   src={mode.media.src}
