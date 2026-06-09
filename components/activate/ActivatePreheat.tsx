@@ -5,6 +5,21 @@ import { SECTION_IDS, ACTIVATE_PREHEAT } from "@/content/activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+const BOLD_LEAD_RE = /^([^.]+\.\s*)/;
+
+function renderPoint(text: string) {
+  const match = text.match(BOLD_LEAD_RE);
+  if (match) {
+    return (
+      <>
+        <strong className="font-semibold text-text-primary">{match[0]}</strong>
+        {text.slice(match[0].length)}
+      </>
+    );
+  }
+  return text;
+}
+
 export default function ActivatePreheat() {
   const prefersReduced = useReducedMotion();
   const { eyebrow, title, intro, cardLabel, cardBadge, bestFor, points, callout, media } =
@@ -13,13 +28,13 @@ export default function ActivatePreheat() {
   return (
     <section
       id={SECTION_IDS.preheat}
-      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-[#000000]"
+      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-elevated"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
         {/* Section header */}
         <motion.p
-          className="font-label text-eyebrow uppercase text-accent-cyan mb-2"
+          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -29,8 +44,8 @@ export default function ActivatePreheat() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
-          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
+          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
+          style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -40,7 +55,7 @@ export default function ActivatePreheat() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
+          className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-[580px]"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -55,54 +70,42 @@ export default function ActivatePreheat() {
           {/* Content column */}
           <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch min-w-0">
 
-            {/* Pre-heat block (no card chrome per Figma) */}
+            {/* Pre-heat card */}
             <motion.div
-              className="w-full flex flex-col gap-4"
+              className="rounded-card border border-[rgba(0,229,255,0.20)] bg-surface-card p-6 flex flex-col gap-4"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
             >
-              {/* Header: label + badge */}
+              {/* Card header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
-                <span
-                 className="font-subhead font-bold  md:text-[35px] text-[25px] uppercase text-white"
-                >
+                <span className="font-label text-label tracking-[0.1em] uppercase text-text-primary font-semibold">
                   {cardLabel}
                 </span>
-                <span className="rounded-[4px] border border-accent-magenta text-accent-magenta px-3 py-1 font-label text-[12px] uppercase shrink-0">
+                <span className="rounded-pill border border-accent-cyan text-accent-cyan bg-[rgba(0,229,255,0.08)] px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0">
                   {cardBadge}
                 </span>
               </div>
 
               {/* Best for */}
-              <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
+              <p className="font-body text-body-sm text-text-secondary leading-relaxed">
                 {bestFor}
               </p>
 
-              {/* Points with dividers between */}
-              <ul className="flex flex-col mt-2" aria-label="Pre-heat instructions">
+              {/* Points */}
+              <ul className="flex flex-col gap-3" aria-label="Pre-heat instructions">
                 {points.map((point, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-3 py-4 border-b border-[rgba(255,255,255,0.08)] last:border-0"
-                  >
+                  <li key={i} className="flex items-start gap-3">
                     <span
                       aria-hidden="true"
-                      className="mt-[6px] shrink-0 text-accent-cyan"
-                      style={{ fontSize: "12px", lineHeight: 1 }}
+                      className="mt-[5px] shrink-0 text-accent-cyan"
+                      style={{ fontSize: "10px", lineHeight: 1 }}
                     >
                       &#9654;
                     </span>
-                    <p
-                      className={[
-                        "font-body text-body-sm lg:text-body leading-relaxed",
-                        point.emphasis
-                          ? "text-text-primary font-semibold"
-                          : "text-text-secondary",
-                      ].join(" ")}
-                    >
-                      {point.text}
+                    <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+                      {renderPoint(point)}
                     </p>
                   </li>
                 ))}
