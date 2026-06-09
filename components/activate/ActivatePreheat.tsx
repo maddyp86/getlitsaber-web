@@ -5,21 +5,6 @@ import { SECTION_IDS, ACTIVATE_PREHEAT } from "@/content/activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-const BOLD_LEAD_RE = /^([^.]+\.\s*)/;
-
-function renderPoint(text: string) {
-  const match = text.match(BOLD_LEAD_RE);
-  if (match) {
-    return (
-      <>
-        <strong className="font-semibold text-text-primary">{match[0]}</strong>
-        {text.slice(match[0].length)}
-      </>
-    );
-  }
-  return text;
-}
-
 export default function ActivatePreheat() {
   const prefersReduced = useReducedMotion();
   const { eyebrow, title, intro, cardLabel, cardBadge, bestFor, points, callout, media } =
@@ -45,7 +30,7 @@ export default function ActivatePreheat() {
 
         <motion.h2
           className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
-          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
+          style={{ fontSize: "clamp(34px, 6vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -55,7 +40,7 @@ export default function ActivatePreheat() {
         </motion.h2>
 
         <motion.p
-           className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
+          className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -70,42 +55,55 @@ export default function ActivatePreheat() {
           {/* Content column */}
           <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch min-w-0">
 
-            {/* Pre-heat card */}
+            {/* Pre-heat block (no card chrome per Figma) */}
             <motion.div
-              className="rounded-card border border-[rgba(0,229,255,0.20)] bg-surface-card p-6 flex flex-col gap-4"
+              className="w-full flex flex-col gap-4"
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
             >
-              {/* Card header: label + badge */}
+              {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
-                <span className="font-label text-label tracking-[0.1em] uppercase text-text-primary font-semibold">
+                <span
+                  className="font-display font-bold text-white leading-none"
+                  style={{ fontSize: "clamp(24px, 3vw, 32px)" }}
+                >
                   {cardLabel}
                 </span>
-                <span className="rounded-pill border border-accent-cyan text-accent-cyan bg-[rgba(0,229,255,0.08)] px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0">
+                <span className="rounded-[4px] border border-accent-magenta text-accent-magenta px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0">
                   {cardBadge}
                 </span>
               </div>
 
               {/* Best for */}
-              <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+              <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
                 {bestFor}
               </p>
 
-              {/* Points */}
-              <ul className="flex flex-col gap-3" aria-label="Pre-heat instructions">
+              {/* Points with dividers between */}
+              <ul className="flex flex-col mt-2" aria-label="Pre-heat instructions">
                 {points.map((point, i) => (
-                  <li key={i} className="flex items-start gap-3">
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 py-4 border-b border-[rgba(255,255,255,0.08)] last:border-0"
+                  >
                     <span
                       aria-hidden="true"
-                      className="mt-[5px] shrink-0 text-accent-cyan"
+                      className="mt-[6px] shrink-0 text-accent-cyan"
                       style={{ fontSize: "10px", lineHeight: 1 }}
                     >
                       &#9654;
                     </span>
-                    <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-                      {renderPoint(point)}
+                    <p
+                      className={[
+                        "font-body text-body-sm lg:text-body leading-relaxed",
+                        point.emphasis
+                          ? "text-text-primary font-semibold"
+                          : "text-text-secondary",
+                      ].join(" ")}
+                    >
+                      {point.text}
                     </p>
                   </li>
                 ))}
