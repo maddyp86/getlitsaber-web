@@ -57,7 +57,7 @@ export default function ActivateVoltage() {
             {rows.map((row, i) => (
               <motion.div
                 key={row.voltage}
-                className="flex overflow-hidden rounded-card border border-[rgba(255,255,255,0.08)] bg-surface-card"
+                className="flex overflow-hidden border border-[rgba(255,255,255,0.08)] bg-surface-card"
                 initial={prefersReduced ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
