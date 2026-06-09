@@ -72,13 +72,13 @@ export default function ActivateFunctions() {
               <tr>
                 <th
                   scope="col"
-                  className="w-[38%] px-5 py-4 text-left font-label font-bold uppercase text-accent-cyan border-b border-[#113757]"
+                  className="w-[38%] px-5 py-4 text-left font-label font-bold text-eyebrow uppercase text-accent-cyan border-b border-[#113757]"
                 >
                   {columns.action}
                 </th>
                 <th
                   scope="col"
-                  className="px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-[#113757]"
+                  className="px-5 py-4 text-left font-label text-eyebrow uppercase text-accent-cyan border-b border-[#113757]"
                 >
                   {columns.result}
                 </th>
@@ -87,7 +87,7 @@ export default function ActivateFunctions() {
             <tbody>
               {rows.map((row) => (
                 <tr key={row.action} className="[&:last-child>td]:border-0">
-                  <td className="px-5 py-4 font-label text-body-sm text-text-primary align-top border-b border-[#113757]">
+                  <td className="px-5 py-4 font-label font-bold text-body-sm text-text-primary align-top border-b border-[#113757]">
                     {row.action}
                   </td>
                   <td className="px-5 py-4 font-body text-body-sm text-text-secondary align-top border-b border-[#113757]">
