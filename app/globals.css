@@ -214,3 +214,13 @@
   83.33%, 98.50% { opacity: 1; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
   100%    { opacity: 0; background: #5FFFA0; box-shadow: 0 0 16px rgba(95,255,160,0.6), inset 0 0 8px rgba(200,255,220,0.3); }
 }
+
+
+/* Hide scrollbar across browsers while keeping scroll functional */
+.scrollbar-hide {
+  -ms-overflow-style: none;      /* IE and old Edge */
+  scrollbar-width: none;         /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari, Edge, Opera */
+}
