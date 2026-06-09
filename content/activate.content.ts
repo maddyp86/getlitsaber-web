@@ -232,33 +232,36 @@ export const LED_COLORS = {
 
 // ─── Battery section ──────────────────────────────────────────────────────────
 
-export const ACTIVATE_BATTERY = {
+ACTIVATE_BATTERY = {
   eyebrow: "BATTERY",
   title: "CHECK YOUR CHARGE",
-  intro: "Litsaber is an 800mAh cell built for a full festival night.",
+  intro: "Litsaber has an 800mAh cell built for a full festival night.",
   cardLabel: "Check battery level",
   cardBadge: "4 CLICKS",
+  tagline: "Quick read on how much charge you have left.",
   points: [
-    "Press the button 4 times quickly.",
-    "LED segments light up to indicate remaining battery: full to empty.",
-    "After 5 seconds, the device returns to your current mode automatically.",
+    { text: "Press the button 4 times quickly.", emphasis: true },
+    { text: "LED segments light up to indicate remaining battery: full to empty.", emphasis: false },
+    { text: "After 5 seconds, the device returns to your current mode automatically.", emphasis: false },
   ],
-  legend: [
-    { color: "red"    as const, range: "0-20%",   status: "Critical" },
-    { color: "orange" as const, range: "20-40%",  status: "Low" },
-    { color: "yellow" as const, range: "40-60%",  status: "Medium" },
-    { color: "blue"   as const, range: "60-80%",  status: "High" },
-    { color: "green"  as const, range: "80-100%", status: "Full" },
-  ],
-  legendAxis: { left: "BUTTON", right: "TIP" },
-  caption:
-    "Five segments, 20% each. When you check the battery, the segments light up to show your current level. Red is on the button side, green is at the tip.",
-  media: {
-    src: null as string | null,
-    poster: null as string | null,
-    alt: "Check battery level demo",
+  callout: {
+    lead: "Battery specs:",
+    body: "800mAh cobalt cell, 300+ recharge cycles (about a year of festivals), 1.48Wh energy capacity.",
   },
-} as const;
+  legend: [
+    { color: "red",    range: "0-20%",   status: "Critical" },
+    { color: "orange", range: "20-40%",  status: "Low" },
+    { color: "yellow", range: "40-60%",  status: "Medium" },
+    { color: "blue",   range: "60-80%",  status: "High" },
+    { color: "green",  range: "80-100%", status: "Full" },
+  ],
+  legendAxis: { left: "BUTTON", center: "BATTERY SEGMENTS", right: "TIP" },
+  caption: {
+    lead: "Five segments, 20% each.",
+    body: "When you check the battery, the segments light up to show your current level. Red is on the button side, green is at the tip.",
+  },
+  media: { src: null, poster: null, alt: "Check battery level demo" },
+}
 
 // ─── Charging section ─────────────────────────────────────────────────────────
 
