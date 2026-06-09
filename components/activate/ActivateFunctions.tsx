@@ -73,7 +73,7 @@ export default function ActivateFunctions() {
               <tr>
                 <th
                   scope="col"
-                  className="w-[38%] px-5 py-4 text-left font-label font-bold text-eyebrow uppercase text-accent-cyan border-b border-[#113757]"
+                  className="w-[42%] px-5 py-4 text-left font-label font-bold text-eyebrow uppercase text-accent-cyan border-b border-[#113757]"
                 >
                   {columns.action}
                 </th>
