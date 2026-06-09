@@ -7,7 +7,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export default function ActivateQuickStart() {
   const prefersReduced = useReducedMotion();
-  const { eyebrow, title, intro, stepsHeading, steps, callout, media } =
+const { eyebrow, title, intro, stepsHeading, steps, media } =
     ACTIVATE_QUICKSTART;
 
   return (
