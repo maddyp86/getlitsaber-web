@@ -28,13 +28,13 @@ export default function ActivatePreheat() {
   return (
     <section
       id={SECTION_IDS.preheat}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-elevated"
+      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-background-elevated"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
         {/* Section header */}
         <motion.p
-          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4"
+          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-2"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -44,8 +44,8 @@ export default function ActivatePreheat() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
-          style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
+          className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
+          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -55,7 +55,7 @@ export default function ActivatePreheat() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-[580px]"
+           className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
