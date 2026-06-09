@@ -113,7 +113,7 @@ export default function ActivateVoltage() {
 
           {/* Media column */}
           <motion.div
-            className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+             className="mt-12 lg:mt-0 min-h-[600px] lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -131,7 +131,7 @@ export default function ActivateVoltage() {
                 className="w-full rounded-card object-cover"
               />
             ) : (
-              <div className="w-full aspect-[9/16] rounded-card border border-border-pill bg-surface-card flex items-center justify-center">
+            <div className="w-full aspect-[9/16] rounded-card border border-border-pill bg-surface-card flex items-center justify-center">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
