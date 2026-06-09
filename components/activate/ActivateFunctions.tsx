@@ -59,7 +59,7 @@ export default function ActivateFunctions() {
           {tableHeading}
         </motion.h3>
 
-       {/* Table — wrapped in overflow-x-auto to prevent page-level overflow
+     {/* Table — wrapped in overflow-x-auto to prevent page-level overflow
             which would silently break the sticky sub-nav */}
         <motion.div
           className="w-full overflow-x-auto"
@@ -70,33 +70,31 @@ export default function ActivateFunctions() {
         >
           <table className="w-full min-w-[350px] bg-[#0C0C18] border-collapse rounded-card overflow-hidden">
             <thead>
-              <tr className="bg-[#0C0C18]">
+              <tr className="border-b border-[#113757]">
                 <th
                   scope="col"
-                  className="w-[38%] px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-[#113757]"
+                  className="w-[38%] px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan"
                 >
                   {columns.action}
                 </th>
                 <th
                   scope="col"
-                  className="px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-[#113757]"
+                  className="px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan"
                 >
                   {columns.result}
                 </th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((row, i) => (
-                <Fragment key={row.action}>
-                  <tr className={i % 2 === 0 ? "bg-transparent" : "bg-surface-card/30"}>
-                    <td className="px-5 py-4 font-label text-body-sm text-text-primary align-top border-b border-[#113757] last:border-0">
-                      {row.action}
-                    </td>
-                    <td className="px-5 py-4 font-body text-body-sm text-text-secondary align-top border-b border-[#113757] last:border-0">
-                      {row.result}
-                    </td>
-                  </tr>
-                </Fragment>
+              {rows.map((row) => (
+                <tr key={row.action} className="border-b border-[#113757] last:border-0">
+                  <td className="px-5 py-4 font-label text-body-sm text-text-primary align-top">
+                    {row.action}
+                  </td>
+                  <td className="px-5 py-4 font-body text-body-sm text-text-secondary align-top">
+                    {row.result}
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
