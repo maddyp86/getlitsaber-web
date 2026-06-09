@@ -109,7 +109,7 @@ export default function ActivateQuickStart() {
 
           {/* Media column — stacks below on mobile */}
           <motion.div
-            className="mt-12 px-5 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            className="mt-12 px-5 min-h-[600px] lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
