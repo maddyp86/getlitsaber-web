@@ -69,7 +69,8 @@ export default function ActivateModes() {
 
         <motion.h2
           className="font-display font-bold uppercase leading-[1.1] text-center  text-white mb-6"
-          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
+          style={{ fontSize: "clamp(45px, 5vw, 75px)",
+                  textShadow: "0 0 50px rgba(255, 255, 255, 0.50)"}}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -79,7 +80,7 @@ export default function ActivateModes() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-[580px]"
+          className="font-body text-body-sm text-center lg:text-body text-text-secondary leading-relaxed mb-10 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -93,7 +94,7 @@ export default function ActivateModes() {
           role="tablist"
           aria-label="Light modes"
           onKeyDown={handleKeyDown}
-          className="flex gap-2 mb-10"
+          className="flex gap-2 mb-10 align-center justify-center"
           initial={prefersReduced ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
