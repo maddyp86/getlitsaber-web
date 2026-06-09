@@ -77,10 +77,10 @@ export default function ActivateQuickStart() {
                   <div className="flex flex-col gap-2 w-full">
                     {/* Step header row */}
                     <div className="flex items-baseline gap-3">
-                      <span className="font-label text-eyebrow text-accent-cyan shrink-0">
+                      <span className="font-label text-subhead text-accent-cyan shrink-0">
                         {step.num}
                       </span>
-                      <span className="font-label text-label uppercase text-text-primary font-bold">
+                      <span className="font-label text-subhead uppercase text-text-primary font-bold">
                         {step.label}
                       </span>
                     </div>
