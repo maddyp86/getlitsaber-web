@@ -55,7 +55,7 @@ export default function ActivateQuickStart() {
           {/* Steps column */}
         <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
             <motion.h3
-              className="font-subhead font-bold text-eyebrow text-[35px] uppercase text-white mb-6"
+              className="font-subhead font-bold text-[35px] uppercase text-white mb-6"
               initial={prefersReduced ? false : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
