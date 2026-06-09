@@ -108,7 +108,7 @@ export default function ActivateBattery() {
                 className="w-full rounded-card object-cover"
               />
             ) : (
-              <div lassName="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+              <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
