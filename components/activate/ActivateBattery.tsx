@@ -85,7 +85,7 @@ export default function ActivateBattery() {
             </div>
 
             {/* Battery specs callout */}
-            <div className="w-full border-l-4 border-accent-cyan bg-[#0E1023] px-5 py-4">
+            <div className="w-full border-l-4 border-accent-magenta bg-[#1C0B29] px-5 py-4">
               <p className="font-body text-body-sm leading-relaxed text-[#CCC]">
                 <span className="text-accent-cyan font-bold">{callout.lead} </span>
                 {callout.body}
