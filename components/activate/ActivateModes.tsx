@@ -111,7 +111,7 @@ export default function ActivateModes() {
                 id={`mode-tab-${tab.id}`}
                 onClick={() => setActiveMode(tab.id)}
                 className={[
-            "flex-1 min-w-0 text-center whitespace-nowrap px-3 py-2 sm:px-4 md:px-5 font-label text-[12px] sm:text-body-sm md:text-body uppercase transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary",
+            "flex-1 min-w-0 text-center whitespace-nowrap px-3 py-4 sm:px-4 md:px-5 font-label text-[12px] sm:text-body-sm md:text-body uppercase transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary",
                   isActive
                     ? "border border-accent-cyan text-accent-cyan bg-[rgba(0,229,255,0.08)]"
                     : "border border-transparent text-text-muted hover:text-text-secondary",
