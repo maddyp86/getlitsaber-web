@@ -50,7 +50,7 @@ export default function ActivateQuickStart() {
         </motion.p>
 
         {/* Two-column: steps left, media right */}
-     <div className="flex flex-col justify-center items-start gap-[100px] flex-[1_0_0] min-w-0">
+     <div className="flex flex-col justify-center items-start gap-[100px]">
 
           {/* Steps column */}
           <div className="flex-1 min-w-0">
