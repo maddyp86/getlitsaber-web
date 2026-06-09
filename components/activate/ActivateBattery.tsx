@@ -33,7 +33,7 @@ export default function ActivateBattery() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Content column */}
-          <div className="flex flex-col items-start gap-8 flex-[1_0_0] min-w-0">
+             <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
 
             {/* Check-battery block (no card chrome per Figma) */}
             <div className="w-full flex flex-col gap-3">
