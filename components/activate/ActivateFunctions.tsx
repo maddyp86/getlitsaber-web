@@ -1,6 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SECTION_IDS, ACTIVATE_FUNCTIONS } from "@/content/activate.content";
 
