@@ -58,7 +58,7 @@ export default function ActivateModes() {
 
         {/* Section header */}
         <motion.p
-          className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-4"
+          className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-2"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -68,7 +68,7 @@ export default function ActivateModes() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold uppercase leading-[1.1] text-center  text-white mb-6"
+          className="font-display font-bold uppercase leading-[1.1] text-center  text-white mb-2"
           style={{ fontSize: "clamp(45px, 5vw, 75px)",
                   textShadow: "0 0 50px rgba(255, 255, 255, 0.50)"}}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
@@ -80,7 +80,7 @@ export default function ActivateModes() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm text-center lg:text-body text-text-secondary leading-relaxed mb-10 max-w-content"
+          className="font-body text-body-sm text-center lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
