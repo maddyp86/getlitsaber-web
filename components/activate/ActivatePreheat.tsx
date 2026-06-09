@@ -66,7 +66,7 @@ export default function ActivatePreheat() {
               {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
                 <span
-                 className="font-subhead font-bold  md:text-[35px] text-[25px] uppercase text-white mb-6"
+                 className="font-subhead font-bold  md:text-[35px] text-[25px] uppercase text-white"
                 >
                   {cardLabel}
                 </span>
