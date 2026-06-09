@@ -29,7 +29,7 @@ export default function ActivateQuickStart() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold uppercase text-white mb-6"
+          className="font-display font-bold uppercase text-white mb-2"
           style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
