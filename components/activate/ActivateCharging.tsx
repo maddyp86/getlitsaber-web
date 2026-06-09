@@ -71,7 +71,7 @@ export default function ActivateCharging() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Bar column */}
-          <div className="flex-1 min-w-0 flex flex-col gap-4">
+          <div className="flex flex-col justify-center items-start gap-4 flex-[1_0_0] self-stretch min-w-0">
             {/* Bar label row */}
             <div className="flex justify-between" aria-hidden="true">
               <span className="font-label text-[10px] tracking-[0.1em] uppercase text-text-muted">
@@ -95,7 +95,7 @@ export default function ActivateCharging() {
           </div>
 
           {/* Media column */}
-          <div className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+          <div className="mt-12 lg:mt-0 min-h-[600px] lg:w-[380px] xl:w-[440px] shrink-0">
             {media.src ? (
               <video
                 src={media.src}

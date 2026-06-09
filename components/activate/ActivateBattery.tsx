@@ -44,7 +44,7 @@ export default function ActivateBattery() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Content column */}
-          <div className="flex-1 min-w-0 flex flex-col gap-8">
+          <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch min-w-0">
 
             {/* Check-battery card */}
             <div className="rounded-card border border-[rgba(0,229,255,0.20)] bg-surface-card p-6 flex flex-col gap-4">
@@ -137,7 +137,7 @@ export default function ActivateBattery() {
           </div>
 
           {/* Media column */}
-          <div className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+          <div className="mt-12 lg:mt-0 min-h-[600px] lg:w-[380px] xl:w-[440px] shrink-0">
             {media.src ? (
               <video
                 src={media.src}

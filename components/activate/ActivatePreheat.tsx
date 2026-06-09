@@ -68,7 +68,7 @@ export default function ActivatePreheat() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Content column */}
-          <div className="flex-1 min-w-0 flex flex-col gap-8">
+          <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch min-w-0">
 
             {/* Pre-heat card */}
             <motion.div
@@ -114,14 +114,15 @@ export default function ActivatePreheat() {
 
             {/* Callout block */}
             <motion.div
-              className="rounded-md border border-[rgba(0,229,255,0.15)] bg-surface-card px-5 py-4"
+              className="border-l-4 border-accent-cyan bg-[#0E1023] px-5 py-4"
               initial={prefersReduced ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
             >
-              <p className="font-body text-body-sm text-text-secondary leading-relaxed">
-                {callout}
+              <p className="font-body text-[16px] leading-[normal] text-[#CCC] font-normal">
+                <span className="text-accent-cyan font-bold">{callout.lead} </span>
+                {callout.body}
               </p>
             </motion.div>
 
@@ -129,7 +130,7 @@ export default function ActivatePreheat() {
 
           {/* Media column */}
           <motion.div
-            className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            className="mt-12 lg:mt-0 min-h-[600px] lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
