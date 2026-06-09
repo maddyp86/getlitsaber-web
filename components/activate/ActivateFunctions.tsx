@@ -49,15 +49,15 @@ export default function ActivateFunctions() {
           {intro}
         </motion.p>
 
-        <motion.p
-          className="font-label text-eyebrow tracking-[0.15em] uppercase text-text-muted mb-5"
+        <motion.h3
+            className="font-subhead font-bold text-[35px] uppercase text-white mb-6"
           initial={prefersReduced ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
         >
           {tableHeading}
-        </motion.p>
+        </motion.h3>
 
         {/* Table — wrapped in overflow-x-auto to prevent page-level overflow
             which would silently break the sticky sub-nav */}
