@@ -149,7 +149,7 @@ export default function ActivateModes() {
                 </h3>
                 <span
                   className={[
-                    "border px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0",
+                    "border px-3 py-1 font-label text-[12px] uppercase shrink-0",
                     BADGE_STYLES[mode.badgeColor],
                   ].join(" ")}
                 >
@@ -158,7 +158,7 @@ export default function ActivateModes() {
               </div>
 
               {/* Tagline */}
-              <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed -mt-2">
+              <p className="font-body text-body-sm lg:text-body text-text-secondary -mt-2">
                 {mode.tagline}
               </p>
 
@@ -170,7 +170,7 @@ export default function ActivateModes() {
                     <span
                       aria-hidden="true"
                       className="mt-[5px] shrink-0 text-accent-cyan"
-                      style={{ fontSize: "10px", lineHeight: 1 }}
+                      style={{ fontSize: "12px", lineHeight: 1 }}
                     >
                       &#9654;
                     </span>
