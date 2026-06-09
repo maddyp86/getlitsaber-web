@@ -5,6 +5,21 @@ import { SECTION_IDS, ACTIVATE_PREHEAT } from "@/content/activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+const BOLD_LEAD_RE = /^([^.]+\.\s*)/;
+
+function renderPoint(text: string) {
+  const match = text.match(BOLD_LEAD_RE);
+  if (match) {
+    return (
+      <>
+        <strong className="font-semibold text-text-primary">{match[0]}</strong>
+        {text.slice(match[0].length)}
+      </>
+    );
+  }
+  return text;
+}
+
 export default function ActivatePreheat() {
   const prefersReduced = useReducedMotion();
   const { eyebrow, title, intro, cardLabel, cardBadge, bestFor, points, callout, media } =
@@ -40,7 +55,7 @@ export default function ActivatePreheat() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
+          className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-[580px]"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -89,15 +104,8 @@ export default function ActivatePreheat() {
                     >
                       &#9654;
                     </span>
-                    <p
-                      className={[
-                        "font-body text-body-sm leading-relaxed",
-                        point.emphasis
-                          ? "text-text-primary font-semibold"
-                          : "text-text-secondary",
-                      ].join(" ")}
-                    >
-                      {point.text}
+                    <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+                      {renderPoint(point)}
                     </p>
                   </li>
                 ))}
