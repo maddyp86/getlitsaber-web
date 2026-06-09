@@ -25,7 +25,7 @@ export default function ActivateBattery() {
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary text-center mx-auto mb-16 max-w-[560px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary text-center mx-auto mb-16 max-w-content">
           {intro}
         </p>
 
