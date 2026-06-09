@@ -167,11 +167,11 @@ export const ACTIVATE_PREHEAT = {
   cardLabel: "Pre-heat cycle",
   cardBadge: "9 SECONDS",
   bestFor: "Best for distillate, liquid diamonds, or any cart that pulls cold.",
-  points: [
-    "Press the button 2 times quickly to start the pre-heat cycle.",
-    "The device pre-heats for 9 seconds at low voltage, gentle enough not to scorch the oil.",
-    "Pre-heat stops automatically when you inhale or when the 9 seconds complete.",
-  ],
+points: [
+  { text: "Press the button 2 times quickly to start the pre-heat cycle.", emphasis: true },
+  { text: "The device pre-heats for 9 seconds at low voltage, gentle enough not to scorch the oil.", emphasis: false },
+  { text: "Pre-heat stops automatically when you inhale or when the 9 seconds complete.", emphasis: true },
+],
   callout: {
     lead: "You don\u2019t always need this.",
     body: "Pre-heat is most useful in cold weather, with high-viscosity oils, or with carts that haven\u2019t been used in a while.",
