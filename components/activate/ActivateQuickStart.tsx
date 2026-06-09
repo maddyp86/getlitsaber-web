@@ -52,47 +52,17 @@ export default function ActivateQuickStart() {
         {/* Two-column: steps left, media right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
-  {/* Steps column */}
-        <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
-          <motion.h3
-            className="font-subhead font-bold text-eyebrow text-[35px] uppercase text-white"
-            initial={prefersReduced ? false : { opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
-          >
-            {stepsHeading}
-          </motion.h3>
-
-          <div className="flex flex-col gap-0">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.num}
-                className="flex gap-5 border-l-2 border-[rgba(0,229,255,0.20)] pl-5 pb-10 last:pb-0"
-                initial={prefersReduced ? false : { opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: EASE }}
-              >
-                <div className="flex flex-col gap-2 w-full">
-                  {/* Step header row */}
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-label text-eyebrow text-accent-cyan shrink-0">
-                      {step.num}
-                    </span>
-                    <span className="font-label text-label uppercase text-text-primary font-bold">
-                      {step.label}
-                    </span>
-                  </div>
-                  {/* Step body */}
-                  <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
-                    {step.body}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+          {/* Steps column */}
+          <div className="flex-1 min-w-0">
+            <motion.h3
+              className="font-subhead font-bold text-eyebrow text-[35px] uppercase text-white mb-6"
+              initial={prefersReduced ? false : { opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
+            >
+              {stepsHeading}
+            </motion.h3>
 
             <div className="flex flex-col gap-0">
               {steps.map((step, i) => (
