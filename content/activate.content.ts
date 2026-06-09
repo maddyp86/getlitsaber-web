@@ -121,7 +121,7 @@ export const ACTIVATE_MODES = {
         "This is the default mode every time the device turns on.",
         "LEDs stay lit. They gently \u201cbreathe\u201d when you take a hit.",
         "Lights stay on for up to 300 seconds after the last interaction.",
-        "Single-click the button to cycle through colors: green \u2192 red \u2192 blue \u2192 yellow \u2192 orange \u2192 light blue \u2192 pink \u2192 white \u2192 rainbow \u2192 red/white/blue.",
+        "Single-click the button to cycle through colors: \n green \u2192 red \u2192 blue \u2192 yellow \u2192 orange \u2192 light blue \u2192 pink \u2192 white \u2192 rainbow \u2192 red/white/blue.",
       ],
       callout: null as string | null,
       media: { src: null as string | null, poster: null as string | null, alt: "Glowstick Mode demo" },
