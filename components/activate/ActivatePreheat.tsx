@@ -13,7 +13,7 @@ export default function ActivatePreheat() {
   return (
     <section
       id={SECTION_IDS.preheat}
-      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-background-elevated"
+      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
