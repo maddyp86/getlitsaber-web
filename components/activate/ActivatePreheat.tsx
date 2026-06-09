@@ -5,9 +5,6 @@ import { SECTION_IDS, ACTIVATE_PREHEAT } from "@/content/activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-const BOLD_LEAD_RE = /^([^.]+\.\s*)/;
-
-
 export default function ActivatePreheat() {
   const prefersReduced = useReducedMotion();
   const { eyebrow, title, intro, cardLabel, cardBadge, bestFor, points, callout, media } =
