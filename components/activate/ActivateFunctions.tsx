@@ -68,9 +68,9 @@ export default function ActivateFunctions() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
         >
-          <table className="w-full min-w-[480px] border-collapse rounded-card overflow-hidden">
+          <table className="w-full min-w-[350px] border-collapse rounded-card overflow-hidden">
             <thead>
-              <tr className="bg-surface-card-deep">
+              <tr className="bg-[#0C0C18]">
                 <th
                   scope="col"
                   className="w-[38%] px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-border-divider"
