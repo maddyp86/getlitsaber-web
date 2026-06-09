@@ -1,4 +1,4 @@
-import { SECTION_IDS, ACTIVATE_CART } from "@/content/activate.content";
+import { SECTION_IDS, ACTIVATE_CART } from "./activate.content";
 
 export default function ActivateCartTips() {
   const { eyebrow, title, intro, cards } = ACTIVATE_CART;

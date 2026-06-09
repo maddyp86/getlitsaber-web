@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ACTIVATE_CTA } from "@/content/activate.content";
+import { ACTIVATE_CTA } from "./activate.content";
 import FestivalDropList from "./FestivalDropList";
 
 export default function ActivateCta() {

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ACTIVATE_HERO } from "@/content/activate.content";
+import { ACTIVATE_HERO } from "./activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 

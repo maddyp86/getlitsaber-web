@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { SECTION_IDS, ACTIVATE_VOLTAGE } from "@/content/activate.content";
+import { SECTION_IDS, ACTIVATE_VOLTAGE } from "./activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 

@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { SECTION_IDS, ACTIVATE_MODES, MODE_ORDER, type ModeId } from "@/content/activate.content";
+import { SECTION_IDS, ACTIVATE_MODES, MODE_ORDER, type ModeId } from "./activate.content";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 

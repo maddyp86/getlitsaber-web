@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RELATED_RESOURCES } from "@/content/policies/shared";
+import { RELATED_RESOURCES } from "./shared";
 
 function MailIcon() {
   return (

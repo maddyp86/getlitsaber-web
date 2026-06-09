@@ -1,6 +1,6 @@
 "use client";
 import { motion, useReducedMotion } from "framer-motion";
-import { POLICIES_HERO } from "@/content/policies/shared";
+import { POLICIES_HERO } from "./shared";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 export default function PoliciesHero() {
   const prefersReduced = useReducedMotion();

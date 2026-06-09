@@ -5,7 +5,7 @@ import PolicySection from "@/components/policies/PolicySection";
 import PolicyCallout from "@/components/policies/PolicyCallout";
 import AddressBlock from "@/components/policies/AddressBlock";
 import { renderPara } from "@/lib/policies/renderPara";
-import { POLICIES_EFFECTIVE_DATE } from "@/content/policies/shared";
+import { POLICIES_EFFECTIVE_DATE } from "@/components/policies/shared";
 import {
   QUICK_SUMMARY,
   S01_PARA1,
@@ -26,7 +26,7 @@ import {
   S07_PARA1,
   S07_PARA2,
   S08_PARA1,
-} from "@/content/policies/shipping-returns";
+} from "@/components/policies/shipping-returns";
 
 export const metadata: Metadata = {
   title: "Shipping & Returns | Litsaber",

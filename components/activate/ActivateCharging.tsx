@@ -1,4 +1,4 @@
-import { SECTION_IDS, ACTIVATE_CHARGING } from "@/content/activate.content";
+import { SECTION_IDS, ACTIVATE_CHARGING } from "./activate.content";
 import ChargingAnimation from "./ChargingAnimation";
 
 function renderCaption(text: string) {

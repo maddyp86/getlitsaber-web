@@ -1,4 +1,4 @@
-import { SECTION_IDS, ACTIVATE_SAFETY } from "@/content/activate.content";
+import { SECTION_IDS, ACTIVATE_SAFETY } from "./activate.content";
 
 export default function ActivateSafety() {
   const { eyebrow, title, intro, points } = ACTIVATE_SAFETY;

@@ -5,7 +5,7 @@ import PolicySection from "@/components/policies/PolicySection";
 import PolicyCallout from "@/components/policies/PolicyCallout";
 import AddressBlock from "@/components/policies/AddressBlock";
 import { renderPara } from "@/lib/policies/renderPara";
-import { POLICIES_EFFECTIVE_DATE } from "@/content/policies/shared";
+import { POLICIES_EFFECTIVE_DATE } from "@/components/policies/shared";
 import {
   QUICK_SUMMARY,
   S01_PARA1,
@@ -26,7 +26,7 @@ import {
   S04_PARA3,
   S05_PARA1,
   WARRANTY_CONTACT_BLOCK,
-} from "@/content/policies/warranty";
+} from "@/components/policies/warranty";
 
 export const metadata: Metadata = {
   title: "Warranty Policy | Litsaber",

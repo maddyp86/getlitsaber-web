@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Para } from "@/content/policies/shipping-returns";
+import type { Para } from "@/components/policies/shipping-returns";
 
 const LINK_CLASS =
   "text-accent-cyan underline-offset-2 hover:underline transition-colors duration-150";

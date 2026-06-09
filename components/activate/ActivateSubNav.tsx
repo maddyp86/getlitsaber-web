@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { ACTIVATE_SUBNAV, SECTION_IDS, type SectionId } from "@/content/activate.content";
+import { ACTIVATE_SUBNAV, SECTION_IDS, type SectionId } from "./activate.content";
 
 // Top offset = main navbar height so the sub-nav sticks directly beneath it.
 const NAVBAR_HEIGHT = 90;

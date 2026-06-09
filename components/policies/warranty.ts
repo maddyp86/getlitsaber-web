@@ -1,4 +1,4 @@
-import type { Para } from "@/content/policies/shipping-returns";
+import type { Para } from "./shipping-returns";
 import type { AddressBlockData } from "@/components/policies/AddressBlock";
 
 export type { Para };

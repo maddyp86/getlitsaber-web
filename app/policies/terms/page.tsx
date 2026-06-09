@@ -5,7 +5,7 @@ import PolicySection from "@/components/policies/PolicySection";
 import PolicyContents from "@/components/policies/PolicyContents";
 import AddressBlock from "@/components/policies/AddressBlock";
 import { renderPara } from "@/lib/policies/renderPara";
-import { POLICIES_EFFECTIVE_DATE } from "@/content/policies/shared";
+import { POLICIES_EFFECTIVE_DATE } from "@/components/policies/shared";
 import {
   SECTIONS,
   QUICK_SUMMARY,
@@ -53,7 +53,7 @@ import {
   S16_PARA1,
   S17_PARA1,
   TERMS_CONTACT_BLOCK,
-} from "@/content/policies/terms";
+} from "@/components/policies/terms";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Litsaber",

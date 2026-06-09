@@ -1,4 +1,4 @@
-import { SECTION_IDS, ACTIVATE_BATTERY, LED_COLORS } from "@/content/activate.content";
+import { SECTION_IDS, ACTIVATE_BATTERY, LED_COLORS } from "./activate.content";
 
 export default function ActivateBattery() {
   const {
@@ -146,7 +146,7 @@ export default function ActivateBattery() {
             }}
           >
             {legend.map((seg) => {
-              const hex = LED_COLORS[seg.color];
+              const hex = LED_COLORS[seg.color as keyof typeof LED_COLORS];
               return (
                 <div
                   key={seg.color}

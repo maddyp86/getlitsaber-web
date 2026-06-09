@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RETURN_ADDRESS } from "@/content/policies/shared";
+import { RETURN_ADDRESS } from "./shared";
 
 export interface ContactRow {
   rowLabel: string;
