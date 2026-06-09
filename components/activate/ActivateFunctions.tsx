@@ -40,7 +40,7 @@ export default function ActivateFunctions() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-content"
+          className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -59,7 +59,7 @@ export default function ActivateFunctions() {
           {tableHeading}
         </motion.h3>
 
-        {/* Table — wrapped in overflow-x-auto to prevent page-level overflow
+       {/* Table — wrapped in overflow-x-auto to prevent page-level overflow
             which would silently break the sticky sub-nav */}
         <motion.div
           className="w-full overflow-x-auto"
@@ -73,13 +73,13 @@ export default function ActivateFunctions() {
               <tr className="bg-[#0C0C18]">
                 <th
                   scope="col"
-                  className="w-[38%] px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-border-divider"
+                  className="w-[38%] px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-[#113757]"
                 >
                   {columns.action}
                 </th>
                 <th
                   scope="col"
-                  className="px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-border-divider"
+                  className="px-5 py-4 text-left font-label text-eyebrow tracking-[0.15em] uppercase text-accent-cyan border-b border-[#113757]"
                 >
                   {columns.result}
                 </th>
@@ -89,10 +89,10 @@ export default function ActivateFunctions() {
               {rows.map((row, i) => (
                 <Fragment key={row.action}>
                   <tr className={i % 2 === 0 ? "bg-transparent" : "bg-surface-card/30"}>
-                    <td className="px-5 py-4 font-label text-body-sm text-text-primary align-top border-b border-border-divider last:border-0">
+                    <td className="px-5 py-4 font-label text-body-sm text-text-primary align-top border-b border-[#113757] last:border-0">
                       {row.action}
                     </td>
-                    <td className="px-5 py-4 font-body text-body-sm text-text-secondary align-top border-b border-border-divider last:border-0">
+                    <td className="px-5 py-4 font-body text-body-sm text-text-secondary align-top border-b border-[#113757] last:border-0">
                       {row.result}
                     </td>
                   </tr>
