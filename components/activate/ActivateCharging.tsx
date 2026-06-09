@@ -58,7 +58,7 @@ export default function ActivateCharging() {
           <span
             aria-hidden="true"
             className="mt-[5px] shrink-0 text-accent-cyan"
-            style={{ fontSize: "10px", lineHeight: 1 }}
+            style={{ fontSize: "12px", lineHeight: 1 }}
           >
             &#9654;
           </span>
