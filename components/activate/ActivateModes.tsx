@@ -165,7 +165,7 @@ export default function ActivateModes() {
               {/* Bullet points */}
               <ul className="flex flex-col gap-4" aria-label={`${mode.name} details`}>
                 {mode.points.map((point, i) => (
-                  <li key={i} className="flex items-start gap-3 border-b border-[#113757] last:border-0">
+                  <li key={i} className="flex items-start gap-3 py-4 border-b border-[#113757] last:border-0">
                     {/* Cyan triangle marker */}
                     <span
                       aria-hidden="true"
