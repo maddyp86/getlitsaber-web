@@ -7,7 +7,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export default function ActivateQuickStart() {
   const prefersReduced = useReducedMotion();
-const { eyebrow, title, intro, stepsHeading, steps, media } =
+  const { eyebrow, title, intro, stepsHeading, steps, media } =
     ACTIVATE_QUICKSTART;
 
   return (
@@ -30,7 +30,7 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
 
         <motion.h2
           className="font-display font-bold uppercase text-white mb-2"
-          style={{ fontSize: "clamp(45px, 5vw, 75px)",
+          style={{ fontSize: "clamp(34px, 7vw, 75px)",
                  textShadow: "0 0 50px rgba(255, 255, 255, 0.50)"}}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,9 +54,9 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Steps column */}
-        <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
+          <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
             <motion.h3
-              className="font-subhead font-bold md:text-[35px] text-[25px] uppercase text-white mb-6"
+              className="font-subhead font-bold text-[25px] md:text-[35px] uppercase text-white mb-6"
               initial={prefersReduced ? false : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -78,10 +78,10 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
                   <div className="flex flex-col gap-2 w-full">
                     {/* Step header row */}
                     <div className="flex items-baseline gap-3">
-                      <span className="font-label text-subhead sm:text-body text-accent-cyan shrink-0">
+                      <span className="font-label text-body sm:text-subhead text-accent-cyan shrink-0">
                         {step.num}
                       </span>
-                      <span className="font-label text-subhead sm:text-body uppercase text-text-primary font-bold">
+                      <span className="font-label text-body sm:text-subhead uppercase text-text-primary font-bold">
                         {step.label}
                       </span>
                     </div>
@@ -102,7 +102,7 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: 0.25, ease: EASE }}
             >
-              <p className="font-body text-[16px] leading-[normal] text-[#CCC] font-normal">
+              <p className="font-body text-body-sm sm:text-[16px] leading-[normal] text-[#CCC] font-normal">
                 <span className="text-accent-cyan font-bold">That&rsquo;s it. </span>
                 Everything below is optional: modes, voltage tuning, troubleshooting. Use what you need.
               </p>
@@ -111,7 +111,7 @@ const { eyebrow, title, intro, stepsHeading, steps, media } =
 
          {/* Media column — stacks below on mobile */}
           <motion.div
-            className="mt-12 flex min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
