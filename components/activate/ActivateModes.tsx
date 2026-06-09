@@ -137,7 +137,7 @@ export default function ActivateModes() {
             className="flex flex-col lg:flex-row lg:items-start lg:gap-16"
           >
             {/* Text column */}
-            <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
+            <div className="flex flex-col justify-start items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
 
               {/* Mode name + badge */}
               <div className="flex flex-wrap items-center justify between gap-3">
