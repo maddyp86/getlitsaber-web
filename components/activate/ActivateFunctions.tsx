@@ -68,7 +68,7 @@ export default function ActivateFunctions() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
         >
-          <table className="w-full min-w-[350px] bg-[#0C0C18] border border-[#113757] rounded-card overflow-hidden">
+<table className="w-full min-w-[350px] bg-[#0C0C18] border border-[#113757] border-separate border-spacing-0 rounded-card overflow-hidden">
             <thead>
               <tr className="border-b border-[#113757]">
                 <th
