@@ -16,7 +16,6 @@ export default function ActivateSubNav() {
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     if (elements.length === 0) return;
-
     // rootMargin: top offset = combined sticky bars height so detection starts
     // just below them; bottom cutoff trims the lower portion so only the
     // topmost visible section triggers.
@@ -34,13 +33,20 @@ export default function ActivateSubNav() {
     return () => observer.disconnect();
   }, []);
 
-  // Scroll the active item into view inside the horizontal rail on mobile.
+  // Center the active item inside the horizontal rail only. Do NOT use
+  // scrollIntoView here: it scrolls every scrollable ancestor including the
+  // window, which on mount yanks the viewport down past the hero to reveal
+  // the sub-nav. Scrolling the container's scrollLeft touches only the rail.
   useEffect(() => {
-    if (!scrollContainerRef.current) return;
-    const activeEl = scrollContainerRef.current.querySelector(
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const activeEl = container.querySelector(
       `[data-id="${activeId}"]`
     ) as HTMLElement | null;
-    activeEl?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (!activeEl) return;
+    const target =
+      activeEl.offsetLeft - container.clientWidth / 2 + activeEl.clientWidth / 2;
+    container.scrollTo({ left: target, behavior: "smooth" });
   }, [activeId]);
 
   function handleClick(id: string) {
