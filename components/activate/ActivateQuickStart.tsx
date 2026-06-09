@@ -50,10 +50,10 @@ export default function ActivateQuickStart() {
         </motion.p>
 
         {/* Two-column: steps left, media right */}
-     <div className="flex flex-col justify-center items-start gap-[100px]">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Steps column */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 justify-center items-start min-w-0">
             <motion.h3
               className="font-subhead font-bold text-eyebrow text-[35px] uppercase text-white mb-6"
               initial={prefersReduced ? false : { opacity: 0, y: 10 }}
