@@ -271,3 +271,59 @@ export const ACTIVATE_CHARGING = {
     alt: "Charging the device demo",
   },
 } as const;
+
+// ─── Cart Troubleshooting section ─────────────────────────────────────────────
+
+export const ACTIVATE_CART = {
+  eyebrow: "CART TIPS",
+  title: "CART TROUBLESHOOTING",
+  intro:
+    "Litsaber is built for broad 510 compatibility. If your cart isn\u2019t hitting well, here\u2019s what to try, in order.",
+  cards: [
+    {
+      num: "/01",
+      title: "Try the half-turn trick",
+      body: "The 510 connection has a fixed center pin at 4.0mm depth, set for broad cart compatibility. Some carts seat best a little loose. If the cart doesn\u2019t hit when fully tightened, back off a quarter to half turn. This is normal, not a defect. Always try this first.",
+    },
+    {
+      num: "/02",
+      title: "Try a different voltage",
+      body: "A voltage mismatch is the next most common cause of a weak hit. Thicker oils want more voltage, thinner oils want less. Click 3 times to cycle, and match the oil to the voltage guide above.",
+    },
+    {
+      num: "/03",
+      title: "Re-seat the cart",
+      body: "Sometimes a cart isn\u2019t making clean contact. Unscrew it, clear any debris off the threads and pin, then re-thread hand-tight. Don\u2019t over-tighten.",
+    },
+    {
+      num: "/04",
+      title: "Try a different cart",
+      body: "Most weak-hit issues are cart-related, not device-related. If a known-good cart hits fine but another one doesn\u2019t, the issue is that specific cart, not your Litsaber.",
+    },
+  ],
+} as const;
+
+// ─── Safe Use section ─────────────────────────────────────────────────────────
+
+export const ACTIVATE_SAFETY = {
+  eyebrow: "SAFETY",
+  title: "SAFE USE",
+  intro: "A few things worth knowing.",
+  points: [
+    { lead: "Mind the temps.", body: "Charge and use at normal room temperature. Don\u2019t leave it in a hot car or in direct sun." },
+    { lead: "510 carts only.", body: "Built for standard 510 cartridges, 0.5g to 2g. Don\u2019t modify the device or use it with anything else." },
+    { lead: "Keep it dry.", body: "Don\u2019t submerge it or expose it to liquid. Wipe the threads and contacts clean if they get gunked up." },
+    { lead: "Built-in protection.", body: "Overcharge, over-discharge, short-circuit, vibration, and drop protection are all on board." },
+    { lead: "Auto shut-off.", body: "The LEDs power down after 300 seconds of inactivity to save battery. A quick draw or click wakes it." },
+    { lead: "Keep away from children.", body: "There is no child lock. Store it out of reach." },
+  ],
+} as const;
+
+// ─── Closing CTA section ──────────────────────────────────────────────────────
+
+export const ACTIVATE_CTA = {
+  heading: "STILL STUCK?",
+  body: "We\u2019re a small team in L.A. We read every message and reply within 24 hours.",
+  primary:   { label: "CONTACT SUPPORT", href: "/contact" },
+  secondary: { label: "VIEW FAQ", href: "/contact#faq" },
+} as const;
