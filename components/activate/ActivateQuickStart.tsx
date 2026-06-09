@@ -95,14 +95,15 @@ export default function ActivateQuickStart() {
 
             {/* Callout block */}
             <motion.div
-              className="mt-10 rounded-md border border-[rgba(0,229,255,0.15)] bg-surface-card px-5 py-4"
+              className="mt-10 border-l-4 border-accent-cyan bg-[#0E1023] px-5 py-4"
               initial={prefersReduced ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: 0.25, ease: EASE }}
             >
-              <p className="font-body text-body-sm text-text-secondary">
-                {callout}
+              <p className="font-body text-[16px] leading-[normal] text-[#CCC] font-normal">
+                <span className="text-accent-cyan font-bold">That&rsquo;s it. </span>
+                Everything below is optional: modes, voltage tuning, troubleshooting. Use what you need.
               </p>
             </motion.div>
           </div>
