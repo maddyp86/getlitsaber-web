@@ -19,7 +19,7 @@ export default function ActivatePreheat() {
 
         {/* Section header */}
         <motion.p
-          className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-2"
+          className="font-label text-eyebrow uppercase text-accent-cyan mb-2"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -30,7 +30,7 @@ export default function ActivatePreheat() {
 
         <motion.h2
           className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
-          style={{ fontSize: "clamp(34px, 6vw, 75px)" }}
+          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -66,12 +66,11 @@ export default function ActivatePreheat() {
               {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
                 <span
-                  className="font-display font-bold text-white leading-none"
-                  style={{ fontSize: "clamp(24px, 3vw, 32px)" }}
+                 className="font-subhead font-bold  md:text-[35px] text-[25px] uppercase text-white mb-6"
                 >
                   {cardLabel}
                 </span>
-                <span className="rounded-[4px] border border-accent-magenta text-accent-magenta px-3 py-1 font-label text-[10px] tracking-[0.15em] uppercase shrink-0">
+                <span className="rounded-[4px] border border-accent-magenta text-accent-magenta px-3 py-1 font-label text-[12px] uppercase shrink-0">
                   {cardBadge}
                 </span>
               </div>
@@ -91,7 +90,7 @@ export default function ActivatePreheat() {
                     <span
                       aria-hidden="true"
                       className="mt-[6px] shrink-0 text-accent-cyan"
-                      style={{ fontSize: "10px", lineHeight: 1 }}
+                      style={{ fontSize: "12px", lineHeight: 1 }}
                     >
                       &#9654;
                     </span>
