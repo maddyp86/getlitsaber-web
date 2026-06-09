@@ -53,7 +53,7 @@ export default function ActivateVoltage() {
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
           {/* Voltage cards — three separate cards stacked with gaps */}
-                   <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch min-w-0">
+                   <div className="flex flex-col justify-center items-start gap-8 flex-[1_0_0] self-stretch ">
             {rows.map((row, i) => (
               <motion.div
                 key={row.voltage}
@@ -81,7 +81,7 @@ export default function ActivateVoltage() {
                       aria-hidden="true"
                     />
                     <span
-                      className="font-label text-[12px] tracking-[0.15em] uppercase font-bold"
+                      className="font-label text-[12px] uppercase font-bold"
                       style={{ color: row.hex }}
                     >
                       {row.colorName} LED
