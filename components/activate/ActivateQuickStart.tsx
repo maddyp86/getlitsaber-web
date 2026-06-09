@@ -19,7 +19,7 @@ export default function ActivateQuickStart() {
 
         {/* Section header */}
         <motion.p
-          className="font-label text-eyebrow uppercase text-accent-cyan mb-2"
+          className="font-label text-eyebrow uppercase text-accent-cyan"
           initial={prefersReduced ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
