@@ -94,7 +94,7 @@ export default function ActivateModes() {
           role="tablist"
           aria-label="Light modes"
           onKeyDown={handleKeyDown}
-          className="flex gap-6 mb-16 align-center justify-center"
+          className="flex gap-10 mb-16 align-center justify-center"
           initial={prefersReduced ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
