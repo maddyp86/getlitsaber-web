@@ -183,7 +183,7 @@ export default function ActivateModes() {
 
               {/* Callout — only when non-null, magenta left-accent border */}
               {mode.callout && (
-                <div className=" border-l-2 border-l-accent-magenta bg-surface-card px-5 py-4">
+                <div className=" border-l-4 border-l-accent-magenta bg-surface-card px-5 py-4">
                   <p className="font-body text-body-sm sm:text-[16px] leading-[normal] text-[#CCC] font-normal">
                     {mode.callout}
                   </p>
