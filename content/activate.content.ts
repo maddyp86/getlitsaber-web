@@ -232,7 +232,7 @@ export const LED_COLORS = {
 
 // ─── Battery section ──────────────────────────────────────────────────────────
 
-ACTIVATE_BATTERY = {
+export const ACTIVATE_BATTERY = {
   eyebrow: "BATTERY",
   title: "CHECK YOUR CHARGE",
   intro: "Litsaber has an 800mAh cell built for a full festival night.",
