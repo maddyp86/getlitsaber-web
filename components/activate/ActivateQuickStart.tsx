@@ -29,7 +29,7 @@ export default function ActivateQuickStart() {
         </motion.p>
 
         <motion.h2
-          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
+          className="font-display font-bold uppercase text-white mb-6"
           style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,15 +54,15 @@ export default function ActivateQuickStart() {
 
           {/* Steps column */}
           <div className="flex-1 min-w-0">
-            <motion.p
-              className="font-subhead text-eyebrow text-[35px] uppercase text-white mb-6"
+            <motion.h3
+              className="font-subhead font-bold text-eyebrow text-[35px] uppercase text-white mb-6"
               initial={prefersReduced ? false : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
             >
               {stepsHeading}
-            </motion.p>
+            </motion.h3>
 
             <div className="flex flex-col gap-0">
               {steps.map((step, i) => (
