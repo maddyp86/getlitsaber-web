@@ -95,7 +95,7 @@ export default function ActivateBattery() {
           </div>
 
           {/* Media column */}
-          <div className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+          <div className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
             {media.src ? (
               <video
                 src={media.src}
