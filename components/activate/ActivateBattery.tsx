@@ -9,12 +9,12 @@ export default function ActivateBattery() {
   return (
     <section
       id={SECTION_IDS.battery}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-elevated"
+      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-[#090517]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
         {/* Section header — centered */}
-        <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan text-center mb-2">
+        <p className="font-label text-eyebrow uppercase text-accent-cyan text-center mb-2">
           {eyebrow}
         </p>
 
