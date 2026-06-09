@@ -25,7 +25,7 @@ export default function ActivateHero() {
 
       {/* Centered content column */}
       <div className="flex min-h-screen items-center justify-center px-content">
-        <div className="flex flex-col mb-10 items-center text-center gap-6 max-w-[820px] w-full">
+        <div className="flex flex-col bottom-100 items-center text-center gap-6 max-w-[820px] w-full">
 
           {/* Badge */}
           <motion.div
@@ -42,7 +42,7 @@ export default function ActivateHero() {
           {/* Heading */}
           <motion.h1
             className="font-display font-bold uppercase leading-[1.05]"
-            style={{ fontSize: "clamp(48px, 7vw, 100px)" }}
+            style={{ fontSize: "clamp(45px, 7vw, 100px)" }}
             initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
@@ -57,7 +57,7 @@ export default function ActivateHero() {
               className="block font-normal font-accent text-accent-cyan"
               style={{
                 textShadow: "0 0 50px rgba(0,229,255,0.75)",
-                fontSize: "clamp(48px, 7vw, 90px)",
+                fontSize: "clamp(45px, 7vw, 90px)",
               }}
             >
               {ACTIVATE_HERO.headingAccent}
