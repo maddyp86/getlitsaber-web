@@ -1,6 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SECTION_IDS, ACTIVATE_VOLTAGE } from "@/content/activate.content";
 
@@ -13,7 +12,7 @@ export default function ActivateVoltage() {
   return (
     <section
       id={SECTION_IDS.voltage}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-primary"
+      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
@@ -30,7 +29,7 @@ export default function ActivateVoltage() {
 
         <motion.h2
           className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
-          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
+          style={{ fontSize: "clamp(34px, 6vw, 75px)" }}
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -40,7 +39,7 @@ export default function ActivateVoltage() {
         </motion.h2>
 
         <motion.p
-     className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
+          className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -49,59 +48,67 @@ export default function ActivateVoltage() {
           {intro}
         </motion.p>
 
-        {/* Two-column: rows left, media right */}
+        {/* Two-column: cards left, media right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
 
-          {/* Voltage rows */}
-          <motion.div
-            className="flex-1 min-w-0 rounded-card border border-[rgba(255,255,255,0.08)] bg-surface-card overflow-hidden"
-            initial={prefersReduced ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-          >
+          {/* Voltage cards — three separate cards stacked with gaps */}
+          <div className="flex-1 min-w-0 flex flex-col gap-4">
             {rows.map((row, i) => (
-              <Fragment key={row.voltage}>
-                <div className="flex items-stretch gap-0">
-                  {/* Colored left accent bar */}
-                  <div
-                    className="w-1 shrink-0 self-stretch"
-                    style={{ backgroundColor: row.hex }}
-                    aria-hidden="true"
-                  />
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 px-6 py-5 flex-1">
-                    {/* Voltage + color name */}
-                    <div className="shrink-0 flex items-baseline gap-3 sm:w-[120px]">
-                      <span
-                        className="font-display font-bold leading-none tabular-nums"
-                        style={{ fontSize: "clamp(28px, 3vw, 40px)", color: row.hex }}
-                      >
-                        {row.voltage}
-                      </span>
-                      <span
-                        className="font-label text-[10px] tracking-[0.15em] uppercase font-bold"
-                        style={{ color: row.hex }}
-                      >
-                        {row.colorName}
-                      </span>
-                    </div>
-                    {/* Oils + body */}
-                    <div className="flex flex-col gap-1">
-                      <span className="font-label text-body-sm tracking-[0.05em] uppercase text-text-primary font-semibold">
-                        {row.oils}
-                      </span>
-                      <span className="font-body text-body-sm text-text-secondary leading-relaxed">
-                        {row.body}
-                      </span>
-                    </div>
+              <motion.div
+                key={row.voltage}
+                className="flex overflow-hidden rounded-card border border-[rgba(255,255,255,0.08)] bg-surface-card"
+                initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: EASE }}
+              >
+                {/* Colored left accent bar, full card height */}
+                <div
+                  className="w-1.5 shrink-0 self-stretch"
+                  style={{ backgroundColor: row.hex }}
+                  aria-hidden="true"
+                />
+
+                {/* Card body — vertical stack */}
+                <div className="flex flex-col gap-2 px-6 py-5 flex-1 min-w-0">
+
+                  {/* Dot + "{COLOR} LED" label */}
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ backgroundColor: row.hex }}
+                      aria-hidden="true"
+                    />
+                    <span
+                      className="font-label text-[12px] tracking-[0.15em] uppercase font-bold"
+                      style={{ color: row.hex }}
+                    >
+                      {row.colorName} LED
+                    </span>
                   </div>
+
+                  {/* Voltage — WHITE, not colored */}
+                  <span
+                    className="font-display font-bold leading-none tabular-nums text-white"
+                    style={{ fontSize: "clamp(30px, 3.5vw, 44px)" }}
+                  >
+                    {row.voltage}
+                  </span>
+
+                  {/* Oils — white bold, mixed case */}
+                  <span className="font-body text-body font-bold text-text-primary">
+                    {row.oils}
+                  </span>
+
+                  {/* Body — muted */}
+                  <span className="font-body text-body-sm text-text-secondary leading-relaxed">
+                    {row.body}
+                  </span>
+
                 </div>
-                {i < rows.length - 1 && (
-                  <div className="h-px w-full bg-[rgba(255,255,255,0.06)]" aria-hidden="true" />
-                )}
-              </Fragment>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
 
           {/* Media column */}
           <motion.div
