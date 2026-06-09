@@ -33,23 +33,23 @@ export default function ActivateCharging() {
   return (
     <section
       id={SECTION_IDS.charging}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-primary"
+      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
         {/* Section header */}
-        <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4">
+        <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-2">
           {eyebrow}
         </p>
 
         <h2
-          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
-          style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
+          className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
+          style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
         >
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-8 max-w-[580px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content">
           {intro}
         </p>
 
