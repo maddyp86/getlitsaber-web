@@ -99,7 +99,7 @@ export default function Navbar() {
             {/* User icon — mobile only */}
             <button
               aria-label="Account"
-              className="flex lg:hidden items-center justify-center w-11 h-11 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="flex lg:hidden items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
             </button>
