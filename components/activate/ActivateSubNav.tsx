@@ -64,7 +64,7 @@ export default function ActivateSubNav() {
           lives on this child, not on a sticky ancestor, so sticky is safe. */}
       <div
         ref={scrollContainerRef}
-        className="mx-auto flex h-[70px] max-w-content items-center justify-start gap-6 overflow-x-auto px-content scrollbar-hide md:justify-center md:gap-[35px]"
+        className="mx-auto flex h-[70px] max-w-content items-center justify-between gap-6 overflow-x-auto px-content scrollbar-hide md:justify-center md:gap-[35px]"
         style={{ WebkitOverflowScrolling: "touch" }}
         role="navigation"
         aria-label="Page sections"
