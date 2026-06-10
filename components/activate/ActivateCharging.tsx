@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { SECTION_IDS, ACTIVATE_CHARGING } from "./activate.content";
 import ChargingAnimation from "./ChargingAnimation";
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 function renderCaption(text: string) {
   const target = "you\u2019re fully charged";
@@ -16,6 +21,7 @@ function renderCaption(text: string) {
 }
 
 export default function ActivateCharging() {
+  const prefersReduced = useReducedMotion();
   const {
     eyebrow, title, intro, cardLabel, cardBadge, tagline,
     points, callout, barLabel, caption, media,
@@ -28,21 +34,37 @@ export default function ActivateCharging() {
     >
       <div className="mx-auto w-full items-center max-w-content px-content">
 
-        {/* Section header — left aligned per Figma */}
-        <p className="font-label text-eyebrow  text-center uppercase text-accent-cyan mb-2">
+        {/* Section header */}
+        <motion.p
+          className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-2"
+          initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
           {eyebrow}
-        </p>
+        </motion.p>
 
-        <h2
-          className="font-display font-bold  text-center uppercase leading-[1.1] text-white mb-2"
-          style={{ fontSize: "clamp(45px, 6vw, 75px)", textShadow: "0 0 50px rgba(255,255,255,0.50)" }}
+        <motion.h2
+          className="font-display font-bold text-center uppercase leading-[1.1] text-white mb-2"
+          style={{ fontSize: "clamp(34px, 6vw, 75px)", textShadow: "0 0 50px rgba(255,255,255,0.50)" }}
+          initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
         >
           {title}
-        </h2>
+        </motion.h2>
 
-        <p className="font-body text-body-sm  text-center lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content">
+        <motion.p
+          className="font-body text-body-sm text-center lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content"
+          initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
+        >
           {intro}
-        </p>
+        </motion.p>
 
         {/* Two-column: content left, media right */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
@@ -51,10 +73,16 @@ export default function ActivateCharging() {
           <div className="flex flex-col items-start gap-8 flex-[1_0_0] min-w-0">
 
             {/* Charging block (no card chrome per Figma) */}
-           <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
+            <motion.div
+              className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0"
+              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
+            >
               {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
-               <span
+                <span
                   className="font-subhead font-bold text-white leading-none"
                   style={{ fontSize: "clamp(25px, 3vw, 35px)" }}
                 >
@@ -97,10 +125,16 @@ export default function ActivateCharging() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
             {/* Not charging callout — magenta accent */}
-            <div className="w-full border-l-4 border-accent-magenta bg-[rgba(255,0,229,0.06)] px-5 py-4">
+            <motion.div
+              className="w-full border-l-4 border-accent-magenta bg-[rgba(255,0,229,0.06)] px-5 py-4"
+              initial={prefersReduced ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+            >
               <p className="font-body text-body-sm leading-relaxed text-[#CCC]">
                 <span className="text-accent-magenta font-bold">{callout.lead} </span>
                 {callout.body}
@@ -112,12 +146,18 @@ export default function ActivateCharging() {
                 </Link>
                 {callout.bodyAfter}
               </p>
-            </div>
+            </motion.div>
 
           </div>
 
           {/* Media column */}
-          <div className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+          <motion.div
+            className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            initial={prefersReduced ? false : { opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
+          >
             {media.src ? (
               <video
                 src={media.src}
@@ -136,12 +176,18 @@ export default function ActivateCharging() {
                 </span>
               </div>
             )}
-          </div>
+          </motion.div>
 
         </div>
 
         {/* Full-width charging bar below both columns */}
-        <div className="mt-12 lg:mt-20">
+        <motion.div
+          className="mt-12 lg:mt-20"
+          initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+        >
 
           {/* Axis labels: BUTTON / CHARGING BEHAVIOR / TIP */}
           <div className="grid grid-cols-3 mb-3" aria-hidden="true">
@@ -164,7 +210,7 @@ export default function ActivateCharging() {
             {renderCaption(caption)}
           </p>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
