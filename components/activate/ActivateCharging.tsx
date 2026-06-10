@@ -40,7 +40,7 @@ export default function ActivateCharging() {
           {title}
         </h2>
 
-        <p className="font-body text-body-sm  text-center lg:text-body text-text-secondary leading-relaxed mb-16 max-w-[580px]">
+        <p className="font-body text-body-sm  text-center lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content">
           {intro}
         </p>
 
