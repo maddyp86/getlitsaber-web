@@ -1076,6 +1076,93 @@ FIRST when many symptoms point at one helper, not after exhausting external prob
 
 ---
 
+### Phase UI — Full eight-page site build-out (2026-05-31 → 2026-06-09) ✅
+
+The stretch that turned a homepage-plus-commerce build into the complete eight-page site. Every page in the ADR-002 site map is now built and composed, the PDP is fully fleshed out, four new homepage sections landed, the reviews provider was reversed, and the Activate page — the single largest remaining open item — shipped in full. Bolt sync was reliable for most of this stretch (the write-path pain from Phase 5 had cleared), so chunks moved fast; the doc is reconstructed from the repo state at commit `f16be54`, not from per-chunk reports.
+
+**Route inventory now live (16 routes):** `/`, `/shop/litsaber-og`, `/the-tech`, `/wholesale`, `/about`, `/contact`, `/activate`, `/cart`, `/policies` (index) + `/policies/{shipping-returns, warranty, terms, privacy}`, plus legacy `/policies/shipping` and `/policies/refunds` now serving `next/navigation` redirects to `/policies/shipping-returns` (consolidation done cleanly — old URLs preserved, no duplicate page bodies). `/shopify-check` debug route still present (REMOVE pre-Phase-7).
+
+#### PDP build-out + Reviews provider REVERSED (ReviewInfra → Judge.me) (2026-06-02/03)
+
+- **PDP fleshed out:** added `ProductAccordion`, `DescriptionSection`, `GalleryBlock`, refined `StyleSelector`. `ProductDisplay` moved `components/home/` → `components/product/ProductDisplay/` with imports updated (it renders on both the homepage buy section and the PDP, so the shared home location was misleading).
+- **Reviews provider is now Judge.me — supersedes the ReviewInfra decision in ADR-002.** This collapses an entire branch of open questions. Judge.me is a Shopify-native reviews app, so the integration is its hosted widget rather than a custom subsystem:
+  - `components/reviews/JudgemeScripts.tsx` — global `next/script` preloader (`cdnwidget.judge.me/widget_preloader.js`, `afterInteractive`) + inline `jdgm` config (shop domain, platform, public token). Mounted once in `app/layout.tsx`.
+  - `components/reviews/JudgemeReviewWidget.tsx` — the `jdgm-review-widget` div keyed by the numeric Shopify product ID (`7870095392975`), rendered on the PDP.
+  - `components/reviews/WriteReviewButton.tsx` — links to Judge.me's hosted review-submission form.
+  - **What this retires:** the custom reviews subsystem spec (rating summary, distribution chart, AI-summary card, photo carousel, search, filter chips — Phase 1.5 beat #10), the Path A vs Path B decision, the AI-summary build-or-skip question, and the "email ReviewInfra to confirm a read API" action item. All moot. Brand-control trade-off is the same one we'd have taken on ReviewInfra Path A: the widget renders Judge.me's markup, not the rich Figma spec.
+  - **Why the reversal makes sense:** Judge.me rides the native Shopify integration we already committed to in ADR-006, syncs review-request emails off real orders without a custom Orders-API handoff, and removes the small-vendor risk that made ReviewInfra a structural Phase 4 decision in the first place.
+
+#### `/the-tech` — Engineering page (2026-06-02 → 06-07)
+
+Sections (all reading from `the-tech.content.ts`): `TechHero`, `InhaleVideo` (the draw/inhale demo video block), `PowerSection`, `VoltageSection` (the 3-voltage / oil-pairing explainer — the heaviest section, many iterations), `UniversalFit` (510 compatibility), `TechCta`. This is the page the Phase 1.5 spec called "Engineering"; the live route is `/the-tech`.
+
+#### `/wholesale` — built incl. HubSpot form (2026-06-04)
+
+Sections: `WholesaleHero`, `WholesaleStatsBar`, `SellsItself`, `SellThrough`, `DemandSection`, `MarginsSection`, `RetailKit`, `WholesaleFaq`, `WholesaleCta`. The HubSpot Company-object form integration (the `0-2/` prefixed custom fields) is wired here. `RetailKit` re-hit the known `overflow-hidden` kills `sticky` trap during the build (consistent with the standing learning).
+
+#### `/about` — built (2026-06-05/06)
+
+Sections: `AboutHero`, `AboutOrigin`, `AboutJourney`, `AboutTeam`, `AboutManufacturing`, `ManufacturingImageBand`, `JourneyVideoBand`, `PrototypeTimeline`, `AboutNow`, `AboutClosingCta`. Co-founders Matt Hall and Brendan Friedrich under Innovape Concepts. Real `about` imagery committed (not placeholder), including a prototype-timeline narrative band.
+
+#### `/contact` — built, real copy (2026-06-06)
+
+Sections: `ContactHero` (styled as a chat card), `ContactForm` (HubSpot form, portal 244547358, na2, FAQ-adjacent), `ContactMethods` (clickable method cards with hover borders), `ContactFaq`. **The contact FAQ is now real copy, not the boilerplate placeholder flagged in Phase 1.5** — detailed answers on 510 compatibility (95–99% across major brands, 10.5–14.5mm), battery life (1–1.5yr, 300+ cycles), mode/charge-check button combos, materials, and stealth mode. **Danksaber is resolved as reframed, not removed:** the FAQ keeps the comparison but turns it into a positioning narrative ("Danksaber is built around discretion… different products for different moments") rather than a knock. Closes the "keep, reframe, or remove" open question.
+
+#### `/policies` — full set (2026-06-06/07)
+
+`PolicyHeader`, `PolicySubNav`, `PolicySection`, `PolicyContents` shells over typed content files: `shipping-returns.ts`, `warranty.ts`, `terms.ts`, `privacy.ts`, `shared.ts`. Canonical policy language locked and internally consistent: **14-day returns on unopened product + 6-month limited warranty against manufacturing defects** (no general/sizing returns; defects covered under warranty, not refund). Damaged-in-transit window is 7 days. See the warranty finding below — the policy pages are correct; the marketing surfaces are not.
+
+#### `/activate` — COMPLETE (2026-06-07 → 06-09) — closes the largest open item
+
+The post-purchase onboarding page (Phase 1.5 beat #9, "the secret weapon") is fully built. Sticky `ActivateSubNav` (IntersectionObserver chip nav, the second place the `overflow-hidden`/`sticky` trap was beaten), then every functional section: `ActivateHero`, `ActivateQuickStart`, `ActivateFunctions`, `ActivateModes`, `ActivatePreheat`, `ActivateVoltage`, `ActivateBattery`, `ActivateCharging`, `ActivateCartTips`, `ActivateSafety`, `ActivateCta`. All copy in `activate.content.ts`; a `renderPara.tsx` helper handles inline rich-text. `ChargingAnimation.tsx` is a new bespoke client component — IntersectionObserver-gated CSS segment animation for the battery-charging visual, paused off-screen and disabled under `prefers-reduced-motion` (same motion discipline as the rest of the site).
+
+#### New homepage sections (2026-05-31 → 06-06)
+
+Added below the existing scroll order in `app/page.tsx`:
+- **`WhatCustomersSay`** — social-proof block built around a `TikTokRail` (TikTok video cards via the TikTok CDN, with `next/image` and CDN hostname patterns added to `next.config`) plus an async Elfsight widget. New external surface; first TikTok/Elfsight integration in the build.
+- **`EmailSignupBanner`** (in `components/global/`, gated by `EmailSignupBannerGuard`) — conditional homepage email capture, mounted in layout. The guard suppresses it where it shouldn't show.
+- **`WholesaleCTABanner`** — homepage wholesale cross-sell banner (a hydration-mismatch bug here was fixed by moving its mount).
+- **`FloatingPromoPopup`** — now mounted in `app/layout.tsx` at `z-modal`, gated on age-confirm + the 12s/exit-intent + frequency-cap logic from Phase 5. This is the promo-box frontend that was an open pre-launch item; it now exists and is wired to the discount/HubSpot flow.
+- `HomepageEngagementTracker` (the Phase 5b invisible client tracker) is mounted at the top of the page.
+
+#### Modal consolidation (2026-05-31)
+
+`ModalBase` extracted; `GoldWaitlistModal` and `FutureDropsModal` refactored onto it, and `AgeGateModal` moved into `components/modals/` alongside them. All three waitlist/age modals + the promo popup are now mounted globally in layout. This closes the Phase 3 remainder (Gold modal, Future Drops modal, Editions-box wiring) — the Editions boxes now open these real modals. **`FestivalDropList.tsx` was deleted** — the deferred "FESTIVAL DROP LIST" cart signup was retired in favor of the `EmailSignupBanner` / waitlist-form approach rather than rebuilt.
+
+#### Global polish + dependency (2026-06-04/07)
+
+- Navbar logo + nav-link sizing standardized; global padding + navbar scaling standardized across pages (touched `tokens.json` + `tailwind.config.ts` — NAVBAR_LEFT sync risk applies, verify hero files still match).
+- New dependency: `@opentelemetry/api ^1.9.0` (added 06-04 to satisfy a build/peer requirement; `--no-frozen-lockfile` install path already standing from Phase 5a handled the lockfile).
+
+#### ⚠️ KEY FINDING — the "30-day guarantee" inconsistency did not get resolved, it PROLIFERATED
+
+The Phase-1.5-era flag (BuySection "30-day guarantee" vs canonical "14-day return + 6-month warranty") was never reconciled, and the marketing copy has since spread the wrong figure to **six** live surfaces:
+- `components/home/StatBar.tsx` — "30-Day Guarantee" stat pill
+- `components/the-tech/the-tech.content.ts` — `CTA_SUBHEADLINE` ("Backed by a 30-day guarantee")
+- `components/wholesale/wholesale.content.ts` — spec body ("…USB-C, 30-day guarantee")
+- `components/about/about.content.ts` — closing copy ("backed by a 30-day guarantee")
+- `components/product/ProductDisplay/productdisplay.content.ts` — trust line ("SHIPS IN 24 HOURS · FREE US SHIPPING · 30-DAY GUARANTEE")
+- `components/home/CommonQuestions/commonquestions.content.ts` — FAQ answer that **explicitly promises** "If something goes wrong within 30 days, we replace it."
+
+Meanwhile the **policy pages and the contact FAQ are correct** (14-day return + 6-month limited warranty). So the site now ships a direct contradiction between its marketing copy and its own legal pages — a customer-service and arguably a consumer-claims exposure, not just a copy nit. Resolution is a content-file pass (decide the real promise, then align all six surfaces to the policy language or vice-versa). Highest-priority unresolved item from this review. (`BuySection.tsx` itself no longer exists — the homepage buy section was rebuilt — so the original flag's location is gone, but the figure outlived it.)
+
+#### Doc drift to fix (decisions changed, the persistent docs didn't)
+
+- **`CLAUDE.md` still names ReviewInfra as the locked provider** (the "Reviews provider — ReviewInfra (locked)" block, plus the tool-stack line). It now contradicts the shipped Judge.me integration. Update CLAUDE.md and add/append an ADR (or amend ADR-002) recording the Judge.me reversal so the next session loads truth.
+- **Judge.me shop domain mismatch to verify:** `JudgemeScripts.tsx` config uses `ajur1e-s1.myshopify.com` while the Storefront client uses `innovapeconcepts.myshopify.com`. Confirm this is intentional (Judge.me's own shop identifier vs the storefront domain) and not a stale/test value, or reviews will resolve against the wrong store.
+
+**Story beats captured (Phase UI)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 57 | "Reversed the reviews provider from a small script-tag vendor to Judge.me, a Shopify-native app. The decision that looked like a cosmetic swap actually deleted an entire subsystem I'd specced — distribution charts, AI summaries, photo carousels, a custom data-API path, and an action item to email a vendor about whether a read API even existed. The lesson wasn't 'Judge.me is better'; it was that once I'd committed to native Shopify for customer data in ADR-006, the reviews provider that rides the same integration was the consistent choice, and consistency across the data architecture beat the richer bespoke UI I'd drawn." | `tool-choice`, `integration-depth` |
+| 58 | "Built six pages in nine days and the thing that needs flagging loudest isn't a page — it's that 'backed by a 30-day guarantee' quietly copied itself onto six marketing surfaces while the policy pages say 14 days plus a 6-month warranty. Nobody decided to ship a contradiction; the copy just propagated faster than the reconciliation. The discipline that catches this is the same cross-document audit from Phase 1.5 — but it only works if it's re-run after a build sprint, because a sprint is exactly when an unresolved inconsistency breeds." | `pm-discipline`, `discovery` |
+| 59 | "Kept the named-competitor FAQ instead of deleting it, and turned it into positioning: not 'we're better than Danksaber' but 'they optimize for hiding the cart, we optimize for being the centerpiece — different products for different nights.' A comparison you control reads as confidence; a comparison you scrub reads as fear. The reframe does more brand work than the deletion would have." | `pm-discipline` |
+| 60 | "Finished the Activate page — the post-purchase onboarding most DTC brands skip. It was the largest open item for a reason: eleven functional sections, a sticky chip-nav that re-triggered the overflow-hidden-kills-sticky trap I'd already hit twice, and a bespoke charging animation that has to pause off-screen and respect reduced-motion. Shipping it in v1 instead of deferring to a 'v2' that never comes is the whole bet: the page that reduces support tickets is the one that proves the engineering thesis to the customer holding the device." | `discovery`, `integration-depth` |
+| 61 | "The decisions moved but two persistent docs didn't: CLAUDE.md still calls ReviewInfra the locked provider, so the next agent session would load a fact the codebase already contradicts. A working-memory doc that lags reality is just a worse memory. The maintenance pass — reconcile the doc to the repo, not the other way around — is the actual product here, and it has to happen on a cadence or the context rots." | `pm-discipline`, `ai-augmented-build` |
+
+---
+
 ### Phase 6 — Production Agent (pending)
 
 n8n cron → data gathering → Claude API with tool schema → structured report → Slack + email. Agent *proposes* tests, never *runs* them.
@@ -1105,43 +1192,44 @@ Active beats are logged within each phase entry above.
 
 ## Open Questions (rolling)
 
-**Phase 3a/3b/3c-1 complete — Phase 3 remainder:**
+**🔴 TOP PRIORITY — surfaced in the 2026-06-09 repo review:**
+1. **Warranty/guarantee contradiction across the live site.** Six marketing surfaces say "30-day guarantee" (StatBar, `the-tech` CTA_SUBHEADLINE, `wholesale.content.ts`, `about.content.ts`, `productdisplay.content.ts` trust line, and the homepage CommonQuestions FAQ which explicitly promises 30-day replacement) while the policy pages and contact FAQ say 14-day return + 6-month limited warranty. Decide the real promise, then align all six content files to the policy language (or change the policy). Content-file-only pass.
+2. **`CLAUDE.md` (and ADR-002) still name ReviewInfra as the locked reviews provider** — contradicts the shipped Judge.me integration. Update CLAUDE.md and record the reversal in an ADR so the next session loads truth.
+3. **Verify the Judge.me shop domain** in `JudgemeScripts.tsx` (`ajur1e-s1.myshopify.com`) vs the Storefront store (`innovapeconcepts.myshopify.com`) — confirm intentional, or reviews resolve against the wrong store.
 
-Phase 3 work remaining (in priority order):
-1. Build Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2
-2. Build Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3
-3. Wire Editions box actions: Box 1 → navigate to `/shop/litsaber-og`; Box 2 → open Gold modal; Box 3 → open Future Drops modal
-4. Wire "FESTIVAL DROP LIST" signup on `/cart` page (deferred from 3b)
+**Phase 3 remainder — ✅ RESOLVED (2026-06-02 → 06-06):**
+- ~~Gold waitlist modal~~ → built (`GoldWaitlistModal` on `ModalBase`)
+- ~~Future Drops modal~~ → built (`FutureDropsModal` on `ModalBase`)
+- ~~Wire Editions box actions~~ → done (boxes open the real modals / navigate)
+- ~~"FESTIVAL DROP LIST" `/cart` signup~~ → `FestivalDropList.tsx` deleted; superseded by `EmailSignupBanner` + waitlist forms
 
-**Phase 2 quantity discount refactor (planned, 2026-05-27):**
-1. Chunk A — cart store refactor + PDP Pattern B selector + `lib/cart/pricing.ts` (one Bolt prompt)
-2. Chunk B — remove quantity stepper from drawer + cart page (one Bolt prompt)
+**Phase 2 quantity discount refactor — ✅ SHIPPED (2026-05-27):** Chunk A (store + Pattern B selector + `lib/cart/pricing.ts`) and Chunk B (stepper removed from drawer + cart page) both committed. Logged in build log.
 
 **Carry-forward items from 3c-1:**
-- Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value
-- Reconcile offer-amount copy ($5 vs $10) in General waitlist form
-- Decide rate-limit durability: current in-memory Map resets on cold start; upgrade to Upstash Redis if real abuse appears
+- Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value (still open; low priority)
+- ~~Reconcile offer-amount copy ($5 vs $10)~~ → RESOLVED: offer locked at $10 (Phase 4 / ADR-004)
+- Decide rate-limit durability: current in-memory Map resets on cold start; upgrade to Upstash Redis if real abuse appears (still open)
 
 **Action items still open:**
-- Email ReviewInfra to confirm: (1) does a read API exist for fetching reviews as JSON, (2) does any AI summary feature exist or is on roadmap
+- ~~Email ReviewInfra re: read API / AI summary~~ → MOOT. Reviews provider is now Judge.me; the whole ReviewInfra question branch is retired.
 
 **Pre-launch (non-blocking until later):**
-- AI Summary final approach (pending ReviewInfra response)
-- ReviewInfra Path A vs Path B (pending ReviewInfra response)
+- ~~AI Summary final approach~~ / ~~ReviewInfra Path A vs Path B~~ → MOOT (Judge.me, see above)
 - ~~Floating promo trigger logic + frequency cap~~ → RESOLVED (2026-05-28): 12s + exit-intent; 72h dismiss / 365d subscribe cookies. Offer locked at $10. Promo code architecture → ADR-004 (Architecture A).
-- Build promo box frontend (Figma `3770:1315`) — bundled pre-launch with ADR-004 backend, on Phase 5 instrumentation. Design the error state first (absent in Figma); consider auto-apply via `?discount=` checkout URL.
-- Remove `console.log("[PDP]")` from `app/shop/litsaber-og/page.tsx` (next Bolt pass in that file)
-- Remove `/shopify-check` debug route before Phase 7
+- ~~Build promo box frontend (Figma `3770:1315`)~~ → BUILT: `FloatingPromoPopup` mounted in layout, wired to discount/HubSpot flow + Phase 5 instrumentation.
+- Remove `console.log("[PDP]")` from `app/shop/litsaber-og/page.tsx` (verify on next pass in that file)
+- Remove `/shopify-check` debug route before Phase 7 (still present)
 - Flip Authorize.net from test to live before launch
-- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now built.
+- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): Editions + commerce display section (node `3312:2`), built.
 - Venue card photography sourcing
-- FAQ #3 placeholder copy (homepage)
-- Contact page FAQ body copy (mostly placeholder)
-- "Danksaber" direct competitor mention — keep, reframe, or remove
+- FAQ #3 placeholder copy (homepage) — re-verify against the now-real CommonQuestions copy (note: this FAQ carries the 30-day-guarantee error, item #1 above)
+- ~~Contact page FAQ body copy (placeholder)~~ → RESOLVED (2026-06-06): real copy written across all contact FAQ categories.
+- ~~"Danksaber" direct competitor mention — keep, reframe, or remove~~ → RESOLVED (2026-06-06): reframed as a positioning narrative, kept.
 - "LITSABER OG +" title — verify `+` is intentional
 - ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-27): quantity discount model — tier prices are exact ($99.99, $134.99, $169.99, $199.99), display badges round to nearest dollar ("SAVE $20", "SAVE $45", "SAVE $70", "SAVE $100").
 - Mix-and-match UI revisit when Gold ships (currently no UI for Silver+Gold combinations; customer would use two add-to-cart actions if Gold were live)
-- Engineering kinetic animation system spec
+- Engineering kinetic animation system spec (note: `/the-tech` and `/activate` shipped with Framer/CSS section motion + a bespoke `ChargingAnimation`; the "kinetic" exploded-view system may now be a polish item rather than a build item — re-scope)
+- NAVBAR_LEFT / token sync check after the 2026-06-07 global padding + navbar scaling pass touched `tokens.json` + `tailwind.config.ts` — confirm hero files still match.
 
 **Post-launch:**
 - `Litsaber_Wholesale_Pricing_2026.pdf` rewrite (4 tiers, MOQ 5)
@@ -1158,3 +1246,4 @@ Phase 3 work remaining (in priority order):
 - **ADR:** Architecture Decision Record. A short markdown doc capturing context, decision, and consequences for a significant call.
 - **Phase 1.5:** Mid-phase reconciliation between Phase 1 (design tokens + repo) and Phase 2 (Bolt scaffold), introduced because mobile UI and additional pages came in after Phase 1 close.
 - **Plan-review pattern:** Reviewing the builder's written plan as if it were a pull request — catching bugs and architectural gaps at the paragraph stage, before any code is written. Cheaper to fix a plan than a commit, and the builder defends a plan less than code it has already produced.
+- **Phase UI:** The 2026-05-31 → 06-09 sprint that built out the remaining six pages, fleshed out the PDP, added the new homepage sections, consolidated modals, and reversed the reviews provider to Judge.me. Named retroactively because the work spanned the nominal Phase 3/4 boundary and was page-build-driven rather than phase-driven.
