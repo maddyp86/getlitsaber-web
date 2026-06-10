@@ -14,7 +14,7 @@ export default function ActivateVoltage() {
       id={SECTION_IDS.voltage}
       className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
-      <div className="mx-auto w-full justify-center max-w-content px-content">
+      <div className="mx-auto w-full justify-center items-center max-w-content px-content">
 
         {/* Section header */}
         <motion.p
