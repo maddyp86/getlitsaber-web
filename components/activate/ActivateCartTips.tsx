@@ -10,7 +10,7 @@ export default function ActivateCartTips() {
     >
       <div className="mx-auto w-full max-w-content px-content">
 
-        <p className="font-label text-eyebrow uppercase text-accent-cyan mb-2">
+        <p className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-2">
           {eyebrow}
         </p>
 
