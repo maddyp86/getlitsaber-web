@@ -43,7 +43,7 @@ export default function Footer() {
                 className="h-8 w-auto"
               />
             </Link>
-            <p className="font-body text-[18px] text-text-secondary leading-relaxed mb-lg">
+            <p className="font-body lg:text-[18px] text-body text-text-secondary leading-relaxed mb-lg">
               An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.
             </p>
 
