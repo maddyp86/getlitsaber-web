@@ -10,18 +10,18 @@ export default function ActivateSafety() {
     >
       <div className="mx-auto w-full max-w-content px-content">
 
-        <p className="font-label text-eyebrow uppercase text-accent-cyan mb-2">
+        <p className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-2">
           {eyebrow}
         </p>
 
         <h2
-          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
-          style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
+          className="font-display font-bold text-center  uppercase leading-[1.1] text-white mb-6"
+          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
         >
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-[580px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-16 max-w-[580px]">
           {intro}
         </p>
 
