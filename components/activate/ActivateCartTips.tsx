@@ -14,14 +14,14 @@ export default function ActivateCartTips() {
           {eyebrow}
         </p>
 
-         <h2
+        <h2
           className="font-display font-bold uppercase leading-[1.1] text-center text-white mb-2"
           style={{ fontSize: "clamp(34px, 6vw, 75px)", textShadow: "0 0 50px rgba(255,255,255,0.50)" }}
         >
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed text-center mx-auto mb-16 max-w-[640px]">
           {intro}
         </p>
 
@@ -33,14 +33,17 @@ export default function ActivateCartTips() {
               className="rounded-card border border-[rgba(255,255,255,0.08)] bg-surface-card p-6 flex flex-col gap-4"
             >
               <div className="flex flex-col items-baseline gap-3">
-                <span className="font-label text-[18px] text-accent-cyan shrink-0">
+                <span className="font-label text-[16px] md:text-[18px] text-accent-cyan shrink-0">
                   {card.num}
                 </span>
-                <h3 className="font-subhead font-bold uppercase text-white leading-tight" style={{ fontSize: "clamp(16px,2vw, 20px)" }}>
+                <h3
+                  className="font-subhead font-bold uppercase text-white leading-tight"
+                  style={{ fontSize: "clamp(16px, 2vw, 20px)" }}
+                >
                   {card.title}
                 </h3>
               </div>
-              <p className="font-body text-body-sm text-text-secondary leading-relaxed">
+              <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed">
                 {card.body}
               </p>
             </div>
