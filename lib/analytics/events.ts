@@ -52,6 +52,10 @@ type FunnelEvents = {
   festival_droplist_signup: {
     source: string;
   };
+  device_activated: {
+    activation_source: "packaging_qr" | "direct";
+    is_first_activation: boolean;
+  };
 };
 
 export type PayloadFor<E extends keyof FunnelEvents> = FunnelEvents[E];
@@ -71,6 +75,7 @@ export const EVENTS = {
   promo_popup_dismissed: "promo_popup_dismissed",
   contact_form_submitted: "contact_form_submitted",
   festival_droplist_signup: "festival_droplist_signup",
+  device_activated: "device_activated",
 } as const satisfies Record<keyof FunnelEvents, string>;
 
 // ---------------------------------------------------------------------------

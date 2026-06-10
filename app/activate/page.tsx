@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ActivationTracker from "@/components/activate/ActivationTracker";
 import ActivateHero from "@/components/activate/ActivateHero";
 import ActivateSubNav from "@/components/activate/ActivateSubNav";
 import ActivateQuickStart from "@/components/activate/ActivateQuickStart";
@@ -22,6 +23,7 @@ export default function ActivatePage() {
   return (
     // No overflow-x-hidden — it would kill the sticky sub-nav.
     <main className="bg-background-primary pt-navbar">
+      <ActivationTracker />
       <ActivateHero />
       <ActivateSubNav />
       <ActivateQuickStart />
