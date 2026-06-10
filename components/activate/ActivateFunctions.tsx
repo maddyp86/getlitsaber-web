@@ -50,7 +50,7 @@ export default function ActivateFunctions() {
         </motion.p>
 
         <motion.h3
-            className="font-subhead font-bold  md:text-[35px] text-[25px] uppercase text-white mb-6"
+            className="font-subhead font-bold text-center md:text-[35px] text-[25px] uppercase text-white mb-6"
           initial={prefersReduced ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
