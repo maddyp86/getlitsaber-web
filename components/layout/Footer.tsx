@@ -141,7 +141,7 @@ function NavColumn({
 function SocialIconRow() {
   return (
     <div className="flex items-center gap-sm" role="list" aria-label="Social media links">
-      
+      <a
         href="https://www.instagram.com/getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -151,7 +151,7 @@ function SocialIconRow() {
       >
         <InstagramIcon />
       </a>
-      
+      <a
         href="https://www.youtube.com/@getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -161,7 +161,7 @@ function SocialIconRow() {
       >
         <YouTubeIcon />
       </a>
-      
+      <a
         href="https://www.tiktok.com/@getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -254,3 +254,4 @@ function DiscoverBadge() {
     />
   );
 }
+
