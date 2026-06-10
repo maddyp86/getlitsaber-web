@@ -51,7 +51,7 @@ export default function ActivateCharging() {
           <div className="flex flex-col items-start gap-8 flex-[1_0_0] min-w-0">
 
             {/* Charging block (no card chrome per Figma) */}
-            <div className="w-full flex flex-col gap-3">
+           <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
               {/* Header: label + badge */}
               <div className="flex flex-wrap items-center gap-3">
                <span
