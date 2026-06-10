@@ -40,7 +40,7 @@ export default function ActivateVoltage() {
         </motion.h2>
 
         <motion.p
-          className="font-body text-body-sm lg:text-body text-text-secondary mb-16 max-w-content"
+          className="font-body text-body-sm text-center lg:text-body text-text-secondary mb-16 max-w-[600px]"
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
