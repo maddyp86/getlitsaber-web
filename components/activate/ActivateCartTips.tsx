@@ -6,22 +6,22 @@ export default function ActivateCartTips() {
   return (
     <section
       id={SECTION_IDS.cart}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-elevated"
+      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-[#090517]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
-        <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4">
+        <p className="font-label text-eyebrow uppercase text-accent-cyan mb-2">
           {eyebrow}
         </p>
 
-        <h2
-          className="font-display font-bold uppercase leading-[1.05] text-white mb-6"
-          style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
+         <h2
+          className="font-display font-bold uppercase leading-[1.1] text-center text-white mb-2"
+          style={{ fontSize: "clamp(34px, 6vw, 75px)", textShadow: "0 0 50px rgba(255,255,255,0.50)" }}
         >
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-10 max-w-[640px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-16 max-w-content">
           {intro}
         </p>
 
