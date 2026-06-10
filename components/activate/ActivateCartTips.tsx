@@ -32,11 +32,11 @@ export default function ActivateCartTips() {
               key={card.num}
               className="rounded-card border border-[rgba(255,255,255,0.08)] bg-surface-card p-6 flex flex-col gap-4"
             >
-              <div className="flex items-baseline gap-3">
-                <span className="font-label text-[11px] tracking-[0.15em] text-text-muted shrink-0">
+              <div className="flex flex-col items-baseline gap-3">
+                <span className="font-label text-[18px] text-cyan shrink-0">
                   {card.num}
                 </span>
-                <h3 className="font-display font-bold uppercase text-white leading-tight" style={{ fontSize: "clamp(15px, 1.4vw, 18px)" }}>
+                <h3 className="font-subhead font-bold uppercase text-white leading-tight" style={{ fontSize: "clamp(16px,2vw, 20px)" }}>
                   {card.title}
                 </h3>
               </div>
