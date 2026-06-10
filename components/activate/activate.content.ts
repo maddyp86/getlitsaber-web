@@ -269,16 +269,24 @@ export const ACTIVATE_CHARGING = {
   eyebrow: "CHARGING",
   title: "FULL CHARGE IN 75 MIN.",
   intro: "USB-C. Any cable, any adapter. No proprietary connectors.",
-  barLabel: "BUTTON          CHARGING BEHAVIOR          TIP",
-  bullet:
-    "The bar fills as the battery climbs. One segment red, two orange, three yellow, four blue, all five green.",
-  caption:
-    "Watch the bar fill up. When all five segments are green and stop breathing, you\u2019re fully charged.",
-  media: {
-    src: null as string | null,
-    poster: null as string | null,
-    alt: "Charging the device demo",
+  cardLabel: "Charging the device",
+  cardBadge: "USB-C",
+  tagline: "The LEDs animate while charging so you always know what\u2019s happening.",
+  points: [
+    { lead: "Plug in any USB-C", text: " cable into a 5V/1A adapter or higher." },
+    { text: "LEDs breathe by color segment as the battery fills: red, then orange, yellow, blue, green." },
+    { text: "When fully charged, the green segment stays solid and stops breathing." },
+  ],
+  callout: {
+    lead: "Not charging?",
+    body: "Try a different cable first (many USB-C cables are data-only and won\u2019t deliver power). Then try a different adapter. If neither works, ",
+    linkLabel: "contact us",
+    linkHref: "/contact",
+    bodyAfter: ".",
   },
+  barLabel: { left: "BUTTON", center: "CHARGING BEHAVIOR", right: "TIP" },
+  caption: "Watch the segments fill in order. The green segment going solid means you\u2019re fully charged.",
+  media: { src: null as string | null, poster: null as string | null, alt: "Charging the device demo" },
 } as const;
 
 // ─── Cart Troubleshooting section ─────────────────────────────────────────────
