@@ -21,7 +21,7 @@ export default function ActivateCartTips() {
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed text-center mx-auto mb-16 max-w-[640px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed text-center mx-auto mb-16 max-w-[640px] mx-auto">
           {intro}
         </p>
 
