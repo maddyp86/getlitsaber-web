@@ -16,12 +16,13 @@ export default function ActivateSafety() {
 
         <h2
           className="font-display font-bold text-center  uppercase leading-[1.1] text-white mb-6"
-          style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
+            style={{ fontSize: "clamp(45px, 6vw, 75px)",
+                 textShadow: "0 0 50px rgba(255, 255, 255, 0.50)"}}
         >
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed mb-16 max-w-[580px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary text-center  leading-relaxed mb-16 max-w-[580px]">
           {intro}
         </p>
 
