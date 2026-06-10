@@ -8,7 +8,7 @@ export default function ActivateSafety() {
       id={SECTION_IDS.safety}
       className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
-      <div className="mx-auto w-full max-w-content px-content">
+      <div className="mx-auto w-full items-center max-w-content px-content">
 
         <p className="font-label text-eyebrow text-center uppercase text-accent-cyan mb-2">
           {eyebrow}
@@ -22,7 +22,7 @@ export default function ActivateSafety() {
           {title}
         </h2>
 
-        <p className="font-body text-body-sm lg:text-body text-text-secondary text-center  leading-relaxed mb-16 max-w-[580px]">
+        <p className="font-body text-body-sm lg:text-body text-text-secondary text-center mb-16 max-w-content">
           {intro}
         </p>
 
