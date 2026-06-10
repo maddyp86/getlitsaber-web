@@ -35,7 +35,7 @@ export default function ActivateCharging() {
 
         <h2
           className="font-display font-bold uppercase leading-[1.1] text-white mb-2"
-          style={{ fontSize: "clamp(34px, 6vw, 75px)", textShadow: "0 0 50px rgba(255,255,255,0.50)" }}
+          style={{ fontSize: "clamp(45px, 6vw, 75px)", textShadow: "0 0 50px rgba(255,255,255,0.50)" }}
         >
           {title}
         </h2>
