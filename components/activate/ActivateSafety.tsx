@@ -6,11 +6,11 @@ export default function ActivateSafety() {
   return (
     <section
       id={SECTION_IDS.safety}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-background-primary"
+      className="scroll-mt-[150px] py-section-y-mobile lg:py-section-y bg-[#000000]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
-        <p className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan mb-4">
+        <p className="font-label text-eyebrow uppercase text-accent-cyan mb-2">
           {eyebrow}
         </p>
 
