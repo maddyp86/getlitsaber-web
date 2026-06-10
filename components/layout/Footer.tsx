@@ -43,7 +43,7 @@ export default function Footer() {
                 className="h-8 w-auto"
               />
             </Link>
-            <p className="font-body lg:text-[18px] text-body text-text-secondary leading-relaxed mb-lg">
+            <p className="font-body text-body-sm sm:text-body lg:text-[18px] text-text-secondary leading-relaxed mb-lg">
               An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.
             </p>
 
@@ -65,7 +65,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="mt-section-y-mobile lg:mt-xl border-t border-surface-tint-white pt-lg space-y-lg">
           {/* Compliance disclaimer */}
-          <p className="font-body text-eyebrow text-text-muted leading-relaxed text-center">
+          <p className="font-body text-[11px] sm:text-eyebrow text-text-muted leading-relaxed text-center">
             Litsaber is sold as a 510-thread battery accessory. We do not produce, manufacture, or distribute cannabis. The device is not intended for use with nicotine, e-juice, or e-liquids. Not for sale to minors. Use responsibly and in accordance with local laws.
           </p>
 
@@ -82,10 +82,10 @@ export default function Footer() {
 
           {/* Copyright + policy links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm">
-            <p className="font-label text-[14px] text-text-muted tracking-wide">
+            <p className="font-label text-[12px] sm:text-[14px] text-text-muted tracking-wide text-center sm:text-left">
               © 2026 INNOVAPE CONCEPTS · LOS ANGELES
             </p>
-            <div className="flex items-center gap-xs flex-wrap">
+            <div className="flex items-center justify-center sm:justify-end gap-xs flex-wrap">
               {[
                 { label: "PRIVACY", href: "/policies/privacy" },
                 { label: "TERMS", href: "/policies/terms" },
@@ -93,7 +93,7 @@ export default function Footer() {
                 <span key={link.href} className="flex items-center gap-xs">
                   <Link
                     href={link.href}
-                    className="font-label text-[14px] text-text-muted hover:text-text-accent transition-colors duration-200 tracking-widest"
+                    className="font-label text-[12px] sm:text-[14px] text-text-muted hover:text-text-accent transition-colors duration-200 tracking-widest"
                   >
                     {link.label}
                   </Link>
@@ -127,7 +127,7 @@ function NavColumn({
           <li key={link.href}>
             <Link
               href={link.href}
-              className="font-body text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="font-body text-body-sm sm:text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               {link.label}
             </Link>
@@ -141,7 +141,7 @@ function NavColumn({
 function SocialIconRow() {
   return (
     <div className="flex items-center gap-sm" role="list" aria-label="Social media links">
-      <a
+      
         href="https://www.instagram.com/getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -151,7 +151,7 @@ function SocialIconRow() {
       >
         <InstagramIcon />
       </a>
-      <a
+      
         href="https://www.youtube.com/@getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -161,7 +161,7 @@ function SocialIconRow() {
       >
         <YouTubeIcon />
       </a>
-      <a
+      
         href="https://www.tiktok.com/@getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -254,4 +254,3 @@ function DiscoverBadge() {
     />
   );
 }
-
