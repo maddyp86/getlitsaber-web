@@ -43,7 +43,7 @@ export default function Footer() {
                 className="h-8 w-auto"
               />
             </Link>
-            <p className="font-body text-body-sm sm:text-body lg:text-[18px] text-text-secondary leading-relaxed mb-lg">
+            <p className="font-body lg:text-[18px] text-body text-text-secondary leading-relaxed mb-lg">
               An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.
             </p>
 
@@ -65,7 +65,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="mt-section-y-mobile lg:mt-xl border-t border-surface-tint-white pt-lg space-y-lg">
           {/* Compliance disclaimer */}
-          <p className="font-body text-[11px] sm:text-eyebrow text-text-muted leading-relaxed text-center">
+          <p className="font-body text-eyebrow text-text-muted leading-relaxed text-center">
             Litsaber is sold as a 510-thread battery accessory. We do not produce, manufacture, or distribute cannabis. The device is not intended for use with nicotine, e-juice, or e-liquids. Not for sale to minors. Use responsibly and in accordance with local laws.
           </p>
 
@@ -82,10 +82,10 @@ export default function Footer() {
 
           {/* Copyright + policy links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm">
-            <p className="font-label text-[12px] sm:text-[14px] text-text-muted tracking-wide text-center sm:text-left">
+            <p className="font-label text-[14px] text-text-muted tracking-wide">
               © 2026 INNOVAPE CONCEPTS · LOS ANGELES
             </p>
-            <div className="flex items-center justify-center gap-xs flex-wrap">
+            <div className="flex items-center gap-xs flex-wrap">
               {[
                 { label: "PRIVACY", href: "/policies/privacy" },
                 { label: "TERMS", href: "/policies/terms" },
@@ -93,7 +93,7 @@ export default function Footer() {
                 <span key={link.href} className="flex items-center gap-xs">
                   <Link
                     href={link.href}
-                    className="font-label text-[12px] sm:text-[14px] text-text-muted hover:text-text-accent transition-colors duration-200 tracking-widest"
+                    className="font-label text-[14px] text-text-muted hover:text-text-accent transition-colors duration-200 tracking-widest"
                   >
                     {link.label}
                   </Link>
@@ -127,7 +127,7 @@ function NavColumn({
           <li key={link.href}>
             <Link
               href={link.href}
-              className="font-body text-body-sm sm:text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+              className="font-body text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               {link.label}
             </Link>
@@ -141,7 +141,7 @@ function NavColumn({
 function SocialIconRow() {
   return (
     <div className="flex items-center gap-sm" role="list" aria-label="Social media links">
-      
+      <a
         href="https://www.instagram.com/getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -151,7 +151,7 @@ function SocialIconRow() {
       >
         <InstagramIcon />
       </a>
-      
+      <a
         href="https://www.youtube.com/@getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -161,7 +161,7 @@ function SocialIconRow() {
       >
         <YouTubeIcon />
       </a>
-      
+      <a
         href="https://www.tiktok.com/@getlitsaber"
         target="_blank"
         rel="noopener noreferrer"
@@ -174,3 +174,84 @@ function SocialIconRow() {
     </div>
   );
 }
+
+function InstagramIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="10" cy="10" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="14.5" cy="5.5" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function YouTubeIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <rect x="2" y="4" width="16" height="12" rx="3" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 7.5l5 2.5-5 2.5V7.5z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function TikTokIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M13 2c.3 2 1.5 3.2 3 3.5v2.8c-1.1 0-2.2-.4-3-1v5.2a5 5 0 1 1-3-4.6V11a2.5 2.5 0 1 0 1.5 2.3V2H13z"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function VisaBadge() {
+  return (
+    <Image
+      src="/images/global/Visa.png"
+      alt="Visa"
+      width={50}
+      height={34}
+      className="object-contain"
+    />
+  );
+}
+
+function MastercardBadge() {
+  return (
+    <Image
+      src="/images/global/Mastercard.png"
+      alt="Mastercard"
+      width={50}
+      height={34}
+      className="object-contain"
+    />
+  );
+}
+
+function AmexBadge() {
+  return (
+    <Image
+      src="/images/global/Amex.png"
+      alt="American Express"
+      width={50}
+      height={34}
+      className="object-contain"
+    />
+  );
+}
+
+function DiscoverBadge() {
+  return (
+    <Image
+      src="/images/global/Discover.png"
+      alt="Discover"
+      width={50}
+      height={34}
+      className="object-contain"
+    />
+  );
+}
+
