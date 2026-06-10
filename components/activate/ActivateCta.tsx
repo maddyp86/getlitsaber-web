@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ACTIVATE_CTA } from "./activate.content";
-import FestivalDropList from "./FestivalDropList";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
