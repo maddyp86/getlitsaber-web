@@ -21,9 +21,10 @@ const BRAND_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-background-primary border-t border-surface-tint-white"
+    <footer className="bg-background-primary"
       style={{ background: "linear-gradient(180deg, #150C2D 0%, #000 100%)" }}
       >
+      <div aria-hidden="true" style={{ background: "linear-gradient(90deg, #150C2D 0%, #00E5FF 48.08%, #150C2D 100%)", height: "1px" }} />
      <div className="mx-auto max-w-content px-content py-10 lg:py-16">
         {/* Top section */}
         <div className="flex flex-col lg:flex-row lg:justify-between gap-10">
