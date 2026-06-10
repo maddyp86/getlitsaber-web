@@ -87,7 +87,7 @@ export default function ActivatePreheat() {
                 {points.map((point, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 py-4 border-b border-[rgba(255,255,255,0.08)] last:border-0"
+               className="flex items-start gap-3 py-4 border-b border-[#113757] last:border-0"
                   >
                     <span
                       aria-hidden="true"
