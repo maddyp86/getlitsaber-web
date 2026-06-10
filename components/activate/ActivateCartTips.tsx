@@ -6,7 +6,7 @@ export default function ActivateCartTips() {
   return (
     <section
       id={SECTION_IDS.cart}
-      className="scroll-mt-[146px] py-section-y-mobile lg:py-section-y bg-[#090517]"
+      className="scroll-mt-[150 px] py-section-y-mobile lg:py-section-y bg-[#090517]"
     >
       <div className="mx-auto w-full max-w-content px-content">
 
