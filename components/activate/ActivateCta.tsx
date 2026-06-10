@@ -12,19 +12,19 @@ export default function ActivateCta() {
 
       {/* Still Stuck CTA */}
       <section className="py-section-y-mobile lg:py-section-y border-t border-border-divider">
-        <div className="mx-auto w-full max-w-content px-content text-center flex flex-col items-center gap-8">
+        <motion.div className="mx-auto w-full max-w-content px-content text-center flex flex-col items-center gap-8">
 
           <div className="flex flex-col items-center gap-4">
-            <h2
-              className="font-display font-bold uppercase leading-[1.05] text-white"
-              style={{ fontSize: "clamp(32px, 4vw, 55px)" }}
+            <motion.h2
+              className="font-display font-bold uppercase leading-[1.1] text-white"
+              style={{ fontSize: "clamp(45px, 6vw, 75px)" }}
             >
               {heading}
-            </h2>
-            <p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[440px]">
+            </motion.h2>
+            <motion.p className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed max-w-[440px]">
               {body}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             {/* Primary — magenta-filled */}
