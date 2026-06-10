@@ -12,8 +12,6 @@ export default function ActivateCta() {
 
   return (
     <>
-      {/* Festival Drop List band */}
-      <FestivalDropList />
 
       {/* Still Stuck CTA */}
       <section className="py-section-y-mobile lg:py-section-y border-t border-border-divider">
