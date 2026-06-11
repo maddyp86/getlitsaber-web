@@ -41,6 +41,7 @@ export default function Footer() {
                 width={140}
                 height={40}
                 className="h-8 w-auto"
+                style={{ width: "clamp(130px, 14vw, 200px)", height: "auto" }}
               />
             </Link>
             <p className="font-body text-body-sm sm:text-body lg:text-[18px] text-text-secondary leading-relaxed mb-lg">
