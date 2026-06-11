@@ -24,6 +24,9 @@ const QUICK_LINKS = [
   { label: "Start a Return", href: "/policies/refunds" },
 ] as const;
 
+const ACCOUNT_URL =
+  process.env.NEXT_PUBLIC_ACCOUNT_URL ?? "https://shopify.com/65425866959/account";
+
 export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
   const [quickLinksOpen, setQuickLinksOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -178,13 +181,13 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
           >
             GET YOURS — $59.99
           </Link>
-          <Link
-            href="/account"
+          <a
+            href={ACCOUNT_URL}
             onClick={onClose}
             className="block w-full py-xs text-center font-label text-eyebrow tracking-widest uppercase text-text-muted hover:text-text-secondary transition-colors duration-200"
           >
             LOGIN TO YOUR ACCOUNT
-          </Link>
+          </a>
         </div>
       </div>
     </>

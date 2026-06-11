@@ -7,6 +7,9 @@ import MobileNavDrawer from "./MobileNavDrawer";
 import { useItemCount } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
 
+const ACCOUNT_URL =
+  process.env.NEXT_PUBLIC_ACCOUNT_URL ?? "https://shopify.com/65425866959/account";
+
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop/litsaber-og" },
@@ -89,20 +92,22 @@ export default function Navbar() {
           {/* Right icons — user (desktop only) + cart + hamburger spacer balance */}
           <div className="flex items-center justify-end gap-1 lg:w-20">
             {/* User icon — desktop only */}
-            <button
+            <a
+              href={ACCOUNT_URL}
               aria-label="Account"
               className="hidden lg:flex items-center justify-center w-12 h-12 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
-            </button>
+            </a>
 
             {/* User icon — mobile only */}
-            <button
+            <a
+              href={ACCOUNT_URL}
               aria-label="Account"
               className="flex lg:hidden items-center justify-center w-8 h-8 text-text-secondary hover:text-accent-cyan transition-colors duration-200"
             >
               <UserIcon />
-            </button>
+            </a>
 
             {/* Cart icon */}
             <button
