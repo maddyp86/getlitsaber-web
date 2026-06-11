@@ -41,6 +41,7 @@ export default function Footer() {
                 width={140}
                 height={40}
                 style={{ width: "clamp(130px, 14vw, 200px)", height: "auto" }}
+                priority
               />
             </Link>
             <p className="font-body text-body-sm sm:text-body lg:text-[18px] text-text-secondary leading-relaxed mb-lg">
