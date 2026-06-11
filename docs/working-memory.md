@@ -649,372 +649,91 @@ caught real bugs in 4a and 4b before any code was written.
 
 PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
-## Phase 5a — PostHog install + pageview capture (2026-05-30) ✅
+---
 
-First chunk of Phase 5 observability. Install + autocapture only; the typed event
-layer (5b) and server-side/webhook capture (5c) are separate chunks. Verified live:
-pageviews and autocapture events landing in PostHog (project 445005, US Cloud).
+### Phase 6 — Production Agent (pending)
 
-**Decisions:**
-- **Wizard skipped deliberately.** PostHog's onboarding offered an `npx @posthog/wizard`
-  auto-installer. Declined — it runs a second write path into the repo (installs SDK,
-  edits files, commits), the exact two-write-path collision CLAUDE.md forbids. Install
-  went through Bolt (the single write path) instead, configured to our spec.
-- **`providers.tsx` + `useEffect` pattern, NOT `instrumentation-client.ts`.** The
-  lightweight `instrumentation-client.ts` convention is Next.js 15.3+ only; we're on
-  14.2.35, so the `'use client'` provider wrapping the layout is correct. Verified
-  against current PostHog docs before building.
-- **`defaults: '2026-01-30'`** snapshot handles SPA pageview + pageleave capture for
-  App Router automatically — no hand-rolled `PostHogPageView` component needed.
-- **Env var named `NEXT_PUBLIC_POSTHOG_TOKEN`** — resolved a three-way naming conflict
-  (spec said `_PROJECT_TOKEN`, existing `.env.example` had `_KEY`, PostHog docs use
-  `_TOKEN`). Picked `_TOKEN`: shortest, matches PostHog tooling, and avoids "KEY" which
-  invites confusion with the secret personal API key. The `phc_` token is a public
-  client-side key (write-only, safe to ship in browser) — `NEXT_PUBLIC_` is convention,
-  not a leak. Host corrected to `https://us.i.posthog.com` (the `.i.` matters; without
-  it ingestion silently fails).
-- **Layout stays a Server Component** — only `providers.tsx` is `'use client'`; all
-  existing shell (AgeGate, Navbar, Footer, CartDrawer, CartHydrator) preserved and
-  reordered nothing.
-- **Reverse proxy deferred.** Skipped the Next.js rewrite that dodges ad-blockers —
-  adds a moving part; priority was clean baseline data flowing. Optional later hardening
-  if ad-blocker loss proves material.
+n8n cron → data gathering → Claude API with tool schema → structured report → Slack + email. Agent *proposes* tests, never *runs* them.
 
-**Build-reality beats (all recurring, worth banking):**
-- **Bolt won't update working-memory — confirmed policy now.** Considered letting Bolt
-  write this doc directly; decided against it. Bolt has falsely reported updating
-  working-memory 3+ times (beats #16, #33) and writes a thinner builder's-eye version
-  that misses decision history. Working-memory stays maintained outside Bolt. Bolt was
-  explicitly told not to touch `docs/`.
-- **Benign GitHub conflict (not the bad kind).** On Bolt's push, GitHub had two `docs:`
-  commits Bolt's workspace didn't (committed directly in a Bolt-idle window, the correct
-  docs write path). "Pull and resend" reconciled cleanly. This is the GOOD version of the
-  two-write-path situation — pull-before-write enforced by the system — vs the `public/`
-  wipe (beat #22) where a sync merged without pulling first and dropped files. Same root
-  cause, opposite outcome, entirely down to ordering.
-- **First dependency add hit a Bolt sandbox limit.** `posthog-js` is the first npm
-  package added in the whole build (everything prior was code edits to existing files).
-  Bolt added it to `package.json` but its sandbox ran out of memory running `pnpm install`,
-  so `pnpm-lock.yaml` never regenerated. Vercel's `--frozen-lockfile` default correctly
-  rejected the mismatch (`ERR_PNPM_OUTDATED_LOCKFILE`). Fix: set Vercel install command to
-  `pnpm install --no-frozen-lockfile` (left as standing config — safe at this scale,
-  reconciles the lockfile at build time). This WILL recur on every future package add
-  (5c adds posthog-node, likely a Supabase client) — the Vercel flag handles it permanently.
+---
 
-| # | Beat | Tag |
-|---|------|-----|
-| 42 | "PostHog's onboarding pushed a one-command auto-installer. I skipped it. Convenient for a solo dev on a local repo, wrong for us: it's a second tool writing to the repo, the exact collision that's bitten us twice. The install went through our single write path instead, configured to the taxonomy we'd designed rather than whatever the wizard guesses. The fastest path and the right path aren't the same when you've deliberately constrained who can write." | `tool-choice`, `pm-discipline` |
-| 43 | "First npm package added in the entire build, and it surfaced a tool limit we'd never hit: the builder's sandbox can't complete pnpm install (out of memory), so it edits package.json but can't regenerate the lockfile. The deploy's frozen-lockfile check caught the mismatch and refused — correctly. The lesson isn't the workaround (a Vercel install flag); it's that the builder does the visible half of a change and silently drops the half it can't execute, every time. The verification step exists because the builder's completion claim isn't trustworthy — same theme as the availability bug and the working-memory false reports." | `integration-depth`, `ai-collaboration` |
+### Phase 7 — Launch & First Loop (pending)
 
-## Phase 5b — Typed event layer + funnel wiring (2026-05-30) ✅
+Soft launch. Two weeks of agent runs before trusting output.
 
-Second Phase 5 chunk. The typed `lib/analytics/events.ts` module is the single
-source of event names (no inline `posthog.capture` strings anywhere — same
-enforcement model as "no inline hex"). Six funnel events wired into existing
-surfaces; deferred surfaces (promo box, Activate page) excluded.
+---
 
-**Module:** `lib/analytics/events.ts` — `EVENTS` const + `PayloadFor<E>` typed map +
-`track<E>(event, properties)` wrapping `posthog.capture`. Guards on `window` +
-`posthog.__loaded`; no-ops silently if uninitialized. Malformed `track()` calls
-fail to compile.
+## Story Beats Bank
 
-**Events wired (6):** `age_gate_confirmed` (AgeGateModal confirm) · `homepage_engaged`
-(first of scroll-past-hero / 10s dwell / CTA click, fire-once per session via
-sessionStorage, `trigger` property, timer cleared on unmount) · `product_viewed`
-(PDP + homepage buy section, fire-once guards, `surface` property) ·
-`cart_add_to_cart` (post-`addItem`, real variant/qty/tier_price/unit_price) ·
-`buy_now_clicked` (BUY NOW, before redirect) · `checkout_started` (3 cart surfaces +
-BUY NOW).
+Tag taxonomy:
 
-**Server-Component shim pattern:** `app/page.tsx` and the PDP page are Server
-Components and can't hold hooks, so invisible `"use client"` tracker components
-(`HomepageEngagementTracker`, `PdpViewTracker`) render `null` and carry the
-tracking. Server Components never import PostHog directly.
+- `discovery` — decisions driven by data, not vibes
+- `tool-choice` — why I picked this tool over that one
+- `ai-augmented-build` — AI tooling proving its worth (or not) in a specific moment
+- `integration-depth` — code-level moments, API quirks, debug stories
+- `agent-loop` — observability → agent → human review system in action
+- `pm-discipline` — PM thinking shaping technical execution
 
-**Two file-verified findings during plan review:**
-- `cart_value` on `checkout_started` reads `useSubtotal()`, which sums `lineTotal` =
-  `parseFloat(node.cost.totalAmount.amount)` — Shopify's actual charged amount, NOT
-  the `pricing.ts` client fallback. Analytics value = what the customer pays (beat #40
-  invariant holds).
-- `checkout_started` stays co-located across the 3 cart buttons rather than centralized:
-  `useCheckoutUrl()` turned out to be a plain Zustand selector returning a string, not a
-  shared redirect function, so there was no chokepoint to centralize into without an
-  out-of-scope refactor. The cost — 4 call sites that could drift — is logged; if a 5th
-  checkout button is ever added, it needs the event added too.
-- BUY NOW reads fresh `useCartStore.getState()` post-`addItem` for `cart_value` (the
-  render-time hook closure would be stale/zero right after a cart create) — same pattern
-  the handler already uses for `checkoutUrl`.
+Active beats are logged within each phase entry above.
 
-## Phase 5b — source attribution + remove-item (2026-05-30) ✅
+---
 
-Three additions surfaced by reviewing the live PostHog reports (user caught two real
-gaps the original 5b spec missed):
+## Open Questions (rolling)
 
-1. **`source` on `cart_add_to_cart`** (`'homepage_buy' | 'pdp'`) — `BundleAndCTA` renders
-   on BOTH the homepage buy section and the PDP, so without a source the two add surfaces
-   were indistinguishable. Now we can see which surface drives adds.
-2. **`source` on `checkout_started`** (`'drawer' | 'cart_page' | 'buy_now'`) — the three
-   checkout entry points emitted an identical event; now each is attributed, so
-   drawer-vs-cart-page-vs-impulse checkout behavior is separable.
-3. **`cart_remove_item`** (`{ variant, quantity }`) — wired on the store `removeItem` path
-   (drawer + cart page). Not a forward funnel step; it's a friction signal — pre-checkout
-   removal is exactly the hesitation behavior the performance report flagged ("interest
-   without conversion") and previously had no event.
+**Phase 3a/3b/3c-1 complete — Phase 3 remainder:**
 
-**On autocapture vs typed events (clarified):** the `clicked button with text "..."` events
-in reports are PostHog autocapture (on by default via `defaults: '2026-01-30'`), not
-redundant with our typed events. Autocapture = wide exploratory net, brittle (keyed on DOM
-text). Typed events = stable semantic spine with structured properties. Funnels/KPIs run on
-typed events; autocapture is ambient backup. Left on pre-launch; can disable later if noisy.
+Phase 3 work remaining (in priority order):
+1. Build Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2
+2. Build Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3
+3. Wire Editions box actions: Box 1 → navigate to `/shop/litsaber-og`; Box 2 → open Gold modal; Box 3 → open Future Drops modal
+4. Wire "FESTIVAL DROP LIST" signup on `/cart` page (deferred from 3b)
 
-| # | Beat | Tag |
-|---|------|-----|
-| 44 | "Reviewing the live event stream caught two holes my own spec missed: the add-to-cart event fired identically from the homepage and the product page, and the checkout event fired identically from three different entry points. Same event, no idea where it happened. A `source` property on each — three lines of typed payload — turned 'people are checking out' into 'people are checking out from the drawer 3x more than the cart page,' which is the difference between a number and a decision. The lesson: an event without the context of where it fired is half an event. Watch the real stream early, because the gaps are invisible in the spec and obvious in the data." | `integration-depth`, `pm-discipline` |
+**Phase 2 quantity discount refactor (planned, 2026-05-27):**
+1. Chunk A — cart store refactor + PDP Pattern B selector + `lib/cart/pricing.ts` (one Bolt prompt)
+2. Chunk B — remove quantity stepper from drawer + cart page (one Bolt prompt)
 
-## Phase 5c-1 — Supabase server-side client + orders table (2026-05-31) ✅
+**Carry-forward items from 3c-1:**
+- Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value
+- Reconcile offer-amount copy ($5 vs $10) in General waitlist form
+- Decide rate-limit durability: current in-memory Map resets on cold start; upgrade to Upstash Redis if real abuse appears
 
-Foundation for the orders mirror. Supabase project provisioned (region us-east-2),
-`orders` table created, server-only client wired, verified with a throwaway
-insert-and-read route. No webhook yet (5c-2).
+**Action items still open:**
+- Email ReviewInfra to confirm: (1) does a read API exist for fetching reviews as JSON, (2) does any AI summary feature exist or is on roadmap
 
-**Supabase:** project in us-east-2 (close to Vercel's iad1 — negligible latency).
-`orders` table = 13 columns, `shopify_order_id` unique (webhook-retry dedupe key),
-`raw` jsonb (Phase 6 escape hatch), `email` included (own DB, not the analytics
-stream). RLS enabled with NO policies — service_role bypasses RLS so the webhook
-writes; nothing client-side can read. Table SQL committed to the repo (source of
-truth for the schema, not just clicked into the dashboard).
+**Pre-launch (non-blocking until later):**
+- AI Summary final approach (pending ReviewInfra response)
+- ReviewInfra Path A vs Path B (pending ReviewInfra response)
+- ~~Floating promo trigger logic + frequency cap~~ → RESOLVED (2026-05-28): 12s + exit-intent; 72h dismiss / 365d subscribe cookies. Offer locked at $10. Promo code architecture → ADR-004 (Architecture A).
+- Build promo box frontend (Figma `3770:1315`) — bundled pre-launch with ADR-004 backend, on Phase 5 instrumentation. Design the error state first (absent in Figma); consider auto-apply via `?discount=` checkout URL.
+- Remove `console.log("[PDP]")` from `app/shop/litsaber-og/page.tsx` (next Bolt pass in that file)
+- Remove `/shopify-check` debug route before Phase 7
+- Flip Authorize.net from test to live before launch
+- **Repoint the dynamic box QR at Phase 7 cutover** — currently points at the Vercel preview `/activate` for testing; must become `getlitsaber.com/activate?utm_source=packaging&utm_medium=qr&utm_campaign=activation_insert`. Dynamic QR = no reprint, just change the destination. Pair with the DNS flip (a customer scanning before the flip would otherwise hit the dead route). `device_activated` is verified firing against this URL.
+- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now built.
+- Venue card photography sourcing
+- FAQ #3 placeholder copy (homepage)
+- Contact page FAQ body copy (mostly placeholder)
+- "Danksaber" direct competitor mention — keep, reframe, or remove
+- "LITSABER OG +" title — verify `+` is intentional
+- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-27): quantity discount model — tier prices are exact ($99.99, $134.99, $169.99, $199.99), display badges round to nearest dollar ("SAVE $20", "SAVE $45", "SAVE $70", "SAVE $100").
+- Mix-and-match UI revisit when Gold ships (currently no UI for Silver+Gold combinations; customer would use two add-to-cart actions if Gold were live)
+- Engineering kinetic animation system spec
 
-**Client:** `lib/supabase/client.ts`, server-only (SERVER ONLY comment, no
-`NEXT_PUBLIC_` env reads — the service_role key bypasses RLS and must never reach
-the browser). `getSupabaseAdmin()` factory (env guard runs at call time, not module
-import — surfaces missing-var errors clearly, plays nice with Next.js static
-analysis). Env vars `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` (cleaned up a stale
-`NEXT_PUBLIC_SUPABASE_*` block left in `.env.example` by an old scaffold).
+**Post-launch:**
+- `Litsaber_Wholesale_Pricing_2026.pdf` rewrite (4 tiers, MOQ 5)
+- `Litsaber_Business_Competence_Cheat_Sheet.pdf` update (41 LEDs, 10 colors)
 
-**The typed-insert that wasn't (the real beat):** Bolt's first pass made
-`.from("orders").insert()` *look* type-checked but it only compiled via an `as never`
-cast — the supabase-js v2 `Database` generic wasn't resolving, so inserts were
-silently untyped. Caught it by asking "how does this type the insert?" instead of
-trusting the green build. Fix: an `insertOrder(payload: OrderInsert)` helper — the
-single typed insert path, `OrderInsert` enforced at the call site with no cast, the
-unavoidable `as any` quarantined inside `client.ts`. The throwaway check route
-exercises `insertOrder`, so 5c-1's verification validates the EXACT path 5c-2's
-webhook will write through, not a different one.
+---
 
-**Schema/type coupling to maintain by hand:** the `as any` inside `insertOrder` means
-the compiler won't catch a column mismatch inside the helper — `OrderRow`/`OrderInsert`
-must stay manually paired with the table SQL in the repo. Comment in `client.ts` notes
-the coupling.
+## Glossary
 
-**Verification:** check route → `{ ok: true, row: {...} }` (full 13-col row). Confirmed
-the whole chain: client connects, `SUPABASE_URL` resolves, service_role authenticates +
-bypasses RLS, `insertOrder` types the payload, table accepts. Route deleted + 404
-confirmed; TEST row deleted from the table.
-
-| # | Beat | Tag |
-|---|------|-----|
-| 45 | "The builder's insert compiled and the build was green, so by every visible signal it was done. I asked one question anyway — how is this insert actually type-checked? — and the honest answer was: it isn't, it's casting to `never` to silence the compiler. A typed-looking call that enforced nothing, which would have let a malformed order payload fail silently against the production table in the next chunk. The fix was a single typed helper. The lesson is the question, not the helper: 'it builds' and 'it's correct' are different claims, and the gap between them is exactly where the cast-to-shut-the-compiler-up bugs live." | `integration-depth`, `ai-collaboration` |
-
-## Phase 5c-2a — Shopify orders/create webhook receiver (2026-05-31) ✅
-
-The webhook pipe: Shopify checkout → `orders/create` webhook → HMAC verify →
-Supabase upsert + PostHog `purchase` event. Verified end-to-end with a test order
-(row in Supabase, event in PostHog, webhook in Vercel logs). NO identity stitch yet
-(5c-2b) — purchases land under an `order_<id>` fallback distinctId.
-
-**The webhook (`app/api/webhooks/orders/route.ts`):** reads raw body via `req.text()`
-BEFORE parsing (HMAC must be computed on exact bytes — parse-then-restringify breaks
-the signature), verifies `X-Shopify-Hmac-Sha256` with a timing-safe compare, 401s on
-mismatch, parses only after. Maps the order → `OrderInsert`, upserts via `insertOrder`
-(dedupes on `shopify_order_id` so Shopify retries don't double-count), fires the
-server-side PostHog `purchase` via `posthog-node` with `await posthog.shutdown()` to
-flush before the serverless function freezes. Downstream failures (Supabase/PostHog)
-are logged but still return 200 — a hiccup must not trigger a Shopify retry-storm.
-
-**Two bugs caught in plan-review before paste (Bolt's code, would've corrupted data):**
-- Supabase write had `distinct_id: null` while PostHog used `order_<id>` — same order,
-  unjoinable across the two systems. Fixed to write the `order_<id>` fallback to both,
-  so they match (5c-2b overwrites with the real stitched id).
-- `raw` re-parsed `rawBody` a second time instead of reusing the already-parsed object.
-
-**The deploy-gap saga (the real lesson):** Bolt reported "clean build, here's what
-shipped" for 5c-2a — but the code only ever existed in Bolt's sandbox. Bolt's sandbox
-is NOT a git repo; it cannot push. So nothing reached GitHub, nothing deployed, and the
-live route 404'd with zero Vercel logs (a request that hits no function leaves no trace).
-Diagnosed by hitting the live URL: 404 = route not deployed, full stop. Root cause found
-by checking GitHub (no commit) + Vercel (newest deploy was the PRIOR chunk). Fix: Bolt
-printed the three full files, pasted into GitHub web editor by hand (the user's write
-path, since Bolt can't push), committed, deployed. Confirmed fixed when the URL flipped
-404 → 405 (route live, rejects GET). The whole episode is the sharpest instance yet of
-"Bolt's status report describes its sandbox, not reality" — same family as the
-working-memory false reports (#16) and the availability bug (#36).
-
-**Manual setup done:** `orders/create` webhook registered in Shopify (Settings →
-Notifications) pointed at `get-litsaber.vercel.app/api/webhooks/orders`, JSON, API
-version 2026-04 (Storefront client is on 2025-07 — benign mismatch for the fields read).
-`SHOPIFY_WEBHOOK_SECRET` set in Vercel from the Notifications-page signing secret (NOT
-the per-webhook editor — that dialog doesn't show it). Third package add (`posthog-node`);
-`--no-frozen-lockfile` handled the lockfile as expected.
-
-| # | Beat | Tag |
-|---|------|-----|
-| 46 | "The builder said the webhook was built and the build was clean. The live URL returned 404 and the logs were empty. Both were true at once: it HAD written correct code, and that code had reached nothing — the builder's sandbox isn't a git repo, so 'done' meant 'done in a place nothing deploys from.' I found it by hitting the deployed URL, not by reading the report — 404 with no logs is the unmistakable signature of code that exists nowhere the running system can see it. The fix was mundane (paste three files into GitHub by hand). The lesson is that 'it builds' and 'it's live' are separated by an entire delivery pipeline, and the only honest test is the one run against the thing actually serving traffic." | `integration-depth`, `ai-collaboration` |
-
-## Phase 5c-2b — Identity stitch + customer_name (2026-05-31) ✅
-
-Stitches the PostHog visitor id through checkout so the server-side `purchase`
-connects to the on-site session funnel. Verified: a fresh cart carried the id into
-the order, Supabase row showed the real PostHog distinct_id (not the fallback), and
-the purchase attached to the session timeline. `customer_name` also captured.
-
-**Mechanism:** at `cartCreate` (first add), the store reads `posthog.get_distinct_id()`
-(from the imported posthog-js singleton, NOT `window.posthog` — the window global may
-be undefined depending on attach behavior) and writes it as a cart attribute
-`posthog_distinct_id`. Shopify carries cart attributes to the order's `note_attributes`;
-the webhook reads it there, uses it for BOTH the Supabase `distinct_id` and the PostHog
-`distinctId`, falling back to `order_<id>` + a `console.warn` when absent. `customer_name`
-built from `customer.first_name`/`last_name` (join non-empty, null if both empty); name
-and email go to Supabase only, never PostHog properties. `customer_name` column added to
-the table first (migration `002`) before the writing code deployed.
-
-**KNOWN LIMITATION (logged, not fixed):** the attribute is only written at `cartCreate`.
-A returning visitor with a persisted `cartId` adds via `cartLinesAdd`, skipping
-`cartCreate`, so their cart never gets the attribute → their purchase falls back to
-`order_<id>`. First-time visitors (the bulk of the funnel, and what the completion-rate
-diagnostic most cares about) always hit `cartCreate` on first add, so they stitch. The
-`console.warn` measures the real miss rate once traffic flows. Harden later with
-`cartAttributesUpdate` on the add-to-existing-cart path ONLY if the miss rate warrants.
-
-**Two debugging sagas (both instructive):**
-- **Paste corruption (3 build cycles).** Hand-pasting Bolt's output into the GitHub web
-  editor introduced transcription errors: a global find-replace mangled `supabase` →
-  "Bolt Database" across `client.ts` (broke the import + every reference), and a separate
-  paste dropped the `customer_name` line and later the entire `insertOrder` export. Each
-  failed the build loudly (syntax error → type error → missing-export), caught before any
-  bad deploy. Fix: wholesale-replace whole files rather than line-edit, and grep for "Bolt"
-  (zero hits = clean). The deeper signal: the GitHub web-editor paste is itself an
-  unreliable write path — SECOND confirmed-unreliable path after Bolt's GitHub sync. Worth
-  moving to local-clone + git (see-the-whole-file, diff before push) rather than blind
-  textarea pasting.
-- **Stale-cart false alarm (code was right the whole time).** First stitch test failed —
-  Supabase showed `order_<id>`, Vercel logged the fallback warn. Looked like a stitch bug.
-  Wasn't: the browser had a persisted `cartId` from earlier testing, so `hydrate()`
-  re-fetched it (`GetCart` in the network tab, not `cartCreate`), `addItem` went down
-  `cartLinesAdd`, and `cartCreate` (the only path that writes the attribute) never ran.
-  Diagnosed by reading the actual network request — `GetCart`/`cartLinesAdd` vs `cartCreate`
-  was the tell. Fixed the TEST, not the code: fresh incognito → clean `cartCreate` with
-  `attributes: [{ posthog_distinct_id }]` in the payload → real id on the order row.
-
-**Bolt-push reality banked:** Bolt's sandbox is not a git repo and cannot push. "Bolt says
-shipped" = sandbox state only; everything must be hand-pasted to GitHub by the user. This
-is now standing fact, not a per-chunk surprise.
-
-| # | Beat | Tag |
-|---|------|-----|
-| 47 | "The purchase event was landing disconnected from the session that produced it — a buy with no browse attached. The fix was to carry the analytics id through checkout as a cart attribute and read it back server-side, so the completed order rejoins the visitor's timeline. The thing it unlocks is the only question that matters for conversion: of the people who started checkout, which ones finished — answerable per person, not just in aggregate." | `integration-depth`, `agent-loop` |
-| 48 | "Spent an hour chasing a stitch that 'failed' — wrong id on every test order. The code was correct the entire time. My browser kept reusing a cart created before the feature existed, so the code path that writes the id never ran. I found it by reading the actual network request instead of re-reading the code: the call was fetching an old cart, not creating a new one. The lesson is that when a feature fails only in your hands, suspect your test conditions before your code — a stale local cart is not a bug in the stitch, it's a bug in how you tested it. Incognito removed the variable and it worked first try." | `integration-depth`, `pm-discipline` |
-
-## Phase 5 close + Promo/CRM track (2026-05-31) ✅
-
-### Vercel Analytics + Speed Insights — Phase 5 closed
-`@vercel/analytics` + `@vercel/speed-insights`, components rendered before `</body>`
-in `app/layout.tsx` (stays a Server Component). KEY GOTCHA: there is no separate
-dashboard "enable" toggle on the current Vercel flow — adding the `<Analytics />`
-component IS the enable step; data flows once the deployed component sends its first
-beacon. "No data" was not a bug: (1) the HubSpot email link points at PRODUCTION
-(getlitsaber.com = old WordPress), not the Vercel preview, and (2) content blockers
-block `/_vercel/insights/*` (same family as PostHog). Test in fresh incognito on the
-PREVIEW url with real navigation. Complementary to PostHog, not redundant: Vercel =
-performance/vitals, PostHog = product funnel.
-
-**Phase 5 (observability) is COMPLETE:** full funnel (age gate → engagement → product
-→ cart → checkout → server-side purchase, identity-stitched) + Supabase order mirror
-+ Vercel performance. The whole metrics spine the framework was built on.
-
-### Deferred-events status corrected
-The green analytics build PROVED `FloatingPromoPopup`, `GoldWaitlistModal`,
-`FutureDropsModal` exist as real files (a missing import would have failed the build) —
-contradicting the earlier "unbuilt" assumption. They were functional, not stubs.
-
-### ADR-006 — Customer Data Architecture (written, in docs/decisions/)
-Documents VERIFIED reality, not plan. Three destinations, each a distinct lens:
-HubSpot (CRM/customer-service, via native Shopify–HubSpot integration), Supabase
-(agent data, via webhook), PostHog (funnel analytics, via webhook). Contact created
-at popup signup (NOT at order — rejected delaying because it discards non-converting
-leads and breaks code delivery). Email is the unifying key (HubSpot dedupes). No custom
-redemption write-back needed — native order sync surfaces the discount code in HubSpot
-for free (verified: GETLIT-WELCOME10 visible on the synced order object). Starter tier:
-both customer + order sync enabled; contact unifies promo signup + order. Duplicate
-contacts (different email at popup vs checkout) = accepted reconciliation tail, not
-preventable, not worth blocking lead capture to avoid.
-
-### Promo code is GETLIT-WELCOME10 (NOT WELCOME10)
-Must match across 5 places: Shopify, HubSpot email callout box, email CTA button
-`?discount=`, website auto-apply, PostHog. Has a hyphen — URL-safe, don't strip it.
-The code STACKS with the automatic tier discounts (Phase 4c) — combinations enabled on
-BOTH the code and the automatic discount (both must permit it). Verified: $29.99 off on
-a multi-unit cart. Flagged as a deliberate margin choice (holds at ~67% even deepest
-tier); confirm it's intended, not just path-of-least-resistance.
-
-### Promo flow VERIFIED end-to-end
-Form submit → HubSpot workflow → automated code email → contact created → code applied
-at checkout → order placed same email → order synced to HubSpot contact → discount code
-visible on the synced order. The unified customer object is real on Starter tier.
-
-### In-cart promo fields REMOVED (commented, not deleted)
-Decision: skip in-cart promo entry entirely; redemption rides on Shopify hosted
-checkout's own discount field + `?discount=` auto-apply. In-cart fields in CartDrawer +
-CartPageBody (mobile + desktop) commented out with `PROMO-FIELD-DISABLED:` markers, easy
-to restore. Reasoning: Shopify's hosted checkout already has a discount field 1.5s later;
-an in-cart field would duplicate it, own three error states, and fight Storefront-API
-vagueness about WHY a code fails — building a worse version of a free field. Only loss:
-"discount visible in cart total before redirect," which is unproven and A/B-worthy, not
-worth the code.
-
-### Robust ?discount= auto-apply (shipped, verified)
-`lib/hooks/useDiscount.ts`: `useDiscountCapture()` reads `?discount=CODE` on any landing
-and writes sessionStorage `litsaber_discount` (NEVER clears on a param-less page — the
-don't-clear guard is the difference between "survives browsing" and "falls off on
-navigation"). Mounted in CartHydrator (already client, already every-page). At
-`cartCreate` the code rides as a SECOND cart attribute `discount_code` alongside
-`posthog_distinct_id` (reuses the identity-stitch pattern → inherits its SAME limitation:
-returning visitor with persisted cartId adds via cartLinesAdd, skips cartCreate, attribute
-not written; fresh-from-email first-timers work, which is the dominant welcome-code case).
-`appendDiscountToCheckoutUrl()` appends to the checkoutUrl at the two navigation sites
-(`?` vs `&` handled). Verified: param persisted across navigation, both attributes in the
-cartCreate payload, `&discount=GETLIT-WELCOME10` present on the Shopify checkout URL.
-NOTE: a test showed the code not auto-applying — diagnosed as one-per-customer (the test
-customer had already redeemed it), NOT a code bug. Email link also carries HubSpot
-tracking params (_hsenc/_hsmi/utm_*) after `?discount=` — capture reads only `discount`,
-unaffected.
-
-### Reusable toast system (shipped, verified) — replaced inline form success
-`lib/toast/store.ts` (Zustand, ephemeral, 5s auto-dismiss, success|error variants),
-`components/layout/ToastContainer.tsx` mounted in layout at NEW z-layer `z-toast` (350,
-above age-gate 300; added to tokens.json + tailwind.config). Pivot: the promo popup
-CLOSES on submit, so the inline success block had nowhere to live (the "form just closed,
-no message" bug). All three forms now close-and-toast with per-form messages (promo:
-"check your inbox, your code's on the way"; Gold: "you're on the Gold list…"; Future
-Drops: "you're in…"). WaitlistForm refactored to a pure input/submit component — inline
-`success` state + `successMessage` prop REMOVED (dead code from the superseded approach),
-`onError` callback added. Inline FIELD error (red border/message) KEPT for validation;
-toast is for API-level failure (form stays open to retry). a11y: aria-live on a stable
-always-mounted wrapper, not per-toast. Verified the full matrix: 3 forms × success (each
-fires its own message), error path (toast + form stays open), z-layering above modals.
-
-### MILESTONE: Bolt sync started working reliably
-After a whole session of two unreliable write paths (Bolt sandbox couldn't push;
-GitHub web-editor paste corrupted files across 3+ build cycles), Bolt began syncing to
-GitHub correctly during the toast chunk. "Build clean" now plausibly means code actually
-reached the repo. Reduces (doesn't eliminate) the case for the local-git workflow —
-still worth doing before Phase 6, but the acute pain is gone.
-
-| # | Beat | Tag |
-|---|------|-----|
-| 49 | "The in-cart promo field is the build I talked myself out of. Shopify's hosted checkout already has a discount field one screen later — an in-cart version would duplicate it, own three error states, and fight an API that's vague about why a code fails. I'd have built a worse copy of something free. The redemption rides on the checkout URL instead. The discipline is recognizing that 'the customer asked to start here' isn't the same as 'this is the thing worth building.'" | `pm-discipline`, `scope-control` |
-| 50 | "Wanted to block already-redeemed customers from re-submitting the email form. Every honest path to 'does this email already exist' led to a lookup endpoint — the same complexity I'd already deferred once. The actual fix was copy: a success message that's true whether they're new or returning ('check your inbox, and if you already signed up it's already there'). The financial protection already existed twice over (HubSpot first-time enrollment + Shopify one-per-customer). I was about to build a guard for something already guarded." | `pm-discipline`, `scope-control` |
-| 51 | "The form 'success message not showing' wasn't a missing message — the popup closes on submit, so an inline success block had nowhere to live. The right pattern when the container closes is a toast: independent of the popup, persists after it's gone. Built it reusable (success + error) because the infra cost is identical and form feedback is needed in five other places. The bug diagnosed the architecture." | `integration-depth`, `ui-judgment` |
-| 52 | "Three build-cycles of paste corruption, then Bolt sync just… worked. The lesson isn't 'the tool fixed itself' — it's that I'd built enough discipline around the bad path (wholesale-replace, grep for the corruption signature, verify on the live URL not the sandbox's word) that when the path got reliable, I could tell immediately. Trust returned because it was earned against a checklist, not assumed." | `tool-choice`, `ai-augmented-build` |
+- **Repositioning thesis:** The single-sentence strategic claim driving the rebuild.
+- **Production agent:** The weekly automated analyst that proposes A/B tests from observed data.
+- **Tool-per-phase:** The principle that no single tool owns the whole build.
+- **Human-in-the-loop:** The agent proposes; the human approves and ships. Trust layer, not a bottleneck.
+- **ADR:** Architecture Decision Record. A short markdown doc capturing context, decision, and consequences for a significant call.
+- **Phase 1.5:** Mid-phase reconciliation between Phase 1 (design tokens + repo) and Phase 2 (Bolt scaffold), introduced because mobile UI and additional pages came in after Phase 1 close.
+- **Plan-review pattern:** Reviewing the builder's written plan as if it were a pull request — catching bugs and architectural gaps at the paragraph stage, before any code is written. Cheaper to fix a plan than a commit, and the builder defends a plan less than code it has already produced.
 
 ## Promo instrumentation + the mount-race bug (2026-05-31) ✅
 
@@ -1074,176 +793,46 @@ FIRST when many symptoms point at one helper, not after exhausting external prob
 | 55 | "Abstracted the readiness-gate into trackWhenReady() once a second event needed it. The value isn't DRY — it's that the rule ('near-mount events defer until PostHog is ready') now lives in a function name a future build will reach for, instead of a lesson that has to be re-learned by re-encountering the silent drop. Encode the rule where it can't be skipped." | `ai-augmented-build`, `analytics-rigor` |
 | 56 | "Burned several debugging cycles probing a failing event from the outside — did it arrive, is it deduped, is the state stale — before reading the track() helper every event passes through. When many symptoms converge on one shared code path, read the path first. External probes feel like progress because each rules something out, but reading the shared function would have ruled out everything at once." | `pm-discipline`, `tool-choice` |
 
----
+### device_activated wired — FULL FUNNEL COMPLETE (2026-06-09) ✅
 
-### Phase UI — Full eight-page site build-out (2026-05-31 → 2026-06-09) ✅
+The North Star event (KPI rung 7) is wired and verified, which completes live
+instrumentation of the ENTIRE ADR-005 funnel — rung 1 (`age_gate_confirmed`)
+through rung 7 (`device_activated`). Every transition the 60-day report exposed as
+a black box is now measurable. This is the whole spine the rebuild was betting on.
 
-The stretch that turned a homepage-plus-commerce build into the complete eight-page site. Every page in the ADR-002 site map is now built and composed, the PDP is fully fleshed out, four new homepage sections landed, the reviews provider was reversed, and the Activate page — the single largest remaining open item — shipped in full. Bolt sync was reliable for most of this stretch (the write-path pain from Phase 5 had cleared), so chunks moved fast; the doc is reconstructed from the repo state at commit `f16be54`, not from per-chunk reports.
+**Implementation:** `components/activate/ActivationTracker.tsx` — invisible `"use
+client"` shim (renders null), mounted in `app/activate/page.tsx`, same pattern as
+`PdpViewTracker`. Fires `device_activated` on mount via `trackWhenReady` (mandatory
+— this is the highest-traffic cold-load QR destination; a raw `track()` would drop
+into the PostHog init gap, and this is the single most important event on the site).
+Props: `activation_source` (`utm_source === 'packaging'` → `packaging_qr`, else
+`direct`) and `is_first_activation` (localStorage `litsaber_activated`: absent →
+true then set; present → false).
 
-**Route inventory now live (16 routes):** `/`, `/shop/litsaber-og`, `/the-tech`, `/wholesale`, `/about`, `/contact`, `/activate`, `/cart`, `/policies` (index) + `/policies/{shipping-returns, warranty, terms, privacy}`, plus legacy `/policies/shipping` and `/policies/refunds` now serving `next/navigation` redirects to `/policies/shipping-returns` (consolidation done cleanly — old URLs preserved, no duplicate page bodies). `/shopify-check` debug route still present (REMOVE pre-Phase-7).
+**Decision — fires every load, not once.** The flag drives the boolean, not event
+suppression. North Star = filter `is_first_activation = true`; repeat loads still
+fire (false) for re-engagement signal. Two dedupe layers kept distinct: per-mount
+`useRef` (StrictMode double-invoke) vs per-device localStorage (the boolean across
+loads). Read-order load-bearing: read flag → fire → THEN set, so first load reports
+true. Verified all four branches (first/return × packaging/direct).
 
-#### PDP build-out + Reviews provider REVERSED (ReviewInfra → Judge.me) (2026-06-02/03)
+**Link / QR:** dynamic, repointable. Points at the Vercel preview for testing; gets
+repointed to `getlitsaber.com/activate?utm_source=packaging&utm_medium=qr&utm_campaign=activation_insert`
+at Phase 7 cutover — no reprint. PostHog auto-captures the UTM params; the event
+reads `utm_source`.
 
-- **PDP fleshed out:** added `ProductAccordion`, `DescriptionSection`, `GalleryBlock`, refined `StyleSelector`. `ProductDisplay` moved `components/home/` → `components/product/ProductDisplay/` with imports updated (it renders on both the homepage buy section and the PDP, so the shared home location was misleading).
-- **Reviews provider is now Judge.me — supersedes the ReviewInfra decision in ADR-002.** This collapses an entire branch of open questions. Judge.me is a Shopify-native reviews app, so the integration is its hosted widget rather than a custom subsystem:
-  - `components/reviews/JudgemeScripts.tsx` — global `next/script` preloader (`cdnwidget.judge.me/widget_preloader.js`, `afterInteractive`) + inline `jdgm` config (shop domain, platform, public token). Mounted once in `app/layout.tsx`.
-  - `components/reviews/JudgemeReviewWidget.tsx` — the `jdgm-review-widget` div keyed by the numeric Shopify product ID (`7870095392975`), rendered on the PDP.
-  - `components/reviews/WriteReviewButton.tsx` — links to Judge.me's hosted review-submission form.
-  - **What this retires:** the custom reviews subsystem spec (rating summary, distribution chart, AI-summary card, photo carousel, search, filter chips — Phase 1.5 beat #10), the Path A vs Path B decision, the AI-summary build-or-skip question, and the "email ReviewInfra to confirm a read API" action item. All moot. Brand-control trade-off is the same one we'd have taken on ReviewInfra Path A: the widget renders Judge.me's markup, not the rich Figma spec.
-  - **Why the reversal makes sense:** Judge.me rides the native Shopify integration we already committed to in ADR-006, syncs review-request emails off real orders without a custom Orders-API handoff, and removes the small-vendor risk that made ReviewInfra a structural Phase 4 decision in the first place.
-
-#### `/the-tech` — Engineering page (2026-06-02 → 06-07)
-
-Sections (all reading from `the-tech.content.ts`): `TechHero`, `InhaleVideo` (the draw/inhale demo video block), `PowerSection`, `VoltageSection` (the 3-voltage / oil-pairing explainer — the heaviest section, many iterations), `UniversalFit` (510 compatibility), `TechCta`. This is the page the Phase 1.5 spec called "Engineering"; the live route is `/the-tech`.
-
-#### `/wholesale` — built incl. HubSpot form (2026-06-04)
-
-Sections: `WholesaleHero`, `WholesaleStatsBar`, `SellsItself`, `SellThrough`, `DemandSection`, `MarginsSection`, `RetailKit`, `WholesaleFaq`, `WholesaleCta`. The HubSpot Company-object form integration (the `0-2/` prefixed custom fields) is wired here. `RetailKit` re-hit the known `overflow-hidden` kills `sticky` trap during the build (consistent with the standing learning).
-
-#### `/about` — built (2026-06-05/06)
-
-Sections: `AboutHero`, `AboutOrigin`, `AboutJourney`, `AboutTeam`, `AboutManufacturing`, `ManufacturingImageBand`, `JourneyVideoBand`, `PrototypeTimeline`, `AboutNow`, `AboutClosingCta`. Co-founders Matt Hall and Brendan Friedrich under Innovape Concepts. Real `about` imagery committed (not placeholder), including a prototype-timeline narrative band.
-
-#### `/contact` — built, real copy (2026-06-06)
-
-Sections: `ContactHero` (styled as a chat card), `ContactForm` (HubSpot form, portal 244547358, na2, FAQ-adjacent), `ContactMethods` (clickable method cards with hover borders), `ContactFaq`. **The contact FAQ is now real copy, not the boilerplate placeholder flagged in Phase 1.5** — detailed answers on 510 compatibility (95–99% across major brands, 10.5–14.5mm), battery life (1–1.5yr, 300+ cycles), mode/charge-check button combos, materials, and stealth mode. **Danksaber is resolved as reframed, not removed:** the FAQ keeps the comparison but turns it into a positioning narrative ("Danksaber is built around discretion… different products for different moments") rather than a knock. Closes the "keep, reframe, or remove" open question.
-
-#### `/policies` — full set (2026-06-06/07)
-
-`PolicyHeader`, `PolicySubNav`, `PolicySection`, `PolicyContents` shells over typed content files: `shipping-returns.ts`, `warranty.ts`, `terms.ts`, `privacy.ts`, `shared.ts`. Canonical policy language locked and internally consistent: **14-day returns on unopened product + 6-month limited warranty against manufacturing defects** (no general/sizing returns; defects covered under warranty, not refund). Damaged-in-transit window is 7 days. See the warranty finding below — the policy pages are correct; the marketing surfaces are not.
-
-#### `/activate` — COMPLETE (2026-06-07 → 06-09) — closes the largest open item
-
-The post-purchase onboarding page (Phase 1.5 beat #9, "the secret weapon") is fully built. Sticky `ActivateSubNav` (IntersectionObserver chip nav, the second place the `overflow-hidden`/`sticky` trap was beaten), then every functional section: `ActivateHero`, `ActivateQuickStart`, `ActivateFunctions`, `ActivateModes`, `ActivatePreheat`, `ActivateVoltage`, `ActivateBattery`, `ActivateCharging`, `ActivateCartTips`, `ActivateSafety`, `ActivateCta`. All copy in `activate.content.ts`; a `renderPara.tsx` helper handles inline rich-text. `ChargingAnimation.tsx` is a new bespoke client component — IntersectionObserver-gated CSS segment animation for the battery-charging visual, paused off-screen and disabled under `prefers-reduced-motion` (same motion discipline as the rest of the site).
-
-#### New homepage sections (2026-05-31 → 06-06)
-
-Added below the existing scroll order in `app/page.tsx`:
-- **`WhatCustomersSay`** — social-proof block built around a `TikTokRail` (TikTok video cards via the TikTok CDN, with `next/image` and CDN hostname patterns added to `next.config`) plus an async Elfsight widget. New external surface; first TikTok/Elfsight integration in the build.
-- **`EmailSignupBanner`** (in `components/global/`, gated by `EmailSignupBannerGuard`) — conditional homepage email capture, mounted in layout. The guard suppresses it where it shouldn't show.
-- **`WholesaleCTABanner`** — homepage wholesale cross-sell banner (a hydration-mismatch bug here was fixed by moving its mount).
-- **`FloatingPromoPopup`** — now mounted in `app/layout.tsx` at `z-modal`, gated on age-confirm + the 12s/exit-intent + frequency-cap logic from Phase 5. This is the promo-box frontend that was an open pre-launch item; it now exists and is wired to the discount/HubSpot flow.
-- `HomepageEngagementTracker` (the Phase 5b invisible client tracker) is mounted at the top of the page.
-
-#### Modal consolidation (2026-05-31)
-
-`ModalBase` extracted; `GoldWaitlistModal` and `FutureDropsModal` refactored onto it, and `AgeGateModal` moved into `components/modals/` alongside them. All three waitlist/age modals + the promo popup are now mounted globally in layout. This closes the Phase 3 remainder (Gold modal, Future Drops modal, Editions-box wiring) — the Editions boxes now open these real modals. **`FestivalDropList.tsx` was deleted** — the deferred "FESTIVAL DROP LIST" cart signup was retired in favor of the `EmailSignupBanner` / waitlist-form approach rather than rebuilt.
-
-#### Global polish + dependency (2026-06-04/07)
-
-- Navbar logo + nav-link sizing standardized; global padding + navbar scaling standardized across pages (touched `tokens.json` + `tailwind.config.ts` — NAVBAR_LEFT sync risk applies, verify hero files still match).
-- New dependency: `@opentelemetry/api ^1.9.0` (added 06-04 to satisfy a build/peer requirement; `--no-frozen-lockfile` install path already standing from Phase 5a handled the lockfile).
-
-#### ⚠️ KEY FINDING — the "30-day guarantee" inconsistency did not get resolved, it PROLIFERATED
-
-The Phase-1.5-era flag (BuySection "30-day guarantee" vs canonical "14-day return + 6-month warranty") was never reconciled, and the marketing copy has since spread the wrong figure to **six** live surfaces:
-- `components/home/StatBar.tsx` — "30-Day Guarantee" stat pill
-- `components/the-tech/the-tech.content.ts` — `CTA_SUBHEADLINE` ("Backed by a 30-day guarantee")
-- `components/wholesale/wholesale.content.ts` — spec body ("…USB-C, 30-day guarantee")
-- `components/about/about.content.ts` — closing copy ("backed by a 30-day guarantee")
-- `components/product/ProductDisplay/productdisplay.content.ts` — trust line ("SHIPS IN 24 HOURS · FREE US SHIPPING · 30-DAY GUARANTEE")
-- `components/home/CommonQuestions/commonquestions.content.ts` — FAQ answer that **explicitly promises** "If something goes wrong within 30 days, we replace it."
-
-Meanwhile the **policy pages and the contact FAQ are correct** (14-day return + 6-month limited warranty). So the site now ships a direct contradiction between its marketing copy and its own legal pages — a customer-service and arguably a consumer-claims exposure, not just a copy nit. Resolution is a content-file pass (decide the real promise, then align all six surfaces to the policy language or vice-versa). Highest-priority unresolved item from this review. (`BuySection.tsx` itself no longer exists — the homepage buy section was rebuilt — so the original flag's location is gone, but the figure outlived it.)
-
-#### Doc drift to fix (decisions changed, the persistent docs didn't)
-
-- **`CLAUDE.md` still names ReviewInfra as the locked provider** (the "Reviews provider — ReviewInfra (locked)" block, plus the tool-stack line). It now contradicts the shipped Judge.me integration. Update CLAUDE.md and add/append an ADR (or amend ADR-002) recording the Judge.me reversal so the next session loads truth.
-- **Judge.me shop domain mismatch to verify:** `JudgemeScripts.tsx` config uses `ajur1e-s1.myshopify.com` while the Storefront client uses `innovapeconcepts.myshopify.com`. Confirm this is intentional (Judge.me's own shop identifier vs the storefront domain) and not a stale/test value, or reviews will resolve against the wrong store.
-
-**Story beats captured (Phase UI)**
+**THE TESTING LESSON (we nearly re-learned beat #48 the hard way):** spent the back
+half of the session convinced `device_activated` was broken — "reload doesn't fire,"
+"no-UTM shows wrong value," "8 minutes and nothing." Every symptom was PostHog
+Cloud's live-feed DISPLAY LAG (events captured instantly, shown 3 to 8 minutes
+later) compounded by testing across multiple fresh incognito windows (each correctly
+a first-visit → `true`). The decisive evidence: two `is_first_activation: false`
+events appeared with NO reload, minutes after they'd actually fired — i.e. the
+"missing" reload events arriving late. localStorage showed `litsaber_activated = 1`
+persisting correctly across hard reload the whole time. The code was right from the
+first commit. We almost fixed a non-bug.
 
 | # | Beat | Tag |
 |---|------|-----|
-| 57 | "Reversed the reviews provider from a small script-tag vendor to Judge.me, a Shopify-native app. The decision that looked like a cosmetic swap actually deleted an entire subsystem I'd specced — distribution charts, AI summaries, photo carousels, a custom data-API path, and an action item to email a vendor about whether a read API even existed. The lesson wasn't 'Judge.me is better'; it was that once I'd committed to native Shopify for customer data in ADR-006, the reviews provider that rides the same integration was the consistent choice, and consistency across the data architecture beat the richer bespoke UI I'd drawn." | `tool-choice`, `integration-depth` |
-| 58 | "Built six pages in nine days and the thing that needs flagging loudest isn't a page — it's that 'backed by a 30-day guarantee' quietly copied itself onto six marketing surfaces while the policy pages say 14 days plus a 6-month warranty. Nobody decided to ship a contradiction; the copy just propagated faster than the reconciliation. The discipline that catches this is the same cross-document audit from Phase 1.5 — but it only works if it's re-run after a build sprint, because a sprint is exactly when an unresolved inconsistency breeds." | `pm-discipline`, `discovery` |
-| 59 | "Kept the named-competitor FAQ instead of deleting it, and turned it into positioning: not 'we're better than Danksaber' but 'they optimize for hiding the cart, we optimize for being the centerpiece — different products for different nights.' A comparison you control reads as confidence; a comparison you scrub reads as fear. The reframe does more brand work than the deletion would have." | `pm-discipline` |
-| 60 | "Finished the Activate page — the post-purchase onboarding most DTC brands skip. It was the largest open item for a reason: eleven functional sections, a sticky chip-nav that re-triggered the overflow-hidden-kills-sticky trap I'd already hit twice, and a bespoke charging animation that has to pause off-screen and respect reduced-motion. Shipping it in v1 instead of deferring to a 'v2' that never comes is the whole bet: the page that reduces support tickets is the one that proves the engineering thesis to the customer holding the device." | `discovery`, `integration-depth` |
-| 61 | "The decisions moved but two persistent docs didn't: CLAUDE.md still calls ReviewInfra the locked provider, so the next agent session would load a fact the codebase already contradicts. A working-memory doc that lags reality is just a worse memory. The maintenance pass — reconcile the doc to the repo, not the other way around — is the actual product here, and it has to happen on a cadence or the context rots." | `pm-discipline`, `ai-augmented-build` |
-
----
-
-### Phase 6 — Production Agent (pending)
-
-n8n cron → data gathering → Claude API with tool schema → structured report → Slack + email. Agent *proposes* tests, never *runs* them.
-
----
-
-### Phase 7 — Launch & First Loop (pending)
-
-Soft launch. Two weeks of agent runs before trusting output.
-
----
-
-## Story Beats Bank
-
-Tag taxonomy:
-
-- `discovery` — decisions driven by data, not vibes
-- `tool-choice` — why I picked this tool over that one
-- `ai-augmented-build` — AI tooling proving its worth (or not) in a specific moment
-- `integration-depth` — code-level moments, API quirks, debug stories
-- `agent-loop` — observability → agent → human review system in action
-- `pm-discipline` — PM thinking shaping technical execution
-
-Active beats are logged within each phase entry above.
-
----
-
-## Open Questions (rolling)
-
-**🔴 TOP PRIORITY — surfaced in the 2026-06-09 repo review:**
-1. **Warranty/guarantee contradiction across the live site.** Six marketing surfaces say "30-day guarantee" (StatBar, `the-tech` CTA_SUBHEADLINE, `wholesale.content.ts`, `about.content.ts`, `productdisplay.content.ts` trust line, and the homepage CommonQuestions FAQ which explicitly promises 30-day replacement) while the policy pages and contact FAQ say 14-day return + 6-month limited warranty. Decide the real promise, then align all six content files to the policy language (or change the policy). Content-file-only pass.
-2. **`CLAUDE.md` (and ADR-002) still name ReviewInfra as the locked reviews provider** — contradicts the shipped Judge.me integration. Update CLAUDE.md and record the reversal in an ADR so the next session loads truth.
-3. **Verify the Judge.me shop domain** in `JudgemeScripts.tsx` (`ajur1e-s1.myshopify.com`) vs the Storefront store (`innovapeconcepts.myshopify.com`) — confirm intentional, or reviews resolve against the wrong store.
-
-**Phase 3 remainder — ✅ RESOLVED (2026-06-02 → 06-06):**
-- ~~Gold waitlist modal~~ → built (`GoldWaitlistModal` on `ModalBase`)
-- ~~Future Drops modal~~ → built (`FutureDropsModal` on `ModalBase`)
-- ~~Wire Editions box actions~~ → done (boxes open the real modals / navigate)
-- ~~"FESTIVAL DROP LIST" `/cart` signup~~ → `FestivalDropList.tsx` deleted; superseded by `EmailSignupBanner` + waitlist forms
-
-**Phase 2 quantity discount refactor — ✅ SHIPPED (2026-05-27):** Chunk A (store + Pattern B selector + `lib/cart/pricing.ts`) and Chunk B (stepper removed from drawer + cart page) both committed. Logged in build log.
-
-**Carry-forward items from 3c-1:**
-- Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value (still open; low priority)
-- ~~Reconcile offer-amount copy ($5 vs $10)~~ → RESOLVED: offer locked at $10 (Phase 4 / ADR-004)
-- Decide rate-limit durability: current in-memory Map resets on cold start; upgrade to Upstash Redis if real abuse appears (still open)
-
-**Action items still open:**
-- ~~Email ReviewInfra re: read API / AI summary~~ → MOOT. Reviews provider is now Judge.me; the whole ReviewInfra question branch is retired.
-
-**Pre-launch (non-blocking until later):**
-- ~~AI Summary final approach~~ / ~~ReviewInfra Path A vs Path B~~ → MOOT (Judge.me, see above)
-- ~~Floating promo trigger logic + frequency cap~~ → RESOLVED (2026-05-28): 12s + exit-intent; 72h dismiss / 365d subscribe cookies. Offer locked at $10. Promo code architecture → ADR-004 (Architecture A).
-- ~~Build promo box frontend (Figma `3770:1315`)~~ → BUILT: `FloatingPromoPopup` mounted in layout, wired to discount/HubSpot flow + Phase 5 instrumentation.
-- Remove `console.log("[PDP]")` from `app/shop/litsaber-og/page.tsx` (verify on next pass in that file)
-- Remove `/shopify-check` debug route before Phase 7 (still present)
-- Flip Authorize.net from test to live before launch
-- ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): Editions + commerce display section (node `3312:2`), built.
-- Venue card photography sourcing
-- FAQ #3 placeholder copy (homepage) — re-verify against the now-real CommonQuestions copy (note: this FAQ carries the 30-day-guarantee error, item #1 above)
-- ~~Contact page FAQ body copy (placeholder)~~ → RESOLVED (2026-06-06): real copy written across all contact FAQ categories.
-- ~~"Danksaber" direct competitor mention — keep, reframe, or remove~~ → RESOLVED (2026-06-06): reframed as a positioning narrative, kept.
-- "LITSABER OG +" title — verify `+` is intentional
-- ~~2-Pack "SAVE $20" badge math reconciliation~~ → RESOLVED (2026-05-27): quantity discount model — tier prices are exact ($99.99, $134.99, $169.99, $199.99), display badges round to nearest dollar ("SAVE $20", "SAVE $45", "SAVE $70", "SAVE $100").
-- Mix-and-match UI revisit when Gold ships (currently no UI for Silver+Gold combinations; customer would use two add-to-cart actions if Gold were live)
-- Engineering kinetic animation system spec (note: `/the-tech` and `/activate` shipped with Framer/CSS section motion + a bespoke `ChargingAnimation`; the "kinetic" exploded-view system may now be a polish item rather than a build item — re-scope)
-- NAVBAR_LEFT / token sync check after the 2026-06-07 global padding + navbar scaling pass touched `tokens.json` + `tailwind.config.ts` — confirm hero files still match.
-
-**Post-launch:**
-- `Litsaber_Wholesale_Pricing_2026.pdf` rewrite (4 tiers, MOQ 5)
-- `Litsaber_Business_Competence_Cheat_Sheet.pdf` update (41 LEDs, 10 colors)
-
----
-
-## Glossary
-
-- **Repositioning thesis:** The single-sentence strategic claim driving the rebuild.
-- **Production agent:** The weekly automated analyst that proposes A/B tests from observed data.
-- **Tool-per-phase:** The principle that no single tool owns the whole build.
-- **Human-in-the-loop:** The agent proposes; the human approves and ships. Trust layer, not a bottleneck.
-- **ADR:** Architecture Decision Record. A short markdown doc capturing context, decision, and consequences for a significant call.
-- **Phase 1.5:** Mid-phase reconciliation between Phase 1 (design tokens + repo) and Phase 2 (Bolt scaffold), introduced because mobile UI and additional pages came in after Phase 1 close.
-- **Plan-review pattern:** Reviewing the builder's written plan as if it were a pull request — catching bugs and architectural gaps at the paragraph stage, before any code is written. Cheaper to fix a plan than a commit, and the builder defends a plan less than code it has already produced.
-- **Phase UI:** The 2026-05-31 → 06-09 sprint that built out the remaining six pages, fleshed out the PDP, added the new homepage sections, consolidated modals, and reversed the reviews provider to Judge.me. Named retroactively because the work spanned the nominal Phase 3/4 boundary and was page-build-driven rather than phase-driven.
+| 62 | "Wired the North Star event and the whole funnel went green end to end — every rung from the age gate to the device-activation moment is now instrumented. The thing worth saying isn't the event; it's that the 60-day report that started all this exposed the buy-click-to-purchase collapse as a black box, and there is now a live signal on every transition in and around it. The rebuild's whole premise was 'replace a static site with a system that can see itself.' This is the moment it can." | `agent-loop`, `analytics-rigor` |
+| 63 | "Nearly spent a night fixing a bug that didn't exist. Every symptom screamed broken North Star event — reloads not firing, wrong values, eight minutes of silence. All of it was PostHog's live feed lagging several minutes plus my own testing across fresh incognito windows that were each, correctly, first visits. The tell I almost missed: two events showed up with the right values minutes after I'd stopped touching the page. The localStorage flag had been persisting correctly the entire time. The lesson is the one already in this doc from the stale-cart saga — when it only fails in your hands, suspect the test conditions before the code — and I still almost missed it, because 'the most important event is broken' is a scary enough sentence to override the checklist. Discipline isn't knowing the rule; it's applying it when you're nervous." | `pm-discipline`, `analytics-rigor` |

@@ -80,69 +80,112 @@ METRICS.md.
 5. `product_quantity_selected` — Single / Two Pack / More-with-stepper. Property:
    `quantity` (1–5), `tier_price`.
 6. `cart_add_to_cart` — `addItem` fires (considered path: Add → drawer). Props:
-   `variant`, `quantity`, `tier_price`, `unit_price`.
+   `variant`, `quantity`, `tier_price`, `unit_price`,
+   `source` (`homepage_buy` | `pdp`) — **(added 2026-05-30)** `BundleAndCTA`
+   renders on BOTH the homepage buy section and the PDP; `source` distinguishes
+   which surface drove the add. Threaded as a typed `surface` prop from the two
+   static page call sites (not runtime path-sniffing).
    `buy_now_clicked` — **(added after the report)** the impulse path (BUY NOW →
    straight to checkout). Kept DISTINCT from `cart_add_to_cart` because the old
    site's single "Buy click" conflated impulse and considered intent, which have
    different friction. Props: `variant`, `quantity`, `tier_price`.
+   `cart_remove_item` — **(added 2026-05-30)** fires on the `removeItem` UI path
+   (Remove link in CartDrawer and CartPageBody). Props: `variant`, `quantity`
+   (read from the line BEFORE removal). NOT a forward funnel step — a **friction
+   signal**: pre-checkout removal is the hesitation behavior the 60-day report
+   flagged ("interest without conversion") and previously had no event.
 7. `cart_viewed` — drawer opens OR `/cart` page loads. Property:
    `surface` (`drawer` | `page`).
 8. `checkout_started` — the `checkoutUrl` redirect fires. The last event captured
-   on our domain. Props: `cart_value`, `item_count`, `has_promo_code`.
+   on our domain. Props: `cart_value`, `item_count`, `has_promo_code`,
+   `source` (`drawer` | `cart_page` | `buy_now`) — **(added 2026-05-30)** the
+   three checkout entry points emitted an identical event; `source` attributes
+   each so drawer-vs-cart-page-vs-impulse checkout behavior is separable.
 9. `purchase` — completed order. **Shopify-side, off our domain — captured via the
    orders/create webhook (now in Phase 5; see "Checkout stitching").** Props:
    `order_value`, `item_count`, `has_promo_code`, `discount_code`,
    `discount_amount`.
-10. `device_activated` — **(added)** the North Star event. Fires on the Activate
-    page. This is KPI rung 7. **The Activate page is launch-blocking** (see
-    METRICS.md) so this fires from launch. Fires on first activate-page load,
-    deduped per device via a `litsaber_activated` cookie/localStorage flag (same
-    pattern as the promo popup's `COOKIE_SEEN`). Props: `activation_source`
-    (`packaging_qr` | `direct`, derived from `utm_source` on the QR redirect),
-    `is_first_activation` (boolean, from the dedupe flag).
-    **Attribution limitation (be honest in reporting):** this counts "first
-    activate-page visits, packaging-attributed, deduped per device." It is a
-    directional proxy, NOT an airtight per-unit signal — it cannot tell genuine
-    owner-activations apart from non-owners scanning the same box (festival
-    friends, retail shoppers). Good enough to steer by; not precise. Order-linked
-    activation (the order→activation gap diagnostic) is deferred — see footnote.
+10. `device_activated` — the North Star event. **WIRED + verified 2026-06-09.**
+    This is KPI rung 7. Fires on the Activate page via an invisible client shim
+    `ActivationTracker` (`components/activate/ActivationTracker.tsx`, renders null,
+    mounted in `app/activate/page.tsx`) — the same Server-Component tracker pattern
+    as `PdpViewTracker`. Props: `activation_source` (`packaging_qr` | `direct`,
+    derived from `utm_source` — `=== 'packaging'` → `packaging_qr`, else `direct`),
+    `is_first_activation` (boolean).
+    **Decision — fires on EVERY load, not fire-once (2026-06-09).** The
+    `litsaber_activated` localStorage flag sets `is_first_activation` (absent → true,
+    then the flag is set; present → false), but does NOT suppress the event. The
+    deduped North Star count = `device_activated` filtered to
+    `is_first_activation = true`; repeat loads still fire (with `false`) to capture
+    re-engagement (someone re-reading the activation guide). Two separate dedupe
+    layers, kept distinct: a per-mount `useRef` guard prevents the StrictMode
+    double-invoke within one load; the per-device localStorage flag drives the
+    boolean across loads. Read-order is load-bearing: read flag → fire → THEN set
+    flag, so the very first load reports `true`.
+    **MUST use `trackWhenReady`, not `track`** (see the mount-timing rule below) —
+    this is the highest-traffic cold-load QR destination and a raw `track()` would
+    silently drop into PostHog's init gap. It uses `trackWhenReady`. Verified all
+    four branches: first/return × packaging/direct.
+    **Attribution limitation (be honest in reporting):** this counts
+    "activate-page visits, packaging-attributed"; the deduped first-activation count
+    is a directional proxy, NOT an airtight per-unit signal — it cannot tell genuine
+    owner-activations apart from non-owners scanning the same box (festival friends,
+    retail shoppers). Good enough to steer by; not precise. Order-linked activation
+    (the order→activation gap diagnostic) is deferred — see footnote.
+    **QR cutover dependency:** the dynamic (repointable) box QR points at the Vercel
+    preview URL for testing and MUST be repointed to
+    `getlitsaber.com/activate?utm_source=packaging&utm_medium=qr&utm_campaign=activation_insert`
+    at Phase 7 launch cutover. Dynamic QR = no reprint needed.
+    **PostHog live-feed lag (testing note):** this project's PostHog Cloud live
+    event feed lags display by several minutes (events captured immediately, shown
+    late). Confirmed during verification — repeat-load events arrived 3 to 8 minutes
+    after firing. Do NOT chase "missing" events in the live feed during testing; wait
+    out the lag before suspecting code. Irrelevant to production (funnels/agent read
+    historical data, not the live feed).
 
 ### Secondary funnels
 
 **Promo sub-funnel (ADR-004) — measured as an isolated lever.
-REVISED 2026-05-31: redemption architecture changed (in-cart field removed,
-replaced by ?discount= checkout-URL auto-apply — see ADR-006), so the
-redemption-side event was redefined and a dismissal event added.**
-
-- `promo_popup_shown` — property: `trigger` (`time_delay` | `exit_intent`).
-  The funnel DENOMINATOR. Not "always shown" — gated by usePromoPopup's triggers
-  AND the 72h-dismiss / 365d-subscribe suppression cookies, so it's a real
-  variable. Every per-shown rate depends on this.
-- `promo_email_submitted` — property: `source`. Fires on successful popup submit
-  (co-located with the toast + markSubscribed in onSuccess). **Source value
-  corrected:** uses `WAITLIST_SOURCES.promoPopup` (the actual constant), NOT the
-  earlier draft's guessed `floating-promo-$10` literal.
+REVISED 2026-05-31: the redemption architecture changed (in-cart promo field
+removed, replaced by `?discount=` checkout-URL auto-apply — see ADR-006), so the
+redemption-side event was redefined and a dismissal event added. All four events
+are WIRED and verified.**
+- `promo_popup_shown` — property: `trigger` (`time_delay` | `exit_intent`). The
+  funnel DENOMINATOR. NOT "always shown" — gated by `usePromoPopup`'s triggers AND
+  the 72h-dismiss / 365d-subscribe suppression cookies, so it is a real variable.
+  Every per-shown rate (submit rate, dismiss rate) depends on this. Fires once per
+  show, at the single `setVisible(true)` site; `trigger` records which threshold
+  fired (a `triggerRef` set before each `tryShow` call).
+- `promo_email_submitted` — property: `source` = `floating-promo-$10` (the actual
+  `WAITLIST_SOURCES.promoPopup` constant value — confirmed, not a guess). Fires in
+  the popup's `onSuccess`, alongside the toast + `markSubscribed`.
 - `promo_popup_dismissed` — property: `method` (`close_button` | `backdrop` |
-  `escape`). **(added 2026-05-31)** The loss state. Fires only on user-initiated
-  close WITHOUT submit — explicitly NOT on the success-close path (a submit closes
-  the popup too; firing dismissal there would double-count every conversion and
-  break shown = submitted + dismissed). `method` separates active rejection
-  (✕/backdrop/escape) from passive abandonment (derivable later as shown − submitted
-  − dismissed; the non-event is not instrumented — not worth the complexity).
+  `escape`). **(added 2026-05-31)** The loss state. Fires ONLY on user-initiated
+  close WITHOUT submit. Structurally separated from the submit path: `markSubscribed`
+  calls `setVisible(false)` directly and never routes through `dismiss(method)`, so
+  a successful submit CANNOT fire a dismissal — preserving the funnel identity
+  `shown = submitted + dismissed`. `method` separates active rejection from passive
+  abandonment; abandonment (navigate-away, no interaction) is a non-event, derivable
+  as `shown − submitted − dismissed`, deliberately not instrumented.
 - `promo_code_captured` — property: `code`. **(added 2026-05-31, REPLACES
-  `promo_code_applied`)** Fires when useDiscountCapture reads a `?discount=CODE`
-  param on landing. Fires once per NEW capture, not on re-reading an existing
-  stored value. Measures arrivals via the email link.
+  `promo_code_applied`)** Fires when `useDiscountCapture` reads a `?discount=CODE`
+  param on landing. Fires once per genuinely-NEW code (incoming differs from the
+  stored sessionStorage value), not on re-reading an existing value. Measures
+  arrivals via the promo email link.
 - **`promo_code_applied` — SUPERSEDED 2026-05-31.** Originally specced to fire from
   `cartDiscountCodesUpdate` success (the in-cart apply field). That field and that
-  mutation path were removed this session (redemption moved to checkout-URL
+  mutation path were REMOVED (redemption moved to `?discount=` checkout-URL
   auto-apply per ADR-006), so the trigger no longer exists. Redemption is NOT lost
-  from measurement — it's captured server-side at `purchase` (has_promo_code /
-  discount_code / discount_amount, read off the Shopify order, step 9). The
-  redemption MOMENT is no longer observable client-side (it happens inside Shopify
-  hosted checkout); redemption FACT is measured at purchase.
-- joins the primary funnel at `purchase` [...rest of the existing paragraph about
-  has_promo_code / discount_amount unchanged...]
+  from measurement: the redemption FACT is captured server-side at `purchase`
+  (`has_promo_code` / `discount_code` / `discount_amount`, read off the Shopify
+  order, step 9). The redemption MOMENT is no longer observable client-side (it
+  happens inside Shopify hosted checkout) — an accepted loss.
+- joins the primary funnel at `purchase`, where `has_promo_code` /
+  `discount_code` / `discount_amount` are read off the Shopify order. This is what
+  makes promo-attributed completion a real comparable number (orders WITH code vs
+  WITHOUT) and lets us track total margin given up to the promo. `discount_amount`
+  is captured even though the launch offer is a flat $10 — future-proofs for
+  variable/stacked promos, near-zero cost now, annoying to retrofit later.
 
 **Waitlist sub-funnel (Gold + Future Drops):**
 - `waitlist_modal_opened` — property: `list` (`gold` | `general`).
@@ -205,9 +248,48 @@ orders followed — blind on the only transition that defines success. So:
   rewrite to dodge ad-blockers) are install-time decisions for Phase 5a, verified
   against current PostHog Next.js docs at build time, not pinned here.
 
-## Consequences
+### Mount-timing rule: `trackWhenReady` (added 2026-05-31)
 
-- The typed `lib/analytics/` module becomes the single write path for events,
+**Any event that can fire at or near component mount MUST be sent via
+`trackWhenReady()`, never raw `track()`, or it silently drops.**
+
+The failure mode, found the hard way: PostHog's `init()` (in `PostHogProvider`'s
+effect) is internally async — it is not capture-ready the instant it returns. A
+`track()` call in a child component's mount `useEffect` can win the race and fire
+BEFORE PostHog is ready. The call no-ops silently — no error, the synchronous work
+around it (e.g. a sessionStorage write) succeeds, so it looks like everything ran.
+This was surfaced by `promo_code_captured` (which never reached PostHog despite the
+sessionStorage write succeeding), then an audit found `product_viewed` — funnel
+step 3, fired on every PDP visit — had the IDENTICAL bug, meaning the core funnel
+was under-counting product views against PostHog's init gap.
+
+`trackWhenReady()` (in `lib/analytics/events.ts`, beside `track()`): if PostHog is
+already loaded (`posthog.__loaded`), it calls `track()` immediately (no overhead for
+the common late-firing case); if not, it registers the `track()` via
+`posthog.onFeatureFlags()`, which fires once init completes. Same signature as
+`track()`, so adopting it is a one-word swap. Fire-once is still the caller's job
+(the existing `useRef` / dedup guards) — `trackWhenReady` handles readiness, not
+deduplication.
+
+Events that must use it: anything fired from a mount effect or an
+IntersectionObserver that may already be intersecting at mount. Currently:
+`promo_code_captured` ✅, `product_viewed` ✅. At-risk-but-lower:
+`homepage_engaged` dwell trigger (10s delay usually clears the race, but a slow
+connection could still drop it — convert opportunistically). Interaction-driven
+events (clicks, submits, scroll-triggered-after-load) are safe — they fire well
+after init — but using `trackWhenReady` everywhere is harmless and removes the need
+to judge per-event.
+
+**Known fidelity gap (logged, not fixed):** `product_viewed` is specced (above) to
+fire when the PDP/homepage buy section ENTERS VIEW, but both call sites
+(`ProductDisplay.tsx`, `PdpViewTracker.tsx`) currently fire at MOUNT, not on
+viewport entry. On the homepage, if the buy section is below the fold, the event
+fires on page load regardless of whether the user scrolled to it — so it currently
+measures closer to "page loaded" than "saw the product." Acceptable for now;
+revisit by gating the homepage fire behind an IntersectionObserver if product-view
+fidelity matters for a specific analysis.
+
+
   the same way `tokens.json` is for styling. Adding an event is a deliberate,
   reviewed act.
 - Autocapture still runs underneath for exploratory analysis; the typed funnel
@@ -247,6 +329,14 @@ orders followed — blind on the only transition that defines success. So:
 6. Added promo financial props to `purchase` (`has_promo_code`, `discount_code`,
    `discount_amount`) — to measure the first-order promo as an isolated lever and
    track margin given up.
+7. **(2026-05-30, 5b-patch — surfaced by reviewing the live event stream)** Added
+   `source` to `cart_add_to_cart` (`homepage_buy` | `pdp`) and to `checkout_started`
+   (`drawer` | `cart_page` | `buy_now`), and added `cart_remove_item` (friction
+   signal). The original 5b spec fired add-to-cart identically from two product
+   surfaces and checkout identically from three entry points — same event, no idea
+   where it happened. Source attribution turns "people are checking out" into "people
+   check out from X 3× more than Y." An event without where-it-fired context is half
+   an event.
 
 ## Open before build (Phase 5a)
 
