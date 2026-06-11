@@ -40,7 +40,6 @@ export default function Footer() {
                 alt="Litsaber"
                 width={140}
                 height={40}
-                className="h-8 w-auto"
                 style={{ width: "clamp(130px, 14vw, 200px)", height: "auto" }}
               />
             </Link>
