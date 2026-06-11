@@ -709,6 +709,7 @@ Phase 3 work remaining (in priority order):
 - Remove `/shopify-check` debug route before Phase 7
 - Flip Authorize.net from test to live before launch
 - **Repoint the dynamic box QR at Phase 7 cutover** — currently points at the Vercel preview `/activate` for testing; must become `getlitsaber.com/activate?utm_source=packaging&utm_medium=qr&utm_campaign=activation_insert`. Dynamic QR = no reprint, just change the destination. Pair with the DNS flip (a customer scanning before the flip would otherwise hit the dead route). `device_activated` is verified firing against this URL.
+- **Brand the customer-account subdomain at Phase 7 cutover** — `account.getlitsaber.com`. Customer accounts are activated NOW on the default Shopify URL (New Customer Accounts already on; Shopify owns orders + self-serve returns UI; navbar account icon links to the default account URL). The branded subdomain is COUPLED to the cutover: it's a subdomain of `getlitsaber.com`, which isn't on Shopify yet (still WordPress; Shopify primary is `innovapeconcepts.myshopify.com`). Doing it now would mean attaching `getlitsaber.com` to Shopify early, cutting against the deliberate 1–2 week parallel-running rollback window. So at cutover: Settings → Customer accounts → connect `account` subdomain (CNAME → `shops.myshopify.com` at Namecheap, up to 48h propagation), then swap the navbar account link from the default URL to `account.getlitsaber.com`. Confirm sender email deliverability (passwordless login sends a code from it).
 - ~~Section 6 empty frame on homepage~~ → RESOLVED (2026-05-23): it's the Editions + commerce display section (node `3312:2`), now built.
 - Venue card photography sourcing
 - FAQ #3 placeholder copy (homepage)
@@ -836,3 +837,33 @@ first commit. We almost fixed a non-bug.
 |---|------|-----|
 | 62 | "Wired the North Star event and the whole funnel went green end to end — every rung from the age gate to the device-activation moment is now instrumented. The thing worth saying isn't the event; it's that the 60-day report that started all this exposed the buy-click-to-purchase collapse as a black box, and there is now a live signal on every transition in and around it. The rebuild's whole premise was 'replace a static site with a system that can see itself.' This is the moment it can." | `agent-loop`, `analytics-rigor` |
 | 63 | "Nearly spent a night fixing a bug that didn't exist. Every symptom screamed broken North Star event — reloads not firing, wrong values, eight minutes of silence. All of it was PostHog's live feed lagging several minutes plus my own testing across fresh incognito windows that were each, correctly, first visits. The tell I almost missed: two events showed up with the right values minutes after I'd stopped touching the page. The localStorage flag had been persisting correctly the entire time. The lesson is the one already in this doc from the stale-cart saga — when it only fails in your hands, suspect the test conditions before the code — and I still almost missed it, because 'the most important event is broken' is a scary enough sentence to override the checklist. Discipline isn't knowing the rule; it's applying it when you're nervous." | `pm-discipline`, `analytics-rigor` |
+
+### Customer accounts — Shopify-hosted, activated (2026-06-11) ✅
+
+Self-serve customer accounts (order management + returns) are live with effectively
+zero custom build — the consistent choice given the native-Shopify-integration
+pattern (cf. Judge.me over custom reviews, native HubSpot order sync over custom
+write-back). Option A (Shopify-hosted) chosen over Option B (custom headless account
+UI via the Customer Account API — weeks of work, owns auth + PII) and Option C
+(defer, returns via contact form).
+
+**What's live:** New Customer Accounts active in Shopify. Account experience hosted
+by Shopify at `https://shopify.com/65425866959/account` (the default URL — store ID
+`65425866959`, not secret, it's in every customer's account URL). Passwordless email-
+code login; Shopify owns the orders + self-serve RETURNS UI out of the box. Verified:
+logged into a test account, orders visible, returns available.
+
+**The one repo change:** navbar account icon (stubbed since foundation, no destination)
+wired to the account URL, read from env var `NEXT_PUBLIC_ACCOUNT_URL` (external `<a>`,
+not Next `<Link>`). Env-var deliberately so the Phase 7 swap to the branded subdomain
+is a one-line Vercel change, no code round-trip.
+
+**Why default URL now, branded subdomain at cutover:** `account.getlitsaber.com`
+requires `getlitsaber.com` to be a Shopify-connected domain, but it isn't yet (still
+WordPress; Shopify primary is `innovapeconcepts.myshopify.com`, alias
+`ajur1e-s1.myshopify.com` — the latter incidentally confirms the Judge.me shop-domain
+value was legit, not stale). Forcing the subdomain now means attaching the domain to
+Shopify early, cutting against the deliberate 1–2 week parallel-running rollback
+window. So accounts go live on the default URL today; the branded subdomain is a
+Phase 7 cutover item (logged in the checklist), swapped via the env var when the
+domain moves.
