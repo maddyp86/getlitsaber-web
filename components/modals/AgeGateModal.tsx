@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useAgeGateActions } from "@/lib/ui/store";
 import { mediaUrl } from "@/lib/media";
 import { track, EVENTS } from "@/lib/analytics/events";
@@ -30,17 +31,18 @@ function setCookie(name: string, value: string, maxAgeDays: number) {
 export default function AgeGateModal() {
   const [visible, setVisible] = useState(false);
   const { setAgeGateVisible, dismissAgeGate } = useAgeGateActions();
+  const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname === "/activate") return;
     const verified = getCookie(COOKIE_NAME);
     if (!verified) {
       setVisible(true);
       setAgeGateVisible(true);
       document.body.classList.add("scroll-locked");
     }
-  // setAgeGateVisible is stable (Zustand action ref never changes)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pathname]);
 
   function handleConfirm() {
     setCookie(COOKIE_NAME, "true", COOKIE_MAX_AGE_DAYS);

@@ -23,7 +23,7 @@ function setCookie(name: string, value: string, maxAgeDays: number) {
 }
 
 function isSuppressedRoute(pathname: string): boolean {
-  return pathname === "/cart" || pathname.startsWith("/checkout");
+  return pathname === "/cart" || pathname === "/activate" || pathname.startsWith("/checkout");
 }
 
 export interface UsePromoPopupReturn {
