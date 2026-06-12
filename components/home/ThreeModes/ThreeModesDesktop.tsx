@@ -454,16 +454,35 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     }}
   >
     <AnimatePresence mode="wait">
-      <motion.img
-        key={`mode-image-${activeMode}`}
-        src={MODES[activeMode].image}
-        alt={MODES[activeMode].title}
-        variants={IMAGE_FADE}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-      />
+      {reducedMotion ? (
+        <motion.img
+          key={`mode-image-${activeMode}`}
+          src={MODES[activeMode].image}
+          alt={MODES[activeMode].title}
+          variants={IMAGE_FADE}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : (
+        <motion.video
+          key={`mode-image-${activeMode}`}
+          src={MODES[activeMode].video}
+          poster={MODES[activeMode].image}
+          variants={IMAGE_FADE}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden={true}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      )}
     </AnimatePresence>
   </div>
   </motion.div>

@@ -216,16 +216,35 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             {activeMode === 0 && (
               <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
                 <AnimatePresence mode="wait">
-                  <motion.img
-                    key={`mode-img-mobile-${activeMode}`}
-                    src={MODES[0].image}
-                    alt={MODES[0].title}
-                    variants={IMAGE_FADE}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                  />
+                  {reducedMotion ? (
+                    <motion.img
+                      key={`mode-img-mobile-${activeMode}`}
+                      src={MODES[0].image}
+                      alt={MODES[0].title}
+                      variants={IMAGE_FADE}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  ) : (
+                    <motion.video
+                      key={`mode-img-mobile-${activeMode}`}
+                      src={MODES[0].video}
+                      poster={MODES[0].image}
+                      variants={IMAGE_FADE}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-hidden={true}
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  )}
                 </AnimatePresence>
               </div>
             )}
@@ -265,14 +284,31 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
 
             {activeMode === 1 && (
               <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
-                <motion.img
-                  src={MODES[1].image}
-                  alt={MODES[1].title}
-                  variants={IMAGE_FADE}
-                  initial="hidden"
-                  animate="visible"
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
+                {reducedMotion ? (
+                  <motion.img
+                    src={MODES[1].image}
+                    alt={MODES[1].title}
+                    variants={IMAGE_FADE}
+                    initial="hidden"
+                    animate="visible"
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  <motion.video
+                    src={MODES[1].video}
+                    poster={MODES[1].image}
+                    variants={IMAGE_FADE}
+                    initial="hidden"
+                    animate="visible"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden={true}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -311,14 +347,31 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
 
             {activeMode === 2 && (
               <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
-                <motion.img
-                  src={MODES[2].image}
-                  alt={MODES[2].title}
-                  variants={IMAGE_FADE}
-                  initial="hidden"
-                  animate="visible"
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
+                {reducedMotion ? (
+                  <motion.img
+                    src={MODES[2].image}
+                    alt={MODES[2].title}
+                    variants={IMAGE_FADE}
+                    initial="hidden"
+                    animate="visible"
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  <motion.video
+                    src={MODES[2].video}
+                    poster={MODES[2].image}
+                    variants={IMAGE_FADE}
+                    initial="hidden"
+                    animate="visible"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden={true}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                )}
               </div>
             )}
           </div>

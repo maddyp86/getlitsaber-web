@@ -1,10 +1,11 @@
-import { mediaUrl } from "@/lib/media";
+import { mediaUrl, videoUrl } from "@/lib/media";
 
 export interface Mode {
   title: string;
   titleColor: "white" | "muted";
   body: string;
   image: string;
+  video: string;
 }
 
 export const MODES: Mode[] = [
@@ -13,18 +14,21 @@ export const MODES: Mode[] = [
     titleColor: "white",
     body: "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath — pull, and the device responds in real time.",
     image: mediaUrl("home/mode-placeholder.jpg"),
+    video: videoUrl("home/litsaber_mode.mp4"),
   },
   {
     title: "GLOWSTICK MODE",
     titleColor: "muted",
     body: "Turn up the party and turn your vape into a glowstick. Use the Litsaber and give someone a light show or even find things in the dark.",
     image: mediaUrl("home/mode-placeholder.jpg"),
+    video: videoUrl("home/glowstick_mode.mp4"),
   },
   {
     title: "STEALTH MODE",
     titleColor: "muted",
     body: "When daylight comes give your eyes and battery a break. Turn off the lights to save power and vape discreetly throughout day.",
     image: mediaUrl("home/mode-placeholder.jpg"),
+    video: videoUrl("home/stealth_mode.mp4"),
   },
 ];
 
