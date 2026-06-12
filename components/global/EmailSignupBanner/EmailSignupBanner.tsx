@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useToastActions } from "@/lib/toast/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
+import { mediaUrl } from "@/lib/media";
 import { motion } from "framer-motion";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
@@ -94,21 +95,10 @@ export default function EmailSignupBanner() {
       style={{ minHeight: 340 }}
     >
       {/* Background image + gradient overlay */}
-      {/* Desktop */}
       <div
-        className="absolute inset-0 hidden lg:block"
+        className="absolute inset-0"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.50) 47.5%), url(images/global/footer_background.jpg) lightgray 50% / cover no-repeat",
-        }}
-        aria-hidden="true"
-      />
-      {/* Mobile */}
-      <div
-        className="absolute inset-0 block lg:hidden"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.50) 47.5%), url(images/global/footer_background.jpg) lightgray 50% / cover no-repeat",
+          background: `linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.50) 47.5%), url(${mediaUrl("global/footer_background.jpg")}) lightgray 50% / cover no-repeat`,
         }}
         aria-hidden="true"
       />
