@@ -5,7 +5,7 @@ interface SpecPillProps {
 export default function SpecPill({ label }: SpecPillProps) {
   return (
     <span
-      className="flex justify-center items-center gap-[5px] font-label text-eyebrow text-accent-cyan tracking-widest uppercase"
+      className="flex justify-center text-center items-center gap-[5px] font-label text-eyebrow text-accent-cyan tracking-widest uppercase"
       style={{
         padding: "5px 10px",
         borderRadius: "20px",
