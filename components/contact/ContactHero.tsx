@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useToastActions } from "@/lib/toast/store";
+import { mediaUrl } from "@/lib/media";
 import {
   HERO_HEADLINE_LINE1,
   HERO_HEADLINE_ACCENT,
@@ -14,9 +15,9 @@ import {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const ICON_SRC: Record<ContactMethod["icon"], string> = {
-  email: "/images/icons/mail-svgrepo-com 1.svg",
-  phone: "/images/icons/iphone-style-smartphone-material-svgrepo-com 1.svg",
-  chat: "/images/icons/radio-button-svgrepo-com 1.svg",
+  email: mediaUrl("icons/mail-svgrepo-com 1.svg"),
+  phone: mediaUrl("icons/iphone-style-smartphone-material-svgrepo-com 1.svg"),
+  chat: mediaUrl("icons/radio-button-svgrepo-com 1.svg"),
 };
 
 function CardInner({

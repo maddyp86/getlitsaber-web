@@ -1,3 +1,5 @@
+import { mediaUrl } from "@/lib/media";
+
 export const EYEBROW = "UNDER THE HOOD";
 
 export const HEADLINE = "ENGINEERED TO STAND OUT";
@@ -6,7 +8,7 @@ export const SUBHEADLINE =
   "A one of a kind interactive battery product packed with state of the art. Six components. Zero compromises. Every choice made so it earns the price.";
 
 export const EXPLODED_IMAGE = {
-  src: "/images/home/exploded-transparent.png",
+  src: mediaUrl("home/exploded-transparent.png"),
   alt: "Litsaber device exploded view showing all six components",
 };
 
@@ -63,55 +65,55 @@ export interface SpecTile {
 
 export const SPEC_TILES: SpecTile[] = [
   {
-    icon: "/images/icons/heart-like-svgrepo-com 1.png",
+    icon: mediaUrl("icons/heart-like-svgrepo-com 1.png"),
     iconAlt: "",
     value: "1.5yr",
     label: "Lifespan",
   },
   {
-    icon: "/images/icons/battery-full-svgrepo-com 1.png",
+    icon: mediaUrl("icons/battery-full-svgrepo-com 1.png"),
     iconAlt: "",
     value: "800mAh",
     label: "Battery capacity",
   },
   {
-    icon: "/images/icons/bolt-svgrepo-com 1.png",
+    icon: mediaUrl("icons/bolt-svgrepo-com 1.png"),
     iconAlt: "",
     value: "2.4v - 3.2v",
     label: "Output range",
   },
   {
-    icon: "/images/icons/power-off-svgrepo-com 1.png",
+    icon: mediaUrl("icons/power-off-svgrepo-com 1.png"),
     iconAlt: "",
     value: "3x",
     label: "Product Modes",
   },
   {
-    icon: "/images/icons/clock-circle-svgrepo-com 1.png",
+    icon: mediaUrl("icons/clock-circle-svgrepo-com 1.png"),
     iconAlt: "",
     value: "75 mins",
     label: "Time to full charge",
   },
   {
-    icon: "/images/icons/local-selection-inactive-svgrepo-com 1.png",
+    icon: mediaUrl("icons/local-selection-inactive-svgrepo-com 1.png"),
     iconAlt: "",
     value: "510",
     label: "Cartridge style",
   },
   {
-    icon: "/images/icons/weight-svgrepo-com 1.png",
+    icon: mediaUrl("icons/weight-svgrepo-com 1.png"),
     iconAlt: "",
     value: "1.9 oz",
     label: "Weight",
   },
   {
-    icon: "/images/icons/lightbulb-svgrepo-com 1.png",
+    icon: mediaUrl("icons/lightbulb-svgrepo-com 1.png"),
     iconAlt: "",
     value: "41x",
     label: "Total LEDs",
   },
   {
-    icon: "/images/icons/ruler-2-svgrepo-com 1.png",
+    icon: mediaUrl("icons/ruler-2-svgrepo-com 1.png"),
     iconAlt: "",
     value: '5.78"L X 0.83"W',
     label: "Dimensions",

@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { mediaUrl } from "@/lib/media";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 export default function LightMeetsVapor() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -40,10 +41,10 @@ export default function LightMeetsVapor() {
         style={{ y }}
       >
         <picture className="absolute inset-0 block">
-          <source media="(min-width: 1025px)" srcSet="/images/home/light-meets-vapor.jpg" />
+          <source media="(min-width: 1025px)" srcSet={mediaUrl("home/light-meets-vapor.jpg")} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/home/light-meets-vapor-mobile.jpg"
+            src={mediaUrl("home/light-meets-vapor-mobile.jpg")}
             alt=""
             className="absolute inset-0 object-cover object-center w-full h-full"
             loading="lazy"

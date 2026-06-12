@@ -1,57 +1,59 @@
+import { mediaUrl } from "@/lib/media";
+
 // ─── Image — Journey band ────────────────────────────────────────────────────
-export const BAND_IMAGE_SRC = "/images/about/litsaber-assembly.jpg";
+export const BAND_IMAGE_SRC = mediaUrl("about/litsaber-assembly.jpg");
 export const BAND_IMAGE_ALT = "Litsaber components laid out for assembly";
 
 // ─── Images — Hero ───────────────────────────────────────────────────────────
-export const HERO_IMAGE_SRC = "/images/about/comiccon-about-us.jpg";
+export const HERO_IMAGE_SRC = mediaUrl("about/comiccon-about-us.jpg");
 export const HERO_IMAGE_ALT = "Matt and Brendan at ComicCon 2025";
 
 // ─── Images — Team ───────────────────────────────────────────────────────────
-export const MATT_HEADSHOT_SRC = "/images/about/matt-headshot.jpg";
-export const BRENDAN_HEADSHOT_SRC = "/images/about/brendan-headshot.jpg";
+export const MATT_HEADSHOT_SRC = mediaUrl("about/matt-headshot.jpg");
+export const BRENDAN_HEADSHOT_SRC = mediaUrl("about/brendan-headshot.jpg");
 
 // ─── Images — Prototype Timeline ─────────────────────────────────────────────
-export const PROTOTYPE_2019_SRC = "/images/about/prototype-image-2019.jpg";
-export const PROTOTYPE_2020_SRC = "/images/about/prototype-image-2020.jpg";
-export const PROTOTYPE_2021_SRC = "/images/about/prototype-image-2021.jpg";
-export const PROTOTYPE_2022_SRC = "/images/about/prototype-image-2022.jpg";
-export const PROTOTYPE_2023_SRC = "/images/about/prototype-image-2023.jpg";
-export const PROTOTYPE_2024_SRC = "/images/about/prototype-image-2024.jpg";
+export const PROTOTYPE_2019_SRC = mediaUrl("about/prototype-image-2019.jpg");
+export const PROTOTYPE_2020_SRC = mediaUrl("about/prototype-image-2020.jpg");
+export const PROTOTYPE_2021_SRC = mediaUrl("about/prototype-image-2021.jpg");
+export const PROTOTYPE_2022_SRC = mediaUrl("about/prototype-image-2022.jpg");
+export const PROTOTYPE_2023_SRC = mediaUrl("about/prototype-image-2023.jpg");
+export const PROTOTYPE_2024_SRC = mediaUrl("about/prototype-image-2024.jpg");
 
 // ─── Images — Manufacturing Gallery ──────────────────────────────────────────
 export const PRODUCTION_IMAGES = [
-  { src: "/images/about/litsaber-production-01.jpg", alt: "Litsaber production — step 1" },
-  { src: "/images/about/litsaber-production-02.jpg", alt: "Litsaber production — step 2" },
-  { src: "/images/about/litsaber-production-03.jpg", alt: "Litsaber production — step 3" },
-  { src: "/images/about/litsaber-production-04.jpg", alt: "Litsaber production — step 4" },
-  { src: "/images/about/litsaber-production-05.jpg", alt: "Litsaber production — step 5" },
-  { src: "/images/about/litsaber-production-06.jpg", alt: "Litsaber production — step 6" },
-  { src: "/images/about/litsaber-production-07.jpg", alt: "Litsaber production — step 7" },
-  { src: "/images/about/litsaber-production-08.jpg", alt: "Litsaber production — step 8" },
-  { src: "/images/about/litsaber-production-09.jpg", alt: "Litsaber production — step 9" },
-  { src: "/images/about/litsaber-production-10.jpg", alt: "Litsaber production — step 10" },
+  { src: mediaUrl("about/litsaber-production-01.jpg"), alt: "Litsaber production — step 1" },
+  { src: mediaUrl("about/litsaber-production-02.jpg"), alt: "Litsaber production — step 2" },
+  { src: mediaUrl("about/litsaber-production-03.jpg"), alt: "Litsaber production — step 3" },
+  { src: mediaUrl("about/litsaber-production-04.jpg"), alt: "Litsaber production — step 4" },
+  { src: mediaUrl("about/litsaber-production-05.jpg"), alt: "Litsaber production — step 5" },
+  { src: mediaUrl("about/litsaber-production-06.jpg"), alt: "Litsaber production — step 6" },
+  { src: mediaUrl("about/litsaber-production-07.jpg"), alt: "Litsaber production — step 7" },
+  { src: mediaUrl("about/litsaber-production-08.jpg"), alt: "Litsaber production — step 8" },
+  { src: mediaUrl("about/litsaber-production-09.jpg"), alt: "Litsaber production — step 9" },
+  { src: mediaUrl("about/litsaber-production-10.jpg"), alt: "Litsaber production — step 10" },
 ] as const;
 
 // ─── Images — Manufacturing Gallery (desktop collage, 6 images) ──────────────
 export const PRODUCTION_IMAGES_DESKTOP = [
-  { src: "/images/about/litsaber-production-desktop-1.jpg", alt: "Litsaber assembly — LED strip test" },   // tall left
-  { src: "/images/about/litsaber-production-desktop-2.jpg", alt: "Litsaber assembly — PCB hand assembly" }, // top-right (upper)
-  { src: "/images/about/litsaber-production-desktop-3.jpg", alt: "Litsaber assembly — housing fit" },        // top-right (lower)
-  { src: "/images/about/litsaber-production-desktop-4.jpg", alt: "Litsaber assembly — CNC end caps" },       // bottom-left
-  { src: "/images/about/litsaber-production-desktop-5.jpg", alt: "Litsaber QC — finished units tray" },      // bottom-center
-  { src: "/images/about/litsaber-production-desktop-6.jpg", alt: "Litsaber assembly — final lit unit" },     // bottom-right
+  { src: mediaUrl("about/litsaber-production-desktop-1.jpg"), alt: "Litsaber assembly — LED strip test" },   // tall left
+  { src: mediaUrl("about/litsaber-production-desktop-2.jpg"), alt: "Litsaber assembly — PCB hand assembly" }, // top-right (upper)
+  { src: mediaUrl("about/litsaber-production-desktop-3.jpg"), alt: "Litsaber assembly — housing fit" },        // top-right (lower)
+  { src: mediaUrl("about/litsaber-production-desktop-4.jpg"), alt: "Litsaber assembly — CNC end caps" },       // bottom-left
+  { src: mediaUrl("about/litsaber-production-desktop-5.jpg"), alt: "Litsaber QC — finished units tray" },      // bottom-center
+  { src: mediaUrl("about/litsaber-production-desktop-6.jpg"), alt: "Litsaber assembly — final lit unit" },     // bottom-right
 ] as const;
 
 // ─── Images — Manufacturing band ─────────────────────────────────────────────
-export const MFG_BAND_SRC = "/images/about/mfg-band-line.jpg";
+export const MFG_BAND_SRC = mediaUrl("about/mfg-band-line.jpg");
 export const MFG_BAND_ALT = "Litsaber devices glowing on a surface";
 
 // ─── Images — Now / Events ───────────────────────────────────────────────────
 export const EVENT_IMAGES = [
-  { src: "/images/about/starwars-hollywood-bowl.jpg", alt: "Litsaber at Star Wars Night — Hollywood Bowl" },
-  { src: "/images/about/mjbizcon-litsaber-booth.jpg", alt: "Litsaber booth at MJBizCon" },
-  { src: "/images/about/mjbizcon-afterparty.jpg", alt: "MJBizCon afterparty with Litsaber" },
-  { src: "/images/about/legacy-expo-litsaber.jpg", alt: "Litsaber at Legacy Expo" },
+  { src: mediaUrl("about/starwars-hollywood-bowl.jpg"), alt: "Litsaber at Star Wars Night — Hollywood Bowl" },
+  { src: mediaUrl("about/mjbizcon-litsaber-booth.jpg"), alt: "Litsaber booth at MJBizCon" },
+  { src: mediaUrl("about/mjbizcon-afterparty.jpg"), alt: "MJBizCon afterparty with Litsaber" },
+  { src: mediaUrl("about/legacy-expo-litsaber.jpg"), alt: "Litsaber at Legacy Expo" },
 ] as const;
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────

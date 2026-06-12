@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { mediaUrl } from "@/lib/media";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -88,7 +89,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
             aria-label="Litsaber — go to homepage"
           >
             <Image
-              src="/images/global/litsaber-logo-white-cyan.png"
+              src={mediaUrl("global/litsaber-logo-white-cyan.png")}
               alt="Litsaber"
               width={140}
               height={40}

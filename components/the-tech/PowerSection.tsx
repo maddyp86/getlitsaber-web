@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { mediaUrl } from "@/lib/media";
 import {
   POWER_HEADLINE1,
   POWER_HEADLINE2,
@@ -45,7 +46,7 @@ export default function PowerSection() {
   style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.4 }}
   aria-hidden="true"
 >
-  <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+  <Image src={mediaUrl("tech/geometric-shape.png")} alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
 </div>
           {/* Image — left on desktop, top on mobile */}
           <motion.div

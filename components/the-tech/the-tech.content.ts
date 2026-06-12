@@ -1,3 +1,5 @@
+import { mediaUrl } from "@/lib/media";
+
 // ─── Video ───────────────────────────────────────────────────────────────────
 // Set VIDEO_SRC to the hosted video URL when available.
 // When empty, the InhaleVideo section renders a styled placeholder.
@@ -7,23 +9,23 @@ export const VIDEO_SRC = "";
 // All images are remote URLs (GitHub-hosted). next.config.mjs must have
 // raw.githubusercontent.com whitelisted in images.remotePatterns.
 
-export const HERO_IMAGE_SRC_DESKTOP = "/images/tech/be-seen-desktop.jpg";
-export const HERO_IMAGE_SRC_MOBILE = "/images/tech/be-seen-mobile.jpg";
+export const HERO_IMAGE_SRC_DESKTOP = mediaUrl("tech/be-seen-desktop.jpg");
+export const HERO_IMAGE_SRC_MOBILE = mediaUrl("tech/be-seen-mobile.jpg");
 export const HERO_IMAGE_ALT = "Litsaber OG glowing in a dark environment";
 
-export const BREATH_RESPONSE_IMAGE_SRC = "/images/tech/litsaber-multi-tech.jpg";
+export const BREATH_RESPONSE_IMAGE_SRC = mediaUrl("tech/litsaber-multi-tech.jpg");
 export const BREATH_RESPONSE_IMAGE_ALT = "Litsaber glowing in rainbow spectrum of colors";
 
-export const POWER_IMAGE_SRC = "/images/tech/litsaber-usbc-tech.jpg";
+export const POWER_IMAGE_SRC = mediaUrl("tech/litsaber-usbc-tech.jpg");
 export const POWER_IMAGE_ALT = "Litsaber device showing USB-C charging port";
 
-export const EXPLODED_RENDER_IMAGE_SRC = "/images/tech/exploded-view-tech.png";
+export const EXPLODED_RENDER_IMAGE_SRC = mediaUrl("tech/exploded-view-tech.png");
 export const EXPLODED_RENDER_IMAGE_ALT = "Litsaber OG exploded 3D view showing all six internal components";
 
-export const VOLTAGE_DEVICE_IMAGE_SRC = "/images/tech/oil-desktop.jpg";
+export const VOLTAGE_DEVICE_IMAGE_SRC = mediaUrl("tech/oil-desktop.jpg");
 export const VOLTAGE_DEVICE_IMAGE_ALT = "Litsaber held in hand, LED lit to indicate voltage setting";
 
-export const CART_LINEUP_IMAGE_SRC = "/images/tech/cart-sizes.jpg";
+export const CART_LINEUP_IMAGE_SRC = mediaUrl("tech/cart-sizes.jpg");
 export const CART_LINEUP_IMAGE_ALT = "510 cart size comparison from 10.5mm to 14.5mm — half-gram, full-gram, two-gram";
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────

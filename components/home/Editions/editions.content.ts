@@ -1,4 +1,5 @@
 import type { ModalName } from "@/lib/ui/store";
+import { mediaUrl } from "@/lib/media";
 
 export const EYEBROW = "EDITIONS";
 export const HEADLINE = "WHAT WE'RE SHIPPING";
@@ -45,7 +46,7 @@ export const EDITIONS: Edition[] = [
     descriptorAccent: false,
     actionLabel: "SHOP NOW",
     ctaColor: "#00E5FF",
-    arrowSrc: "/images/icons/arrow-right-cyan.png",
+    arrowSrc: mediaUrl("icons/arrow-right-cyan.png"),
     action: { type: "link", href: "/shop/litsaber-og" },
   },
   {
@@ -62,7 +63,7 @@ export const EDITIONS: Edition[] = [
     descriptorAccent: true,
     actionLabel: "JOIN THE WAITLIST",
     ctaColor: "#EC5793",
-    arrowSrc: "/images/icons/arrow-right-pink.png",
+    arrowSrc: mediaUrl("icons/arrow-right-pink.png"),
     action: { type: "modal", name: "gold" },
   },
   {
@@ -79,7 +80,7 @@ export const EDITIONS: Edition[] = [
     descriptorAccent: true,
     actionLabel: "GET NOTIFIED",
     ctaColor: "#828282",
-    arrowSrc: "/images/icons/arrow-right-grey.png",
+    arrowSrc: mediaUrl("icons/arrow-right-grey.png"),
     action: { type: "modal", name: "general" },
   },
 ];

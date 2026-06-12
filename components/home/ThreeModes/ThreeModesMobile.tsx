@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
+import { mediaUrl } from "@/lib/media";
 
 interface ThreeModesMobileProps {
   className?: string;
@@ -94,14 +95,14 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
       <div ref={lightstreakRef} className="relative w-full overflow-hidden mb-[50px]" style={{ height: "258px" }}>
         {reducedMotion ? (
           <img
-            src="/images/home/litsaber-lightstreaks-mobile.jpg"
+            src={mediaUrl("home/litsaber-lightstreaks-mobile.jpg")}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover"
           />
         ) : (
           <motion.img
-            src="/images/home/litsaber-lightstreaks-mobile.jpg"
+            src={mediaUrl("home/litsaber-lightstreaks-mobile.jpg")}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover"

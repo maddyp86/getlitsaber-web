@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import { mediaUrl } from "@/lib/media";
 import {
   SELL_THROUGH_HEADLINE,
   SELL_THROUGH_ACCENT,
@@ -26,10 +27,10 @@ function renderEmphasis(text: string) {
 
 // Maps card.icon → asset path. Keys must match the `icon` values in SELL_THROUGH_CARDS.
 const ICONS: Record<string, string> = {
-  lifestyle: "/images/icons/heart-like-svgrepo-com 1.png",
-  engineered: "/images/icons/tools-svgrepo-com 1.svg",
-  gift: "/images/icons/gift-svgrepo-com 1.svg",
-  repeat: "/images/icons/repeat-svgrepo-com 1.svg",
+  lifestyle: mediaUrl("icons/heart-like-svgrepo-com 1.png"),
+  engineered: mediaUrl("icons/tools-svgrepo-com 1.svg"),
+  gift: mediaUrl("icons/gift-svgrepo-com 1.svg"),
+  repeat: mediaUrl("icons/repeat-svgrepo-com 1.svg"),
 };
 
 export default function SellThrough() {

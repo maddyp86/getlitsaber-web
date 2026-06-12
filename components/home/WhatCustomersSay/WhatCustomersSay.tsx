@@ -1,13 +1,14 @@
 import TikTokRail, { TikTokVideo } from "./TikTokRail";
+import { mediaUrl } from "@/lib/media";
 
 
 const VIDEOS: TikTokVideo[] = [
-  { url: "https://www.tiktok.com/@getlitsaber/video/7599752282464455967", thumbnail: "/images/reviews/review1.jpg", caption: "", views: "" },
-  { url: "https://www.tiktok.com/@getlitsaber/video/7581564990033890590", thumbnail: "/images/reviews/review2.jpg", caption: "", views: "" },
-  { url: "https://www.tiktok.com/@getlitsaber/video/7630952753501703455", thumbnail: "/images/reviews/review3.jpg", caption: "", views: "" },
-  { url: "https://www.tiktok.com/@getlitsaber/video/7613414053091839262", thumbnail: "/images/reviews/review4.jpg", caption: "", views: "" },
-  { url: "https://www.tiktok.com/@getlitsaber/video/7578956594189274399", thumbnail: "/images/reviews/review5.jpg", caption: "", views: "" },
-  { url: "https://www.tiktok.com/@getlitsaber/video/7561515341424135454", thumbnail: "/images/reviews/review6.jpg", caption: "", views: "" },
+  { url: "https://www.tiktok.com/@getlitsaber/video/7599752282464455967", thumbnail: mediaUrl("reviews/review1.jpg"), caption: "", views: "" },
+  { url: "https://www.tiktok.com/@getlitsaber/video/7581564990033890590", thumbnail: mediaUrl("reviews/review2.jpg"), caption: "", views: "" },
+  { url: "https://www.tiktok.com/@getlitsaber/video/7630952753501703455", thumbnail: mediaUrl("reviews/review3.jpg"), caption: "", views: "" },
+  { url: "https://www.tiktok.com/@getlitsaber/video/7613414053091839262", thumbnail: mediaUrl("reviews/review4.jpg"), caption: "", views: "" },
+  { url: "https://www.tiktok.com/@getlitsaber/video/7578956594189274399", thumbnail: mediaUrl("reviews/review5.jpg"), caption: "", views: "" },
+  { url: "https://www.tiktok.com/@getlitsaber/video/7561515341424135454", thumbnail: mediaUrl("reviews/review6.jpg"), caption: "", views: "" },
 ];
 
 export default function WhatCustomersSay() {

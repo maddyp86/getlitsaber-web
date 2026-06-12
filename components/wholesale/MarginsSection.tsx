@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { mediaUrl } from "@/lib/media";
 import {
   MARGINS_HEADLINE_LINE1,
   MARGINS_HEADLINE_ACCENT,
@@ -45,7 +46,7 @@ export default function MarginsSection() {
   aria-hidden="true"
 >
   <Image
-    src="/images/tech/geometric-shape.png"
+    src={mediaUrl("tech/geometric-shape.png")}
     alt=""
     fill
     sizes="540px"
