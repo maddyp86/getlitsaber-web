@@ -26,7 +26,7 @@ function StatItem({ value, label }: { value?: string; label: string }) {
 
 export default function StatBar() {
   return (
-    <section data-analytics="stat-bar" className="w-full bg-background-primary py-lg overflow-hidden">
+    <section data-analytics="stat-bar" className="w-full bg-background-primary py-xl overflow-hidden">
       <div className="flex gap-2xl animate-marquee">
         {[...STATS, ...STATS].map((stat, i) => (
           <StatItem key={i} label={stat.label} value={"value" in stat ? stat.value : undefined} />
