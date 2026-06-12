@@ -104,7 +104,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             custom={0.4}
           >
             {SPEC_PILLS.map((label) => (
-              <SpecPill key={label} label={label} />
+              <SpecPill key={label} label={label} className="text-center"/>
             ))}
           </motion.div>
         </div>
