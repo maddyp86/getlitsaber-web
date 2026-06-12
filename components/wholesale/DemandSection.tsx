@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { mediaUrl } from "@/lib/media";
 import {
   DEMAND_HEADLINE_LINE1,
   DEMAND_HEADLINE_ACCENT,
@@ -39,7 +40,7 @@ export default function DemandSection() {
         aria-hidden="true"
       >
         <Image
-          src="/images/tech/geometric-shape.png"
+          src={mediaUrl("tech/geometric-shape.png")}
           alt=""
           fill
           sizes="540px"

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
+import { mediaUrl } from "@/lib/media";
 import {
   HEADLINE_MOBILE,
   SUBHEADLINE,
@@ -30,8 +31,8 @@ export default function HeroMobile({ className }: HeroMobileProps) {
       {/* Lifestyle scene — absolute background, covers only the top zone */}
       <div className="absolute inset-x-0 top-0 z-0 h-[600px] overflow-hidden">
         <ResponsiveImage
-          mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
-          desktopSrc="/images/home/hero-lifestyle.jpg"
+          mobileSrc={mediaUrl("home/hero-lifestyle-mobile.jpg")}
+          desktopSrc={mediaUrl("home/hero-lifestyle.jpg")}
           alt="Litsaber lighting up a festival crowd at night"
           breakpoint="1024px"
           priority
@@ -137,7 +138,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           custom={0.35}
         >
           <Image
-            src="/images/home/litsaber-hero-image.png"
+            src={mediaUrl("home/litsaber-hero-image.png")}
             alt="Litsaber device"
             fill
 

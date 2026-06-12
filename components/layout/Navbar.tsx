@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import MobileNavDrawer from "./MobileNavDrawer";
 import { useItemCount } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
+import { mediaUrl } from "@/lib/media";
 
 const ACCOUNT_URL =
   process.env.NEXT_PUBLIC_ACCOUNT_URL ?? "https://shopify.com/65425866959/account";
@@ -65,7 +66,7 @@ export default function Navbar() {
               aria-label="Litsaber — go to homepage"
             >
               <Image
-                src="/images/global/litsaber-logo-white-cyan.png"
+                src={mediaUrl("global/litsaber-logo-white-cyan.png")}
                 alt="Litsaber"
                 width={140}
                 height={40}

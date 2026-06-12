@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { mediaUrl } from "@/lib/media";
 import {
   HERO_HEADLINE_LINE1,
   HERO_HEADLINE_ACCENT,
@@ -76,7 +77,7 @@ export default function TechHero() {
                   {HERO_CTA}
                 </span>
                 <Image
-                  src="/images/icons/down-arrow-download-svgrepo-com 1.svg"
+                  src={mediaUrl("icons/down-arrow-download-svgrepo-com 1.svg")}
                   alt=""
                   width={24}
                   height={24}

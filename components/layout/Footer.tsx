@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { mediaUrl } from "@/lib/media";
 
 const EXPLORE_LINKS = [
   { label: "Home", href: "/" },
@@ -36,7 +37,7 @@ export default function Footer() {
               aria-label="Litsaber — go to homepage"
             >
               <Image
-                src="/images/global/litsaber-logo-white-cyan.png"
+                src={mediaUrl("global/litsaber-logo-white-cyan.png")}
                 alt="Litsaber"
                 width={140}
                 height={40}
@@ -211,7 +212,7 @@ function TikTokIcon() {
 function VisaBadge() {
   return (
     <Image
-      src="/images/global/Visa.png"
+      src={mediaUrl("global/Visa.png")}
       alt="Visa"
       width={50}
       height={34}
@@ -223,7 +224,7 @@ function VisaBadge() {
 function MastercardBadge() {
   return (
     <Image
-      src="/images/global/Mastercard.png"
+      src={mediaUrl("global/Mastercard.png")}
       alt="Mastercard"
       width={50}
       height={34}
@@ -235,7 +236,7 @@ function MastercardBadge() {
 function AmexBadge() {
   return (
     <Image
-      src="/images/global/Amex.png"
+      src={mediaUrl("global/Amex.png")}
       alt="American Express"
       width={50}
       height={34}
@@ -247,7 +248,7 @@ function AmexBadge() {
 function DiscoverBadge() {
   return (
     <Image
-      src="/images/global/Discover.png"
+      src={mediaUrl("global/Discover.png")}
       alt="Discover"
       width={50}
       height={34}

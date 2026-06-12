@@ -10,6 +10,7 @@ import { useCartUIActions } from "@/lib/ui/store";
 import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
+import { mediaUrl } from "@/lib/media";
 
 const MORE_MIN = 3;
 const MORE_MAX = MAX_QTY;
@@ -63,7 +64,7 @@ export default function BundleAndCTA({
       title: "Litsaber OG — Silver",
       variantTitle: "Silver",
       price: 59.99,
-      image: "/images/product/litsaber-lights-off.jpg",
+      image: mediaUrl("product/litsaber-lights-off.jpg"),
     });
     track(EVENTS.cart_add_to_cart, {
       variant: "silver",
@@ -84,7 +85,7 @@ export default function BundleAndCTA({
         title: "Litsaber OG — Silver",
         variantTitle: "Silver",
         price: 59.99,
-        image: "/images/product/litsaber-lights-off.jpg",
+        image: mediaUrl("product/litsaber-lights-off.jpg"),
       });
       // Read post-mutation values directly from store — hook closures would be stale
       const freshState = useCartStore.getState();

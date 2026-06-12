@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
+import { mediaUrl } from "@/lib/media";
 import {
   HEADLINE_DESKTOP,
   SUBHEADLINE,
@@ -31,8 +32,8 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
       {/* Lifestyle band — 700px, transparent navbar overlaps the top 90px */}
       <div className="absolute inset-x-0 top-0 z-0 overflow-hidden" style={{ height: "700px" }}>
         <ResponsiveImage
-          mobileSrc="/images/home/hero-lifestyle-mobile.jpg"
-          desktopSrc="/images/home/hero-lifestyle.jpg"
+          mobileSrc={mediaUrl("home/hero-lifestyle-mobile.jpg")}
+          desktopSrc={mediaUrl("home/hero-lifestyle.jpg")}
           alt="Litsaber lighting up a festival crowd at night"
           breakpoint="1024px"
           priority
@@ -54,7 +55,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         style={{ top: "634px", height: "879px" }}
       >
         <Image
-          src="/images/home/litsaber-hero-image.png"
+          src={mediaUrl("home/litsaber-hero-image.png")}
           alt="Litsaber device floating against a starfield"
           fill
           priority

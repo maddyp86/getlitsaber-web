@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { mediaUrl } from "@/lib/media";
 import {
   HERO_HEADLINE_LINE1,
   HERO_HEADLINE_LINE2,
@@ -25,7 +26,7 @@ export default function WholesaleHero() {
     >
       {/* Background image — backmost layer */}
       <Image
-        src="/images/wholesale/smoke-background.jpg"
+        src={mediaUrl("wholesale/smoke-background.jpg")}
         alt=""
         fill
         priority

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
+import { mediaUrl } from "@/lib/media";
 
 interface ThreeModesDesktopProps {
   className?: string;
@@ -111,14 +112,14 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         >
           {reducedMotion ? (
             <img
-              src="/images/home/litsaber-lightstreaks.jpg"
+              src={mediaUrl("home/litsaber-lightstreaks.jpg")}
               alt=""
               aria-hidden="true"
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           ) : (
             <motion.img
-              src="/images/home/litsaber-lightstreaks.jpg"
+              src={mediaUrl("home/litsaber-lightstreaks.jpg")}
               alt=""
               aria-hidden="true"
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
@@ -195,7 +196,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           style={{ width: "540px", height: "451px", top: 0, right: "0px", opacity: 0.6, zIndex: 1 }}
           aria-hidden="true"
         >
-          <Image src="/images/home/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+          <Image src={mediaUrl("home/geometric-shape.png")} alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
         </div>
 
         {/* Geometric shape #2 — bottom-left */}
@@ -204,7 +205,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           style={{ width: "540px", height: "451px", top: "1000px", left: -50, opacity: 0.4, zIndex: 1 }}
           aria-hidden="true"
         >
-          <Image src="/images/home/geometric-shape.png" alt="" fill sizes="378px" style={{ objectFit: "contain" }} />
+          <Image src={mediaUrl("home/geometric-shape.png")} alt="" fill sizes="378px" style={{ objectFit: "contain" }} />
         </div>
 
         {/* Inner content — centered column, aligned to site container */}

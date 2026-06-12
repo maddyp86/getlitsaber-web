@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Fragment } from "react";
+import { mediaUrl } from "@/lib/media";
 import {
   VOLTAGE_EYEBROW,
   VOLTAGE_HEADLINE_LINE1,
@@ -44,7 +45,7 @@ export default function VoltageSection() {
             style={{ width: "540px", height: "451px", top: 0, left: -100, opacity: 0.4 }}
             aria-hidden="true"
           >
-            <Image src="/images/tech/geometric-shape.png" alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
+            <Image src={mediaUrl("tech/geometric-shape.png")} alt="" fill sizes="540px" style={{ objectFit: "contain" }} />
           </div>
 
           {/* Ambient gradient — sits behind content, anchored to section bottom */}

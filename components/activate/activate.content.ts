@@ -1,3 +1,5 @@
+import { mediaUrl } from "@/lib/media";
+
 // ─── Hero ────────────────────────────────────────────────────────────────────
 
 export const ACTIVATE_HERO = {
@@ -6,9 +8,9 @@ export const ACTIVATE_HERO = {
   headingAccent: "HERE",
   sub: "Let's get you set up. Videos and step-by-step instructions for every function below. Most people are up and running in under a minute.",
   meta: [
-    { label: "POWER ON",    icon: "/images/icons/power.png"  },
-    { label: "SELECT MODE", icon: "/images/icons/select.png" },
-    { label: "FIRST DRAW",  icon: "/images/icons/cloud.png"  },
+    { label: "POWER ON",    icon: mediaUrl("icons/power.png")  },
+    { label: "SELECT MODE", icon: mediaUrl("icons/select.png") },
+    { label: "FIRST DRAW",  icon: mediaUrl("icons/cloud.png")  },
   ],
 } as const;
 

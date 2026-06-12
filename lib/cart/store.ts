@@ -18,6 +18,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import posthog from "posthog-js";
 import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
+import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
 import type { ShopifyCart, ShopifyCartResponse } from "@/lib/shopify/types";
 
@@ -136,7 +137,7 @@ function transformShopifyCart(cart: ShopifyCart): CartLine[] {
     variantTitle: "Silver",
     price: 59.99,
     lineTotal: parseFloat(node.cost.totalAmount.amount),
-    image: "/images/product/litsaber-lights-off.jpg",
+    image: mediaUrl("product/litsaber-lights-off.jpg"),
   }));
 }
 

@@ -1,3 +1,5 @@
+import { mediaUrl } from "@/lib/media";
+
 export const PRODUCT_TITLE = "LITSABER OG";
 export const PRODUCT_SUBTITLE = "The Interactive 510 Battery";
 
@@ -23,14 +25,14 @@ export const STYLE_OPTIONS: StyleOption[] = [
     id: "silver",
     label: "SILVER",
     status: "In Stock. Ships in 24 hrs",
-    swatchSrc: "/images/product/litsaber-silver.svg",
+    swatchSrc: mediaUrl("product/litsaber-silver.svg"),
     swatchAlt: "Silver Litsaber",
   },
   {
     id: "gold",
     label: "GOLD",
     status: "Coming Soon",
-    swatchSrc: "/images/product/litsaber-gold.svg",
+    swatchSrc: mediaUrl("product/litsaber-gold.svg"),
     swatchAlt: "Gold Litsaber",
   },
 ];
@@ -77,13 +79,13 @@ export interface GalleryImage {
 
 export const GALLERY_IMAGES: GalleryImage[] = [
   {
-    src: "/images/product/litsaber-lights-off.jpg",
+    src: mediaUrl("product/litsaber-lights-off.jpg"),
     alt: "Litsaber OG packaging",
   },
-  { src: "/images/product/litsaber-green.jpg", alt: "Litsaber in green" },
-  { src: "/images/product/litsaber-blue.jpg", alt: "Litsaber in blue" },
-  { src: "/images/product/litsaber-white.jpg", alt: "Litsaber in white" },
-  { src: "/images/product/litsaber-red.jpg", alt: "Litsaber in red" },
+  { src: mediaUrl("product/litsaber-green.jpg"), alt: "Litsaber in green" },
+  { src: mediaUrl("product/litsaber-blue.jpg"), alt: "Litsaber in blue" },
+  { src: mediaUrl("product/litsaber-white.jpg"), alt: "Litsaber in white" },
+  { src: mediaUrl("product/litsaber-red.jpg"), alt: "Litsaber in red" },
 ];
 
 export const DESCRIPTION_HEADING = "The vape battery that gets people talking.";

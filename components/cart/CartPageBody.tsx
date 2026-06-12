@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { mediaUrl } from "@/lib/media";
 import {
   useCartItems,
   useItemCount,
@@ -351,7 +352,7 @@ export default function CartPageBody() {
 
                             >
                               <Image
-                                src="/images/icons/close-svgrepo-com 1.svg"
+                                src={mediaUrl("icons/close-svgrepo-com 1.svg")}
                                 alt="Remove"
                                 width={16}
                                 height={16}

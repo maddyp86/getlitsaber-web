@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { STYLE_OPTIONS } from "./productdisplay.content";
+import { mediaUrl } from "@/lib/media";
 
 interface StyleSelectorProps {
   activeStyle: "silver" | "gold";
@@ -51,7 +52,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
               {option.id === activeStyle && (
                 <div className="w-[20px] h-[20px] rounded-full bg-accent-cyan flex items-center justify-center">
                   <Image
-                    src="/images/icons/checkmark-icon.svg"
+                    src={mediaUrl("icons/checkmark-icon.svg")}
                     alt="Selected"
                     width={14}
                     height={14}

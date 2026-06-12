@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAgeGateActions } from "@/lib/ui/store";
+import { mediaUrl } from "@/lib/media";
 import { track, EVENTS } from "@/lib/analytics/events";
 
 const COOKIE_NAME =
@@ -108,7 +109,7 @@ export default function AgeGateModal() {
         {/* Logo */}
         <div className="mb-md">
           <Image
-            src="/images/global/litsaber-blue.png"
+            src={mediaUrl("global/litsaber-blue.png")}
             alt="Litsaber"
             width={125}
             height={40}
