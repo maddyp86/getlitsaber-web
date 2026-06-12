@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
@@ -14,6 +14,8 @@ import {
   CTA_SECONDARY,
   TAGLINE,
   SPEC_PILLS,
+  HERO_VIDEO_SRC,
+  HERO_POSTER_SRC,
 } from "./hero.content";
 
 interface HeroMobileProps {
@@ -22,6 +24,7 @@ interface HeroMobileProps {
 
 export default function HeroMobile({ className }: HeroMobileProps) {
   const variants = useRevealVariants();
+  const prefersReduced = useReducedMotion();
 
   return (
     <section
@@ -137,13 +140,27 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           animate="visible"
           custom={0.35}
         >
-          <Image
-            src={mediaUrl("home/litsaber-hero-image.png")}
-            alt="Litsaber device"
-            fill
-
-            className="object-contain object-center"
-          />
+          {prefersReduced ? (
+            <Image
+              src={HERO_POSTER_SRC}
+              alt="Litsaber device"
+              fill
+              className="object-contain object-center"
+            />
+          ) : (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={HERO_POSTER_SRC}
+              aria-hidden={true}
+              className="absolute inset-0 w-full h-full object-contain object-center"
+            >
+              <source src={HERO_VIDEO_SRC} type="video/mp4" />
+            </video>
+          )}
         </motion.div>
 
         <motion.div

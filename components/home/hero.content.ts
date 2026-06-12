@@ -1,3 +1,8 @@
+import { mediaUrl, videoUrl } from "@/lib/media";
+
+export const HERO_VIDEO_SRC = videoUrl("home/litsaber-hero.mp4");
+export const HERO_POSTER_SRC = mediaUrl("home/litsaber-hero-image.png");
+
 export const HEADLINE_DESKTOP = {
   white: "HIGHLIGHT",
   cyan: "THE NIGHT",

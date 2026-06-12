@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
@@ -14,6 +14,8 @@ import {
   CTA_SECONDARY,
   TAGLINE,
   SPEC_PILLS,
+  HERO_VIDEO_SRC,
+  HERO_POSTER_SRC,
 } from "./hero.content";
 
 interface HeroDesktopProps {
@@ -22,6 +24,7 @@ interface HeroDesktopProps {
 
 export default function HeroDesktop({ className }: HeroDesktopProps) {
   const variants = useRevealVariants();
+  const prefersReduced = useReducedMotion();
 
   return (
     <section
@@ -54,14 +57,29 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         className="absolute inset-x-0 z-0 overflow-hidden"
         style={{ top: "634px", height: "879px" }}
       >
-        <Image
-          src={mediaUrl("home/litsaber-hero-image.png")}
-          alt="Litsaber device floating against a starfield"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+        {prefersReduced ? (
+          <Image
+            src={HERO_POSTER_SRC}
+            alt="Litsaber device floating against a starfield"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        ) : (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={HERO_POSTER_SRC}
+            aria-hidden={true}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          >
+            <source src={HERO_VIDEO_SRC} type="video/mp4" />
+          </video>
+        )}
 
         {/* Tagline + spec pills anchored within the starfield zone */}
       <div
