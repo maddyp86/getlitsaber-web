@@ -17,25 +17,25 @@ export const VENUE_CARDS: VenueCard[] = [
   {
     label: "FESTIVALS",
     // TODO: replace placeholder
-    imageSrc: mediaUrl("home/mode-placeholder.jpg"),
+    imageSrc: mediaUrl("home/festival.jpg"),
     alt: "Festival crowd with Litsaber lights",
   },
   {
     label: "RAVES",
     // TODO: replace placeholder
-    imageSrc: mediaUrl("home/mode-placeholder.jpg"),
+    imageSrc: mediaUrl("home/rave.jpg"),
     alt: "Rave dance floor lit by Litsaber devices",
   },
   {
     label: "HOUSE PARTIES",
     // TODO: replace placeholder
-    imageSrc: mediaUrl("home/mode-placeholder.jpg"),
+    imageSrc: mediaUrl("home/house_party.jpg"),
     alt: "House party with Litsaber glow",
   },
   {
     label: "EVENTS",
     // TODO: replace placeholder
-    imageSrc: mediaUrl("home/mode-placeholder.jpg"),
+    imageSrc: mediaUrl("home/events.jpg"),
     alt: "Live event venue with Litsaber crowd",
   },
 ];
