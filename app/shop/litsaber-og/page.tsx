@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getProductByHandle } from "@/lib/shopify/queries";
-import ProductDisplay from "@/components/product/ProductDisplay/ProductDisplay";
-import PdpViewTracker from "@/components/pdp/PdpViewTracker";
+import ProductDisplay from "@/components/product/ProductDisplay";
+import PdpViewTracker from "@/components/product/PdpViewTracker";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
 {/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
 

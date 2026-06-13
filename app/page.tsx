@@ -9,7 +9,7 @@ import WhereItLives from "@/components/home/WhereItLives/WhereItLives";
 import CommonQuestions from "@/components/home/CommonQuestions/CommonQuestions";
 import WhatWereShipping from "@/components/home/WhatWereShipping/WhatWereShipping";
 import EditionsSection from "@/components/home/Editions/EditionsSection";
-import ProductDisplay from "@/components/product/ProductDisplay/ProductDisplay";
+import ProductDisplay from "@/components/product/ProductDisplay";
 import HomepageEngagementTracker from "@/components/home/HomepageEngagementTracker";
 import WhatCustomersSay from "@/components/home/WhatCustomersSay/WhatCustomersSay";
 import WholesaleCTABanner from "@/components/home/WholesaleCTABanner/WholesaleCTABanner";
