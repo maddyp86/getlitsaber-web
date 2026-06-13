@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     template: "%s | Litsaber",
   },
   icons: {
-    icon: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon.jpg",
-    shortcut: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon.jpg",
-    apple: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon.jpg",
+    icon: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon.png",
+    shortcut: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon.png",
+    apple: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon.png",
   },
   description:
     "A glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.",
