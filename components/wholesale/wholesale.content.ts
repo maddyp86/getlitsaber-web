@@ -7,7 +7,7 @@ import { mediaUrl } from "@/lib/media";
 export const HERO_IMAGE_SRC = "";
 export const HERO_IMAGE_ALT = "Litsaber OG glowing at a festival crowd";
 
-export const SELLS_ITSELF_VIDEO_SRC = "videos/wholesale/wholesale_demand.mp4";
+export const SELLS_ITSELF_VIDEO_SRC = videoUrl("wholesale/wholesale_demand.mp4");
 export const SELLS_ITSELF_IMAGE_SRC = "";
 export const SELLS_ITSELF_IMAGE_ALT = "Litsaber held at a show, LED lights cycling";
 
