@@ -10,7 +10,6 @@ import {
   SELLS_ITSELF_IMAGE_ALT,
 } from "./wholesale.content";
 import Image from "next/image";
-import { videoUrl } from "@/lib/media";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
