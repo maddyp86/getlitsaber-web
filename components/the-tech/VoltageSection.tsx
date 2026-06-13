@@ -58,55 +58,6 @@ export default function VoltageSection() {
             }}
           />
 
-          {/* Right on desktop, TOP on mobile: headline + copy */}
-          <div className="order-1 lg:order-2 flex flex-col gap-5 justify-center lg:flex-1">
-            <motion.p
-              className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {VOLTAGE_EYEBROW}
-            </motion.p>
-
-            <motion.h2
-              className="font-display font-bold uppercase leading-[normal] max-w-[350px] lg:max-w-[810px]"
-              style={{ fontSize: "clamp(45px, 5vw, 75px)" }}
-              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
-            >
-              <span
-                className="text-white"
-                style={{ textShadow: "0 0 50px rgba(0, 229, 255, 0.75)" }}
-              >
-                {VOLTAGE_HEADLINE_LINE1}
-              </span>
-              <br />
-              <span
-                className="text-accent-cyan"
-                style={{ textShadow: "0 0 50px rgba(0,229,255,0.5)" }}
-              >
-                {VOLTAGE_HEADLINE_ACCENT}
-              </span>
-            </motion.h2>
-
-            {VOLTAGE_BODY.map((block, i) => (
-              <motion.p
-                key={i}
-                className="font-body text-body-sm lg:text-body text-text-secondary leading-relaxed"
-                initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.65, delay: 0.2, ease: EASE }}
-              >
-                {renderEmphasis(block)}
-              </motion.p>
-            ))}
-          </div>
-
           {/* Left on desktop, BELOW copy on mobile: voltage table + device image card */}
           <motion.div
             className="order-2 lg:order-1 mt-10 lg:mt-0 flex flex-col  lg:flex-1 items-center w-full max-w-[600px] rounded-xl border border-[#32205A] bg-[#0A0515]"
@@ -160,8 +111,7 @@ export default function VoltageSection() {
               )}
             </div>
           </motion.div>
-
- {/* Right on desktop, TOP on mobile: headline + copy */}
+  {/* Right on desktop, TOP on mobile: headline + copy */}
           <div className="order-1 lg:order-2 flex flex-col gap-5 justify-center lg:flex-1">
             <motion.p
               className="font-label text-eyebrow tracking-[0.2em] uppercase text-accent-cyan"
