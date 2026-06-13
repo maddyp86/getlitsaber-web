@@ -80,8 +80,8 @@ export interface GalleryImage {
 }
 
 export const GALLERY_IMAGES: GalleryImage[] = [
+    { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-2.jpg", alt: "Litsaber OG packaging detail" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-1.jpg", alt: "Litsaber OG packaging" },
-  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-2.jpg", alt: "Litsaber OG packaging detail" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-multi-handheld.jpg", alt: "Multiple Litsabers handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-hand-turqoise.jpg", alt: "Litsaber in turquoise handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-rwb-handheld.jpg", alt: "Litsaber in red, white and blue handheld" },
