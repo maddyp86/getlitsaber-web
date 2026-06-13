@@ -1,5 +1,7 @@
 import { mediaUrl } from "@/lib/media";
 
+// mediaUrl still used for swatch SVGs below
+
 export const PRODUCT_TITLE = "LITSABER OG";
 export const PRODUCT_SUBTITLE = "The Interactive 510 Battery";
 
@@ -78,14 +80,30 @@ export interface GalleryImage {
 }
 
 export const GALLERY_IMAGES: GalleryImage[] = [
-  {
-    src: mediaUrl("product/litsaber-lights-off.jpg"),
-    alt: "Litsaber OG packaging",
-  },
-  { src: mediaUrl("product/litsaber-green.jpg"), alt: "Litsaber in green" },
-  { src: mediaUrl("product/litsaber-blue.jpg"), alt: "Litsaber in blue" },
-  { src: mediaUrl("product/litsaber-white.jpg"), alt: "Litsaber in white" },
-  { src: mediaUrl("product/litsaber-red.jpg"), alt: "Litsaber in red" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-1.jpg", alt: "Litsaber OG packaging" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-2.jpg", alt: "Litsaber OG packaging detail" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-multi-handheld.jpg", alt: "Multiple Litsabers handheld" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-hand-turqoise.jpg", alt: "Litsaber in turquoise handheld" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-rwb-handheld.jpg", alt: "Litsaber in red, white and blue handheld" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-yellow-handheld.jpg", alt: "Litsaber in yellow handheld" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-fuschia-handheld.jpg", alt: "Litsaber in fuchsia handheld" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber_blue_packaging.jpg", alt: "Litsaber blue packaging" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-red.jpg", alt: "Litsaber in red" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-green.jpg", alt: "Litsaber in green" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-blue.jpg", alt: "Litsaber in blue" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-fuschia.jpg", alt: "Litsaber in fuchsia" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-orange.jpg", alt: "Litsaber in orange" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-rwb.jpg", alt: "Litsaber in red, white and blue" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-turqoise.jpg", alt: "Litsaber in turquoise" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-white.jpg", alt: "Litsaber in white" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-yellow.jpg", alt: "Litsaber in yellow" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber_multi.jpg", alt: "Multiple Litsabers" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-usbc.jpg", alt: "Litsaber USB-C charging port" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-ubsc-2.jpg", alt: "Litsaber USB-C charging detail" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-thread.jpg", alt: "Litsaber 510-thread connection" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-button.jpg", alt: "Litsaber button detail" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-button-3.jpg", alt: "Litsaber button close-up" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-button-2.jpg", alt: "Litsaber button side view" },
 ];
 
 export const DESCRIPTION_HEADING = "The vape battery that gets people talking.";
