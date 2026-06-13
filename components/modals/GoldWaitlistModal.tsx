@@ -20,7 +20,7 @@ export default function GoldWaitlistModal() {
       <WaitlistForm
         list="gold"
         source={WAITLIST_SOURCES.editionsGold}
-        eyebrow="/ GOLD EDITION — DROPS IN JUNE"
+        eyebrow="/ GOLD EDITION — DROPS SUMMER 2026"
         headline="BE FIRST TO THE GOLD DROP"
         copy="1,000 units. Festival-season colorway. Waitlist members get 24-hour early access and first pick before it opens to everyone."
         buttonLabel="JOIN THE WAITLIST"
