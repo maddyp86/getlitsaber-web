@@ -51,7 +51,7 @@ export default function ActivateQuickStart() {
         </motion.p>
 
         {/* Two-column: steps left, media right */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
+         <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-16">
 
           {/* Steps column */}
           <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
@@ -109,9 +109,9 @@ export default function ActivateQuickStart() {
             </motion.div>
           </div>
 
-         {/* Media column — stacks below on mobile */}
+       {/* Media column — stacks below on mobile, matches steps height on desktop */}
           <motion.div
-            className="mt-12 flex flex-col lg:mt-0 lg:w-[45%]"
+            className="mt-12 flex flex-col lg:mt-0 lg:w-[45%] lg:self-stretch"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -125,7 +125,7 @@ export default function ActivateQuickStart() {
                 controls
                 loop
                 playsInline
-                className="w-full rounded-card object-contain"
+                className="w-full h-full max-h-full rounded-card object-cover object-center lg:flex-1"
               />
             ) : (
               <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
