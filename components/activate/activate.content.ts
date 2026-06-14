@@ -126,7 +126,7 @@ export const ACTIVATE_MODES = {
         "Single-click the button to cycle through colors: \n green \u2192 red \u2192 blue \u2192 yellow \u2192 orange \u2192 light blue \u2192 pink \u2192 white \u2192 rainbow \u2192 red/white/blue.",
       ],
       callout: null as string | null,
-      media: { src: null as string | null, poster: null as string | null, alt: "Glowstick Mode demo" },
+      media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/glowstick_mode.mp4" as string | null, poster: null as string | null, alt: "Glowstick Mode demo" },
     },
     litsaber: {
       name: "Litsaber Mode",
