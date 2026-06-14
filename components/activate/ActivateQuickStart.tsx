@@ -108,32 +108,25 @@ export default function ActivateQuickStart() {
               </p>
             </motion.div>
           </div>
-
-         {/* Media column — stacks below on mobile */}
-          <motion.div
-            className="mt-12 flex flex-col lg:mt-0 lg:w-[45%]"
-            initial={prefersReduced ? false : { opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
-          >
-            {media.src ? (
-              <video
-                src={media.src}
-                poster={media.poster ?? undefined}
-                aria-label={media.alt}
-                controls
-                loop
-                playsInline
-                className="w-full rounded-card object-contain"
-              />
-            ) : (
-              <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
-                <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
-                  media pending hosting
-                </span>
-              </div>
-            )}
+       {/* Media column — right on desktop, below text on mobile */}
+            <div  className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+              {mode.media.src ? (
+                <video
+                  src={mode.media.src}
+                  poster={mode.media.poster ?? undefined}
+                  aria-label={mode.media.alt}
+                  controls
+                  loop
+                  playsInline
+                  className="w-full rounded-card object-cover"
+                />
+              ) : (
+                   <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+                  <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
+                    media pending hosting
+                  </span>
+                </div>
+              )}
           </motion.div>
 
         </div>
