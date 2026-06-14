@@ -111,7 +111,7 @@ export default function ActivateQuickStart() {
 
          {/* Media column — stacks below on mobile */}
           <motion.div
-            className="mt-12 flex min-h-[400px] lg:min-h-[400px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            className="mt-12 flex flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -125,7 +125,7 @@ export default function ActivateQuickStart() {
                 controls
                 loop
                 playsInline
-                className="w-full flex-1 rounded-card object-cover"
+                className="w-full rounded-card object-contain max-h-[480px]"
               />
             ) : (
               <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
