@@ -199,8 +199,7 @@ export default function ActivateModes() {
                   src={mode.media.src}
                   poster={mode.media.poster ?? undefined}
                   aria-label={mode.media.alt}
-                  muted
-                  autoPlay
+                  controls
                   loop
                   playsInline
                   className="w-full rounded-card object-cover"
