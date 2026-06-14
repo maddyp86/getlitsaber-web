@@ -122,8 +122,7 @@ export default function ActivateQuickStart() {
                 src={media.src}
                 poster={media.poster ?? undefined}
                 aria-label={media.alt}
-                muted
-                autoPlay
+                controls
                 loop
                 playsInline
                 className="w-full flex-1 rounded-card object-cover"
