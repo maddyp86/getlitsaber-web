@@ -163,8 +163,7 @@ export default function ActivateCharging() {
                 src={media.src}
                 poster={media.poster ?? undefined}
                 aria-label={media.alt}
-                muted
-                autoPlay
+                controls
                 loop
                 playsInline
                 className="w-full rounded-card object-cover"
