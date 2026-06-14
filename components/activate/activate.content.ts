@@ -155,7 +155,7 @@ export const ACTIVATE_MODES = {
       ],
       callout:
         "Stealth always exits to Glowstick Mode. If you want Litsaber Mode after exiting, hold the button for 2 more seconds.",
-      media: { src: null as string | null, poster: null as string | null, alt: "Stealth Mode demo" },
+      media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/litsaber_mode.mp4" as string | null, poster: null as string | null, alt: "Stealth Mode demo" },
     },
   },
 } as const;
