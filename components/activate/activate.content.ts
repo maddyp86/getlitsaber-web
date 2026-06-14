@@ -72,7 +72,7 @@ export const ACTIVATE_QUICKSTART = {
   callout:
     "That's it. Everything below is optional: modes, voltage tuning, troubleshooting. Use what you need.",
   media: {
-    src: null as string | null,
+    src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/overview_video.mp4" as string | null,
     poster: null as string | null,
     alt: "Litsaber power-on demo",
   },
@@ -126,7 +126,7 @@ export const ACTIVATE_MODES = {
         "Single-click the button to cycle through colors: \n green \u2192 red \u2192 blue \u2192 yellow \u2192 orange \u2192 light blue \u2192 pink \u2192 white \u2192 rainbow \u2192 red/white/blue.",
       ],
       callout: null as string | null,
-      media: { src: null as string | null, poster: null as string | null, alt: "Glowstick Mode demo" },
+      media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/glowstick_mode.mp4" as string | null, poster: null as string | null, alt: "Glowstick Mode demo" },
     },
     litsaber: {
       name: "Litsaber Mode",
@@ -141,7 +141,7 @@ export const ACTIVATE_MODES = {
       ],
       callout:
         "If your device strobes through the rainbow at max hold, that\u2019s not a malfunction. It\u2019s Blinker Mode, the safety floor turned into a hidden light show. Stop pulling and the device resets after a few seconds.",
-      media: { src: null as string | null, poster: null as string | null, alt: "Litsaber Mode demo" },
+      media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/litsaber_mode.mp4" as string | null, poster: null as string | null, alt: "Litsaber Mode demo" },
     },
     stealth: {
       name: "Stealth Mode",
@@ -155,7 +155,7 @@ export const ACTIVATE_MODES = {
       ],
       callout:
         "Stealth always exits to Glowstick Mode. If you want Litsaber Mode after exiting, hold the button for 2 more seconds.",
-      media: { src: null as string | null, poster: null as string | null, alt: "Stealth Mode demo" },
+      media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/stealth_mode.mp4" as string | null, poster: null as string | null, alt: "Stealth Mode demo" },
     },
   },
 } as const;
@@ -179,7 +179,7 @@ points: [
     body: "Pre-heat is most useful in cold weather, with high-viscosity oils, or with carts that haven\u2019t been used in a while.",
   },
   media: {
-    src: null as string | null,
+    src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/pre-heat-1.mp4" as string | null,
     poster: null as string | null,
     alt: "Pre-heat cycle demo",
   },
@@ -262,7 +262,7 @@ export const ACTIVATE_BATTERY = {
     lead: "Five segments, 20% each.",
     body: "When you check the battery, the segments light up to show your current level. Red is on the button side, green is at the tip.",
   },
-  media: { src: null, poster: null, alt: "Check battery level demo" },
+  media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/check_battery.mp4", poster: null, alt: "Check battery level demo" },
 }
 
 // ─── Charging section ─────────────────────────────────────────────────────────

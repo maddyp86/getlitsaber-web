@@ -74,7 +74,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
             type="button"
             onClick={() => onThumbClick(i)}
             aria-label={img.alt}
-            className={`relative shrink-0 w-[72px] h-[72px] rounded-md overflow-hidden cursor-pointer transition-all duration-200 ${
+            className={`relative shrink-0 w-[60px] h-[60px] rounded-md overflow-hidden cursor-pointer transition-all duration-200 ${
               i === activeThumb
                 ? "border-2 border-accent-cyan brightness-100"
                 : "brightness-50 hover:brightness-100"

@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     default: "Litsaber — The Interactive 510 Battery",
     template: "%s | Litsaber",
   },
+  icons: {
+    icon: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon-white.png",
+    shortcut: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon-white.png",
+    apple: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon-white.png",
+  },
   description:
     "A glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.",
   metadataBase: new URL(
