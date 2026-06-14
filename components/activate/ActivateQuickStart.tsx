@@ -109,26 +109,28 @@ export default function ActivateQuickStart() {
             </motion.div>
           </div>
 
-       {/* Media column — stacks below on mobile, matches steps height on desktop */}
+            {/* Media column — stacks below on mobile, matches steps height on desktop */}
           <motion.div
-            className="mt-12 flex flex-col lg:mt-0 lg:w-[45%] lg:self-stretch"
+            className="mt-12 lg:mt-0 lg:w-[45%] lg:self-stretch"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
           >
             {media.src ? (
-              <video
-                src={media.src}
-                poster={media.poster ?? undefined}
-                aria-label={media.alt}
-                controls
-                loop
-                playsInline
-                className="w-full h-full max-h-full rounded-card object-cover object-center lg:flex-1"
-              />
+              <div className="relative w-full aspect-video lg:h-full lg:aspect-auto rounded-card overflow-hidden">
+                <video
+                  src={media.src}
+                  poster={media.poster ?? undefined}
+                  aria-label={media.alt}
+                  controls
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                />
+              </div>
             ) : (
-              <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+              <div className="w-full h-full min-h-[300px] rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
