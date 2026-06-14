@@ -140,8 +140,7 @@ className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380p
                 src={media.src}
                 poster={media.poster ?? undefined}
                 aria-label={media.alt}
-                muted
-                autoPlay
+                controls
                 loop
                 playsInline
                 className="w-full rounded-card object-cover"
