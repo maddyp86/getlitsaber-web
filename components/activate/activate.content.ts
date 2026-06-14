@@ -141,7 +141,7 @@ export const ACTIVATE_MODES = {
       ],
       callout:
         "If your device strobes through the rainbow at max hold, that\u2019s not a malfunction. It\u2019s Blinker Mode, the safety floor turned into a hidden light show. Stop pulling and the device resets after a few seconds.",
-      media: { src: null as string | null, poster: null as string | null, alt: "Litsaber Mode demo" },
+      media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/litsaber_mode.mp4" as string | null, poster: null as string | null, alt: "Litsaber Mode demo" },
     },
     stealth: {
       name: "Stealth Mode",
