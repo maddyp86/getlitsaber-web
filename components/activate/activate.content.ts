@@ -262,7 +262,7 @@ export const ACTIVATE_BATTERY = {
     lead: "Five segments, 20% each.",
     body: "When you check the battery, the segments light up to show your current level. Red is on the button side, green is at the tip.",
   },
-  media: { src: null, poster: null, alt: "Check battery level demo" },
+  media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/check_battery.mp4", poster: null, alt: "Check battery level demo" },
 }
 
 // ─── Charging section ─────────────────────────────────────────────────────────
