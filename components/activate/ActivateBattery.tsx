@@ -94,20 +94,22 @@ export default function ActivateBattery() {
 
           </div>
 
-          {/* Media column */}
-          <div className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+                   {/* Media column */}
+          <div className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
             {media.src ? (
-              <video
-                src={media.src}
-                poster={media.poster ?? undefined}
-                aria-label={media.alt}
-                controls
-                loop
-                playsInline
-                className="w-full rounded-card object-cover"
-              />
+              <div className="relative w-full aspect-[9/16] lg:aspect-[3/4] rounded-card overflow-hidden">
+                <video
+                  src={media.src}
+                  poster={media.poster ?? undefined}
+                  aria-label={media.alt}
+                  controls
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                />
+              </div>
             ) : (
-              <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+              <div className="w-full aspect-[9/16] lg:aspect-[3/4] rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
