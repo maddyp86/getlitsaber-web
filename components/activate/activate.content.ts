@@ -179,7 +179,7 @@ points: [
     body: "Pre-heat is most useful in cold weather, with high-viscosity oils, or with carts that haven\u2019t been used in a while.",
   },
   media: {
-    src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/pre-heat.mp4" as string | null,
+    src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/pre-heat-1.mp4" as string | null,
     poster: null as string | null,
     alt: "Pre-heat cycle demo",
   },
