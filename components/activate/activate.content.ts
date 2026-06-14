@@ -72,7 +72,7 @@ export const ACTIVATE_QUICKSTART = {
   callout:
     "That's it. Everything below is optional: modes, voltage tuning, troubleshooting. Use what you need.",
   media: {
-    src: null as string | null,
+    src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/overview_video.mp4" as string | null,
     poster: null as string | null,
     alt: "Litsaber power-on demo",
   },
