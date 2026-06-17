@@ -24,7 +24,11 @@ export default function ActivationTracker() {
     // Fire after delay to ensure PostHog is ready
     const timer = setTimeout(() => {
       console.log("[ActivationTracker] Firing device_activated");
-      console.log("[ActivationTracker] posthog.__loaded:", typeof window !== "undefined" ? (window as any).posthog?.__loaded : "undefined");
+
+      // Safely check PostHog loaded state
+      if (typeof window !== "undefined" && (window as Window & { posthog?: { __loaded?: boolean } }).posthog) {
+        console.log("[ActivationTracker] posthog.__loaded:", window.posthog?.__loaded);
+      }
 
       const utmSource = new URLSearchParams(window.location.search).get("utm_source");
       const activation_source = utmSource === "packaging" ? "packaging_qr" : "direct";
