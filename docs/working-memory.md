@@ -651,8 +651,6 @@ PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch.
 
 ---
 
-### Phase 6 — Production Agent (pending)
-
 ### Phase 6 — Production Agent (building, 2026-06-14 to 2026-06-16)
 
 **Goal:** A weekly n8n cron that reads PostHog, judges the business against stored targets using the Improvement Kata frame, writes a narrative report plus structured fields, stores both deterministically, and delivers. The agent *proposes* experiments, never *runs* them, and never writes its own numbers into storage.
@@ -783,6 +781,115 @@ Pending: Read Targets node + `litsaber_targets` table + Assemble scorecard addit
 | 65 | "Caught myself about to hardcode a 90-day target of 20 orders a week while sitting at zero real sales. A target with no basis poisons every grade after it. The fix was the kata discipline itself: you measure the current condition before you set the target condition. So the agent runs in establish-baseline mode with no numeric targets until real traffic gives it a floor to improve from, then targets get set as a defined delta over what was actually observed. Refusing to invent the number is the senior move, not a gap." | `pm-discipline`, `analytics-rigor` |
 | 66 | "Three tiles disagreed on the single most important number — orders. The funnel said zero, the promo pipeline said one, revenue said zero dollars. Rather than let the agent silently pick, I made revenue the commerce source of truth (zero dollars means zero orders) and told it to flag the promo discrepancy as a tracking artifact in prose. When sources conflict, name the canonical one and surface the conflict — don't average it away or let the model choose per run." | `analytics-rigor`, `integration-depth` |
 | 67 | "Verified the SQL-tile result shape against a real payload instead of trusting my own parser assumption. I'd written it to read nested result.results/result.columns; the dashboard endpoint actually returns result as row-arrays with columns as a sibling. One real paste corrected a guess that would have silently dropped both bounce and session-duration into an unparsed blob. The discipline that keeps paying off: pull the real artifact, don't reason about the shape from memory." | `integration-depth`, `analytics-rigor` |
+
+---
+
+### Pre-Phase-7 — Media migration to Vercel Blob + video wiring (2026-06-11) ✅ (Activate sweep pending)
+
+**Goal:** Get media off the GitHub `public/` folder and onto a CDN-decoupled
+single store before launch, then wire the first real videos (hero, ThreeModes,
+Activate). Governed by ADR-007.
+
+**The decision (ADR-007):** Vercel Blob as the SINGLE media store, images and
+video together. Driven by a stated operational constraint: one system, one
+workflow, no two-vendor split. Rejected Supabase Storage (second origin, violates
+ADR-006 one-system-per-job), Cloudflare Stream (best video delivery but two
+workflows), and Cloudinary (new vendor, more than the inventory justifies). Key
+reframe surfaced during the decision: `public/` on Vercel is ALREADY edge-CDN
+delivery and most images go through `next/image`, so this was never a performance
+rescue. It was decoupling assets from the repo and from deploys, and giving video
+a home, in one system.
+
+**Migration executed in four chunks (one commit each), `public/` kept as live
+rollback until the preview verified each step:**
+- **Chunk A:** `scripts/migrate-media.ts` uploaded all of `public/images/` to
+  Blob preserving pathnames. Sequential uploads, dotfile skip (`.DS_Store`),
+  one-year cache headers, `addRandomSuffix: false`. Script loads `.env.local`
+  itself (tsx does not auto-load it). `tsconfig.json` excludes `scripts` so the
+  app build does not type-check it.
+- **Chunk B:** `lib/media.ts` (`mediaUrl`/`videoUrl`, env-var base with local
+  fallback) created; `remotePatterns` Blob hostname added to `next.config.mjs`;
+  every `/images/` reference swept to `mediaUrl()`.
+- **Chunk C:** `public/images/` deleted (recoverable from git history).
+- **Chunk D:** hero, ThreeModes (3 clips), Activate clips uploaded under
+  `videos/`. Hero + ThreeModes wired; Activate sections in progress.
+
+**Blob store facts (banked):** `get-litsaber-blob`, store ID
+`store_0KU6ZB3BoVDlOwuq`, region SFO1, PUBLIC access. Base URL
+`https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com` (no trailing slash).
+
+**`NEXT_PUBLIC_MEDIA_BASE_URL` lives in THREE isolated environments** with no
+auto-sync: Vercel dashboard (Production + Preview + Development), local
+`.env.local`, AND Bolt's own env panel. Bolt's preview sandbox cannot read
+Vercel's vars, which is why media rendered blank in Bolt's preview until the var
+was added there too. The env-var pattern (vs hardcoding) means the value is a
+one-line change per environment; the cost is maintaining three copies.
+
+**Video standard locked (Blob is progressive download, NOT adaptive bitrate):**
+H.264 MP4 (never `.mov` — Chrome/Firefox reject it), 1080p max, 2 to 4 Mbps,
+AAC or no audio, `+faststart`, target under 15MB. The homepage hero arrived as a
+110.8MB file and must be compressed before it ships (an autoplay hero at that
+size is a broken hero on festival LTE).
+
+**Video element pattern locked:** every autoplay background/loop video carries
+all of `autoPlay muted loop playsInline preload="metadata"` (all four required
+for mobile-Safari autoplay), a `poster` fallback, `aria-hidden` when decorative,
+and a `prefers-reduced-motion` branch that renders the static poster instead.
+For sizing, a `<video>` with only a width balloons to its intrinsic height: the
+fix is a constrained-aspect wrapper (`relative` + `aspect-*`) with the video
+`absolute inset-0 w-full h-full object-cover`, so the video fills a defined box
+instead of driving its own height.
+
+**Components wired:** Hero device-render swapped from `<Image>` to autoplay video
+(poster = old placeholder image, reduced-motion = poster only). ThreeModes right
+panel + mobile cards swapped img to video, paths in `modes.content.ts` via
+`videoUrl()` (Litsaber/Pull, Glowstick, Stealth; the Build toggle keeps showing
+the Pull video until that clip exists — option A). Activate QuickStart, Modes,
+and Battery media columns fixed for the height-constraint bug.
+
+**Open (Activate media sweep):** the `<video> w-full object-cover` with no height
+bug exists in EVERY Activate media slot (nine sections). Fixed in QuickStart,
+Modes, Battery so far; remaining sections pending. Resolution: one sweep to apply
+the constrained-aspect-wrapper fix everywhere, THEN extract a shared
+`<ActivateMedia src poster alt />` primitive so the duplicated arrangement (which
+is how the bug reached nine files) becomes one component.
+
+**Considered and rejected: site-wide background music.** Browser autoplay
+policies block unmuted audio without a gesture (same policy that forces muted
+hero video), it competes with the product's own draw-reactive light moment and
+the demo-video audio, it reads as a dated amateur signal against the premium
+positioning, and it adds load with no upside. If audio is ever wanted, the
+on-brand version is an opt-in, off-by-default toggle tied to a specific moment,
+never autoplay. Atmosphere is carried by motion and light, which the site already
+does.
+
+**Feature flags (scoped, not yet built):** promo-popup toggle is a clean PostHog
+flag (delay-triggered, so no SSR-flash, no init-race) and the right first use,
+upgrading the existing `NEXT_PUBLIC_FEATURE_PROMO_POPUP` env flag to a no-redeploy
+dashboard toggle. Price A/B testing REJECTED as a flag: it is underpowered at
+current traffic (purchase-based tests need months per variant), it is a Shopify
+source-of-truth problem (a flag changes displayed price but checkout pulls real
+Shopify price, risking a bait-and-switch), and same-SKU price discrimination is a
+fairness/legal gray area. Find the price ceiling via sequential changes or
+offer-testing instead. Cleanest experiments at this traffic are high-contrast
+top-of-funnel changes (hero headline, CTA copy) measured on an engagement event
+that fires nearly every visit, not on the 0.1% that buy.
+
+**Recurring Bolt lesson (banked again):** Bolt reported the `next.config.mjs`
+edit as complete when it had NOT applied it. Caught by pulling the literal file
+and reading it. Same pattern as the working-memory false-done claims. The literal
+file contents are the only source of truth; the status report is intent.
+
+**Story beats captured**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 68 | "Pushed back on my own framing before building. The ask was 'get media off the repo onto a CDN for speed,' but the repo folder on Vercel already IS the CDN, and most images already optimize through next/image. So the migration wasn't a speed fix, it was decoupling assets from deploys and giving video a home in one store. Naming what a change actually buys you, instead of accepting the stated reason, is what kept us from adding a second vendor for a problem we didn't have." | `tool-choice`, `pm-discipline` |
+| 69 | "Honored a one-sentence constraint over the technically-best answer. Cloudflare Stream is the better video host on raw merits (adaptive bitrate, per-view pricing), but 'I don't want images and video living separately' is a real operational cost, and one store with a compression discipline beats two stores with perfect delivery. The right architecture is the one the operator will actually maintain." | `tool-choice`, `pm-discipline` |
+| 70 | "Migrated in copy-now, repoint-next, delete-last chunks with the old folder live as rollback at every step. Nothing user-facing moved until a preview deploy proved Blob was serving everything. The deletion of the old folder was the LAST commit, not the first, and even then it was one git command from recovery. Risky migrations get sequenced so every step has a working fallback behind it." | `integration-depth`, `pm-discipline` |
+| 71 | "The same env var had to live in three places that don't talk to each other: Vercel for deploys, local for dev, and the builder's sandbox for its preview. Media rendered blank in the preview not because the code was wrong but because the builder's environment is walled off from Vercel's secrets by design. The lesson is to map where a value is actually read before debugging why it's missing, three environments means three copies, and that wall is a security feature, not a bug." | `integration-depth`, `tool-choice` |
+| 72 | "A talking-head video ballooned past its column because a video with only a width takes its own intrinsic height. The fix wasn't a magic height value, it was a constrained-aspect wrapper with the video positioned absolutely inside it, so the box defines the size and the video fills it. Then I found the identical bug in every Activate media slot. A defect that appears in nine places is one duplicated component waiting to be extracted, not nine bugs to fix nine times." | `integration-depth`, `pm-discipline` |
+| 73 | "Said no to background music and no to price A/B testing in the same session, both for the same underlying reason: the obvious-feeling feature collides with a constraint the requester hadn't weighed. Music can't autoplay and fights the product; a price test is underpowered at this traffic and creates a Shopify dual-truth and a fairness problem. The job isn't to build what's asked, it's to surface the cost the ask didn't see and offer the version that actually works." | `pm-discipline`, `discovery` |
 
 ---
 
