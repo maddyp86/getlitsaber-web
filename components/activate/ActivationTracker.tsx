@@ -27,7 +27,7 @@ export default function ActivationTracker() {
 
       // Set flag after firing
       localStorage.setItem(ACTIVATED_FLAG, "1");
-    }, 100); // 100ms is enough for PostHog to init on warm loads
+    }, 100); // 100ms is enough for PostHog to init
 
     return () => clearTimeout(timer);
   }, []);
