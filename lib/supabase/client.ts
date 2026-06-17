@@ -15,6 +15,7 @@ export interface OrderRow {
   discount_amount: number;
   email: string | null;
   customer_name: string | null;
+  device_type: string | null;
   raw: Record<string, unknown> | null;
   created_at: string;
 }
