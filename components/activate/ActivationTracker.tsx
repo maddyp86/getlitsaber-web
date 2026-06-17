@@ -6,28 +6,40 @@ import { track, EVENTS } from "@/lib/analytics/events";
 const ACTIVATED_FLAG = "litsaber_activated";
 
 // Invisible client component — fires device_activated on first /activate page visit only.
-// Uses a small timeout to ensure PostHog is initialized, rather than relying on onFeatureFlags().
+// Uses a timeout to ensure PostHog is initialized, rather than relying on onFeatureFlags().
 // localStorage guard survives navigation; no useRef needed.
 export default function ActivationTracker() {
   useEffect(() => {
+    console.log("[ActivationTracker] useEffect mounted");
+
     // If already activated (flag is set), don't fire again
-    if (localStorage.getItem(ACTIVATED_FLAG) !== null) {
+    const flagValue = localStorage.getItem(ACTIVATED_FLAG);
+    console.log("[ActivationTracker] localStorage flag:", flagValue);
+
+    if (flagValue !== null) {
+      console.log("[ActivationTracker] Already activated, bailing early");
       return;
     }
 
-    // Fire after a small delay to ensure PostHog is ready
+    // Fire after delay to ensure PostHog is ready
     const timer = setTimeout(() => {
+      console.log("[ActivationTracker] Firing device_activated");
+      console.log("[ActivationTracker] posthog.__loaded:", typeof window !== "undefined" ? (window as any).posthog?.__loaded : "undefined");
+
       const utmSource = new URLSearchParams(window.location.search).get("utm_source");
       const activation_source = utmSource === "packaging" ? "packaging_qr" : "direct";
 
-      track(EVENTS.device_activated, { 
-        activation_source, 
-        is_first_activation: true 
+      console.log("[ActivationTracker] activation_source:", activation_source);
+      console.log("[ActivationTracker] is_first_activation: true");
+
+      track(EVENTS.device_activated, {
+        activation_source,
+        is_first_activation: true,
       });
 
-      // Set flag after firing
       localStorage.setItem(ACTIVATED_FLAG, "1");
-    }, 100); // 100ms is enough for PostHog to init
+      console.log("[ActivationTracker] Flag set, event fired");
+    }, 500); // 500ms to ensure PostHog init on cold loads
 
     return () => clearTimeout(timer);
   }, []);
