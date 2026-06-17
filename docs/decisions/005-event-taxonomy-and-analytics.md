@@ -201,6 +201,15 @@ are WIRED and verified.**
   — numbers, not formatted strings.
 - `has_promo_code` — boolean. `discount_code` — string.
 - `trigger`, `source`, `list`, `code`, `page_path`, `activation_source` — as above.
+- `device_type` on `purchase` — **(added 2026-06-17)** `Desktop` | `Mobile` |
+  `Tablet` | `unknown`. The server-side `purchase` event has no browser, so device
+  cannot be autocaptured on it (the webhook runs in a serverless function). It is
+  threaded through the cart-attribute pipe instead — captured client-side at
+  `cartCreate` and read back off the order. Full mechanism + limitation in ADR-006.
+  Note: `device_type` is captured at ADD-TO-CART, so it is "device where buying
+  intent formed," not literally "device at payment" — defensible and arguably more
+  useful, but state it that way in any analysis. NOT solved via a Shopify web pixel
+  (that would create a duplicate `purchase` event and fragment the identity stitch).
 - **Acquisition context as session/person properties — (added after the report):**
   `utm_source`, `utm_medium`, `utm_campaign`, `referrer`, `landing_path`. The
   report's 43.7% "Direct" is almost certainly UTM-stripped paid social (Meta
