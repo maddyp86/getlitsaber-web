@@ -17,6 +17,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import posthog from "posthog-js";
+import { detectDeviceType } from "@/lib/device";
 import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
@@ -216,8 +217,8 @@ export const useCartStore = create<CartStore>()(
               if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
               const storedDiscount = sessionStorage.getItem("litsaber_discount");
               if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
-              const deviceType = posthog.get_property("$device_type") as string | undefined;
-              if (deviceType) attributes.push({ key: "device_type", value: deviceType });
+              const deviceType = detectDeviceType();
+              attributes.push({ key: "device_type", value: deviceType });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
                 attributes,
