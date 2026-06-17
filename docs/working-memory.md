@@ -653,7 +653,136 @@ PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch.
 
 ### Phase 6 — Production Agent (pending)
 
-n8n cron → data gathering → Claude API with tool schema → structured report → Slack + email. Agent *proposes* tests, never *runs* them.
+### Phase 6 — Production Agent (building, 2026-06-14 to 2026-06-16)
+
+**Goal:** A weekly n8n cron that reads PostHog, judges the business against stored targets using the Improvement Kata frame, writes a narrative report plus structured fields, stores both deterministically, and delivers. The agent *proposes* experiments, never *runs* them, and never writes its own numbers into storage.
+
+**Governing principle (locked):** deterministic spine, agent as a single reasoning island. Anything that must happen every run, in order, idempotently, is a node. The agent only does the open-ended part: read numbers plus prior context, produce prose and proposals. Numbers in storage are always the parsed truth, never retyped by the model. This is the same trust discipline that runs through the whole build (Shopify is source of truth for money; the parser is source of truth for metrics).
+
+#### Phase 6.1 — Data layer (PostHog) ✅
+
+**Stale-knowledge corrections banked (Shopify, verified against current docs):**
+- Shopify custom-app flow changed 2026-01-01. The old admin "Develop apps > reveal `shpat_` token" path is LEGACY (pre-2026 apps only). Current path: Dev Dashboard > Create app > create a version (App URL defaults to `https://shopify.dev/apps/default-app-home`, which kills the redirect_uri error for non-embedded apps), set scopes, Release, Install.
+- New apps do NOT expose a copyable `shpat_` token. Internal automation uses the **client credentials grant**: POST `/admin/oauth/access_token` with `grant_type=client_credentials` + client_id + client_secret, returns a 24h access token. Fine for a weekly cron (mint fresh each run).
+
+**Shopify abandoned-checkout pull: DEAD on Basic plan (decision).** `abandonedCheckouts` requires Protected Customer Data (Level 2 PII) access, gated behind Grow plan or higher. Not worth upgrading. Both Shopify n8n nodes ("Shopify Token" + "Abandoned Checkouts") DISABLED (kept, not deleted, for if we ever land on Grow). Agent runs on PostHog alone. Only loss is dollar-value-at-risk + abandoned-cart contents; the I5 checkout-abandonment tile still gives the rate and count. Manual fallback: Shopify admin Orders > Abandoned checkouts.
+
+**PostHog read mechanism (decision).** Agent reads SAVED dashboard tiles via the dashboard endpoint, NOT the `/query` endpoint and NOT per-insight:
+`GET https://us.posthog.com/api/projects/445005/dashboards/{id}/?refresh=true`, Bearer personal key. This works with a personal API key; `/query` returns `403 personal API key access` even with `query:read` scope, AND PostHog's own docs warn `/query` is not a supported export mechanism for scheduled connectors and may break. So the spine never touches `/query`. Two dashboards read in parallel:
+- Conversion dashboard `1710621`
+- Web Analytics dashboard `1718411`
+
+**`/query` wall → MCP pivot (decision).** The agent's ad-hoc drill-down does NOT use raw `/query` (same wall). It uses the PostHog MCP server as a tool instead. Deterministic spine via dashboard endpoint; agentic investigation via MCP.
+
+**Parser (Code node, verified against real payloads).** One `parseDashboard(json, keyMap)` reads both HTTP nodes by reference and emits `{ posthog_insights, web_analytics }`. Branches on `insight.query.source.kind`:
+- `TrendsQuery` → `parseTrends`: series with label, value, `compare` ("current"/"previous"), `order` (disambiguates multi-series tiles, e.g. Top Pages order 0 = views, order 1 = visitors), byDay (zipped days+data with a length guard). Cleans `$$_posthog_breakdown_null_$$` → "Unknown".
+- `FunnelsQuery` → `parseFunnel`: groups of steps with count + overallConversion; handles flat and breakdown (array-of-arrays) shapes.
+- `HogQLQuery` → `parseSql(result, insight.columns)`: dashboard endpoint shape is `result` = array of row-arrays, `columns` = sibling array of names. Zips to named rows. (This shape was the key verification: it is NOT nested `result.results`/`result.columns`.)
+- KEY_BY_SHORT_ID maps short_ids → stable semantic keys so week-over-week survives insight renames. Unmapped short_ids fall back to the raw short_id.
+
+**Web vitals fix (banked).** The four vitals tiles were misconfigured as daily-average line graphs, so the table aggregate summed 7 daily averages and read ~7x inflated (LCP 4554ms). Rebuilt all four as single-value **p75** Number tiles (math "Property value 75th percentile" of the respective `$web_vitals_*_value`, no breakdown, Last 7 days). Now correct: p75 LCP ~1036ms, FCP ~746ms, INP ~40ms, CLS ~0.00004 (unitless, correctly tiny). short_ids preserved by editing in place (LCP `eBn71ObR`, CLS `SE7nl31z`, FCP `gIhhWsuT`, INP `xoq19nNV`).
+
+**Two-dashboard split (decision).** Conversion board stayed the 7-section conversion spine. New Web Analytics board (`1718411`) holds Overview / Pages / Audience / Performance. Sessions & Visitors (`KSPePe45`) is dual-placed (funnel denominator on conversion, traffic headline on web) — one insight, both boards, harmless duplication in the parsed output. The two channel tiles split by denominator: `XQQXrJ0N` "Sessions by channel" (traffic → web) vs `lo1DdHbT` "Acquisition Channel" = purchases by channel (outcome → conversion). Both dormant (all "Unknown"/"Direct") until UTM-tagged campaigns exist post-launch.
+
+**Bounce + duration (SQL tiles, decisions).** Bounce rate reads `$is_bounce` from the sessions table, which PostHog confirmed is the exact field the native Web Analytics tile uses — canonical, not approximate, no agent caveat needed. (Action still open: verify autocapture + `$pageleave`/`$autocapture` are firing at the web-analytics settings, or bounce silently inflates.) Avg session duration SQL returns only a display string ("32m 47s"), no raw seconds, so the agent quotes it and does no math on it; durations are test-inflated by tabs left open anyway.
+
+**Template tiles swept (decision).** PostHog's 7 prebuilt template tiles were evaluated: Website Unique Users + Top Website Pages (Overall) are redundant with our purpose-built tiles; the 3 Organic-SEO/Google tiles are dormant pre-launch; Sessions Per User + Pages Per User are real engagement-depth metrics but `is_sample: true` and badly test-distorted (reload artifact reads as "engaged returning audience"). Kept Sessions/Pages Per User on the board but marked DORMANT in the parser map so the agent ignores them during calibration.
+
+#### Phase 6.2 — Storage layer (Supabase) ✅ table created, write node pending
+
+**Sheets vs Supabase (decision): Supabase.** A structured, machine-read weekly archive wants a queryable, schema-enforced store, not Sheets. New wiring (Supabase was not previously connected to this n8n instance), justified by: exact "most recent prior row" recall as a one-line SQL, durable jsonb that a stray edit can't corrupt, and a clean path to multi-week history later. The service-role key bypasses RLS, so for this private server-only table RLS can stay enabled with no policies (the warning is moot once the credential is the service key). Confirmed working with the service key.
+
+**Memory architecture (decision): two layers, one database, deterministic now.**
+- Deterministic week-over-week is the load-bearing layer: a Supabase row per week, exact `SELECT ... ORDER BY report_week DESC LIMIT 1`. A number must never come back through a similarity search.
+- Associative recall (pattern-matching over past narratives/hypotheses) is DEFERRED until ~8 to 12 real weekly reports exist. When built, it is pgvector IN THE SAME SUPABASE (not a separate vector DB), embedding the narrative + hypotheses, never the metric rows. Building it now would only embed test-traffic noise.
+
+**Report storage shape (decision): one combined JSON object per week, not individual insight rows and not two columns.** The row's job is point-in-time recall of a complete week retrieved as a unit, so `report_json` holds the whole parsed `{ posthog_insights, web_analytics }` with the two blocks namespaced inside. Individual-insight rows were rejected (30+ rows to reassemble, brittle schema across funnel/trends/sql shapes, no query we actually need). The narrative lives in `report_markdown`; the agent's full structured output lives in `report_data` (feeds the grading loop and the future embedding layer). A PDF mirror of the markdown is rendered and stored in Google Drive (DB row canonical, file is a browsable copy).
+
+**Table (created):**
+```sql
+create table litsaber_weekly_reports (
+  report_week     text primary key,        -- "2026-W25", zero-padded so text-sort = chrono-sort
+  report_json     jsonb not null,          -- deterministic parsed metrics, exact recall
+  report_markdown text not null,           -- agent narrative
+  report_data     jsonb,                   -- agent full structured output (grading + future embeds)
+  created_at      timestamptz default now()
+);
+```
+
+#### Phase 6.3 — Orchestration spine ✅ built, agent node + write/deliver pending
+
+**Topology correction (decision).** The Supabase read was initially wired as an agent TOOL; moved to a deterministic upstream node (last-week recall is the load-bearing input, it must run every time with the right key, not at the agent's discretion). Storage is a node AFTER the agent, never a tool. The agent's only tools are PostHog MCP and Supabase MCP, both read-only.
+
+**Linear chain (not branch-and-merge):**
+```
+Schedule Trigger (weekly Mon 8am)
+  ├─ Get Conversion Insights ─┐
+  └─ Get Web Analytics ───────┤
+        Parse Insights  (one node, reads both HTTP nodes by reference)
+        Date Context    (Code: report_week, week window, ISO week math)
+        Read Targets     (Supabase Get Many, active=true, limit 1, Always Output Data)  [PENDING]
+        Read Last Week   (Supabase Get Many, report_week < this week, Always Output Data)
+        Assemble Context (Code: merges parsed + date + targets + last week + scorecard)
+        AI Agent         (Anthropic claude-sonnet-4-6; tools: PostHog MCP + Supabase MCP read-only; Memory empty)
+        Write This Week  (Supabase upsert report_week/report_json/report_markdown/report_data)  [PENDING]
+        Render PDF + mirror to Google Drive  [PENDING]
+        Deliver (Gmail / Slack)  [PENDING]
+```
+Date Context must precede Read Last Week and Read Targets because their filters key off `report_week`. Assemble reaches Date Context / Parse / Read Targets / Read Last Week by `$('Node Name')` reference rather than wiring all four in; only the last node in the chain feeds it directly. "Always Output Data" on the Supabase reads keeps the chain alive when a query returns zero rows (first run, empty targets), so Assemble's `is_baseline` / null-target handling fires cleanly.
+
+**Date Context (Code node, ISO 8601 week math).** Computes `report_week` ("2026-W25"), `week_start`/`week_end` (trailing 7 full days ending yesterday, UTC), zero-padded week number so plain text sorting equals chronological sorting. ISO week math is in code, not an n8n expression, because models and expressions are both unreliable at "what week is it."
+
+**Read Last Week bug banked.** Putting `{{ $json.report_week }}` (the VALUE) in the Order By field made Supabase treat "2026-W25" as a column name (`column ...2026-W25 does not exist`). Order By takes the literal column name `report_week` DESC; the value belongs only in the filter's keyValue. Empty table on first run is the designed baseline state, not an error.
+
+#### Phase 6.4 — Kata / targets frame (decision, building)
+
+**The reporting frame is the Improvement Kata:** business outcome → strategic initiative → target condition → current condition → weekly learning goal → prediction → grade-last-week's-prediction. This is stored deterministically and read in; the agent measures the current condition, judges toward/away, proposes the learning goal + prediction, and next week grades the prior prediction (via `report_data` on `last_week_report`).
+
+**Targets are set from the current condition, NOT from thin air (load-bearing decision).** Pre-launch at zero real sales, hardcoding "20 orders/week" is a fantasy target that poisons every grade. Correct kata sequence is current-condition-before-target-condition. So a two-phase plan:
+- **Phase one (first 2 to 4 weeks of real traffic):** NO numeric targets. `benchmarks` is empty / `target: null`. The agent runs in "establish current condition" mode, measures and reports, grades nothing against targets. Scorecard status is "calibration".
+- **Phase two (week 3 to 4 of real traffic, Matt in the loop):** set targets as a defined improvement over the MEASURED baseline (e.g. "lift session-to-purchase from the observed X% to Y% over 6 weeks"). Industry DTC ranges (1 to 3% session-to-purchase, 65 to 75% checkout abandonment) are sanity rails, not adopted blindly.
+
+**`watch` band defined.** Three-band status, not binary: for a down-is-good metric, at/below `target` = on_track, between target and `watch` = watch (amber, drifting, early warning), above `watch` = off_track. Gives the founders a "drifting" signal before something is fully broken.
+
+**Orders source reconciled (decision).** Orders has no single clean tile and three sources disagree: primary funnel terminal = 0 purchases, promo pipeline = 1 purchase event, revenue = $0. Revenue is the commerce source of truth: $0 revenue → 0 real orders, and the lone promo-pipeline purchase is a tracking artifact to flag, not a sale. Assemble forces `orders_per_week` to 0 when revenue is 0; the agent flags the discrepancy in prose. (A dedicated standalone `count(purchase)` "Orders" tile is the clean long-term source; not yet built.)
+
+**Report structure (decision): strictly top-down, executive → granular.**
+1. Executive Snapshot (verdict sentence + vital-few table: orders, revenue, activations, sessions, visitors, bounce, checkout abandonment, each this wk / last wk / delta / status)
+2. Strategic Frame (kata: outcome, initiative, current vs target, learning goal, prediction, grade of last week's prediction)
+3. Scorecard (every benchmarked metric vs target + status)
+4. Traffic & Audience
+5. Conversion Funnel
+6. Buying Behavior
+7. Promo & Capture
+8. Revenue & North Star
+9. Performance (web vitals, one line)
+10. Proposed Experiments (hypothesis / metric / rationale)
+11. Data Caveats
+
+**Tile-to-section mapping + treatment flags banked** (LIVE = report it, DORMANT = one line or omit, ARTIFACT = name as arithmetic quirk, DEDUP = appears twice, use one). All 38 tiles assigned. Dropped entirely in calibration: `web_sessions_per_user`, `web_pages_per_user` (sample + distorted), `BJicdCFs` (duplicate of `web_unique_visitors`). Week-over-week comes from two sources: a tile's own `compare` field (sessions + visitors, every week) and `last_week_report` (everything else, once a prior week exists); where neither, the agent says "no prior week."
+
+**Agent node config (decision).** Chat Model: Anthropic `claude-sonnet-4-6`, temp 0.4, max tokens 4000. Memory: empty (n8n agent Memory is a chat buffer, irrelevant to a stateless weekly batch; week-over-week memory is the Supabase row, not chat memory). Tools: PostHog MCP (explain an anomaly the context doesn't answer) + Supabase MCP (multi-week history beyond last week), both read-only, neither used during calibration. Structured Output Parser attached. House style enforced in prompt: no em-dashes, ranges as "X to Y", $59.99 never $60, never "light show", lifestyle-accessory framing.
+
+**Output schema (decision):** `report_markdown`, `executive_summary` (the field that gets embedded later), `verdict` (enum toward_goal / away_from_goal / establishing_baseline), `key_findings[]`, `scorecard_assessment[]` (status + note, NO retyped numbers — numbers stay in the stored deterministic scorecard), `weekly_learning_goal`, `expectation`, `prediction_grade` (nullable), `proposed_experiments[]` (hypothesis / metric / rationale). `weekly_learning_goal` + `expectation` are first-class fields because next week's grading reads them.
+
+**Calibration reality (in the agent prompt).** All current numbers are test traffic under a ~7-visitor / ~24-session weekly ceiling (Matt's own reloads) until ~2 weeks past Phase 7 cutover. Known artifacts the agent must name, not report as findings: checkout abandonment 100% (1 checkout, 0 purchases), cart abandonment 0%, 30-min+ session duration, funnel dropping to 0 after product_viewed, channel all-Unknown (no UTMs), geography 1 to 2 countries. The agent self-frames early reports as calibration when `is_baseline` is true.
+
+**Security action still standing:** rotate the PostHog `phx_` personal key and the Shopify `shpss_` client secret (both were pasted in plaintext during the build session).
+
+#### Phase 6 — what's done vs pending
+
+Done: PostHog data layer (both dashboards, parser verified across trends/funnel/sql), web-vitals p75 rebuild, Supabase table created + service-key access, the orchestration spine through Assemble (Parse → Date Context → Read Last Week → Assemble all producing the combined context with `is_baseline`/`last_week_report`).
+
+Pending: Read Targets node + `litsaber_targets` table + Assemble scorecard additions (next, see plan); the AI Agent node wiring + prompt + schema; Write This Week upsert (incl. `report_data`); PDF render + Drive mirror; Gmail/Slack delivery; first end-to-end run; the deferred pgvector associative layer (post-launch).
+
+**Story beats captured (Phase 6)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 64 | "Built the weekly analyst as a deterministic spine with the model as one reasoning island, not an agent that orchestrates everything. Fetch, read last week, write this week, render, deliver are all nodes that run unconditionally and in order. The model only writes prose and proposes tests. The rule that fell out of it: the agent never decides whether to save and never types a number into storage. Numbers are the parser's truth; the model owns judgment. An agent that 'usually' generates the report is worse than a pipeline that always does." | `agent-loop`, `pm-discipline` |
+| 65 | "Caught myself about to hardcode a 90-day target of 20 orders a week while sitting at zero real sales. A target with no basis poisons every grade after it. The fix was the kata discipline itself: you measure the current condition before you set the target condition. So the agent runs in establish-baseline mode with no numeric targets until real traffic gives it a floor to improve from, then targets get set as a defined delta over what was actually observed. Refusing to invent the number is the senior move, not a gap." | `pm-discipline`, `analytics-rigor` |
+| 66 | "Three tiles disagreed on the single most important number — orders. The funnel said zero, the promo pipeline said one, revenue said zero dollars. Rather than let the agent silently pick, I made revenue the commerce source of truth (zero dollars means zero orders) and told it to flag the promo discrepancy as a tracking artifact in prose. When sources conflict, name the canonical one and surface the conflict — don't average it away or let the model choose per run." | `analytics-rigor`, `integration-depth` |
+| 67 | "Verified the SQL-tile result shape against a real payload instead of trusting my own parser assumption. I'd written it to read nested result.results/result.columns; the dashboard endpoint actually returns result as row-arrays with columns as a sibling. One real paste corrected a guess that would have silently dropped both bounce and session-duration into an unparsed blob. The discipline that keeps paying off: pull the real artifact, don't reason about the shape from memory." | `integration-depth`, `analytics-rigor` |
 
 ---
 
