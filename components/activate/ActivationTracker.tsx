@@ -16,18 +16,20 @@ export default function ActivationTracker() {
     }
 
     // Fire after a small delay to ensure PostHog is ready
-    const timer = setTimeout(() => {
-      const utmSource = new URLSearchParams(window.location.search).get("utm_source");
-      const activation_source = utmSource === "packaging" ? "packaging_qr" : "direct";
+const timer = setTimeout(() => {
+  console.log("[ActivationTracker] Firing device_activated");
+  console.log("[ActivationTracker] posthog.__loaded:", posthog.__loaded);
+  
+  const utmSource = new URLSearchParams(window.location.search).get("utm_source");
+  const activation_source = utmSource === "packaging" ? "packaging_qr" : "direct";
 
-      track(EVENTS.device_activated, { 
-        activation_source, 
-        is_first_activation: true 
-      });
+  track(EVENTS.device_activated, { 
+    activation_source, 
+    is_first_activation: true 
+  });
 
-      // Set flag after firing
-      localStorage.setItem(ACTIVATED_FLAG, "1");
-    }, 100); // 100ms is enough for PostHog to init
+  localStorage.setItem(ACTIVATED_FLAG, "1");
+}, 100);
 
     return () => clearTimeout(timer);
   }, []);
