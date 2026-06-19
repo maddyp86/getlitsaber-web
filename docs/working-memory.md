@@ -649,6 +649,97 @@ caught real bugs in 4a and 4b before any code was written.
 
 PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
+### PostHog identity — identify-on-email fixes channel attribution (2026-06-18) (planned, Bolt plan approved, not yet shipped)
+
+**Trigger:** The "Acquisition Channel" tile (`lo1DdHbT`, purchases by channel)
+returns all "Unknown." Question raised: the purchase event is a webhook, so it
+never carries channel metadata — how do we get channel onto it?
+
+**Diagnosis (run live via PostHog MCP, not reasoned from memory):**
+- Channel type is derived at FIRST TOUCH from referrer/UTM, captured client-side
+  by posthog-js. The purchase event is a `posthog-node` webhook event
+  (`$is_server: true`), no referrer/UTM, so it structurally cannot carry an
+  event-level channel. Correct approach is to read channel off the PERSON, not the
+  event.
+- First hypothesis (webhook `distinct_id` stitch broken) was DISPROVEN by the data.
+  Real purchase persons carry full browser histories on the SAME person as their
+  `posthog-node` purchase (one test person: 759 pageviews + device_activated +
+  checkout_started + 5 purchases). The `posthog_distinct_id` cart attribute is
+  being read and matched correctly. Only the #9999 / `order_...` order was an
+  orphan (webhook fallback distinct_id, no browser session — a manual/admin order).
+- REAL ROOT CAUSE: posthog-js runs in `person_profiles: 'identified_only'`, set
+  implicitly by `defaults: "2026-01-30"` in `app/providers.tsx`, and `identify()`
+  is never called (0 `$identify` events; 0 of 9 persons identified; zero stored
+  `$initial_*` properties project-wide). In identified_only mode anonymous persons
+  never get first-touch attribution persisted, so `$virt_initial_channel_type` can
+  only ever resolve to "Unknown" — for everyone.
+- CORRECTS the earlier note that the channel tiles read Unknown only "until
+  UTM-tagged campaigns exist post-launch." UTMs are necessary but NOT sufficient:
+  without identify, even a UTM-tagged visit resolves to an anonymous,
+  property-less person. Two blockers, not one.
+
+**Decision (locked): identify on email, NOT `person_profiles: 'always'`.**
+- Rationale: keeps top-of-funnel anonymous (anonymous events up to 4x cheaper than
+  identified), only upgrades a person once they are a real lead, and aligns the
+  PostHog person identity with the HubSpot contact identity on email — the exact
+  seam ADR-006 runs on.
+- Tradeoff accepted: forward-looking only (the existing 5 purchases stay Unknown);
+  resolves channel only for buyers who hand over an email on-domain.
+
+**Privacy guard (load-bearing):** `posthog_distinct_id` is appended to
+`checkoutUrl`, so it must NOT become the email after identify (PII in a URL leaks
+to server logs, the Referer header, and browser history). cartCreate snapshots
+`$device_id` (stable anon id, never flips to email) instead of `get_distinct_id()`.
+PostHog's identify-merge resolves the server purchase onto the identified person, so
+channel still lands with NO PII in the URL. No email ever reaches a URL or a log.
+
+**Implementation (planned):**
+- NEW `lib/analytics/identify.ts`: `identifyByEmail(email)` (normalizes
+  trim+lowercase, guards `__loaded`, calls `posthog.identify(email, { email })`)
+  and `getCartAnalyticsId()` (returns `$device_id`; null if unavailable or contains
+  "@"; caller writes NO attribute on null and never falls back to the email).
+- `identifyByEmail` called at promo email submit (immediately before the
+  `promo_email_submitted` track) and conditionally at `checkout_started` if an
+  email is already in hand. Three checkout sites: CartDrawer + CartPageBody (x2).
+- NEW sessionStorage key `litsaber_email` (normalized; sessionStorage NOT
+  localStorage, so it clears on tab close — better posture for stored PII and the
+  shared-device/festival-kiosk case). Written in `WaitlistForm` onSuccess;
+  `onSuccess` widened from `() => void` to `(email: string) => void`
+  (backward-compatible for callers that ignore the arg).
+- `lib/cart/store.ts` cartCreate: `posthog_distinct_id` attribute built from
+  `getCartAnalyticsId()`, written only when non-null; `get_distinct_id()` removed
+  from this path.
+- Webhook handler UNTOUCHED — it still echoes whatever distinct_id the cart
+  carries, and `$device_id` is a valid distinct_id for the person.
+- `app/providers.tsx` untouched; `person_profiles` stays on its current default.
+
+**Coverage boundary + escalation:** email-capturing buyers resolve to a real
+channel; no-email buyers and orphan/admin orders stay Unknown. Full coverage would
+require `person_profiles: 'always'`, at identified-event pricing on the whole
+pageview firehose — rejected for now.
+
+**Verification (post-deploy):** incognito entry with a UTM
+(`/?utm_source=tiktok&utm_medium=social`) → promo submit → add to cart → test
+order. Confirm: dev log shows a UUID-shaped `phId` (not an email), the generated
+`checkoutUrl` contains no "@", and the purchase row resolves to the email person
+with a populated `$initial_utm_source` and a single matching `person_id`. Final
+confirmation: the existing Trends breakdown shows the order under a real channel,
+not Unknown.
+
+**Possible ADR:** the identity model (when and how we promote anonymous to
+identified, plus the device-id-in-cart-attribute rule) is a candidate for a short
+ADR sibling to ADR-006.
+
+**Recurring Bolt lesson (re-applied):** plan-review-as-PR-review caught two issues
+before code — a garbled "is the posthog import still needed" note in the store edit
+(made it a verify-then-act, not a guess) and the sessionStorage key needing a
+namespaced, normalized, session-scoped spec.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 74 | "The obvious cause was wrong, and only pulling the real data showed it. Everything pointed at the purchase webhook — no channel on the event, must be a broken distinct_id. I queried PostHog instead of trusting the theory and found the stitch was fine: the server purchases were landing on the right browser persons, full histories and all. The real cause was one rung up — the SDK's identified_only default plus an identify() call we never made, so no person ever had attribution to read. Channel was never an event problem; it was an identity problem. Query the artifact before you fix the thing you assume is broken." | `analytics-rigor`, `integration-depth` |
+| 75 | "The fix that made channel work also tried to leak the customer's email into the checkout URL. Keying the cart attribute on the live distinct_id would have worked perfectly and pushed a plaintext email into server logs, the Referer header, and browser history the moment identify ran. Caught it and kept the email out by keying the attribute on the stable device id and letting PostHog's merge resolve the purchase onto the identified person on the backend. The metric still lands; no PII touches a URL. The privacy-safe path and the working path were the same path, but only because someone asked where the value ends up." | `pm-discipline`, `integration-depth` |
+
 ---
 
 ### Phase 6 — Production Agent (building, 2026-06-14 to 2026-06-16)
