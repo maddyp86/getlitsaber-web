@@ -735,6 +735,17 @@ before code — a garbled "is the posthog import still needed" note in the store
 (made it a verify-then-act, not a guess) and the sessionStorage key needing a
 namespaced, normalized, session-scoped spec.
 
+**Verified end-to-end on preview (2026-06-19):** Order #1014 / `40CEEZUL8`.
+purchase event (posthog-node webhook) sent with the device-id distinct_id
+`019ede1c-...` resolved onto the identified person (email
+matthewtyler1986@gmail.com) and returned channel = Direct, not Unknown. cartCreate
+payload confirmed `posthog_distinct_id` = the $device_id UUID with no email; no PII
+in the cart attribute or checkout URL. Confirms identify-merge resolves a
+server-side purchase onto the email person. Direct (not campaign) because this run
+was a no-UTM entry; tiktok/Organic-Social path not yet exercised live but mechanism
+is identical. Coverage boundary (no-email buyer stays Unknown) and WaitlistForm
+signature regression (Test 5) not yet run.
+
 | # | Beat | Tag |
 |---|------|-----|
 | 74 | "The obvious cause was wrong, and only pulling the real data showed it. Everything pointed at the purchase webhook — no channel on the event, must be a broken distinct_id. I queried PostHog instead of trusting the theory and found the stitch was fine: the server purchases were landing on the right browser persons, full histories and all. The real cause was one rung up — the SDK's identified_only default plus an identify() call we never made, so no person ever had attribution to read. Channel was never an event problem; it was an identity problem. Query the artifact before you fix the thing you assume is broken." | `analytics-rigor`, `integration-depth` |
