@@ -16,8 +16,8 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import posthog from "posthog-js";
 import { detectDeviceType } from "@/lib/device";
+import { getCartAnalyticsId } from "@/lib/analytics/identify";
 import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
@@ -212,7 +212,10 @@ export const useCartStore = create<CartStore>()(
             set({ pendingCartCreate: createPromise });
 
             try {
-              const phId = posthog.get_distinct_id();
+              const phId = getCartAnalyticsId();
+              if (process.env.NODE_ENV !== "production") {
+                console.log("[cart] posthog_distinct_id attr =", phId);
+              }
               const attributes: { key: string; value: string }[] = [];
               if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
               const storedDiscount = sessionStorage.getItem("litsaber_discount");

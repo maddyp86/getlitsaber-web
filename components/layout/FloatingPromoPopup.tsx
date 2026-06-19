@@ -6,6 +6,7 @@ import WaitlistForm from "@/components/forms/WaitlistForm";
 import { useToastActions } from "@/lib/toast/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { track, EVENTS } from "@/lib/analytics/events";
+import { identifyByEmail } from "@/lib/analytics/identify";
 
 export default function FloatingPromoPopup() {
   const { shouldShow, dismiss, markSubscribed } = usePromoPopup();
@@ -68,7 +69,8 @@ export default function FloatingPromoPopup() {
             copy="Drop your email. We'll send a code + early access to the next drop."
             buttonLabel="SEND MY CODE"
             cardless
-            onSuccess={() => {
+            onSuccess={(email) => {
+              identifyByEmail(email);
               markSubscribed();
               track(EVENTS.promo_email_submitted, { source: WAITLIST_SOURCES.promoPopup });
               addToast({ variant: "success", message: "Check your inbox \u2014 your code\u2019s on the way." });

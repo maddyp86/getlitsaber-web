@@ -46,7 +46,7 @@ interface WaitlistFormProps {
   /** Optional slash-prefixed eyebrow label above the headline (e.g. "/ GOLD EDITION") */
   eyebrow?: string;
   /** Called after a successful submission — parent handles close + toast */
-  onSuccess?: () => void;
+  onSuccess?: (email: string) => void;
   /** Called with the error message on API failure — parent handles toast */
   onError?: (message: string) => void;
   /** Strip the card border/background/padding — use when the parent is already a card */
@@ -103,7 +103,8 @@ export default function WaitlistForm({
 
       if (data.ok) {
         setState("idle");
-        onSuccess?.();
+        sessionStorage.setItem("litsaber_email", email.trim().toLowerCase());
+        onSuccess?.(email.trim().toLowerCase());
       } else {
         const msg = data.error ?? "Something went wrong. Please try again.";
         setErrorMsg(msg);
