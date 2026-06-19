@@ -13,6 +13,7 @@ import {
 import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
+import { identifyByEmail } from "@/lib/analytics/identify";
 
 export default function CartPageBody() {
   const items = useCartItems();
@@ -208,6 +209,8 @@ export default function CartPageBody() {
                   disabled={!checkoutUrl}
                   onClick={() => {
                     if (checkoutUrl) {
+                      const storedEmail = sessionStorage.getItem("litsaber_email");
+                      if (storedEmail) identifyByEmail(storedEmail);
                       track(EVENTS.checkout_started, {
                         cart_value: subtotal,
                         item_count: itemCount,
@@ -440,6 +443,8 @@ export default function CartPageBody() {
                     disabled={!checkoutUrl}
                     onClick={() => {
                     if (checkoutUrl) {
+                      const storedEmail = sessionStorage.getItem("litsaber_email");
+                      if (storedEmail) identifyByEmail(storedEmail);
                       track(EVENTS.checkout_started, {
                         cart_value: subtotal,
                         item_count: itemCount,
