@@ -454,35 +454,39 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
     }}
   >
     <AnimatePresence mode="wait">
-      {reducedMotion ? (
-        <motion.img
-          key={`mode-image-${activeMode}`}
-          src={MODES[activeMode].image}
-          alt={MODES[activeMode].title}
-          variants={IMAGE_FADE}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      ) : (
-        <motion.video
-          key={`mode-image-${activeMode}`}
-          src={MODES[activeMode].video}
-          poster={MODES[activeMode].image}
-          variants={IMAGE_FADE}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden={true}
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      )}
+      {(() => {
+        const mediaSrc = activeMode === 0 ? PULL_BUILD[activePullBuild] : MODES[activeMode];
+        const mediaKey = activeMode === 0 ? `mode-image-0-${activePullBuild}` : `mode-image-${activeMode}`;
+        return reducedMotion ? (
+          <motion.img
+            key={mediaKey}
+            src={mediaSrc.image}
+            alt={MODES[activeMode].title}
+            variants={IMAGE_FADE}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <motion.video
+            key={mediaKey}
+            src={mediaSrc.video}
+            poster={mediaSrc.image}
+            variants={IMAGE_FADE}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden={true}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        );
+      })()}
     </AnimatePresence>
   </div>
   </motion.div>

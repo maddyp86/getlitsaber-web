@@ -93,6 +93,13 @@ export async function POST(req: Request): Promise<Response> {
     console.warn("[webhook/orders] no posthog_distinct_id on order, using fallback", orderId);
   }
 
+  const email = (order.email || "").trim().toLowerCase();
+  const canIdentify =
+    !!stitchedId &&
+    !stitchedId.startsWith("order_") &&
+    !stitchedId.includes("@") &&
+    !!email;
+
   const deviceType =
     order.note_attributes?.find((a) => a.name === "device_type")?.value?.trim() || "unknown";
 
@@ -130,6 +137,9 @@ export async function POST(req: Request): Promise<Response> {
   if (posthogToken) {
     const posthog = new PostHog(posthogToken, { host: posthogHost });
     try {
+      if (canIdentify) {
+        posthog.identify({ distinctId: stitchedId, properties: { email } });
+      }
       posthog.capture({
         distinctId,
         event: "purchase",
