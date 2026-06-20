@@ -37,10 +37,14 @@ export const PULL_BUILD = [
     label: "THE PULL",
     description:
       "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath. Pull, and the device responds in real time.",
+    video: videoUrl("home/litsaber_mode.mp4"),
+    image: mediaUrl("home/litsaber_mode_poster.jpg"),
   },
   {
     label: "THE BUILD",
     description:
       "Every device has a max draw. Litsaber turns the cutoff into a rainbow strobe — our signature performance moment hidden inside the safety floor.",
+    video: videoUrl("home/litsaber-mode-build.mp4"),
+    image: mediaUrl("home/litsaber_mode_build_poster.jpg"),
   },
 ];
