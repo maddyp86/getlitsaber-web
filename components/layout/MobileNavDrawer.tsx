@@ -82,7 +82,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
         ].join(" ")}
       >
         {/* Drawer header */}
-        <div className="flex items-center justify-between px-container-mobile py-md border-b border-surface-tint-white">
+        <div className="flex items-center justify-between px-container-mobile h-navbar border-b border-surface-tint-white">
           <Link
             href="/"
             onClick={onClose}
