@@ -645,7 +645,7 @@ caught real bugs in 4a and 4b before any code was written.
 
 ---
 
-### Phase 5 — Observability Instrumentation (pending)
+### Phase 5 — Observability Instrumentation
 
 PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
@@ -746,10 +746,58 @@ was a no-UTM entry; tiktok/Organic-Social path not yet exercised live but mechan
 is identical. Coverage boundary (no-email buyer stays Unknown) and WaitlistForm
 signature regression (Test 5) not yet run.
 
+**Webhook server-side identify (2026-06-19) — building.** Decision to close the
+no-popup-purchase gap: the Shopify order webhook now also calls posthog-node
+identify so the buyer's email is associated and the purchasing device merges into
+the email person, not just the popup-submitter path. Triggered by a live boundary
+case, a purchase on a fresh device id (`2f415408`) did NOT merge with the identified
+email person because identify never ran in that session, and the email typed at
+Shopify's hosted checkout is off-origin and invisible to posthog-js. Confirmed the
+correct mental model: PostHog identity is forward-linking on the current device, not
+a retroactive lookup keyed on the email value; same email + different device + no
+identify = a separate person, every time. A purchase event merely CARRYING an email
+property does not trigger any merge; only an explicit identify does.
+
+Load-bearing design choices:
+- **identify with the DEVICE ID as distinctId, email as a property**
+  (`identify({ distinctId: deviceId, properties: { email } })`), NOT the email as
+  distinctId. Device-id-as-distinctId merges the device's browsing session into the
+  email person; email-as-distinctId would create a parallel email-keyed person and
+  merge nothing. Mirrors the client identify, which merges the current anon id into
+  the email person.
+- **posthog-node signature differs from posthog-js:** server is
+  `identify({ distinctId, properties })`, client is positional `identify(email,
+  props)`. Copying the client shape server-side would pass email as distinctId, the
+  exact wrong identifier. Verify against the installed version.
+- **Guard: only identify when the cart attribute is a real device id** (non-empty,
+  not an `order_` fallback, no "@"). Identifying with an `order_` id or stray value
+  merges junk into the email person PERMANENTLY and can chain-merge unrelated
+  persons. Orphan/admin orders skip identify and stay anonymous (correct).
+- **Normalize email trim().toLowerCase()** to match the client identify key so the
+  two never fork.
+- **Flush before return:** posthog-node sends async; a serverless webhook can freeze
+  before the batch flushes, silently dropping identify AND capture. `await
+  posthog.shutdown()` (or version flush() if the client is reused) before responding.
+  Same class as the client-side mount-race silent drop.
+
+**Complementary, not a substitute, for person_profiles:'always'.** Server identify
+fixes email association and cross-session/cross-device unification. It does NOT
+guarantee a resolved channel: a device that was never profiled under identified_only
+has no stored `$initial_*`, so it can merge and still read Unknown. Plan: ship the
+webhook identify, measure how many merged purchases still read Unknown on real
+traffic, then decide on `'always'` from numbers rather than pre-emptively.
+
+**Candidate ADR (sibling to ADR-006):** server-side identity promotion, the
+device-id-as-distinctId rule, and the orphan-order skip guard. Server-side person
+merging has irreversible failure modes (the guard is the whole safety story), so
+this is decision-worthy rather than a quiet webhook edit.
+
 | # | Beat | Tag |
 |---|------|-----|
 | 74 | "The obvious cause was wrong, and only pulling the real data showed it. Everything pointed at the purchase webhook — no channel on the event, must be a broken distinct_id. I queried PostHog instead of trusting the theory and found the stitch was fine: the server purchases were landing on the right browser persons, full histories and all. The real cause was one rung up — the SDK's identified_only default plus an identify() call we never made, so no person ever had attribution to read. Channel was never an event problem; it was an identity problem. Query the artifact before you fix the thing you assume is broken." | `analytics-rigor`, `integration-depth` |
 | 75 | "The fix that made channel work also tried to leak the customer's email into the checkout URL. Keying the cart attribute on the live distinct_id would have worked perfectly and pushed a plaintext email into server logs, the Referer header, and browser history the moment identify ran. Caught it and kept the email out by keying the attribute on the stable device id and letting PostHog's merge resolve the purchase onto the identified person on the backend. The metric still lands; no PII touches a URL. The privacy-safe path and the working path were the same path, but only because someone asked where the value ends up." | `pm-discipline`, `integration-depth` |
+| 76 | "A purchase didn't recognize a customer who'd bought before under the same email, and the instinct was 'PostHog should know this email.' It doesn't work that way, and naming why was the whole lesson: identity is a forward link from the device that's live when identify runs, not a lookup keyed on the email string. Same email on a new device that never identified is a stranger. The email typed at Shopify's hosted checkout is on Shopify's origin, invisible to our SDK, so it can never trigger a merge. Recognition across devices requires identify to fire on each device, full stop." | `analytics-rigor`, `integration-depth` |
+| 77 | "Extending identify into the order webhook is the right fix, but the dangerous version is one keystroke away. The server signature takes the identifier as distinctId, and if you pass the email there you fork the person instead of merging the device; if you pass an admin order's order_ fallback you permanently weld junk onto a real customer. So the design is device-id-as-distinctId, email-as-property, and a hard guard that only fires on a real device id. Server-side identity merges are irreversible, which is exactly why this one gets a guard list and an ADR, not a quiet commit." | `pm-discipline`, `integration-depth` |
 
 ---
 
