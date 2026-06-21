@@ -139,7 +139,7 @@ function transformShopifyCart(cart: ShopifyCart): CartLine[] {
     variantTitle: "Silver",
     price: 59.99,
     lineTotal: parseFloat(node.cost.totalAmount.amount),
-    image: mediaUrl("product/litsaber-lights-off.jpg"),
+    image: mediaUrl("product/litsaber-packaging-1.jpg"),
   }));
 }
 
