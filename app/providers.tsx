@@ -15,6 +15,12 @@ export default function PostHogProvider({
     posthog.init(token, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
       defaults: "2026-01-30",
+      capture_exceptions: {
+        capture_unhandled_errors: true,
+        capture_unhandled_rejections: true,
+        capture_console_errors: false,
+      },
+      capture_dead_clicks: true,
     });
   }, []);
 
