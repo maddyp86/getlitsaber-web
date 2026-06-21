@@ -103,17 +103,6 @@ export async function POST(req: Request): Promise<Response> {
   const deviceType =
     order.note_attributes?.find((a) => a.name === "device_type")?.value?.trim() || "unknown";
 
-  const channelType =
-    order.note_attributes?.find((a) => a.name === "channel_type")?.value?.trim() || "unknown";
-  const utmSource =
-    order.note_attributes?.find((a) => a.name === "utm_source")?.value?.trim() || "";
-  const utmMedium =
-    order.note_attributes?.find((a) => a.name === "utm_medium")?.value?.trim() || "";
-  const utmCampaign =
-    order.note_attributes?.find((a) => a.name === "utm_campaign")?.value?.trim() || "";
-  const referrer =
-    order.note_attributes?.find((a) => a.name === "referrer")?.value?.trim() || "";
-
   // customer_name: join non-empty name parts; null if both absent.
   const nameParts = [order.customer?.first_name, order.customer?.last_name]
     .filter((p): p is string => Boolean(p?.trim()));
@@ -164,11 +153,6 @@ export async function POST(req: Request): Promise<Response> {
           discount_code: discountCode,
           discount_amount: discountAmount,
           device_type: deviceType,
-          channel_type: channelType,
-          utm_source: utmSource,
-          utm_medium: utmMedium,
-          utm_campaign: utmCampaign,
-          referrer: referrer,
         },
       });
       // Flush before the serverless function freezes — unflushed events are lost
