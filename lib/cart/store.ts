@@ -18,6 +18,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
+import { getChannelAttribution } from "@/lib/analytics/channel";
 import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
@@ -222,6 +223,12 @@ export const useCartStore = create<CartStore>()(
               if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
               const deviceType = detectDeviceType();
               attributes.push({ key: "device_type", value: deviceType });
+              const channel = getChannelAttribution();
+              attributes.push({ key: "channel_type", value: channel.channel_type });
+              attributes.push({ key: "utm_source", value: channel.utm_source });
+              attributes.push({ key: "utm_medium", value: channel.utm_medium });
+              attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
+              attributes.push({ key: "referrer", value: channel.referrer });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
                 attributes,
