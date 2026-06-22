@@ -792,12 +792,64 @@ device-id-as-distinctId rule, and the orphan-order skip guard. Server-side perso
 merging has irreversible failure modes (the guard is the whole safety story), so
 this is decision-worthy rather than a quiet webhook edit.
 
+**5.1a — device_type detection (lib/device.ts, new file)**
+- Replaced async PostHog dependency with synchronous `detectDeviceType()` using `navigator.userAgent`
+- Detects "Mobile" | "Tablet" | "Desktop" at cart creation time
+- Always unconditionally written to cart as third attribute (alongside `posthog_distinct_id` and `discount_code`)
+- Covers add-to-cart on first visit; returning visitors with persisted cartId get null (designed limitation)
+
+**5.1b — Supabase orders schema migration**
+- `ALTER TABLE orders ADD COLUMN device_type TEXT;` (manually run in Supabase SQL Editor)
+- Column was missing, causing silent upsert failures while webhook still returned 200 to Shopify
+- Existing orders stay null; new orders populate correctly
+
+**5.1c — ActivationTracker fixes (components/activate/ActivationTracker.tsx)**
+- **Bug 1 (firing on multiple page visits):** `useRef` guard resets on every component remount during navigation. Fixed: localStorage guard persists across navigation. Fires exactly once per device, never again.
+- **Bug 2 (10–20 min delay / not firing):** `trackWhenReady()` relied on `posthog.onFeatureFlags()` callback that was hanging. Fixed: simple `setTimeout(500)` + direct `track()` call, scope to localStorage-guarded condition.
+- **Build errors resolved:** removed `(window as any)` type assertions, removed unnecessary posthog loaded check.
+- **Result:** event fires ~500ms after `/activate` load on first visit with `is_first_activation: true`, never fires again. Console logs cleaned for production.
+
+**End-to-end verified:** device_type now captures correctly on new purchases (Desktop/Mobile, not null/unknown), orders sync to Supabase with the field populated, and device_activated fires and reaches PostHog.
+
+**Cart-attribute pipe now carries THREE values:**
+
+| Attribute | Source | Destination |
+|---|---|---|
+| `posthog_distinct_id` | `posthog.get_distinct_id()` (device UUID) | PostHog + Supabase |
+| `discount_code` | `sessionStorage.litsaber_discount` | Supabase |
+| `device_type` | `detectDeviceType()` (userAgent sync) | PostHog + Supabase |
+
+**Files changed:**
+- `lib/device.ts` — new file, `detectDeviceType()` → `"Mobile" | "Tablet" | "Desktop"` via userAgent
+- `lib/cart/store.ts` — removed `posthog.get_property("$device_type")`, replaced with `detectDeviceType()`, unconditional push
+- `app/api/webhooks/orders/route.ts` — reads `device_type` from `note_attributes`, adds to PostHog purchase event + Supabase insert
+- `lib/supabase/client.ts` — `device_type: string | null` added to `OrderRow`/`OrderInsert`
+- `components/activate/ActivationTracker.tsx` — refactored to localStorage guard + setTimeout + direct track
+
+**Story beat captured**
+
 | # | Beat | Tag |
 |---|------|-----|
 | 74 | "The obvious cause was wrong, and only pulling the real data showed it. Everything pointed at the purchase webhook — no channel on the event, must be a broken distinct_id. I queried PostHog instead of trusting the theory and found the stitch was fine: the server purchases were landing on the right browser persons, full histories and all. The real cause was one rung up — the SDK's identified_only default plus an identify() call we never made, so no person ever had attribution to read. Channel was never an event problem; it was an identity problem. Query the artifact before you fix the thing you assume is broken." | `analytics-rigor`, `integration-depth` |
 | 75 | "The fix that made channel work also tried to leak the customer's email into the checkout URL. Keying the cart attribute on the live distinct_id would have worked perfectly and pushed a plaintext email into server logs, the Referer header, and browser history the moment identify ran. Caught it and kept the email out by keying the attribute on the stable device id and letting PostHog's merge resolve the purchase onto the identified person on the backend. The metric still lands; no PII touches a URL. The privacy-safe path and the working path were the same path, but only because someone asked where the value ends up." | `pm-discipline`, `integration-depth` |
 | 76 | "A purchase didn't recognize a customer who'd bought before under the same email, and the instinct was 'PostHog should know this email.' It doesn't work that way, and naming why was the whole lesson: identity is a forward link from the device that's live when identify runs, not a lookup keyed on the email string. Same email on a new device that never identified is a stranger. The email typed at Shopify's hosted checkout is on Shopify's origin, invisible to our SDK, so it can never trigger a merge. Recognition across devices requires identify to fire on each device, full stop." | `analytics-rigor`, `integration-depth` |
 | 77 | "Extending identify into the order webhook is the right fix, but the dangerous version is one keystroke away. The server signature takes the identifier as distinctId, and if you pass the email there you fork the person instead of merging the device; if you pass an admin order's order_ fallback you permanently weld junk onto a real customer. So the design is device-id-as-distinctId, email-as-property, and a hard guard that only fires on a real device id. Server-side identity merges are irreversible, which is exactly why this one gets a guard list and an ADR, not a quiet commit." | `pm-discipline`, `integration-depth` |
+| 78 | "PostHog's $device_type is computed after an event fires, so a cart read at creation time gets undefined. The whole cart-attribute pipe was silently failing — the webhook returned 200 to Shopify anyway, but the attribute never wrote. I replaced the async dependency with a synchronous userAgent read at the exact moment the cart exists. Same cart, same three attributes now; Shopify is the source of truth for money, userAgent is the source for device. The pattern: when an integration point doesn't fire, read the artifact (the webhook response, the cart row) to see what actually landed, not what the code intended." | `integration-depth`, `analytics-rigor` |
+| 79 | "The ActivationTracker fired on every page visit and hung for 10 to 20 minutes because useRef resets on component remount — navigation remounts the component and triggers another fire, and trackWhenReady() waits on an async callback that sometimes never resolves. Switched to localStorage (persists across navigation) and a timeout (always fires, doesn't wait). The fix had a name — localStorage guard + setTimeout — that made it obvious once I stopped reasoning about the code and started reasoning about the test behavior: 'fires on every visit' + 'resets on navigation' = useRef is the wrong guard. The North Star event is too important to ship guessing." | `analytics-rigor`, `integration-depth` |
+
+### Phase 5 — COMPLETE
+
+Phase 5 instrumentation is now complete end to end:
+- PostHog identity: identify-on-email + server-side webhook identify ✅
+- Promo funnel: popup shown / submitted / dismissed / code captured ✅
+- Device detection: type at cart creation, persisted through purchase ✅
+- North Star: device_activated fires once per device on first activation ✅
+- Funnel complete: age_gate_confirmed → product_viewed → add_to_cart → checkout_started → device_activated
+- Daily flagged sessions pipeline: flags and summarizes friction signals ✅
+- Weekly agent: reads both streams (deterministic funnel tiles + qualitative session evidence) ✅
+
+All events firing, all data flowing, all sources of truth locked. Ready for Phase 7 cutover.
+
 
 ---
 
