@@ -19,7 +19,7 @@ Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. 
 - **Framework:** Next.js 14, App Router, TypeScript strict mode
 - **Styling:** Tailwind CSS with tokens mapped from `tokens.json` into `tailwind.config.ts`
 - **Commerce:** Shopify Storefront API (GraphQL), hosted checkout via `checkoutUrl`
-- **Reviews:** ReviewInfra (script-tag widget integration)
+- **Reviews:** Judge.me (Shopify-native reviews app; widget embed + REST API)
 - **Analytics:** PostHog (product), Vercel Analytics (performance), Supabase (events mirror for the agent)
 - **Forms:** HubSpot embedded forms (newsletter, wholesale, contact)
 - **Hosting:** Vercel (Hobby tier at launch; Pro tier likely 6+ months in driven by production agent function time)
@@ -218,16 +218,15 @@ This is the most complex feature in the build. The governing rule: **build all U
 
 ---
 
-## Reviews provider — ReviewInfra (locked)
+## Reviews provider: Judge.me (locked, see ADR-008)
 
-The PDP reviews subsystem is powered by **ReviewInfra** (https://reviewinfra.dev).
+The PDP reviews subsystem is powered by **Judge.me** (https://judge.me), our Shopify-native reviews provider. This reverses the earlier ReviewInfra direction. See ADR-008.
 
-- **Integration model:** Script-tag widget (`<script src=".../embed/widget.js?storeId=...">`). Custom storefronts pass orders to ReviewInfra via their Orders API for automated review request emails.
-- **Default Phase 2/4 approach (Path A):** Use ReviewInfra's embedded widget as-is on PDP. Faster to ship. Trade-off: reviews UI matches ReviewInfra's design, not the rich Figma spec we inventoried.
-- **Stretch approach (Path B):** Pull reviews via ReviewInfra read API (if exposed) and render our own UI matching the Figma component spec. Requires confirming with ReviewInfra that this is supported. Not assumed.
-- **AI Summary feature:** ReviewInfra documentation does not currently advertise an AI summary feature. Treat the `<AISummaryCard />` component as a separate, custom feature. Decision pending: (a) custom Claude API endpoint that synthesizes reviews server-side and caches, or (b) ship without it in v1.
-- **For Phase 2 scaffold:** Build the PDP reviews section with mock reviews JSON matching the Figma component spec. Phase 4 wires up ReviewInfra (Path A by default).
-- **Action item:** Email ReviewInfra to confirm: (1) does a read API exist for fetching reviews as JSON, (2) does any AI summary feature exist or is on roadmap. Affects Path A vs B and the AI Summary decision.
+- **Integration model:** Judge.me installs as a Shopify app and reads orders from Shopify directly, so review-request emails are automated with no custom Orders API to wire. Review widgets render on the PDP via Judge.me's embed (review widget plus rating badge), and the same data is available through Judge.me's documented REST API.
+- **Default Phase 2/4 approach (Path A):** Use Judge.me's embedded widget as-is on PDP. Faster to ship. Trade-off: reviews UI matches Judge.me's design, not the rich Figma spec we inventoried.
+- **Stretch approach (Path B):** Pull reviews via Judge.me's REST API and render our own UI matching the Figma component spec. Unlike the prior provider, the read API is documented, so Path B is a real option rather than a maybe.
+- **AI Summary feature:** Judge.me does not provide an AI summary feature. Treat the `<AISummaryCard />` component as a separate, custom feature. Decision pending: (a) custom Claude API endpoint that synthesizes reviews server-side and caches, or (b) ship without it in v1.
+- **For Phase 2 scaffold:** Build the PDP reviews section with mock reviews JSON matching the Figma component spec. Phase 4 wires up Judge.me (Path A by default).
 
 ---
 
@@ -313,7 +312,7 @@ Prefer to **stop and ask** over guessing on:
 - Pricing or commercial rules
 - New dependencies — propose, don't install unilaterally
 - Anything that touches `.env` or secrets
-- ReviewInfra integration questions (Path A vs Path B, AI Summary)
+- Judge.me integration questions (Path A vs Path B, AI Summary)
 - Promo box error-state UX before building it (Figma has no error state — ADR-004)
 
 For everything else, propose a plan, get a thumbs-up, then execute.
