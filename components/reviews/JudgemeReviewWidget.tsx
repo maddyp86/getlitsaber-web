@@ -5,7 +5,7 @@ import Script from "next/script";
 
 const JUDGEME_PRODUCT_ID = "7870095392975";
 
-type JdgmWindow = { jdgm?: { pageLoad?: () => void } };
+type JdgmCacheWindow = { jdgmCacheServer?: { reloadAll?: () => void } };
 
 interface Props {
   productId?: string;
@@ -20,28 +20,32 @@ export default function JudgemeReviewWidget({
     productId && productId.length > 0 ? productId : JUDGEME_PRODUCT_ID;
 
   useEffect(() => {
-    // Handles client-side navigation: script already loaded, won't fire onLoad
-    // again, so we manually re-trigger the DOM scan here.
-    (window as JdgmWindow).jdgm?.pageLoad?.();
+    let ticks = 0;
+    const MAX_TICKS = 40; // 40 × 250ms = 10s ceiling
+
+    const id = setInterval(() => {
+      ticks++;
+      const reloadAll = (window as JdgmCacheWindow).jdgmCacheServer?.reloadAll;
+      if (typeof reloadAll === "function") {
+        reloadAll();
+        clearInterval(id);
+        return;
+      }
+      if (ticks >= MAX_TICKS) {
+        clearInterval(id);
+      }
+    }, 250);
+
+    return () => clearInterval(id);
   }, []);
 
   return (
     <>
-      {/*
-        Co-locating the preloader with the widget div guarantees the div exists
-        in the DOM when the script first executes (fixes first-load blank widget).
-        onLoad fires once after the script runs — pageLoad() is defined by then.
-        Next.js deduplicates by id, so subsequent mounts skip the download and
-        fall through to the useEffect above instead.
-      */}
       <Script
         id="jdgm-preloader"
         src="https://cdnwidget.judge.me/widget_preloader.js"
         strategy="afterInteractive"
         data-cfasync="false"
-        onLoad={() => {
-          (window as JdgmWindow).jdgm?.pageLoad?.();
-        }}
       />
       <div
         className="jdgm-widget jdgm-review-widget jdgm-outside-widget"
