@@ -16,7 +16,9 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import posthog from "posthog-js";
+import { detectDeviceType } from "@/lib/device";
+import { getCartAnalyticsId } from "@/lib/analytics/identify";
+import { getChannelAttribution } from "@/lib/analytics/channel";
 import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
@@ -137,7 +139,7 @@ function transformShopifyCart(cart: ShopifyCart): CartLine[] {
     variantTitle: "Silver",
     price: 59.99,
     lineTotal: parseFloat(node.cost.totalAmount.amount),
-    image: mediaUrl("product/litsaber-lights-off.jpg"),
+    image: mediaUrl("product/litsaber-packaging-1.jpg"),
   }));
 }
 
@@ -211,11 +213,22 @@ export const useCartStore = create<CartStore>()(
             set({ pendingCartCreate: createPromise });
 
             try {
-              const phId = posthog.get_distinct_id();
+              const phId = getCartAnalyticsId();
+              if (process.env.NODE_ENV !== "production") {
+                console.log("[cart] posthog_distinct_id attr =", phId);
+              }
               const attributes: { key: string; value: string }[] = [];
               if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
               const storedDiscount = sessionStorage.getItem("litsaber_discount");
               if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
+              const deviceType = detectDeviceType();
+              attributes.push({ key: "device_type", value: deviceType });
+              const channel = getChannelAttribution();
+              attributes.push({ key: "channel_type", value: channel.channel_type });
+              attributes.push({ key: "utm_source", value: channel.utm_source });
+              attributes.push({ key: "utm_medium", value: channel.utm_medium });
+              attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
+              attributes.push({ key: "referrer", value: channel.referrer });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
                 attributes,

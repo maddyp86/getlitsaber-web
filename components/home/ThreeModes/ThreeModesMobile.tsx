@@ -218,8 +218,8 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                 <AnimatePresence mode="wait">
                   {reducedMotion ? (
                     <motion.img
-                      key={`mode-img-mobile-${activeMode}`}
-                      src={MODES[0].image}
+                      key={`mode-img-mobile-0-${activePullBuild}`}
+                      src={PULL_BUILD[activePullBuild].image}
                       alt={MODES[0].title}
                       variants={IMAGE_FADE}
                       initial="hidden"
@@ -229,9 +229,9 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                     />
                   ) : (
                     <motion.video
-                      key={`mode-img-mobile-${activeMode}`}
-                      src={MODES[0].video}
-                      poster={MODES[0].image}
+                      key={`mode-img-mobile-0-${activePullBuild}`}
+                      src={PULL_BUILD[activePullBuild].video}
+                      poster={PULL_BUILD[activePullBuild].image}
                       variants={IMAGE_FADE}
                       initial="hidden"
                       animate="visible"

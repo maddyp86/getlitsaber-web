@@ -645,15 +645,503 @@ caught real bugs in 4a and 4b before any code was written.
 
 ---
 
-### Phase 5 — Observability Instrumentation (pending)
+### Phase 5 — Observability Instrumentation
 
 PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
+#### 5.1 PostHog identity — identify-on-email fixes channel attribution (2026-06-18)
+
+**Trigger:** The "Acquisition Channel" tile (`lo1DdHbT`, purchases by channel)
+returns all "Unknown." Question raised: the purchase event is a webhook, so it
+never carries channel metadata — how do we get channel onto it?
+
+**Diagnosis (run live via PostHog MCP, not reasoned from memory):**
+- Channel type is derived at FIRST TOUCH from referrer/UTM, captured client-side
+  by posthog-js. The purchase event is a `posthog-node` webhook event
+  (`$is_server: true`), no referrer/UTM, so it structurally cannot carry an
+  event-level channel. Correct approach is to read channel off the PERSON, not the
+  event.
+- First hypothesis (webhook `distinct_id` stitch broken) was DISPROVEN by the data.
+  Real purchase persons carry full browser histories on the SAME person as their
+  `posthog-node` purchase (one test person: 759 pageviews + device_activated +
+  checkout_started + 5 purchases). The `posthog_distinct_id` cart attribute is
+  being read and matched correctly. Only the #9999 / `order_...` order was an
+  orphan (webhook fallback distinct_id, no browser session — a manual/admin order).
+- REAL ROOT CAUSE: posthog-js runs in `person_profiles: 'identified_only'`, set
+  implicitly by `defaults: "2026-01-30"` in `app/providers.tsx`, and `identify()`
+  is never called (0 `$identify` events; 0 of 9 persons identified; zero stored
+  `$initial_*` properties project-wide). In identified_only mode anonymous persons
+  never get first-touch attribution persisted, so `$virt_initial_channel_type` can
+  only ever resolve to "Unknown" — for everyone.
+- CORRECTS the earlier note that the channel tiles read Unknown only "until
+  UTM-tagged campaigns exist post-launch." UTMs are necessary but NOT sufficient:
+  without identify, even a UTM-tagged visit resolves to an anonymous,
+  property-less person. Two blockers, not one.
+
+**Decision (locked): identify on email, NOT `person_profiles: 'always'`.**
+- Rationale: keeps top-of-funnel anonymous (anonymous events up to 4x cheaper than
+  identified), only upgrades a person once they are a real lead, and aligns the
+  PostHog person identity with the HubSpot contact identity on email — the exact
+  seam ADR-006 runs on.
+- Tradeoff accepted: forward-looking only (the existing 5 purchases stay Unknown);
+  resolves channel only for buyers who hand over an email on-domain.
+
+**Privacy guard (load-bearing):** `posthog_distinct_id` is appended to
+`checkoutUrl`, so it must NOT become the email after identify (PII in a URL leaks
+to server logs, the Referer header, and browser history). cartCreate snapshots
+`$device_id` (stable anon id, never flips to email) instead of `get_distinct_id()`.
+PostHog's identify-merge resolves the server purchase onto the identified person, so
+channel still lands with NO PII in the URL. No email ever reaches a URL or a log.
+
+**Implementation (planned):**
+- NEW `lib/analytics/identify.ts`: `identifyByEmail(email)` (normalizes
+  trim+lowercase, guards `__loaded`, calls `posthog.identify(email, { email })`)
+  and `getCartAnalyticsId()` (returns `$device_id`; null if unavailable or contains
+  "@"; caller writes NO attribute on null and never falls back to the email).
+- `identifyByEmail` called at promo email submit (immediately before the
+  `promo_email_submitted` track) and conditionally at `checkout_started` if an
+  email is already in hand. Three checkout sites: CartDrawer + CartPageBody (x2).
+- NEW sessionStorage key `litsaber_email` (normalized; sessionStorage NOT
+  localStorage, so it clears on tab close — better posture for stored PII and the
+  shared-device/festival-kiosk case). Written in `WaitlistForm` onSuccess;
+  `onSuccess` widened from `() => void` to `(email: string) => void`
+  (backward-compatible for callers that ignore the arg).
+- `lib/cart/store.ts` cartCreate: `posthog_distinct_id` attribute built from
+  `getCartAnalyticsId()`, written only when non-null; `get_distinct_id()` removed
+  from this path.
+- Webhook handler UNTOUCHED — it still echoes whatever distinct_id the cart
+  carries, and `$device_id` is a valid distinct_id for the person.
+- `app/providers.tsx` untouched; `person_profiles` stays on its current default.
+
+**Coverage boundary + escalation:** email-capturing buyers resolve to a real
+channel; no-email buyers and orphan/admin orders stay Unknown. Full coverage would
+require `person_profiles: 'always'`, at identified-event pricing on the whole
+pageview firehose — rejected for now.
+
+**Verification (post-deploy):** incognito entry with a UTM
+(`/?utm_source=tiktok&utm_medium=social`) → promo submit → add to cart → test
+order. Confirm: dev log shows a UUID-shaped `phId` (not an email), the generated
+`checkoutUrl` contains no "@", and the purchase row resolves to the email person
+with a populated `$initial_utm_source` and a single matching `person_id`. Final
+confirmation: the existing Trends breakdown shows the order under a real channel,
+not Unknown.
+
+**Possible ADR:** the identity model (when and how we promote anonymous to
+identified, plus the device-id-in-cart-attribute rule) is a candidate for a short
+ADR sibling to ADR-006.
+
+**Recurring Bolt lesson (re-applied):** plan-review-as-PR-review caught two issues
+before code — a garbled "is the posthog import still needed" note in the store edit
+(made it a verify-then-act, not a guess) and the sessionStorage key needing a
+namespaced, normalized, session-scoped spec.
+
+**Verified end-to-end on preview (2026-06-19):** Order #1014 / `40CEEZUL8`.
+purchase event (posthog-node webhook) sent with the device-id distinct_id
+`019ede1c-...` resolved onto the identified person (email
+matthewtyler1986@gmail.com) and returned channel = Direct, not Unknown. cartCreate
+payload confirmed `posthog_distinct_id` = the $device_id UUID with no email; no PII
+in the cart attribute or checkout URL. Confirms identify-merge resolves a
+server-side purchase onto the email person. Direct (not campaign) because this run
+was a no-UTM entry; tiktok/Organic-Social path not yet exercised live but mechanism
+is identical. Coverage boundary (no-email buyer stays Unknown) and WaitlistForm
+signature regression (Test 5) not yet run.
+
+**Webhook server-side identify (2026-06-19) — building.** Decision to close the
+no-popup-purchase gap: the Shopify order webhook now also calls posthog-node
+identify so the buyer's email is associated and the purchasing device merges into
+the email person, not just the popup-submitter path. Triggered by a live boundary
+case, a purchase on a fresh device id (`2f415408`) did NOT merge with the identified
+email person because identify never ran in that session, and the email typed at
+Shopify's hosted checkout is off-origin and invisible to posthog-js. Confirmed the
+correct mental model: PostHog identity is forward-linking on the current device, not
+a retroactive lookup keyed on the email value; same email + different device + no
+identify = a separate person, every time. A purchase event merely CARRYING an email
+property does not trigger any merge; only an explicit identify does.
+
+Load-bearing design choices:
+- **identify with the DEVICE ID as distinctId, email as a property**
+  (`identify({ distinctId: deviceId, properties: { email } })`), NOT the email as
+  distinctId. Device-id-as-distinctId merges the device's browsing session into the
+  email person; email-as-distinctId would create a parallel email-keyed person and
+  merge nothing. Mirrors the client identify, which merges the current anon id into
+  the email person.
+- **posthog-node signature differs from posthog-js:** server is
+  `identify({ distinctId, properties })`, client is positional `identify(email,
+  props)`. Copying the client shape server-side would pass email as distinctId, the
+  exact wrong identifier. Verify against the installed version.
+- **Guard: only identify when the cart attribute is a real device id** (non-empty,
+  not an `order_` fallback, no "@"). Identifying with an `order_` id or stray value
+  merges junk into the email person PERMANENTLY and can chain-merge unrelated
+  persons. Orphan/admin orders skip identify and stay anonymous (correct).
+- **Normalize email trim().toLowerCase()** to match the client identify key so the
+  two never fork.
+- **Flush before return:** posthog-node sends async; a serverless webhook can freeze
+  before the batch flushes, silently dropping identify AND capture. `await
+  posthog.shutdown()` (or version flush() if the client is reused) before responding.
+  Same class as the client-side mount-race silent drop.
+
+**Complementary, not a substitute, for person_profiles:'always'.** Server identify
+fixes email association and cross-session/cross-device unification. It does NOT
+guarantee a resolved channel: a device that was never profiled under identified_only
+has no stored `$initial_*`, so it can merge and still read Unknown. Plan: ship the
+webhook identify, measure how many merged purchases still read Unknown on real
+traffic, then decide on `'always'` from numbers rather than pre-emptively.
+
+**Candidate ADR (sibling to ADR-006):** server-side identity promotion, the
+device-id-as-distinctId rule, and the orphan-order skip guard. Server-side person
+merging has irreversible failure modes (the guard is the whole safety story), so
+this is decision-worthy rather than a quiet webhook edit.
+
+| # | Beat | Tag |
+|---|------|-----|
+| 74 | "The obvious cause was wrong, and only pulling the real data showed it. Everything pointed at the purchase webhook — no channel on the event, must be a broken distinct_id. I queried PostHog instead of trusting the theory and found the stitch was fine: the server purchases were landing on the right browser persons, full histories and all. The real cause was one rung up — the SDK's identified_only default plus an identify() call we never made, so no person ever had attribution to read. Channel was never an event problem; it was an identity problem. Query the artifact before you fix the thing you assume is broken." | `analytics-rigor`, `integration-depth` |
+| 75 | "The fix that made channel work also tried to leak the customer's email into the checkout URL. Keying the cart attribute on the live distinct_id would have worked perfectly and pushed a plaintext email into server logs, the Referer header, and browser history the moment identify ran. Caught it and kept the email out by keying the attribute on the stable device id and letting PostHog's merge resolve the purchase onto the identified person on the backend. The metric still lands; no PII touches a URL. The privacy-safe path and the working path were the same path, but only because someone asked where the value ends up." | `pm-discipline`, `integration-depth` |
+| 76 | "A purchase didn't recognize a customer who'd bought before under the same email, and the instinct was 'PostHog should know this email.' It doesn't work that way, and naming why was the whole lesson: identity is a forward link from the device that's live when identify runs, not a lookup keyed on the email string. Same email on a new device that never identified is a stranger. The email typed at Shopify's hosted checkout is on Shopify's origin, invisible to our SDK, so it can never trigger a merge. Recognition across devices requires identify to fire on each device, full stop." | `analytics-rigor`, `integration-depth` |
+| 77 | "Extending identify into the order webhook is the right fix, but the dangerous version is one keystroke away. The server signature takes the identifier as distinctId, and if you pass the email there you fork the person instead of merging the device; if you pass an admin order's order_ fallback you permanently weld junk onto a real customer. So the design is device-id-as-distinctId, email-as-property, and a hard guard that only fires on a real device id. Server-side identity merges are irreversible, which is exactly why this one gets a guard list and an ADR, not a quiet commit." | `pm-discipline`, `integration-depth` |
+
 ---
 
-### Phase 6 — Production Agent (pending)
+### Phase 6 — Production Agent (building, 2026-06-14 to 2026-06-16)
 
-n8n cron → data gathering → Claude API with tool schema → structured report → Slack + email. Agent *proposes* tests, never *runs* them.
+**Goal:** A weekly n8n cron that reads PostHog, judges the business against stored targets using the Improvement Kata frame, writes a narrative report plus structured fields, stores both deterministically, and delivers. The agent *proposes* experiments, never *runs* them, and never writes its own numbers into storage.
+
+**Governing principle (locked):** deterministic spine, agent as a single reasoning island. Anything that must happen every run, in order, idempotently, is a node. The agent only does the open-ended part: read numbers plus prior context, produce prose and proposals. Numbers in storage are always the parsed truth, never retyped by the model. This is the same trust discipline that runs through the whole build (Shopify is source of truth for money; the parser is source of truth for metrics).
+
+#### Phase 6.1 — Data layer (PostHog) ✅
+
+**Stale-knowledge corrections banked (Shopify, verified against current docs):**
+- Shopify custom-app flow changed 2026-01-01. The old admin "Develop apps > reveal `shpat_` token" path is LEGACY (pre-2026 apps only). Current path: Dev Dashboard > Create app > create a version (App URL defaults to `https://shopify.dev/apps/default-app-home`, which kills the redirect_uri error for non-embedded apps), set scopes, Release, Install.
+- New apps do NOT expose a copyable `shpat_` token. Internal automation uses the **client credentials grant**: POST `/admin/oauth/access_token` with `grant_type=client_credentials` + client_id + client_secret, returns a 24h access token. Fine for a weekly cron (mint fresh each run).
+
+**Shopify abandoned-checkout pull: DEAD on Basic plan (decision).** `abandonedCheckouts` requires Protected Customer Data (Level 2 PII) access, gated behind Grow plan or higher. Not worth upgrading. Both Shopify n8n nodes ("Shopify Token" + "Abandoned Checkouts") DISABLED (kept, not deleted, for if we ever land on Grow). Agent runs on PostHog alone. Only loss is dollar-value-at-risk + abandoned-cart contents; the I5 checkout-abandonment tile still gives the rate and count. Manual fallback: Shopify admin Orders > Abandoned checkouts.
+
+**PostHog read mechanism (decision).** Agent reads SAVED dashboard tiles via the dashboard endpoint, NOT the `/query` endpoint and NOT per-insight:
+`GET https://us.posthog.com/api/projects/445005/dashboards/{id}/?refresh=true`, Bearer personal key. This works with a personal API key; `/query` returns `403 personal API key access` even with `query:read` scope, AND PostHog's own docs warn `/query` is not a supported export mechanism for scheduled connectors and may break. So the spine never touches `/query`. Two dashboards read in parallel:
+- Conversion dashboard `1710621`
+- Web Analytics dashboard `1718411`
+
+**`/query` wall → MCP pivot (decision).** The agent's ad-hoc drill-down does NOT use raw `/query` (same wall). It uses the PostHog MCP server as a tool instead. Deterministic spine via dashboard endpoint; agentic investigation via MCP.
+
+**Parser (Code node, verified against real payloads).** One `parseDashboard(json, keyMap)` reads both HTTP nodes by reference and emits `{ posthog_insights, web_analytics }`. Branches on `insight.query.source.kind`:
+- `TrendsQuery` → `parseTrends`: series with label, value, `compare` ("current"/"previous"), `order` (disambiguates multi-series tiles, e.g. Top Pages order 0 = views, order 1 = visitors), byDay (zipped days+data with a length guard). Cleans `$$_posthog_breakdown_null_$$` → "Unknown".
+- `FunnelsQuery` → `parseFunnel`: groups of steps with count + overallConversion; handles flat and breakdown (array-of-arrays) shapes.
+- `HogQLQuery` → `parseSql(result, insight.columns)`: dashboard endpoint shape is `result` = array of row-arrays, `columns` = sibling array of names. Zips to named rows. (This shape was the key verification: it is NOT nested `result.results`/`result.columns`.)
+- KEY_BY_SHORT_ID maps short_ids → stable semantic keys so week-over-week survives insight renames. Unmapped short_ids fall back to the raw short_id.
+
+**Web vitals fix (banked).** The four vitals tiles were misconfigured as daily-average line graphs, so the table aggregate summed 7 daily averages and read ~7x inflated (LCP 4554ms). Rebuilt all four as single-value **p75** Number tiles (math "Property value 75th percentile" of the respective `$web_vitals_*_value`, no breakdown, Last 7 days). Now correct: p75 LCP ~1036ms, FCP ~746ms, INP ~40ms, CLS ~0.00004 (unitless, correctly tiny). short_ids preserved by editing in place (LCP `eBn71ObR`, CLS `SE7nl31z`, FCP `gIhhWsuT`, INP `xoq19nNV`).
+
+**Two-dashboard split (decision).** Conversion board stayed the 7-section conversion spine. New Web Analytics board (`1718411`) holds Overview / Pages / Audience / Performance. Sessions & Visitors (`KSPePe45`) is dual-placed (funnel denominator on conversion, traffic headline on web) — one insight, both boards, harmless duplication in the parsed output. The two channel tiles split by denominator: `XQQXrJ0N` "Sessions by channel" (traffic → web) vs `lo1DdHbT` "Acquisition Channel" = purchases by channel (outcome → conversion). Both dormant (all "Unknown"/"Direct") until UTM-tagged campaigns exist post-launch.
+
+**Bounce + duration (SQL tiles, decisions).** Bounce rate reads `$is_bounce` from the sessions table, which PostHog confirmed is the exact field the native Web Analytics tile uses — canonical, not approximate, no agent caveat needed. (Action still open: verify autocapture + `$pageleave`/`$autocapture` are firing at the web-analytics settings, or bounce silently inflates.) Avg session duration SQL returns only a display string ("32m 47s"), no raw seconds, so the agent quotes it and does no math on it; durations are test-inflated by tabs left open anyway.
+
+**Template tiles swept (decision).** PostHog's 7 prebuilt template tiles were evaluated: Website Unique Users + Top Website Pages (Overall) are redundant with our purpose-built tiles; the 3 Organic-SEO/Google tiles are dormant pre-launch; Sessions Per User + Pages Per User are real engagement-depth metrics but `is_sample: true` and badly test-distorted (reload artifact reads as "engaged returning audience"). Kept Sessions/Pages Per User on the board but marked DORMANT in the parser map so the agent ignores them during calibration.
+
+#### Phase 6.2 — Storage layer (Supabase) ✅ table created, write node pending
+
+**Sheets vs Supabase (decision): Supabase.** A structured, machine-read weekly archive wants a queryable, schema-enforced store, not Sheets. New wiring (Supabase was not previously connected to this n8n instance), justified by: exact "most recent prior row" recall as a one-line SQL, durable jsonb that a stray edit can't corrupt, and a clean path to multi-week history later. The service-role key bypasses RLS, so for this private server-only table RLS can stay enabled with no policies (the warning is moot once the credential is the service key). Confirmed working with the service key.
+
+**Memory architecture (decision): two layers, one database, deterministic now.**
+- Deterministic week-over-week is the load-bearing layer: a Supabase row per week, exact `SELECT ... ORDER BY report_week DESC LIMIT 1`. A number must never come back through a similarity search.
+- Associative recall (pattern-matching over past narratives/hypotheses) is DEFERRED until ~8 to 12 real weekly reports exist. When built, it is pgvector IN THE SAME SUPABASE (not a separate vector DB), embedding the narrative + hypotheses, never the metric rows. Building it now would only embed test-traffic noise.
+
+**Report storage shape (decision): one combined JSON object per week, not individual insight rows and not two columns.** The row's job is point-in-time recall of a complete week retrieved as a unit, so `report_json` holds the whole parsed `{ posthog_insights, web_analytics }` with the two blocks namespaced inside. Individual-insight rows were rejected (30+ rows to reassemble, brittle schema across funnel/trends/sql shapes, no query we actually need). The narrative lives in `report_markdown`; the agent's full structured output lives in `report_data` (feeds the grading loop and the future embedding layer). A PDF mirror of the markdown is rendered and stored in Google Drive (DB row canonical, file is a browsable copy).
+
+**Table (created):**
+```sql
+create table litsaber_weekly_reports (
+  report_week     text primary key,        -- "2026-W25", zero-padded so text-sort = chrono-sort
+  report_json     jsonb not null,          -- deterministic parsed metrics, exact recall
+  report_markdown text not null,           -- agent narrative
+  report_data     jsonb,                   -- agent full structured output (grading + future embeds)
+  created_at      timestamptz default now()
+);
+```
+
+#### Phase 6.3 — Orchestration spine ✅ built, agent node + write/deliver pending
+
+**Topology correction (decision).** The Supabase read was initially wired as an agent TOOL; moved to a deterministic upstream node (last-week recall is the load-bearing input, it must run every time with the right key, not at the agent's discretion). Storage is a node AFTER the agent, never a tool. The agent's only tools are PostHog MCP and Supabase MCP, both read-only.
+
+**Linear chain (not branch-and-merge):**
+```
+Schedule Trigger (weekly Mon 8am)
+  ├─ Get Conversion Insights ─┐
+  └─ Get Web Analytics ───────┤
+        Parse Insights  (one node, reads both HTTP nodes by reference)
+        Date Context    (Code: report_week, week window, ISO week math)
+        Read Targets     (Supabase Get Many, active=true, limit 1, Always Output Data)  [PENDING]
+        Read Last Week   (Supabase Get Many, report_week < this week, Always Output Data)
+        Assemble Context (Code: merges parsed + date + targets + last week + scorecard)
+        AI Agent         (Anthropic claude-sonnet-4-6; tools: PostHog MCP + Supabase MCP read-only; Memory empty)
+        Write This Week  (Supabase upsert report_week/report_json/report_markdown/report_data)  [PENDING]
+        Render PDF + mirror to Google Drive  [PENDING]
+        Deliver (Gmail / Slack)  [PENDING]
+```
+Date Context must precede Read Last Week and Read Targets because their filters key off `report_week`. Assemble reaches Date Context / Parse / Read Targets / Read Last Week by `$('Node Name')` reference rather than wiring all four in; only the last node in the chain feeds it directly. "Always Output Data" on the Supabase reads keeps the chain alive when a query returns zero rows (first run, empty targets), so Assemble's `is_baseline` / null-target handling fires cleanly.
+
+**Date Context (Code node, ISO 8601 week math).** Computes `report_week` ("2026-W25"), `week_start`/`week_end` (trailing 7 full days ending yesterday, UTC), zero-padded week number so plain text sorting equals chronological sorting. ISO week math is in code, not an n8n expression, because models and expressions are both unreliable at "what week is it."
+
+**Read Last Week bug banked.** Putting `{{ $json.report_week }}` (the VALUE) in the Order By field made Supabase treat "2026-W25" as a column name (`column ...2026-W25 does not exist`). Order By takes the literal column name `report_week` DESC; the value belongs only in the filter's keyValue. Empty table on first run is the designed baseline state, not an error.
+
+#### Phase 6.4 — Kata / targets frame (decision, building)
+
+**The reporting frame is the Improvement Kata:** business outcome → strategic initiative → target condition → current condition → weekly learning goal → prediction → grade-last-week's-prediction. This is stored deterministically and read in; the agent measures the current condition, judges toward/away, proposes the learning goal + prediction, and next week grades the prior prediction (via `report_data` on `last_week_report`).
+
+**Targets are set from the current condition, NOT from thin air (load-bearing decision).** Pre-launch at zero real sales, hardcoding "20 orders/week" is a fantasy target that poisons every grade. Correct kata sequence is current-condition-before-target-condition. So a two-phase plan:
+- **Phase one (first 2 to 4 weeks of real traffic):** NO numeric targets. `benchmarks` is empty / `target: null`. The agent runs in "establish current condition" mode, measures and reports, grades nothing against targets. Scorecard status is "calibration".
+- **Phase two (week 3 to 4 of real traffic, Matt in the loop):** set targets as a defined improvement over the MEASURED baseline (e.g. "lift session-to-purchase from the observed X% to Y% over 6 weeks"). Industry DTC ranges (1 to 3% session-to-purchase, 65 to 75% checkout abandonment) are sanity rails, not adopted blindly.
+
+**`watch` band defined.** Three-band status, not binary: for a down-is-good metric, at/below `target` = on_track, between target and `watch` = watch (amber, drifting, early warning), above `watch` = off_track. Gives the founders a "drifting" signal before something is fully broken.
+
+**Orders source reconciled (decision).** Orders has no single clean tile and three sources disagree: primary funnel terminal = 0 purchases, promo pipeline = 1 purchase event, revenue = $0. Revenue is the commerce source of truth: $0 revenue → 0 real orders, and the lone promo-pipeline purchase is a tracking artifact to flag, not a sale. Assemble forces `orders_per_week` to 0 when revenue is 0; the agent flags the discrepancy in prose. (A dedicated standalone `count(purchase)` "Orders" tile is the clean long-term source; not yet built.)
+
+**Report structure (decision): strictly top-down, executive → granular.**
+1. Executive Snapshot (verdict sentence + vital-few table: orders, revenue, activations, sessions, visitors, bounce, checkout abandonment, each this wk / last wk / delta / status)
+2. Strategic Frame (kata: outcome, initiative, current vs target, learning goal, prediction, grade of last week's prediction)
+3. Scorecard (every benchmarked metric vs target + status)
+4. Traffic & Audience
+5. Conversion Funnel
+6. Buying Behavior
+7. Session Signals
+8. Promo & Capture
+9. Revenue & North Star
+10. Performance (web vitals, one line)
+11. Proposed Experiments (hypothesis / metric / rationale)
+12. Data Caveats
+
+**Tile-to-section mapping + treatment flags banked** (LIVE = report it, DORMANT = one line or omit, ARTIFACT = name as arithmetic quirk, DEDUP = appears twice, use one). All 38 tiles assigned. Dropped entirely in calibration: `web_sessions_per_user`, `web_pages_per_user` (sample + distorted), `BJicdCFs` (duplicate of `web_unique_visitors`). Week-over-week comes from two sources: a tile's own `compare` field (sessions + visitors, every week) and `last_week_report` (everything else, once a prior week exists); where neither, the agent says "no prior week."
+
+**Agent node config (decision).** Chat Model: Anthropic `claude-sonnet-4-6`, temp 0.4, max tokens 4000. Memory: empty (n8n agent Memory is a chat buffer, irrelevant to a stateless weekly batch; week-over-week memory is the Supabase row, not chat memory). Tools: PostHog MCP (explain an anomaly the context doesn't answer) + Supabase MCP (multi-week history beyond last week), both read-only, neither used during calibration. Structured Output Parser attached. House style enforced in prompt: no em-dashes, ranges as "X to Y", $59.99 never $60, never "light show", lifestyle-accessory framing.
+
+**Output schema (decision):** `report_markdown`, `executive_summary` (the field that gets embedded later), `verdict` (enum toward_goal / away_from_goal / establishing_baseline), `key_findings[]`, `scorecard_assessment[]` (status + note, NO retyped numbers — numbers stay in the stored deterministic scorecard), `weekly_learning_goal`, `expectation`, `prediction_grade` (nullable), `proposed_experiments[]` (hypothesis / metric / rationale). `weekly_learning_goal` + `expectation` are first-class fields because next week's grading reads them.
+
+**Calibration reality (in the agent prompt).** All current numbers are test traffic under a ~7-visitor / ~24-session weekly ceiling (Matt's own reloads) until ~2 weeks past Phase 7 cutover. Known artifacts the agent must name, not report as findings: checkout abandonment 100% (1 checkout, 0 purchases), cart abandonment 0%, 30-min+ session duration, funnel dropping to 0 after product_viewed, channel all-Unknown (no UTMs), geography 1 to 2 countries. The agent self-frames early reports as calibration when `is_baseline` is true.
+
+**Security action still standing:** rotate the PostHog `phx_` personal key and the Shopify `shpss_` client secret (both were pasted in plaintext during the build session).
+
+#### Phase 6.5 — Weekly agent live end to end + Flagged Sessions subsystem + schedule / week-boundary (2026-06-21)
+ 
+The weekly spine now runs through delivery (agent node, Write This Week, PDF render via PDFBolt, founder email all built and firing), and a new daily flagged-sessions subsystem feeds qualitative session-replay evidence into the weekly agent. Two calendar decisions locked alongside.
+ 
+**Weekly workflow is live end to end.** The chain from Phase 6.3 is complete past the agent: AI Agent (Anthropic, house-style prompt, structured output) produces narrative plus structured fields, Write This Week upserts the row, the markdown renders to a Chrome PDF via PDFBolt, and the PDF is emailed to the founders. First full runs verified, producing the W25 report off live calibration traffic.
+ 
+##### Daily flagged-sessions pipeline (NEW subsystem) ✅
+ 
+A second, separate n8n workflow runs daily and writes session-level friction/intent evidence into Supabase. The weekly agent reads the unreviewed rows as qualitative context. Seven nodes:
+ 
+1. **Schedule Trigger** (daily, hour 06:00 UTC).
+2. **PostHog Flagging Query** (httpRequest POST `https://us.posthog.com/api/projects/445005/query/`, Header Auth). HogQL flags one row per session in the trailing window on any of `$exception` / `$rageclick` / `$dead_click` / `checkout_started`, with a `converted` boolean derived by LEFT JOIN of the server-side `purchase` event to the session by `distinct_id` within a 2-hour window. Excludes `-git-` staging URLs. Production uses `INTERVAL 1 DAY`; test runs used `30 DAY` and must be reverted before cutover.
+3. **Shape Rows** (Code) zips columns and results, coerces `converted` via `String()` comparison, computes `week_of`.
+4. **Upsert Flagged** (httpRequest POST PostgREST `.../flagged_sessions?on_conflict=session_id`, `Prefer: resolution=merge-duplicates,return=minimal`).
+5. **Summarize Sessions** (MCP Client node, PostHog MCP OAuth2, tool `session-recording-summarize`, ~600000ms timeout, `session_ids` bare array plus a context prompt).
+6. **Merge Summaries** (Code) reads `item.json.structuredContent`, skips keys starting with `_`, folds all MCP items into one dict keyed by `session_id`, joins back to Shape Rows.
+7. **Patch Summaries** (httpRequest PATCH `.../flagged_sessions?session_id=eq.{{ $json.session_id }}`, body `={{ { summary: $json.summary, summarized_at: $json.summarized_at } }}`, `Prefer: return=minimal`).
+**Supabase table (created):**
+ 
+```sql
+create table flagged_sessions (
+  session_id    text primary key,
+  distinct_id   text,
+  start_url     text,
+  start_time    timestamptz,
+  duration_secs int,
+  flag_reason   text,            -- comma-joined when a session trips more than one signal
+  metric_value  numeric,
+  summary       jsonb,           -- full session-recording-summarize payload
+  summarized_at timestamptz,
+  reviewed      boolean default false,
+  notes         text,
+  week_of       date,
+  converted     boolean default false,  -- ground truth: server-side purchase joined by distinct_id + window
+  created_at    timestamptz default now()
+);
+```
+ 
+**Instrumentation state banked.** `purchase` is captured SERVER-SIDE (posthog-node webhook), so every purchase carries `$session_id = null` and is unflaggable directly. The correct conversion signal to flag on is `checkout_started` (client-side, has session id and recording). posthog-js init updated via Bolt: `capture_dead_clicks: true` added (dead clicks now firing, ~11 events), `capture_exceptions` added (still 0 events, no real exceptions yet, not a wiring fault), `$rageclick` already live. Owner/dev distinct_ids pollute the feed; the PostHog internal/test-account filter is NOT yet set (deferred to cutover).
+ 
+**PATCH-not-POST bug (banked, bit twice).** Patch Summaries was first written as POST, which PostgREST treats as INSERT, so it tried to create a row with no `session_id` and failed the not-null constraint (`null value in column "session_id" ... violates not-null constraint`). Fixed to PATCH (update in place). The identical bug reappeared later on the weekly Mark Reviewed node, same cause, same fix.
+ 
+##### Wiring flagged sessions into the weekly report ✅
+ 
+Five weekly-flow nodes touched.
+ 
+**Assemble Context compaction.** Reads the unreviewed flagged rows and emits, per session: `{ session_id, start_url, start_time, duration_secs, flag_reason, converted, disposition, outcome, segment_summaries }`. `outcome` is read from `summary.session_outcome.description`; `segment_summaries` from `summary.segment_outcomes` joined to `summary.segments` by index. A `flagged_summary` rollup carries `{ count, converted, by_reason }`, where `by_reason` splits comma-separated `flag_reason` (so a `rageclick,dead_click` session increments both, and by-reason counts can sum above the session count, expected, same shape as the activations-by-device caveat).
+ 
+**`disposition` field (decision: binary).** Derived at compaction: `converted: true` to `"converted"`, `converted: false` to `"lost"`. The three-way split considered earlier was dropped because the narrative cannot reliably distinguish "purchased this visit" from "purchased later" (the purchase is server-side and invisible either way), so it is not asked to. The disposition value rides in the context now; surfacing it as a Disposition column in the Render Report table is a cutover task.
+ 
+**Agent prompt.** A trimmed "Flagged sessions" reference block defines the fields and how to read `flag_reason` (rageclick / dead_click = UX/interaction problem; checkout_started = checkout/pricing hesitation), instructs the agent to render the table and interpret the pattern rather than enumerate session by session, and carries the calibration caveat that the feed is not yet filtered to real customers. A converted-is-ground-truth note was added (see investigation below).
+ 
+**Render Report.** New `## 08 - Session Signals` section beneath Buying Behavior (07), with downstream renumber: Promo & Capture 09, Revenue & North Star 10, Website Performance 11, Proposed Experiments 12, Data Caveats 13. The block prints the rollup header plus a one-row-per-session table (Flag Reason / Outcome / Converted / Duration), pipe-guards the outcome string, and degrades to "_No sessions flagged this week._" when the count is falsy.
+ 
+**Mark Reviewed (decision: scope to the week, not all unreviewed).** PATCH (not POST). Filter is the exact session_ids the report read, not `reviewed=eq.false`:
+ 
+```
+PATCH .../flagged_sessions?session_id=in.({{ $('Read Flagged Sessions').all().map(i => i.json.session_id).join(',') }})
+body ={{ { reviewed: true } }}, Prefer: return=minimal
+```
+ 
+Reasoning: `reviewed=eq.false` would also mark any session the daily flagger writes between the weekly read and this node, burying it before it is ever reported. Scoping to the read set leaves those for next week. UUIDv7 ids need no quoting in the `in.()` list.
+ 
+##### The converted-but-abandoned investigation (decision: converted is ground truth) ✅
+ 
+In the first live run, four of five flagged sessions read `converted: true` while every one of their `outcome` narratives described abandonment. Rather than accept the agent's read (probable test traffic), pulled the full event timeline for one session via PostHog MCP (`execute-sql` over `events` for the distinct_id). Result: the `purchase` fired server-side about 34 seconds after `checkout_started`, INSIDE the recorded session window, but with `$session_id = null`, so it never appears in the session recording. A second converted session showed the identical signature (purchase about 41 seconds after checkout). 
+ 
+Mechanism, now banked: because all purchases are server-side with a null session id, the purchase is structurally invisible to the summarizer in every case, so any converting visitor who keeps browsing after checkout is narrated as abandonment. `converted: true` plus an abandonment narrative is the GUARANTEED fingerprint of a completed purchase in this data model, not an occasional artifact. This corrected an earlier hypothesis (that buyers "came back later in another tab"), which the in-window timing disproved. 
+ 
+Decisions: (1) prompt note added telling the agent `converted` is ground truth and overrides the narrative; converted sessions are completed purchases (hesitation worth smoothing, not lost sales), only `converted: false` are genuine drop-offs. Live now. (2) the binary `disposition` field above. (3) Disposition column in the render table deferred to cutover.
+ 
+##### Schedule + week boundary (decisions)
+ 
+**Weekly fires Monday 08:00 UTC.** The daily flagger runs 06:00 UTC; the two-hour gap clears the daily summarize window (first-gen MCP summaries run minutes each) so the weekly read never sees a half-written set. The dependency is real but n8n does not enforce it across two separate workflows, so the gap is held by the schedule. If the daily time moves, move the weekly with it.
+ 
+**Week starts Monday (PostHog setting + Date Context).** PostHog project "Week starts on" set to Monday so weekly tile bucketing matches the report's own window math; otherwise the tiles and the date logic count different seven-day spans and week-over-week compares drift. Monday chosen to match the ISO `report_week` label the report already emits.
+ 
+**Date Context node rewritten.** The old logic computed a trailing seven days ending yesterday, which produced a correct Monday-to-Sunday week only because the job happened to fire on a Monday (a coincidence of fire day, not a fixed boundary). Replaced the window block to anchor to the most recently COMPLETED Monday-to-Sunday week, regardless of run day:
+ 
+```javascript
+const now = new Date();
+const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+const dow = (today.getUTCDay() + 6) % 7;                 // Mon=0 .. Sun=6
+const thisMonday = new Date(today);
+thisMonday.setUTCDate(today.getUTCDate() - dow);         // 00:00 this Monday
+ 
+const weekStart = new Date(thisMonday);
+weekStart.setUTCDate(thisMonday.getUTCDate() - 7);       // prior Monday
+weekStart.setUTCHours(0, 0, 0, 0);
+ 
+const weekEnd = new Date(thisMonday);
+weekEnd.setUTCDate(thisMonday.getUTCDate() - 1);         // prior Sunday
+weekEnd.setUTCHours(23, 59, 59, 999);
+```
+ 
+The `isoWeek()` math, `report_week` label, and output shape are unchanged. `week_end` is still emitted via `.toISOString()` (Z-suffixed UTC), so the `days_to_target` math in Assemble Context (`new Date(dateCtx.week_end)`) stays UTC-safe. Cadence: a Monday Jun 22 run reports Jun 15 to 21 (W25); a Monday Jun 29 run reports Jun 22 to 28 (W26). Correct for any fire on or after the Monday it reports from, which the 08:00 Monday schedule satisfies; a manual Sunday run would resolve to the wrong week (no guard added, scheduled path only).
+
+#### Phase 6 — what's done vs pending
+
+Done: PostHog data layer (both dashboards, parser verified across trends/funnel/sql), web-vitals p75 rebuild, Supabase table created + service-key access, the orchestration spine through Assemble (Parse → Date Context → Read Last Week → Assemble all producing the combined context with `is_baseline`/`last_week_report`). PostHog data layer (both dashboards, parser verified across trends/funnel/sql), web-vitals p75 rebuild, Supabase tables (`litsaber_weekly_reports`, `litsaber_targets`, `flagged_sessions`) with service-key access, the full orchestration spine (Parse, Date Context, Read Targets, Read Last Week, Assemble, AI Agent, Write This Week, PDF render via PDFBolt, founder email), the daily flagged-sessions pipeline (flag, upsert, MCP summarize, patch), and the flagged-sessions wiring into the weekly report (Assemble compaction, agent prompt, Session Signals render section, scoped Mark Reviewed). Weekly workflow runs end to end; daily flagger runs end to end. Schedule and Monday week-boundary locked.
+
+Pending: Read Targets node + `litsaber_targets` table + Assemble scorecard additions (next, see plan); the AI Agent node wiring + prompt + schema; Write This Week upsert (incl. `report_data`); PDF render + Drive mirror; Gmail/Slack delivery; first end-to-end run; the deferred pgvector associative layer (post-launch). surface the `disposition` field as a render-table column at cutover; set the PostHog internal/test-account filter (Matt's distinct_id plus matthewtyler1986@gmail.com); reconcile the upstream orders discrepancy the agent flagged as the week's top data-integrity issue (weekly_orders tile 13 vs primary_funnel terminal 4); revert the daily flagging query from the 30 DAY test interval to `INTERVAL 1 DAY`; confirm `$exception` events appear once real errors occur (capture is enabled, 0 events is expected pre-traffic); the deferred pgvector associative-recall layer (post-launch, unchanged); the standing security action to rotate the pasted `phx_` and `shpss_` keys.
+
+**Story beats captured (Phase 6)**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 64 | "Built the weekly analyst as a deterministic spine with the model as one reasoning island, not an agent that orchestrates everything. Fetch, read last week, write this week, render, deliver are all nodes that run unconditionally and in order. The model only writes prose and proposes tests. The rule that fell out of it: the agent never decides whether to save and never types a number into storage. Numbers are the parser's truth; the model owns judgment. An agent that 'usually' generates the report is worse than a pipeline that always does." | `agent-loop`, `pm-discipline` |
+| 65 | "Caught myself about to hardcode a 90-day target of 20 orders a week while sitting at zero real sales. A target with no basis poisons every grade after it. The fix was the kata discipline itself: you measure the current condition before you set the target condition. So the agent runs in establish-baseline mode with no numeric targets until real traffic gives it a floor to improve from, then targets get set as a defined delta over what was actually observed. Refusing to invent the number is the senior move, not a gap." | `pm-discipline`, `analytics-rigor` |
+| 66 | "Three tiles disagreed on the single most important number — orders. The funnel said zero, the promo pipeline said one, revenue said zero dollars. Rather than let the agent silently pick, I made revenue the commerce source of truth (zero dollars means zero orders) and told it to flag the promo discrepancy as a tracking artifact in prose. When sources conflict, name the canonical one and surface the conflict — don't average it away or let the model choose per run." | `analytics-rigor`, `integration-depth` |
+| 67 | "Verified the SQL-tile result shape against a real payload instead of trusting my own parser assumption. I'd written it to read nested result.results/result.columns; the dashboard endpoint actually returns result as row-arrays with columns as a sibling. One real paste corrected a guess that would have silently dropped both bounce and session-duration into an unparsed blob. The discipline that keeps paying off: pull the real artifact, don't reason about the shape from memory." | `integration-depth`, `analytics-rigor` |
+| 68 | "A batch of flagged sessions read converted-true while their summaries all said 'abandoned.' The easy call was the agent's: probably test traffic. I pulled the actual event timeline for one instead and found the purchase fired server-side about 34 seconds after checkout, inside the session window but invisible to the recording because server-side events carry no session id. So in this data model every real conversion is narrated as abandonment, every time. The flag is ground truth; the narrative is a partial view of one browser visit. The lesson is the one that runs through this whole build: pull the artifact before you trust the story written about it. It also killed my own first guess, that they came back later in another tab, which the in-window timing disproved." | `analytics-rigor`, `integration-depth` |
+| 69 | "The same bug bit twice in two nodes: a Supabase write set to POST tries to INSERT, hits the not-null constraint on session_id, and dies. The fix both times was PATCH, an update in place. Then a quieter one on mark-reviewed: filtering on reviewed=false would mark every unreviewed row, including sessions the daily job writes after the weekly read but before the mark fires, burying them before they are ever reported. Scoped it to the exact ids the report read. An update is not an insert, and 'mark everything unreviewed' and 'mark what I just reported' are different sets the moment two workflows share a table." | `integration-depth`, `pm-discipline` |
+| 70 | "Wired session-replay summaries into the weekly agent as qualitative evidence, walled off from the numbers on purpose. The funnel and trends tiles stay the canonical measurement; flagged sessions are texture the agent reads for the why, never a denominator it counts. Encoded the split in the prompt and in a binary disposition field, converted versus lost, so the agent separates recovered near-misses from genuine drop-offs instead of flattening them into one abandonment story. Evidence and measurement in separate lanes is the same trust rule as parser-owns-numbers, agent-owns-judgment." | `analytics-rigor`, `agent-loop` |
+| 71 | "The report's week math took a trailing seven days ending yesterday, which gave a correct Monday-to-Sunday week only because the job happened to fire on a Monday. Anchored it to fixed weekdays so the boundary holds no matter the run day, and set PostHog's own week-start to Monday so the tiles and the report window slice the same seven days. A boundary that is right by coincidence of the fire day is a latent bug; pin it to the calendar, and make the two systems that cut the week agree." | `integration-depth`, `pm-discipline` |
+
+---
+
+### Pre-Phase-7 — Media migration to Vercel Blob + video wiring (2026-06-11) ✅ (Activate sweep pending)
+
+**Goal:** Get media off the GitHub `public/` folder and onto a CDN-decoupled
+single store before launch, then wire the first real videos (hero, ThreeModes,
+Activate). Governed by ADR-007.
+
+**The decision (ADR-007):** Vercel Blob as the SINGLE media store, images and
+video together. Driven by a stated operational constraint: one system, one
+workflow, no two-vendor split. Rejected Supabase Storage (second origin, violates
+ADR-006 one-system-per-job), Cloudflare Stream (best video delivery but two
+workflows), and Cloudinary (new vendor, more than the inventory justifies). Key
+reframe surfaced during the decision: `public/` on Vercel is ALREADY edge-CDN
+delivery and most images go through `next/image`, so this was never a performance
+rescue. It was decoupling assets from the repo and from deploys, and giving video
+a home, in one system.
+
+**Migration executed in four chunks (one commit each), `public/` kept as live
+rollback until the preview verified each step:**
+- **Chunk A:** `scripts/migrate-media.ts` uploaded all of `public/images/` to
+  Blob preserving pathnames. Sequential uploads, dotfile skip (`.DS_Store`),
+  one-year cache headers, `addRandomSuffix: false`. Script loads `.env.local`
+  itself (tsx does not auto-load it). `tsconfig.json` excludes `scripts` so the
+  app build does not type-check it.
+- **Chunk B:** `lib/media.ts` (`mediaUrl`/`videoUrl`, env-var base with local
+  fallback) created; `remotePatterns` Blob hostname added to `next.config.mjs`;
+  every `/images/` reference swept to `mediaUrl()`.
+- **Chunk C:** `public/images/` deleted (recoverable from git history).
+- **Chunk D:** hero, ThreeModes (3 clips), Activate clips uploaded under
+  `videos/`. Hero + ThreeModes wired; Activate sections in progress.
+
+**Blob store facts (banked):** `get-litsaber-blob`, store ID
+`store_0KU6ZB3BoVDlOwuq`, region SFO1, PUBLIC access. Base URL
+`https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com` (no trailing slash).
+
+**`NEXT_PUBLIC_MEDIA_BASE_URL` lives in THREE isolated environments** with no
+auto-sync: Vercel dashboard (Production + Preview + Development), local
+`.env.local`, AND Bolt's own env panel. Bolt's preview sandbox cannot read
+Vercel's vars, which is why media rendered blank in Bolt's preview until the var
+was added there too. The env-var pattern (vs hardcoding) means the value is a
+one-line change per environment; the cost is maintaining three copies.
+
+**Video standard locked (Blob is progressive download, NOT adaptive bitrate):**
+H.264 MP4 (never `.mov` — Chrome/Firefox reject it), 1080p max, 2 to 4 Mbps,
+AAC or no audio, `+faststart`, target under 15MB. The homepage hero arrived as a
+110.8MB file and must be compressed before it ships (an autoplay hero at that
+size is a broken hero on festival LTE).
+
+**Video element pattern locked:** every autoplay background/loop video carries
+all of `autoPlay muted loop playsInline preload="metadata"` (all four required
+for mobile-Safari autoplay), a `poster` fallback, `aria-hidden` when decorative,
+and a `prefers-reduced-motion` branch that renders the static poster instead.
+For sizing, a `<video>` with only a width balloons to its intrinsic height: the
+fix is a constrained-aspect wrapper (`relative` + `aspect-*`) with the video
+`absolute inset-0 w-full h-full object-cover`, so the video fills a defined box
+instead of driving its own height.
+
+**Components wired:** Hero device-render swapped from `<Image>` to autoplay video
+(poster = old placeholder image, reduced-motion = poster only). ThreeModes right
+panel + mobile cards swapped img to video, paths in `modes.content.ts` via
+`videoUrl()` (Litsaber/Pull, Glowstick, Stealth; the Build toggle keeps showing
+the Pull video until that clip exists — option A). Activate QuickStart, Modes,
+and Battery media columns fixed for the height-constraint bug.
+
+**Open (Activate media sweep):** the `<video> w-full object-cover` with no height
+bug exists in EVERY Activate media slot (nine sections). Fixed in QuickStart,
+Modes, Battery so far; remaining sections pending. Resolution: one sweep to apply
+the constrained-aspect-wrapper fix everywhere, THEN extract a shared
+`<ActivateMedia src poster alt />` primitive so the duplicated arrangement (which
+is how the bug reached nine files) becomes one component.
+
+**Considered and rejected: site-wide background music.** Browser autoplay
+policies block unmuted audio without a gesture (same policy that forces muted
+hero video), it competes with the product's own draw-reactive light moment and
+the demo-video audio, it reads as a dated amateur signal against the premium
+positioning, and it adds load with no upside. If audio is ever wanted, the
+on-brand version is an opt-in, off-by-default toggle tied to a specific moment,
+never autoplay. Atmosphere is carried by motion and light, which the site already
+does.
+
+**Feature flags (scoped, not yet built):** promo-popup toggle is a clean PostHog
+flag (delay-triggered, so no SSR-flash, no init-race) and the right first use,
+upgrading the existing `NEXT_PUBLIC_FEATURE_PROMO_POPUP` env flag to a no-redeploy
+dashboard toggle. Price A/B testing REJECTED as a flag: it is underpowered at
+current traffic (purchase-based tests need months per variant), it is a Shopify
+source-of-truth problem (a flag changes displayed price but checkout pulls real
+Shopify price, risking a bait-and-switch), and same-SKU price discrimination is a
+fairness/legal gray area. Find the price ceiling via sequential changes or
+offer-testing instead. Cleanest experiments at this traffic are high-contrast
+top-of-funnel changes (hero headline, CTA copy) measured on an engagement event
+that fires nearly every visit, not on the 0.1% that buy.
+
+**Recurring Bolt lesson (banked again):** Bolt reported the `next.config.mjs`
+edit as complete when it had NOT applied it. Caught by pulling the literal file
+and reading it. Same pattern as the working-memory false-done claims. The literal
+file contents are the only source of truth; the status report is intent.
+
+**Story beats captured**
+
+| # | Beat | Tag |
+|---|------|-----|
+| 68 | "Pushed back on my own framing before building. The ask was 'get media off the repo onto a CDN for speed,' but the repo folder on Vercel already IS the CDN, and most images already optimize through next/image. So the migration wasn't a speed fix, it was decoupling assets from deploys and giving video a home in one store. Naming what a change actually buys you, instead of accepting the stated reason, is what kept us from adding a second vendor for a problem we didn't have." | `tool-choice`, `pm-discipline` |
+| 69 | "Honored a one-sentence constraint over the technically-best answer. Cloudflare Stream is the better video host on raw merits (adaptive bitrate, per-view pricing), but 'I don't want images and video living separately' is a real operational cost, and one store with a compression discipline beats two stores with perfect delivery. The right architecture is the one the operator will actually maintain." | `tool-choice`, `pm-discipline` |
+| 70 | "Migrated in copy-now, repoint-next, delete-last chunks with the old folder live as rollback at every step. Nothing user-facing moved until a preview deploy proved Blob was serving everything. The deletion of the old folder was the LAST commit, not the first, and even then it was one git command from recovery. Risky migrations get sequenced so every step has a working fallback behind it." | `integration-depth`, `pm-discipline` |
+| 71 | "The same env var had to live in three places that don't talk to each other: Vercel for deploys, local for dev, and the builder's sandbox for its preview. Media rendered blank in the preview not because the code was wrong but because the builder's environment is walled off from Vercel's secrets by design. The lesson is to map where a value is actually read before debugging why it's missing, three environments means three copies, and that wall is a security feature, not a bug." | `integration-depth`, `tool-choice` |
+| 72 | "A talking-head video ballooned past its column because a video with only a width takes its own intrinsic height. The fix wasn't a magic height value, it was a constrained-aspect wrapper with the video positioned absolutely inside it, so the box defines the size and the video fills it. Then I found the identical bug in every Activate media slot. A defect that appears in nine places is one duplicated component waiting to be extracted, not nine bugs to fix nine times." | `integration-depth`, `pm-discipline` |
+| 73 | "Said no to background music and no to price A/B testing in the same session, both for the same underlying reason: the obvious-feeling feature collides with a constraint the requester hadn't weighed. Music can't autoplay and fights the product; a price test is underpowered at this traffic and creates a Shopify dual-truth and a fairness problem. The job isn't to build what's asked, it's to surface the cost the ask didn't see and offer the version that actually works." | `pm-discipline`, `discovery` |
 
 ---
 

@@ -94,7 +94,60 @@ carrying promo signup + order + the discount code used.
   at the deepest tier before the extra $10). Revisit only if first-order +
   bulk stacking proves too generous in practice.
 
-## Alternatives rejected
+## The cart-attribute pipe (the off-domain data-passing pattern) — added 2026-06-17
+
+A recurring problem: data known in the browser (on our domain) needs to reach the
+server-side `purchase` event and the Supabase order row, but the purchase is
+captured from the `orders/create` webhook — a serverless function with no browser,
+no session, no device. The solution, now used for THREE values, is one pattern:
+**write the value as a Shopify cart attribute at `cartCreate`; Shopify carries it
+to the order's `note_attributes`; the webhook reads it back.**
+
+| Attribute | Written at cartCreate from | Read by webhook into | Purpose |
+|---|---|---|---|
+| `posthog_distinct_id` | `posthog.get_distinct_id()` | PostHog `purchase` distinctId + Supabase `distinct_id` | Identity stitch (5c-2b) — joins the purchase to the on-site session |
+| `discount_code` | `sessionStorage.litsaber_discount` | Supabase `discount_code` / promo attribution | Promo `?discount=` redemption (ADR-004) |
+| `device_type` | `posthog.get_property('$device_type')` | PostHog `purchase` property + Supabase `device_type` column | "What device do actual BUYERS use" — answerable only on `purchase`, not `checkout_started` (intent ≠ sale) |
+
+**`device_type` specifics (added 2026-06-17).** The server-side `purchase` event
+carries no device because the webhook has no browser (confirmed: a `purchase`
+event's metadata showed `library: posthog-node`, distinct_id present, zero
+`$device_*` autocapture props). PostHog computes `$device_type` client-side, so we
+read it at `cartCreate` and thread it through. Lands on both the PostHog `purchase`
+event AND a nullable `device_type` column on the `orders` table (migration `003`)
+— the column because the Phase 6 agent queries `orders` directly and shouldn't have
+to cross-reference PostHog session data (same reasoning as `customer_name` getting a
+column rather than living in `raw` JSON). Migration runs before the code deploys
+(the `customer_name` ordering rule).
+
+**Why NOT a Shopify web pixel** (PostHog's documented Shopify-conversion approach):
+we already have a working server-side `purchase` event and an identity stitch. A
+web-pixel `checkout_completed` capture would create a SECOND purchase event (double
+count) and identifies by email — a different identity model that would fragment the
+`posthog_distinct_id` stitch. The pixel is the right tool for a non-headless store
+with no other purchase tracking; we are not that. Rejected.
+
+**Why NOT `checkout_started` broken down by device** (the tempting zero-code
+answer): `checkout_started` proves intent, not purchase. "Device of actual buyers"
+must come off `purchase`. Intent ≠ sale.
+
+**Shared limitation of the whole pipe (all three attributes):** values are only
+written at `cartCreate`. A returning visitor with a persisted `cartId` adds via
+`cartLinesAdd`, skipping `cartCreate`, so none of the three attributes get written
+on that visit — the purchase falls back (`order_<id>` distinctId / no discount /
+`device_type: unknown`). First-time buyers (the bulk) get all three. Capture rate
+is also slightly under 100% even for first-timers if PostHog hasn't computed the
+value by `cartCreate` (the init-race theme) — the truthy-guard skips it and the
+webhook falls back. Acceptable; measured via the existing console.warn on the
+distinct_id miss. Hardening (write the attributes on the `cartLinesAdd` path too,
+via `cartAttributesUpdate`) deferred until the miss rate proves it's worth it.
+
+**`device_type` is "device at add-to-cart," not "device at payment."** Edge case:
+add on mobile, complete checkout later on desktop (cart persisted) → recorded as
+mobile. Rare, and "where buying intent formed" is a defensible (arguably better)
+definition — but report it as such, not as literal payment device.
+
+
 
 - **Delay HubSpot contact creation until order placed** (to avoid duplicate
   contacts). Rejected: discards all non-converting leads, breaks the

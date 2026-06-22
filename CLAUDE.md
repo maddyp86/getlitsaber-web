@@ -22,7 +22,8 @@ Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. 
 - **Reviews:** Judge.me (Shopify-native reviews app; widget embed + REST API)
 - **Analytics:** PostHog (product), Vercel Analytics (performance), Supabase (events mirror for the agent)
 - **Forms:** HubSpot embedded forms (newsletter, wholesale, contact)
-- **Hosting:** Vercel (Hobby tier at launch; Pro tier likely 6+ months in driven by production agent function time)
+- **Media:** Vercel Blob — single store for all images AND video (ADR-007). See Asset convention.
+- **Hosting:** Vercel. Pro tier is required AT the Phase 7 commercial cutover (Vercel's terms prohibit Hobby for commercial use, and Pro lifts the 10GB Blob transfer cap that video pressures). The earlier "Pro 6+ months in" note was wrong.
 - **Domain registrar:** Namecheap (existing). Domain `getlitsaber.com` stays at Namecheap; DNS A/CNAME records point at Vercel.
 - **Package manager:** pnpm
 
@@ -61,51 +62,95 @@ When Figma and the spec docs disagree, the spec docs win. Always.
 
 ## Asset convention
 
-All static visual assets live under `public/images/` with a **page-based** folder structure (this is what's actually in the repo — reconciled from the original category-based plan):
+**All site media (images AND video) lives in Vercel Blob, not in the repo.**
+This is the ADR-007 state, executed 2026-06-11. `public/images/` has been
+deleted. Do not add images or video to `public/`.
 
-```
-public/
-└── images/
-    ├── home/         # Homepage assets — hero-lifestyle.png, litsaber-hero-image.png, section imagery
-    ├── product/      # PDP product renders, exploded views, color variants
-    ├── venues/       # Festivals / Raves / House Parties / Events (Where It Lives section)
-    ├── reviews/      # Customer photos from reviews
-    ├── about/        # Founder photos, behind-the-scenes
-    ├── activate/     # Product-in-use shots for the Activate page
-    └── icons/        # Custom icons not covered by inline SVG
-```
+**Reference media through `lib/media.ts` — never hardcode a URL or a `/images/`
+path:**
+- `mediaUrl("home/hero-lifestyle.jpg")` builds the `/images/` Blob URL.
+- `videoUrl("home/litsaber_mode.mp4")` builds the `/videos/` Blob URL.
+- Both fall back to local `/images/` and `/videos/` paths when the env var is
+  absent (local dev safety / rollback).
 
-**Known homepage hero assets (confirmed in repo):**
-- `public/images/home/hero-lifestyle.png` — hero background lifestyle/scene image
-- `public/images/home/litsaber-hero-image.png` — Litsaber device render, layered over the background
+**Blob store + base URL (banked):** store `get-litsaber-blob`, ID
+`store_0KU6ZB3BoVDlOwuq`, region SFO1, PUBLIC. Base URL
+`https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com` (no trailing slash),
+stored as `NEXT_PUBLIC_MEDIA_BASE_URL`. **That env var must be set in THREE
+isolated places — they do not sync:** Vercel dashboard (Production + Preview +
+Development), local `.env.local`, and Bolt's own env panel (Bolt's preview
+sandbox cannot read Vercel's vars — this is why media renders blank in Bolt's
+preview if the var is missing there).
+
+**Blob pathname convention (mirrors the old folder structure as prefixes):**
+```
+images/home/      images/product/   images/venues/    images/reviews/
+images/about/     images/activate/  images/icons/
+videos/home/      videos/activate/
+```
+Filenames are lowercase, hyphenated or underscored, deterministic
+(`addRandomSuffix: false`). A changed asset gets a NEW filename, never an
+overwrite — that allows the one-year cache headers with no invalidation problem.
+
+**What stays in `public/`:** ONLY build-coupled assets — fonts
+(`next/font/local` needs the file at build time), favicon, `robots.txt`,
+`sitemap`, and OG/metadata images. Nothing else.
 
 **Rules:**
-- Image filenames are lowercase, hyphenated: `hero-lifestyle.png`, not `Hero Lifestyle.PNG`
-- Prefer WebP for photos where possible, SVG for icons/logos, MP4 for video. PNG is acceptable for renders with transparency (e.g. device cutouts).
-- Always render via `next/image` with explicit `width`/`height` (or `fill` with a sized container) — no layout shift
-- Always provide meaningful `alt` text — never `alt=""` unless purely decorative
-- If an asset doesn't exist yet, reference its intended path and add `{/* TODO: replace placeholder */}` above the `<Image>` tag
-- Do NOT invent asset filenames. Verify the real path in `public/images/<page>/` before referencing — the folder is page-based (`home/`), NOT a `hero/` category folder. (A Phase 2 build initially failed because it assumed `public/images/hero/`; the real path is `public/images/home/`.)
+- Render photos via `next/image` with explicit `width`/`height` (or `fill` with
+  a sized container) — no layout shift. `next/image` is used in 36+ files.
+- **`next.config.mjs` `images.remotePatterns` MUST whitelist any remote media
+  host.** `next/image` hard-throws on an un-whitelisted hostname. The Blob host
+  (`0ku6zb3bovdlowuq.public.blob.vercel-storage.com`) is already whitelisted; a
+  new host must be added before use.
+- `ResponsiveImage` is a raw `<img>` inside `<picture>` (no AVIF/resize). It is
+  the EXCEPTION; the site is overwhelmingly `next/image`. Use `ResponsiveImage`
+  only for genuine paired mobile/desktop asset swaps (different files per
+  breakpoint), passing `mediaUrl()` for both sources. Breakpoint switch defaults
+  to `lg` (1024px); mobile asset below, desktop at/above. Paired-asset naming:
+  desktop is the base name (`hero-lifestyle.jpg`), mobile appends `-mobile`
+  (`hero-lifestyle-mobile.jpg`); formats may differ between the two.
+- Always provide meaningful `alt`; `alt=""` only when purely decorative.
+- If an asset doesn't exist yet, reference its intended `mediaUrl()`/`videoUrl()`
+  path and add `{/* TODO: upload to Blob */}` above the tag.
+- Do NOT invent asset filenames. The Blob path must actually exist — confirm in
+  the Blob dashboard before referencing.
 
-**Responsive images (mobile vs desktop assets) — standard pattern:**
-- Many images have separate mobile and desktop files — different filenames, often different dimensions AND different formats (e.g. `hero-lifestyle.png` desktop / `hero-lifestyle-mobile.jpg` mobile).
-- ALWAYS use the `<ResponsiveImage />` primitive (see COMPONENTS.md) for these — never hand-roll two `<Image>` tags with `hidden`/`lg:block`. The primitive uses `<picture>` so the browser downloads ONLY the needed asset; this matters most for `priority` above-the-fold images where a phone must not fetch the large desktop file.
-- Breakpoint switch defaults to `lg` (1024px). Mobile asset below, desktop at/above.
-- Paired-asset naming: desktop is the base name (`hero-lifestyle.png`), mobile appends `-mobile` (`hero-lifestyle-mobile.jpg`). Formats may differ between the two — that's expected and fine.
+**Video assets (ADR-007).** Vercel Blob is progressive download, NOT adaptive
+bitrate, so video is compressed BEFORE upload, never shipped raw:
+- Format: H.264 MP4. NEVER `.mov` (Chrome and Firefox reject it).
+- 1080p max, 2 to 4 Mbps target bitrate, AAC audio or none, `+faststart` (moov
+  atom at front so playback starts before full download).
+- Target under 15MB per clip. A hero/loop clip over that is a broken hero on
+  festival LTE.
+- Paths in content files via `videoUrl("...")`, never hardcoded.
+
+**Video element pattern.** Every autoplay background/loop video carries ALL of
+`autoPlay muted loop playsInline preload="metadata"` (all four required for
+mobile-Safari autoplay — dropping any one silently breaks it on some device),
+plus a `poster` fallback, `aria-hidden` when decorative, and a
+`prefers-reduced-motion` branch rendering the static poster instead. For sizing:
+a `<video>` with only a width balloons to its intrinsic height. Wrap it in a
+constrained-aspect box (`relative` + `aspect-*`) and give the video
+`absolute inset-0 w-full h-full object-cover`, so the box defines the height and
+the video fills it. NEVER give a `<video>` `w-full object-cover` with no height
+constraint.
 
 **Critical workflow rule — single write path to the repo:**
-- The repo has ONE write path at a time. **As of 2026-05-23 that path is Bolt** (the earlier handoff to local Claude Code was reverted; the team is back on Bolt and not yet on Claude Code). Code enters through Bolt, which pushes to GitHub.
-- The rule that matters is NOT "which tool" — it is "only one tool writes at a time." The past collisions (a Netlify dependency leak, then a merge that dropped the entire `public/images/` folder, recovered via `git checkout <commit> -- public/`) were caused by TWO write paths to one repo, not by Bolt specifically. Whichever tool is active, do not write through a second one concurrently.
-- While Bolt is the active path: do NOT add or edit files via the GitHub web UI, a local clone, or any other tool. That recreates the two-source divergence that caused the collisions. Assets that can't go through Bolt should be added in a deliberate, announced single-tool window, then control handed back to Bolt.
-
-**Where assets live in production:**
-- During Phase 2/3: assets live in `public/` and ship with the repo
-- Phase 6/7 migration: large assets (real product photography, video) move to Vercel Blob; references update from `/images/...` to the Blob URL. Keeps the repo lean.
-
-**Video specifically:**
-- Never commit video files to the repo (`.mp4`, `.mov`, `.webm`). Even short clips bloat git history permanently.
-- Phase 2/3 video placeholder: render a `<VideoPlaceholder />` component (static thumbnail + play icon overlay) with a TODO.
-- Phase 5+ migration to a real video host (Vercel Blob for small files, Mux for product videos, Cloudflare Stream as alternative).
+- The repo has ONE write path at a time. **As of 2026-05-23 that path is Bolt**
+  (the earlier handoff to local Claude Code was reverted; the team is back on
+  Bolt and not yet on Claude Code). Code enters through Bolt, which pushes to
+  GitHub.
+- The rule that matters is NOT "which tool" — it is "only one tool writes at a
+  time." The past collisions (a Netlify dependency leak, then a merge that
+  dropped the entire `public/images/` folder, recovered via
+  `git checkout <commit> -- public/`) were caused by TWO write paths to one repo,
+  not by Bolt specifically. Whichever tool is active, do not write through a
+  second one concurrently.
+- While Bolt is the active path: do NOT add or edit files via the GitHub web UI,
+  a local clone, or any other tool. That recreates the two-source divergence that
+  caused the collisions. Assets that can't go through Bolt should be added in a
+  deliberate, announced single-tool window, then control handed back to Bolt.
 
 ---
 
@@ -316,6 +361,21 @@ Prefer to **stop and ask** over guessing on:
 - Promo box error-state UX before building it (Figma has no error state — ADR-004)
 
 For everything else, propose a plan, get a thumbs-up, then execute.
+
+---
+
+## Open items / known issues
+
+- **Activate media sweep + `<ActivateMedia>` primitive (open).** Every Activate
+  section's media column had the no-height-constraint video bug
+  (`w-full object-cover`, balloons to intrinsic size). Fixed in QuickStart,
+  Modes, Battery. Apply the constrained-aspect-wrapper fix across the remaining
+  Activate sections, THEN extract a shared `<ActivateMedia src poster alt />`
+  primitive — the duplicated media-column JSX is how the bug reached every
+  section, so one primitive replaces the copies and prevents recurrence.
+- **Reviews provider migration (open).** Reviews switched ReviewInfra → Judge.me.
+  Update the tech-stack line and the "Reviews provider" section, and add an ADR
+  documenting the reversal.
 
 ---
 

@@ -93,6 +93,26 @@ export async function POST(req: Request): Promise<Response> {
     console.warn("[webhook/orders] no posthog_distinct_id on order, using fallback", orderId);
   }
 
+  const email = (order.email || "").trim().toLowerCase();
+  const canIdentify =
+    !!stitchedId &&
+    !stitchedId.startsWith("order_") &&
+    !stitchedId.includes("@") &&
+    !!email;
+
+  const deviceType =
+    order.note_attributes?.find((a) => a.name === "device_type")?.value?.trim() || "unknown";
+  const channelType =
+    order.note_attributes?.find((a) => a.name === "channel_type")?.value?.trim() || "unknown";
+  const utmSource =
+    order.note_attributes?.find((a) => a.name === "utm_source")?.value?.trim() || "";
+  const utmMedium =
+    order.note_attributes?.find((a) => a.name === "utm_medium")?.value?.trim() || "";
+  const utmCampaign =
+    order.note_attributes?.find((a) => a.name === "utm_campaign")?.value?.trim() || "";
+  const referrer =
+    order.note_attributes?.find((a) => a.name === "referrer")?.value?.trim() || "";
+
   // customer_name: join non-empty name parts; null if both absent.
   const nameParts = [order.customer?.first_name, order.customer?.last_name]
     .filter((p): p is string => Boolean(p?.trim()));
@@ -111,6 +131,7 @@ export async function POST(req: Request): Promise<Response> {
     discount_amount: discountAmount,
     email: order.email ?? null,
     customer_name: customerName,
+    device_type: deviceType === "unknown" ? null : deviceType,
     raw: JSON.parse(rawBody) as Record<string, unknown>,
   });
 
@@ -126,6 +147,9 @@ export async function POST(req: Request): Promise<Response> {
   if (posthogToken) {
     const posthog = new PostHog(posthogToken, { host: posthogHost });
     try {
+      if (canIdentify) {
+        posthog.identify({ distinctId: stitchedId, properties: { email } });
+      }
       posthog.capture({
         distinctId,
         event: "purchase",
@@ -138,6 +162,12 @@ export async function POST(req: Request): Promise<Response> {
           has_promo_code: hasPromoCode,
           discount_code: discountCode,
           discount_amount: discountAmount,
+          device_type: deviceType,
+          channel_type: channelType,
+          utm_source: utmSource,
+          utm_medium: utmMedium,
+          utm_campaign: utmCampaign,
+          referrer: referrer,
         },
       });
       // Flush before the serverless function freezes — unflushed events are lost
