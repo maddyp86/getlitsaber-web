@@ -3,6 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-05-19
 **Decider:** Matt Hall
+**Superseded in part:** The reviews-provider decision surfaced here is now resolved and governed by ADR-008 (Judge.me). The interim ReviewInfra direction recorded in CLAUDE.md is reversed.
 
 ## Context
 
@@ -45,7 +46,7 @@ Build order, prioritized by visual confidence and dependency:
 
 These shape Bolt prompts and cannot be deferred to Phase 3:
 
-- **Reviews provider:** Yotpo / Stamped / Judge.me / Okendo / build-own
+- **Reviews provider:** Yotpo / Stamped / Judge.me / Okendo / build-own (resolved as Judge.me; see ADR-008)
 - **AI Summary source:** manual / LLM-generated / provider feature
 - **Bundle SKU strategy:** separate Shopify product or quantity-based discount
 - **PDP long-form copy:** rewrite to BRAND.md voice or keep current placeholder
