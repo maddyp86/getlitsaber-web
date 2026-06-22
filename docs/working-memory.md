@@ -649,7 +649,7 @@ caught real bugs in 4a and 4b before any code was written.
 
 PostHog + Vercel Analytics + Supabase mirror. Event taxonomy defined pre-launch. Success metrics document committed before traffic arrives. Floating promo trigger (12s + exit-intent) and frequency cap (72h dismiss / 365d subscribe) are now LOCKED; what remains here is instrumenting the promo funnel (popup shown → submitted → emailed → code applied → purchased) so the ADR-004 promo bundle launches into a measured funnel, not a blind one.
 
-### PostHog identity — identify-on-email fixes channel attribution (2026-06-18) (planned, Bolt plan approved, not yet shipped)
+#### 5.1 PostHog identity — identify-on-email fixes channel attribution (2026-06-18)
 
 **Trigger:** The "Acquisition Channel" tile (`lo1DdHbT`, purchases by channel)
 returns all "Unknown." Question raised: the purchase event is a webhook, so it
@@ -901,11 +901,12 @@ Date Context must precede Read Last Week and Read Targets because their filters 
 4. Traffic & Audience
 5. Conversion Funnel
 6. Buying Behavior
-7. Promo & Capture
-8. Revenue & North Star
-9. Performance (web vitals, one line)
-10. Proposed Experiments (hypothesis / metric / rationale)
-11. Data Caveats
+7. Session Signals
+8. Promo & Capture
+9. Revenue & North Star
+10. Performance (web vitals, one line)
+11. Proposed Experiments (hypothesis / metric / rationale)
+12. Data Caveats
 
 **Tile-to-section mapping + treatment flags banked** (LIVE = report it, DORMANT = one line or omit, ARTIFACT = name as arithmetic quirk, DEDUP = appears twice, use one). All 38 tiles assigned. Dropped entirely in calibration: `web_sessions_per_user`, `web_pages_per_user` (sample + distorted), `BJicdCFs` (duplicate of `web_unique_visitors`). Week-over-week comes from two sources: a tile's own `compare` field (sessions + visitors, every week) and `last_week_report` (everything else, once a prior week exists); where neither, the agent says "no prior week."
 
@@ -917,11 +918,108 @@ Date Context must precede Read Last Week and Read Targets because their filters 
 
 **Security action still standing:** rotate the PostHog `phx_` personal key and the Shopify `shpss_` client secret (both were pasted in plaintext during the build session).
 
+#### Phase 6.5 — Weekly agent live end to end + Flagged Sessions subsystem + schedule / week-boundary (2026-06-21)
+ 
+The weekly spine now runs through delivery (agent node, Write This Week, PDF render via PDFBolt, founder email all built and firing), and a new daily flagged-sessions subsystem feeds qualitative session-replay evidence into the weekly agent. Two calendar decisions locked alongside.
+ 
+**Weekly workflow is live end to end.** The chain from Phase 6.3 is complete past the agent: AI Agent (Anthropic, house-style prompt, structured output) produces narrative plus structured fields, Write This Week upserts the row, the markdown renders to a Chrome PDF via PDFBolt, and the PDF is emailed to the founders. First full runs verified, producing the W25 report off live calibration traffic.
+ 
+##### Daily flagged-sessions pipeline (NEW subsystem) ✅
+ 
+A second, separate n8n workflow runs daily and writes session-level friction/intent evidence into Supabase. The weekly agent reads the unreviewed rows as qualitative context. Seven nodes:
+ 
+1. **Schedule Trigger** (daily, hour 06:00 UTC).
+2. **PostHog Flagging Query** (httpRequest POST `https://us.posthog.com/api/projects/445005/query/`, Header Auth). HogQL flags one row per session in the trailing window on any of `$exception` / `$rageclick` / `$dead_click` / `checkout_started`, with a `converted` boolean derived by LEFT JOIN of the server-side `purchase` event to the session by `distinct_id` within a 2-hour window. Excludes `-git-` staging URLs. Production uses `INTERVAL 1 DAY`; test runs used `30 DAY` and must be reverted before cutover.
+3. **Shape Rows** (Code) zips columns and results, coerces `converted` via `String()` comparison, computes `week_of`.
+4. **Upsert Flagged** (httpRequest POST PostgREST `.../flagged_sessions?on_conflict=session_id`, `Prefer: resolution=merge-duplicates,return=minimal`).
+5. **Summarize Sessions** (MCP Client node, PostHog MCP OAuth2, tool `session-recording-summarize`, ~600000ms timeout, `session_ids` bare array plus a context prompt).
+6. **Merge Summaries** (Code) reads `item.json.structuredContent`, skips keys starting with `_`, folds all MCP items into one dict keyed by `session_id`, joins back to Shape Rows.
+7. **Patch Summaries** (httpRequest PATCH `.../flagged_sessions?session_id=eq.{{ $json.session_id }}`, body `={{ { summary: $json.summary, summarized_at: $json.summarized_at } }}`, `Prefer: return=minimal`).
+**Supabase table (created):**
+ 
+```sql
+create table flagged_sessions (
+  session_id    text primary key,
+  distinct_id   text,
+  start_url     text,
+  start_time    timestamptz,
+  duration_secs int,
+  flag_reason   text,            -- comma-joined when a session trips more than one signal
+  metric_value  numeric,
+  summary       jsonb,           -- full session-recording-summarize payload
+  summarized_at timestamptz,
+  reviewed      boolean default false,
+  notes         text,
+  week_of       date,
+  converted     boolean default false,  -- ground truth: server-side purchase joined by distinct_id + window
+  created_at    timestamptz default now()
+);
+```
+ 
+**Instrumentation state banked.** `purchase` is captured SERVER-SIDE (posthog-node webhook), so every purchase carries `$session_id = null` and is unflaggable directly. The correct conversion signal to flag on is `checkout_started` (client-side, has session id and recording). posthog-js init updated via Bolt: `capture_dead_clicks: true` added (dead clicks now firing, ~11 events), `capture_exceptions` added (still 0 events, no real exceptions yet, not a wiring fault), `$rageclick` already live. Owner/dev distinct_ids pollute the feed; the PostHog internal/test-account filter is NOT yet set (deferred to cutover).
+ 
+**PATCH-not-POST bug (banked, bit twice).** Patch Summaries was first written as POST, which PostgREST treats as INSERT, so it tried to create a row with no `session_id` and failed the not-null constraint (`null value in column "session_id" ... violates not-null constraint`). Fixed to PATCH (update in place). The identical bug reappeared later on the weekly Mark Reviewed node, same cause, same fix.
+ 
+##### Wiring flagged sessions into the weekly report ✅
+ 
+Five weekly-flow nodes touched.
+ 
+**Assemble Context compaction.** Reads the unreviewed flagged rows and emits, per session: `{ session_id, start_url, start_time, duration_secs, flag_reason, converted, disposition, outcome, segment_summaries }`. `outcome` is read from `summary.session_outcome.description`; `segment_summaries` from `summary.segment_outcomes` joined to `summary.segments` by index. A `flagged_summary` rollup carries `{ count, converted, by_reason }`, where `by_reason` splits comma-separated `flag_reason` (so a `rageclick,dead_click` session increments both, and by-reason counts can sum above the session count, expected, same shape as the activations-by-device caveat).
+ 
+**`disposition` field (decision: binary).** Derived at compaction: `converted: true` to `"converted"`, `converted: false` to `"lost"`. The three-way split considered earlier was dropped because the narrative cannot reliably distinguish "purchased this visit" from "purchased later" (the purchase is server-side and invisible either way), so it is not asked to. The disposition value rides in the context now; surfacing it as a Disposition column in the Render Report table is a cutover task.
+ 
+**Agent prompt.** A trimmed "Flagged sessions" reference block defines the fields and how to read `flag_reason` (rageclick / dead_click = UX/interaction problem; checkout_started = checkout/pricing hesitation), instructs the agent to render the table and interpret the pattern rather than enumerate session by session, and carries the calibration caveat that the feed is not yet filtered to real customers. A converted-is-ground-truth note was added (see investigation below).
+ 
+**Render Report.** New `## 08 - Session Signals` section beneath Buying Behavior (07), with downstream renumber: Promo & Capture 09, Revenue & North Star 10, Website Performance 11, Proposed Experiments 12, Data Caveats 13. The block prints the rollup header plus a one-row-per-session table (Flag Reason / Outcome / Converted / Duration), pipe-guards the outcome string, and degrades to "_No sessions flagged this week._" when the count is falsy.
+ 
+**Mark Reviewed (decision: scope to the week, not all unreviewed).** PATCH (not POST). Filter is the exact session_ids the report read, not `reviewed=eq.false`:
+ 
+```
+PATCH .../flagged_sessions?session_id=in.({{ $('Read Flagged Sessions').all().map(i => i.json.session_id).join(',') }})
+body ={{ { reviewed: true } }}, Prefer: return=minimal
+```
+ 
+Reasoning: `reviewed=eq.false` would also mark any session the daily flagger writes between the weekly read and this node, burying it before it is ever reported. Scoping to the read set leaves those for next week. UUIDv7 ids need no quoting in the `in.()` list.
+ 
+##### The converted-but-abandoned investigation (decision: converted is ground truth) ✅
+ 
+In the first live run, four of five flagged sessions read `converted: true` while every one of their `outcome` narratives described abandonment. Rather than accept the agent's read (probable test traffic), pulled the full event timeline for one session via PostHog MCP (`execute-sql` over `events` for the distinct_id). Result: the `purchase` fired server-side about 34 seconds after `checkout_started`, INSIDE the recorded session window, but with `$session_id = null`, so it never appears in the session recording. A second converted session showed the identical signature (purchase about 41 seconds after checkout). 
+ 
+Mechanism, now banked: because all purchases are server-side with a null session id, the purchase is structurally invisible to the summarizer in every case, so any converting visitor who keeps browsing after checkout is narrated as abandonment. `converted: true` plus an abandonment narrative is the GUARANTEED fingerprint of a completed purchase in this data model, not an occasional artifact. This corrected an earlier hypothesis (that buyers "came back later in another tab"), which the in-window timing disproved. 
+ 
+Decisions: (1) prompt note added telling the agent `converted` is ground truth and overrides the narrative; converted sessions are completed purchases (hesitation worth smoothing, not lost sales), only `converted: false` are genuine drop-offs. Live now. (2) the binary `disposition` field above. (3) Disposition column in the render table deferred to cutover.
+ 
+##### Schedule + week boundary (decisions)
+ 
+**Weekly fires Monday 08:00 UTC.** The daily flagger runs 06:00 UTC; the two-hour gap clears the daily summarize window (first-gen MCP summaries run minutes each) so the weekly read never sees a half-written set. The dependency is real but n8n does not enforce it across two separate workflows, so the gap is held by the schedule. If the daily time moves, move the weekly with it.
+ 
+**Week starts Monday (PostHog setting + Date Context).** PostHog project "Week starts on" set to Monday so weekly tile bucketing matches the report's own window math; otherwise the tiles and the date logic count different seven-day spans and week-over-week compares drift. Monday chosen to match the ISO `report_week` label the report already emits.
+ 
+**Date Context node rewritten.** The old logic computed a trailing seven days ending yesterday, which produced a correct Monday-to-Sunday week only because the job happened to fire on a Monday (a coincidence of fire day, not a fixed boundary). Replaced the window block to anchor to the most recently COMPLETED Monday-to-Sunday week, regardless of run day:
+ 
+```javascript
+const now = new Date();
+const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+const dow = (today.getUTCDay() + 6) % 7;                 // Mon=0 .. Sun=6
+const thisMonday = new Date(today);
+thisMonday.setUTCDate(today.getUTCDate() - dow);         // 00:00 this Monday
+ 
+const weekStart = new Date(thisMonday);
+weekStart.setUTCDate(thisMonday.getUTCDate() - 7);       // prior Monday
+weekStart.setUTCHours(0, 0, 0, 0);
+ 
+const weekEnd = new Date(thisMonday);
+weekEnd.setUTCDate(thisMonday.getUTCDate() - 1);         // prior Sunday
+weekEnd.setUTCHours(23, 59, 59, 999);
+```
+ 
+The `isoWeek()` math, `report_week` label, and output shape are unchanged. `week_end` is still emitted via `.toISOString()` (Z-suffixed UTC), so the `days_to_target` math in Assemble Context (`new Date(dateCtx.week_end)`) stays UTC-safe. Cadence: a Monday Jun 22 run reports Jun 15 to 21 (W25); a Monday Jun 29 run reports Jun 22 to 28 (W26). Correct for any fire on or after the Monday it reports from, which the 08:00 Monday schedule satisfies; a manual Sunday run would resolve to the wrong week (no guard added, scheduled path only).
+
 #### Phase 6 — what's done vs pending
 
-Done: PostHog data layer (both dashboards, parser verified across trends/funnel/sql), web-vitals p75 rebuild, Supabase table created + service-key access, the orchestration spine through Assemble (Parse → Date Context → Read Last Week → Assemble all producing the combined context with `is_baseline`/`last_week_report`).
+Done: PostHog data layer (both dashboards, parser verified across trends/funnel/sql), web-vitals p75 rebuild, Supabase table created + service-key access, the orchestration spine through Assemble (Parse → Date Context → Read Last Week → Assemble all producing the combined context with `is_baseline`/`last_week_report`). PostHog data layer (both dashboards, parser verified across trends/funnel/sql), web-vitals p75 rebuild, Supabase tables (`litsaber_weekly_reports`, `litsaber_targets`, `flagged_sessions`) with service-key access, the full orchestration spine (Parse, Date Context, Read Targets, Read Last Week, Assemble, AI Agent, Write This Week, PDF render via PDFBolt, founder email), the daily flagged-sessions pipeline (flag, upsert, MCP summarize, patch), and the flagged-sessions wiring into the weekly report (Assemble compaction, agent prompt, Session Signals render section, scoped Mark Reviewed). Weekly workflow runs end to end; daily flagger runs end to end. Schedule and Monday week-boundary locked.
 
-Pending: Read Targets node + `litsaber_targets` table + Assemble scorecard additions (next, see plan); the AI Agent node wiring + prompt + schema; Write This Week upsert (incl. `report_data`); PDF render + Drive mirror; Gmail/Slack delivery; first end-to-end run; the deferred pgvector associative layer (post-launch).
+Pending: Read Targets node + `litsaber_targets` table + Assemble scorecard additions (next, see plan); the AI Agent node wiring + prompt + schema; Write This Week upsert (incl. `report_data`); PDF render + Drive mirror; Gmail/Slack delivery; first end-to-end run; the deferred pgvector associative layer (post-launch). surface the `disposition` field as a render-table column at cutover; set the PostHog internal/test-account filter (Matt's distinct_id plus matthewtyler1986@gmail.com); reconcile the upstream orders discrepancy the agent flagged as the week's top data-integrity issue (weekly_orders tile 13 vs primary_funnel terminal 4); revert the daily flagging query from the 30 DAY test interval to `INTERVAL 1 DAY`; confirm `$exception` events appear once real errors occur (capture is enabled, 0 events is expected pre-traffic); the deferred pgvector associative-recall layer (post-launch, unchanged); the standing security action to rotate the pasted `phx_` and `shpss_` keys.
 
 **Story beats captured (Phase 6)**
 
@@ -931,6 +1029,10 @@ Pending: Read Targets node + `litsaber_targets` table + Assemble scorecard addit
 | 65 | "Caught myself about to hardcode a 90-day target of 20 orders a week while sitting at zero real sales. A target with no basis poisons every grade after it. The fix was the kata discipline itself: you measure the current condition before you set the target condition. So the agent runs in establish-baseline mode with no numeric targets until real traffic gives it a floor to improve from, then targets get set as a defined delta over what was actually observed. Refusing to invent the number is the senior move, not a gap." | `pm-discipline`, `analytics-rigor` |
 | 66 | "Three tiles disagreed on the single most important number — orders. The funnel said zero, the promo pipeline said one, revenue said zero dollars. Rather than let the agent silently pick, I made revenue the commerce source of truth (zero dollars means zero orders) and told it to flag the promo discrepancy as a tracking artifact in prose. When sources conflict, name the canonical one and surface the conflict — don't average it away or let the model choose per run." | `analytics-rigor`, `integration-depth` |
 | 67 | "Verified the SQL-tile result shape against a real payload instead of trusting my own parser assumption. I'd written it to read nested result.results/result.columns; the dashboard endpoint actually returns result as row-arrays with columns as a sibling. One real paste corrected a guess that would have silently dropped both bounce and session-duration into an unparsed blob. The discipline that keeps paying off: pull the real artifact, don't reason about the shape from memory." | `integration-depth`, `analytics-rigor` |
+| 68 | "A batch of flagged sessions read converted-true while their summaries all said 'abandoned.' The easy call was the agent's: probably test traffic. I pulled the actual event timeline for one instead and found the purchase fired server-side about 34 seconds after checkout, inside the session window but invisible to the recording because server-side events carry no session id. So in this data model every real conversion is narrated as abandonment, every time. The flag is ground truth; the narrative is a partial view of one browser visit. The lesson is the one that runs through this whole build: pull the artifact before you trust the story written about it. It also killed my own first guess, that they came back later in another tab, which the in-window timing disproved." | `analytics-rigor`, `integration-depth` |
+| 69 | "The same bug bit twice in two nodes: a Supabase write set to POST tries to INSERT, hits the not-null constraint on session_id, and dies. The fix both times was PATCH, an update in place. Then a quieter one on mark-reviewed: filtering on reviewed=false would mark every unreviewed row, including sessions the daily job writes after the weekly read but before the mark fires, burying them before they are ever reported. Scoped it to the exact ids the report read. An update is not an insert, and 'mark everything unreviewed' and 'mark what I just reported' are different sets the moment two workflows share a table." | `integration-depth`, `pm-discipline` |
+| 70 | "Wired session-replay summaries into the weekly agent as qualitative evidence, walled off from the numbers on purpose. The funnel and trends tiles stay the canonical measurement; flagged sessions are texture the agent reads for the why, never a denominator it counts. Encoded the split in the prompt and in a binary disposition field, converted versus lost, so the agent separates recovered near-misses from genuine drop-offs instead of flattening them into one abandonment story. Evidence and measurement in separate lanes is the same trust rule as parser-owns-numbers, agent-owns-judgment." | `analytics-rigor`, `agent-loop` |
+| 71 | "The report's week math took a trailing seven days ending yesterday, which gave a correct Monday-to-Sunday week only because the job happened to fire on a Monday. Anchored it to fixed weekdays so the boundary holds no matter the run day, and set PostHog's own week-start to Monday so the tiles and the report window slice the same seven days. A boundary that is right by coincidence of the fire day is a latent bug; pin it to the calendar, and make the two systems that cut the week agree." | `integration-depth`, `pm-discipline` |
 
 ---
 
