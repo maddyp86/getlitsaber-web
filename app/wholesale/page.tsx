@@ -12,11 +12,11 @@ import WholesaleCta from "@/components/wholesale/WholesaleCta";
 export const metadata: Metadata = {
   title: "Wholesale — Litsaber | Stock the 510 Battery Customers Ask For",
   description:
-    "Litsaber wholesale program. 4-tier pricing from 5 units to 10,000+. $24/unit starting price, $59.99 MSRP. Apply for the full pricing sheet and get a response within 24 hours.",
+    "Litsaber wholesale program. Flat $20/unit pricing, MOQ 5 units. $49.99 MSRP. Apply for the full pricing sheet and get a response within 24 hours.",
   openGraph: {
     title: "Wholesale — Litsaber",
     description:
-      "4-tier wholesale pricing. Starting at $24/unit. $59.99 MSRP. Apply for the full sheet.",
+      "Flat $20/unit. $49.99 MSRP. MOQ 5 units. Apply for the full sheet.",
     url: "https://getlitsaber.com/wholesale",
   },
 };

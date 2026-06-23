@@ -34,8 +34,8 @@ export const HERO_CTA_SECONDARY = "SEE THE NUMBERS";
 
 // ─── Section 2 — Stats Bar ───────────────────────────────────────────────────
 export const STATS_BAR = [
-  { value: "$24/unit", label: "STARTS AT" },
-  { value: "$59.99", label: "MSRP" },
+  { value: "$20/unit", label: "STARTS AT" },
+  { value: "$49.99", label: "MSRP" },
   { value: "5", label: "MOQ (UNITS)" },
   { value: "80", label: "CASE PACK" },
 ] as const;
@@ -91,18 +91,18 @@ export const MARGINS_EYEBROW = "THE NUMBERS";
 export const MARGINS_HEADLINE_LINE1 = "Premium margins.";
 export const MARGINS_HEADLINE_ACCENT = "Real numbers.";
 export const MARGINS_BODY = [
-  "Wholesale starts at **$24/unit** at the entry tier (5 units). MSRP is $59.99 That's a **$36 margin per unit at the starting tier**, roughly **60% retail margin**, well above the category average for vape hardware.", 
+  "Wholesale is a flat **$20/unit** with a 5-unit MOQ. Sell to your retail accounts at $25 — that's a **$5 margin per unit**, or **20% wholesale margin** on every unit you move. Your retail partners sell at $49.99 MSRP and clear **up to 60% retail margin**, which is why they reorder.",
   "No mystery pricing. No tier-locked surprises. Submit the form and the full pricing sheet — with case pack details and freight estimates — lands in your inbox the moment you hit send."
   ];
 
 export const MARGINS_STATS = [
- { label: "WHOLESALE STARTING AT", value: "$24.00/unit", color: "#00E5FF" },
-  { label: "MSRP",                  value: "$59.99/unit", color: "#FFFFFF" },
-  { label: "YOUR MARGIN",           value: "25%",         color: "#EB3D7B" },
+ { label: "WHOLESALE STARTING AT", value: "$20.00/unit", color: "#00E5FF" },
+  { label: "MSRP",                  value: "$49.99/unit", color: "#FFFFFF" },
+  { label: "YOUR MARGIN",           value: "20%",         color: "#EB3D7B" },
 ] as const;
 
 export const MARGINS_BAND_HEADLINE =
-  "Four pricing tiers. From 5 units to 10,000+";
+  "Simple pricing. $20/unit flat. MOQ 5 units.";
 export const MARGINS_BAND_SUBLINE =
   "FULL PRICING SHEET INCLUDED WITH APPLICATION";
 export const MARGINS_BAND_CTA = "GET FULL PRICING SHEET";
@@ -181,7 +181,7 @@ export const FAQ_ITEMS = [
     num: "/05",
     question: "Is there an exclusivity arrangement?",
     answer:
-      "Open distribution by default. Regional exclusivity is available case-by-case for accounts committing to Tier 5+ volume (500+ units) with mutually agreed performance benchmarks. Contact us to discuss.",
+      "Open distribution by default. Regional exclusivity is available case-by-case for accounts committing to 500+ units with mutually agreed performance benchmarks. Contact us to discuss.",
   },
   {
     num: "/06",
@@ -200,8 +200,8 @@ export const CTA_BODY =
 
 export const CTA_BULLETS = [
   "Full pricing sheet in your inbox the moment you submit",
-  "6 volume-based pricing tiers from 25 to 10,000+ units",
-  "Free display case + demo unit with 100+ unit orders",
+  "Flat $20/unit pricing — no tiers, no complexity beyond the 5-unit MOQ",
+  "Free display case + demo unit with 80+ unit orders",
   "Dedicated account support and marketing assets included",
   "No commitment required! Exploring is fine, we'll send the deck anyway",
   "Sample units available at cost",
