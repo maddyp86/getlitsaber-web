@@ -693,7 +693,7 @@ to server logs, the Referer header, and browser history). cartCreate snapshots
 PostHog's identify-merge resolves the server purchase onto the identified person, so
 channel still lands with NO PII in the URL. No email ever reaches a URL or a log.
 
-**Implementation (planned):**
+**Implementation (shipped):**
 - NEW `lib/analytics/identify.ts`: `identifyByEmail(email)` (normalizes
   trim+lowercase, guards `__loaded`, calls `posthog.identify(email, { email })`)
   and `getCartAnalyticsId()` (returns `$device_id`; null if unavailable or contains
