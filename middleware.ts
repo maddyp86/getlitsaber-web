@@ -44,6 +44,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const res = NextResponse.rewrite(new URL("/maintenance", req.url));
+  res.headers.set("x-maintenance-mode", "1");
   res.headers.set("Retry-After", "3600");
   res.headers.set("Cache-Control", "no-store");
   return res;

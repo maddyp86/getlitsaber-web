@@ -6,6 +6,7 @@ import PostHogProvider from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import JudgemeScripts from "@/components/reviews/JudgemeScripts";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +35,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const suppressChrome = headers().get("x-maintenance-mode") === "1";
   return (
     <html
       lang="en"
@@ -48,7 +50,7 @@ export default function RootLayout({
       <body className="font-body bg-background-primary text-text-primary antialiased">
         <JudgemeScripts />
         <PostHogProvider>
-          <SiteChrome>{children}</SiteChrome>
+          <SiteChrome suppressChrome={suppressChrome}>{children}</SiteChrome>
         </PostHogProvider>
            <Analytics />
         <SpeedInsights />
