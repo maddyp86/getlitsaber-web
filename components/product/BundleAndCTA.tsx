@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
-import { getTierPrice, getTierSavings, getTierUnitPrice, MAX_QTY } from "@/lib/cart/pricing";
+import { getTierPrice, getTierSavings, getTierUnitPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
 import { track, EVENTS } from "@/lib/analytics/events";
@@ -24,6 +24,7 @@ interface BundleAndCTAProps {
   variantId: string;
   available: boolean;
   surface: "homepage_buy" | "pdp";
+  basePrice?: number;
 }
 
 function RadioIndicator({ checked }: { checked: boolean }) {
@@ -40,6 +41,12 @@ function RadioIndicator({ checked }: { checked: boolean }) {
   );
 }
 
+function optionQty(id: BundleId, moreQty: number): number {
+  if (id === "single") return 1;
+  if (id === "twopack") return 2;
+  return moreQty;
+}
+
 export default function BundleAndCTA({
   activeBundle,
   onBundleChange,
@@ -49,13 +56,14 @@ export default function BundleAndCTA({
   variantId,
   available,
   surface,
+  basePrice,
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
   const { openCart } = useCartUIActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
-  const moreTierPrice = getTierPrice(moreQty);
-  const moreSavingsRounded = Math.round(getTierSavings(moreQty));
+  const moreTierPrice = getTierPrice(moreQty, basePrice);
+  const moreSavingsDisplay = getTierSavings(moreQty, basePrice).toFixed(2);
 
   async function handleAddToCart() {
     await addItem({
@@ -63,14 +71,14 @@ export default function BundleAndCTA({
       qty: selectedQty,
       title: "Litsaber OG — Silver",
       variantTitle: "Silver",
-      price: 59.99,
+      price: basePrice ?? BASE_UNIT_PRICE,
       image: mediaUrl("product/litsaber-lights-off.jpg"),
     });
     track(EVENTS.cart_add_to_cart, {
       variant: "silver",
       quantity: selectedQty,
-      tier_price: getTierPrice(selectedQty),
-      unit_price: getTierUnitPrice(selectedQty),
+      tier_price: getTierPrice(selectedQty, basePrice),
+      unit_price: getTierUnitPrice(selectedQty, basePrice),
       source: surface,
     });
     openCart();
@@ -84,7 +92,7 @@ export default function BundleAndCTA({
         qty: selectedQty,
         title: "Litsaber OG — Silver",
         variantTitle: "Silver",
-        price: 59.99,
+        price: basePrice ?? BASE_UNIT_PRICE,
         image: mediaUrl("product/litsaber-lights-off.jpg"),
       });
       // Read post-mutation values directly from store — hook closures would be stale
@@ -94,7 +102,7 @@ export default function BundleAndCTA({
       track(EVENTS.buy_now_clicked, {
         variant: "silver",
         quantity: selectedQty,
-        tier_price: getTierPrice(selectedQty),
+        tier_price: getTierPrice(selectedQty, basePrice),
       });
       track(EVENTS.checkout_started, {
         cart_value: freshCartValue,
@@ -121,16 +129,19 @@ export default function BundleAndCTA({
           <div className="flex flex-col gap-3">
             {BUNDLE_OPTIONS.map((option) => {
               const isChecked = option.id === activeBundle;
+              const q = optionQty(option.id, moreQty);
 
               const displayPrice =
                 option.id === "more"
                   ? `$${moreTierPrice.toFixed(2)}`
-                  : (option.price ?? "");
+                  : `$${getTierPrice(q, basePrice).toFixed(2)}`;
 
               const saveLabel =
                 option.id === "more"
-                  ? `SAVE $${moreSavingsRounded}`
-                  : option.saveLabel;
+                  ? `SAVE $${moreSavingsDisplay}`
+                  : q > 1
+                  ? `SAVE $${getTierSavings(q, basePrice).toFixed(2)}`
+                  : undefined;
 
               return (
                 <div key={option.id} className="flex flex-col">
@@ -221,7 +232,7 @@ export default function BundleAndCTA({
                         </button>
                       </div>
                       <span className="font-label text-[12px] text-text-muted">
-                        Save ${moreSavingsRounded.toFixed(2)}
+                        Save ${moreSavingsDisplay}
                       </span>
                     </div>
                   )}

@@ -45,9 +45,6 @@ export interface BundleOption {
   id: BundleId;
   title: string;
   descriptor: string;
-  // Static price string for single/twopack; undefined for "more" (price is derived dynamically)
-  price?: string;
-  saveLabel?: string;
 }
 
 export const BUNDLE_OPTIONS: BundleOption[] = [
@@ -55,14 +52,11 @@ export const BUNDLE_OPTIONS: BundleOption[] = [
     id: "single",
     title: "Single",
     descriptor: "One Litsaber",
-    price: "$59.99",
   },
   {
     id: "twopack",
     title: "Two Pack",
     descriptor: "For the lightshow. For the partner. For the never-without.",
-    price: "$99.99",
-    saveLabel: "SAVE $20",
   },
   {
     id: "more",

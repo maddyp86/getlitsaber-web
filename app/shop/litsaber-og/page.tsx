@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getProductByHandle } from "@/lib/shopify/queries";
+import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import ProductDisplay from "@/components/product/ProductDisplay";
 import PdpViewTracker from "@/components/product/PdpViewTracker";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
@@ -19,6 +20,9 @@ export default async function PDPPage() {
     .find((v) => v.sku === SILVER_SKU) ?? null;
   const available = shopifyConfigured ? silverVariant?.availableForSale === true : true;
   const numericProductId = product?.id?.split("/").pop() ?? "";
+  const basePrice = silverVariant?.price?.amount
+    ? parseFloat(silverVariant.price.amount)
+    : BASE_UNIT_PRICE;
 
   return (
     <div className="pt-navbar py-xl">
@@ -29,6 +33,7 @@ export default async function PDPPage() {
           variantId={silverVariant?.id ?? ""}
           available={available}
           surface="pdp"
+          basePrice={basePrice}
         />
       </div>
 

@@ -19,7 +19,7 @@ import { persist } from "zustand/middleware";
 import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
 import { getChannelAttribution } from "@/lib/analytics/channel";
-import { getTierPrice, MAX_QTY } from "@/lib/cart/pricing";
+import { getTierPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
 import type { ShopifyCart, ShopifyCartResponse } from "@/lib/shopify/types";
@@ -34,7 +34,7 @@ export type CartLine = {
   qty: number;
   title: string;
   variantTitle: string;
-  price: number;        // base unit price in dollars (59.99); for per-unit display and optimistic fallback only
+  price: number;        // base unit price in dollars; for per-unit display and optimistic fallback only
   lineTotal: number;    // Shopify-provided discounted line total; seeded optimistically, overwritten on mutation response
   image: string;
 };
@@ -137,7 +137,7 @@ function transformShopifyCart(cart: ShopifyCart): CartLine[] {
     qty: node.quantity,
     title: "Litsaber OG — Silver",
     variantTitle: "Silver",
-    price: 59.99,
+    price: BASE_UNIT_PRICE,
     lineTotal: parseFloat(node.cost.totalAmount.amount),
     image: mediaUrl("product/litsaber-packaging-1.jpg"),
   }));
