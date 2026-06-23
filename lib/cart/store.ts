@@ -22,7 +22,7 @@ import { getChannelAttribution } from "@/lib/analytics/channel";
 import { getTierPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
-import type { ShopifyCart, ShopifyCartResponse } from "@/lib/shopify/types";
+import type { ShopifyCart, ShopifyCartResponse, AttributeInput } from "@/lib/shopify/types";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -147,6 +147,10 @@ function shopifyEnvPresent(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 }
 
+function fulfillmentSku(qty: number): string {
+  return qty <= 1 ? "LTS-OG-SLV" : `LTS-OG-SLV-${qty}`;
+}
+
 // ---------------------------------------------------------------------------
 // Store
 // ---------------------------------------------------------------------------
@@ -217,7 +221,7 @@ export const useCartStore = create<CartStore>()(
               if (process.env.NODE_ENV !== "production") {
                 console.log("[cart] posthog_distinct_id attr =", phId);
               }
-              const attributes: { key: string; value: string }[] = [];
+              const attributes: AttributeInput[] = [];
               if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
               const storedDiscount = sessionStorage.getItem("litsaber_discount");
               if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
@@ -230,7 +234,7 @@ export const useCartStore = create<CartStore>()(
               attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
               attributes.push({ key: "referrer", value: channel.referrer });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
-                lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
+                lines: [{ merchandiseId: line.variantId, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
                 attributes,
               });
               const cart = data.cartCreate!.cart;
@@ -247,7 +251,7 @@ export const useCartStore = create<CartStore>()(
             // Variant already in cart — set to the absolute clamped total (idempotent on retry).
             const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_UPDATE, {
               cartId,
-              lines: [{ id: existingLine.id, quantity: resultQty }],
+              lines: [{ id: existingLine.id, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
             });
             set({
               items: transformShopifyCart(data.cartLinesUpdate!.cart),
@@ -257,7 +261,7 @@ export const useCartStore = create<CartStore>()(
             // New variant — add line.
             const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_ADD, {
               cartId,
-              lines: [{ merchandiseId: line.variantId, quantity: resultQty }],
+              lines: [{ merchandiseId: line.variantId, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
             });
             set({
               items: transformShopifyCart(data.cartLinesAdd!.cart),
@@ -319,7 +323,7 @@ export const useCartStore = create<CartStore>()(
         try {
           const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_UPDATE, {
             cartId,
-            lines: [{ id: lineId, quantity: clampedQty }],
+            lines: [{ id: lineId, quantity: clampedQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(clampedQty) }] }],
           });
           set({
             items: transformShopifyCart(data.cartLinesUpdate!.cart),
