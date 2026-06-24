@@ -135,7 +135,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "How to return?",
-          text: 'Email <a href="mailto:order@getlitsaber.com" class="underline">order@getlitsaber.com</a> with your order number and we send return instructions and a return label. We recommend a tracked service for items over $75.',
+          text: 'Start your return at <a href="https://checkout.getlitsaber.com/apps/return_prime" class="underline">our returns portal</a>, or log into your account and open Order History. Follow the prompts and we send return instructions and a return label. We recommend a tracked service for items over $75.',
         },
         {
           lead: "Refund timing.",
