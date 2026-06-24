@@ -4,18 +4,18 @@ export const MAX_QTY = 5;
 // Shopify is the source of truth for charged amounts (variant price + automatic
 // discounts at checkout). Shopify's discounts are configured as FIXED AMOUNTS;
 // the per-quantity values below are a display-only mirror tuned to produce the
-// SAME locked cart totals (89.99 / 119.99 / 149.99 / 179.99 at a 49.99 base).
+// SAME locked cart totals (99.99 / 134.99 / 169.99 / 199.99 at a 59.99 base).
 // If the Shopify discount amounts change, update this map so the four totals
 // still match, or the PDP will show a price the checkout does not honor.
 
 // Fallback base, used only when a live Shopify variant price is not passed in
 // (e.g. navigational CTAs that do not fetch the variant). Keep this matching the
 // Shopify Silver variant price.
-export const BASE_UNIT_PRICE = 49.99;
+export const BASE_UNIT_PRICE = 59.99;
 
 // Per-quantity discount off the base line total. Display-only mirror of the
 // Shopify fixed-amount discount rules, chosen so the charm-rounded totals land on
-// the locked ladder at a 49.99 base: 89.99 / 119.99 / 149.99 / 179.99.
+// the locked ladder at a 59.99 base: 99.99 / 134.99 / 169.99 / 199.99.
 const TIER_DISCOUNTS: Record<number, number> = {
   1: 0,
   2: 0.10,

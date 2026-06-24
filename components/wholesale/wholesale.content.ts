@@ -35,7 +35,7 @@ export const HERO_CTA_SECONDARY = "SEE THE NUMBERS";
 // ─── Section 2 — Stats Bar ───────────────────────────────────────────────────
 export const STATS_BAR = [
   { value: "$20/unit", label: "STARTS AT" },
-  { value: "$49.99", label: "MSRP" },
+  { value: "$59.99", label: "MSRP" },
   { value: "5", label: "MOQ (UNITS)" },
   { value: "80", label: "CASE PACK" },
 ] as const;
@@ -91,13 +91,13 @@ export const MARGINS_EYEBROW = "THE NUMBERS";
 export const MARGINS_HEADLINE_LINE1 = "Premium margins.";
 export const MARGINS_HEADLINE_ACCENT = "Real numbers.";
 export const MARGINS_BODY = [
-  "Wholesale is a flat **$20/unit** with a 5-unit MOQ. Sell to your retail accounts at $25 — that's a **$5 margin per unit**, or **20% wholesale margin** on every unit you move. Your retail partners sell at $49.99 MSRP and clear **up to 60% retail margin**, which is why they reorder.",
+  "Wholesale is a flat **$20/unit** with a 5-unit MOQ. Sell to your retail accounts at $25 — that's a **$5 margin per unit**, or **20% wholesale margin** on every unit you move. Your retail partners sell at $59.99 MSRP and clear **up to 60% retail margin**, which is why they reorder.",
   "No mystery pricing. No tier-locked surprises. Submit the form and the full pricing sheet — with case pack details and freight estimates — lands in your inbox the moment you hit send."
   ];
 
 export const MARGINS_STATS = [
  { label: "WHOLESALE STARTING AT", value: "$20.00/unit", color: "#00E5FF" },
-  { label: "MSRP",                  value: "$49.99/unit", color: "#FFFFFF" },
+  { label: "MSRP",                  value: "$59.99/unit", color: "#FFFFFF" },
   { label: "YOUR MARGIN",           value: "20%",         color: "#EB3D7B" },
 ] as const;
 
