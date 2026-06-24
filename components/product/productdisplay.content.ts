@@ -66,7 +66,7 @@ export const BUNDLE_OPTIONS: BundleOption[] = [
 ];
 
 export const TRUST_LINE =
-  "SHIPS IN 24 HOURS · FREE US SHIPPING · 30-DAY GUARANTEE";
+  "SHIPS IN 24 HOURS · FREE US SHIPPING · 6 MONTH GUARANTEE";
 
 export interface GalleryImage {
   src: string;
