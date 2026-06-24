@@ -72,13 +72,15 @@ export const S02_PARA2: Para = [
 export const S02_QUALIFICATIONS: string[] = [
   "The product must be unused and in its original packaging.",
   "For change-of-mind returns, you are responsible for the return shipping cost.",
-  "If your item arrived damaged, defective, or incorrect, we cover return shipping and will provide a return label.",
+  "If your item arrived damaged, defective, or incorrect, we cover return shipping and send you a return label.",
 ];
 
 export const S02_PARA3: Para = [
-  { t: "txt", v: "To begin a return, email " },
+  { t: "txt", v: "To begin a return, visit " },
+  { t: "link", v: "our returns portal", href: "https://checkout.getlitsaber.com/apps/return_prime" },
+  { t: "txt", v: ", or log into your account and open Order History. Follow the prompts to start your return. You can also email " },
   { t: "email", v: "order@getlitsaber.com" },
-  { t: "txt", v: " with your order number, and we'll guide you through the next steps. Your refund is issued to your original payment method once we receive and inspect the item." },
+  { t: "txt", v: " with your order number if you'd rather we guide you through it. Your refund is issued to your original payment method once we receive and inspect the item." },
 ];
 
 export const S02_CALLOUT_LEADIN =
