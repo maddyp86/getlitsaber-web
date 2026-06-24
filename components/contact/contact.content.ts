@@ -39,6 +39,7 @@ export const CONTACT_METHODS: ContactMethod[] = [
 export interface QuickLink {
   label: string;
   href: string;
+    external?: boolean;
 }
 
 export const QUICK_LINKS: QuickLink[] = [
