@@ -3,7 +3,7 @@
 
 import { createHmac, timingSafeEqual } from "crypto";
 import { PostHog } from "posthog-node";
-import { insertOrder } from "@/lib/supabase/client";
+import { insertOrder } from "@/supabase/client";
 
 export const dynamic = "force-dynamic";
 

@@ -43,8 +43,11 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const res = NextResponse.rewrite(new URL("/maintenance", req.url));
-  res.headers.set("x-maintenance-mode", "1");
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-maintenance-mode", "1");
+  const res = NextResponse.rewrite(new URL("/maintenance", req.url), {
+    request: { headers: requestHeaders },
+  });
   res.headers.set("Retry-After", "3600");
   res.headers.set("Cache-Control", "no-store");
   return res;
