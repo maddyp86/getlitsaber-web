@@ -56,7 +56,7 @@ export default function MaintenancePage() {
         <div className="relative flex w-full items-center justify-center">
           <div
             className="pointer-events-none absolute aspect-square w-[min(700px,90vw)] rounded-full"
-            style={{ backgroundColor: "#4B2F81", filter: "blur(150px)" }}
+            style={{ backgroundColor: "rgba(75, 47, 129, 0.25)", filter: "blur(300px)" }}
           />
 
           <div className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl border border-cyan-400/40">
