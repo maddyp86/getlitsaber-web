@@ -38,11 +38,11 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "Cart-agnostic.",
-          text: "4.0mm pin depth, tuned for 95-99% cart compatibility. Live resin, rosin, distillate, liquid diamonds. If it's 510, it works.",
+          text: "4.0mm pin depth, tuned for 95 to 99% cart compatibility. Live resin, rosin, distillate, liquid diamonds. If it's 510, it works.",
         },
         {
           lead: "Three modes.",
-          text: "Glowstick for the breathing glow. Litsaber for the cascading lightsaber effect. Stealth for when you don't want the show.",
+          text: "Glowstick for the breathing glow. Litsaber for the cascading saber effect. Stealth for when you don't want the show.",
         },
         {
           lead: "Built for the night.",
@@ -89,9 +89,9 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           bullets: [
             "510-thread connection",
             "4.0mm center pin depth",
-            "Fits 10.5–14.5mm cart diameter",
-            "Fits 0.5g–2g cart capacity",
-            "95–99% compatibility rate",
+            "Fits 10.5 to 14.5mm cart diameter",
+            "Fits 0.5g to 2g cart capacity",
+            "95 to 99% compatibility rate",
           ],
         },
         {
@@ -131,27 +131,26 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
       blocks: [
         {
           lead: "14-day return window for unopened devices.",
-          text: "Original packaging required. Customer pays return shipping.",
+          text: "Original packaging required. For change-of-mind returns, you cover return shipping.",
         },
         {
           lead: "How to return?",
-          text: 'Email <a href="mailto:order@getlitsaber.com" class="underline">order@getlitsaber.com</a> with your order number to request a Return Authorization. We send return instructions. We recommend a tracked service for items over $75.',
+          text: 'Email <a href="mailto:order@getlitsaber.com" class="underline">order@getlitsaber.com</a> with your order number and we send return instructions and a return label. We recommend a tracked service for items over $75.',
         },
         {
           lead: "Refund timing.",
-          text: "Once we receive and inspect your return, you'll get a confirmation email. Approved refunds process to your original payment method within 7-10 business days. Original shipping cost is deducted from the refund.",
+          text: "Once we receive and inspect your return, you'll get a confirmation email. Approved refunds process to your original payment method within 7 to 10 business days.",
         },
         {
           lead: "What we can't accept",
           bullets: [
             "Opened or used devices (those go through warranty instead, see below)",
             "Sale items (final sale)",
-            "Returns shipped without a Return Authorization",
           ],
         },
         {
-          lead: "Defective on arrival?",
-          text: "This is not a return, that's a warranty claim. We cover it with a prepaid label and a free replacement.",
+          lead: "Arrived damaged, defective, or incorrect?",
+          text: "That's not a standard return, it's covered separately. We send a return label at our cost and ship a free replacement. See the Warranty section.",
         },
       ],
     },
@@ -163,16 +162,16 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
       type: "prose",
       blocks: [
         {
-          lead: "Ships from California.",
-          text: "~$8 flat rate via USPS, anywhere in the US.",
+          lead: "Free USPS shipping on all US orders.",
+          text: "Ships from California, Monday through Friday.",
         },
         {
-          lead: "Orders ship within 1-2 business days",
-          text: "Monday through Friday. Allow up to 5 business days during launches or sales.",
+          lead: "Orders ship within 1 to 2 business days.",
+          text: "Allow up to 5 business days during launches or sales.",
         },
         {
-          lead: "Arrives in 5-7 business days.",
-          text: "Tracking email sent when your order leaves the warehouse. Allow 1-2 days for the carrier to update tracking.",
+          lead: "Arrives in 5 to 7 business days.",
+          text: "Tracking email sent when your order leaves the warehouse. Allow 1 to 2 days for the carrier to update tracking.",
         },
         {
           text: "Tracking link is in your shipping confirmation email and your account at getlitsaber.com under Order History.",
@@ -196,11 +195,11 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "How to claim:",
-          text: 'Email <a href="mailto:order@getlitsaber.com" class="underline">order@getlitsaber.com</a> with: your order number | a photo or video showing the issue',
+          text: 'Email <a href="mailto:order@getlitsaber.com" class="underline">order@getlitsaber.com</a> with your order number and a photo or video showing the issue.',
         },
         {
           lead: "We reply within 24 hours.",
-          text: "If a return is needed, we send a prepaid label. Most claims are processed within 4 business days of receiving the device.",
+          text: "If a return is needed, we send a return label at our cost. Most claims are processed within 4 business days of receiving the device.",
         },
         {
           lead: "What's covered",
@@ -223,7 +222,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "Bought it somewhere else?",
-          text: 'The warranty applies only to Litsabers purchased through getlitsaber.com or an authorized retailer. If you bought from an unverified source, we can\'t honor the warranty, but we can confirm whether your seller is authorized. Email us with the details.',
+          text: "The warranty applies only to Litsabers purchased through getlitsaber.com or an authorized retailer. If you bought from an unverified source, we can't honor the warranty, but we can confirm whether your seller is authorized. Email us with the details.",
         },
       ],
     },
