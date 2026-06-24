@@ -42,9 +42,10 @@ export interface QuickLink {
 }
 
 export const QUICK_LINKS: QuickLink[] = [
-  { label: "Refunds & Returns", href: "/policies/refunds" },
+  { label: "Track Order", href: "https://account.getlitsaber.com/orders", external: true },
+  { label: "Start a Return", href: "https://checkout.getlitsaber.com/apps/return_prime", external: true },
+  { label: "Shipping & Returns", href: "/policies/refunds" },
   { label: "Warranty", href: "/policies/warranty" },
-  { label: "Shipping", href: "/policies/shipping" },
   { label: "Terms of Service", href: "/policies/terms" },
   { label: "Privacy Policy", href: "/policies/privacy" },
 ];
