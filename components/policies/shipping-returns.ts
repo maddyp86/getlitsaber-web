@@ -16,7 +16,7 @@ export const QUICK_SUMMARY: Para = [
   { t: "b", v: "Quick summary:" },
   {
     t: "txt",
-    v: " we ship Monday to Friday from our warehouse in California, typically within 1 business day of order placement. Returns are accepted for unopened products within 14 days of delivery. Defective devices are covered separately under our 6-month limited warranty.",
+    v: " we ship Monday to Friday from our warehouse in California, typically within 1 business day of order placement. Returns are accepted for unopened, unused products within 14 days of delivery. You cover return shipping for change-of-mind returns; we cover it when an item arrives damaged, defective, or incorrect. Defective devices are also covered under our 6-month limited warranty.",
   },
 ];
 
@@ -60,32 +60,34 @@ export const S02_PARA1: Para = [
   { t: "b", v: "unopened and unused products" },
   { t: "txt", v: " purchased directly through " },
   { t: "link", v: "getlitsaber.com", href: "/" },
-  { t: "txt", v: "." },
+  { t: "txt", v: ". Damaged, defective, or incorrect items are handled separately below and are not subject to the unopened condition." },
 ];
 
 export const S02_PARA2: Para = [
   { t: "txt", v: "You have " },
   { t: "b", v: "14 days from the date of delivery" },
-  { t: "txt", v: " to request a full refund. To qualify:" },
+  { t: "txt", v: " to request a refund. To qualify:" },
 ];
 
 export const S02_QUALIFICATIONS: string[] = [
   "The product must be unused and in its original packaging.",
-  "You must contact our support team for a Return Authorization (RA) before shipping your return.",
-  "You are responsible for the return shipping cost.",
+  "For change-of-mind returns, you are responsible for the return shipping cost.",
+  "If your item arrived damaged, defective, or incorrect, we cover return shipping and send you a return label.",
 ];
 
 export const S02_PARA3: Para = [
-  { t: "txt", v: "To begin a return, email " },
+  { t: "txt", v: "To begin a return, visit " },
+  { t: "link", v: "our returns portal", href: "https://checkout.getlitsaber.com/apps/return_prime" },
+  { t: "txt", v: ", or log into your account and open Order History. Follow the prompts to start your return. You can also email " },
   { t: "email", v: "order@getlitsaber.com" },
-  { t: "txt", v: " with your order number." },
+  { t: "txt", v: " with your order number if you'd rather we guide you through it. Your refund is issued to your original payment method once we receive and inspect the item." },
 ];
 
 export const S02_CALLOUT_LEADIN =
   "Do not ship cannabis, cannabis concentrates or oils, or nicotine with any return.";
 
 export const S02_CALLOUT_BODY =
-  " We accept only the device. Unauthorized returns or those received without an approved RA may not be processed.";
+  " We accept only the device. Returns received without prior contact may be delayed in processing.";
 
 // ─── Section 03: Return Address ───────────────────────────────────────────────
 
@@ -110,7 +112,7 @@ export const S04_PARA1: Para = [
 export const S04_PARA2: Para = [
   {
     t: "txt",
-    v: "Shipping costs are non-refundable. If a refund is approved, the original shipping cost will be deducted from your total refund.",
+    v: "For change-of-mind returns, the original outbound shipping cost is non-refundable and you cover return shipping. For items that arrived damaged, defective, or incorrect, you receive a full refund and we cover return shipping.",
   },
 ];
 
