@@ -35,7 +35,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const suppressChrome = headers().get("x-maintenance-mode") === "1";
+  let suppressChrome = false;
+  try {
+    suppressChrome = headers().get("x-maintenance-mode") === "1";
+  } catch {
+    suppressChrome = false;
+  }
   return (
     <html
       lang="en"
