@@ -20,14 +20,12 @@ const PRIMARY_NAV = [
 ] as const;
 
 const QUICK_LINKS = [
-  { label: "FAQs", href: "/contact#faq" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "Track Your Order", href: "/contact#track" },
-  { label: "Start a Return", href: "/policies/refunds" },
+  { label: "FAQs", href: "/contact#faq", external: false },
+  { label: "Contact Us", href: "/contact", external: false },
+  { label: "Track Your Order", href: "https://account.getlitsaber.com/orders", external: true },
+  { label: "Start a Return", href: "https://checkout.getlitsaber.com/apps/return_prime", external: true },
+  { label: "Login to Your Account", href: "https://account.getlitsaber.com/", external: true },
 ] as const;
-
-const ACCOUNT_URL =
-  process.env.NEXT_PUBLIC_ACCOUNT_URL ?? "https://shopify.com/65425866959/account";
 
 export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
   const [quickLinksOpen, setQuickLinksOpen] = useState(false);
@@ -160,13 +158,24 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
               <ul className="py-sm space-y-sm pl-md">
                 {QUICK_LINKS.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={onClose}
-                      className="font-label text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wide"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-label text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wide"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        onClick={onClose}
+                        className="font-label text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wide"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -183,13 +192,6 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
           >
             GET YOURS · ${`${BASE_UNIT_PRICE.toFixed(2)}`}
           </Link>
-          <a
-            href={ACCOUNT_URL}
-            onClick={onClose}
-            className="block w-full py-xs text-center font-label text-eyebrow tracking-widest uppercase text-text-muted hover:text-text-secondary transition-colors duration-200"
-          >
-            LOGIN TO YOUR ACCOUNT
-          </a>
         </div>
       </div>
     </>
