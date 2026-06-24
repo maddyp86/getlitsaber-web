@@ -39,6 +39,11 @@ export interface ShopifyFetchResult<T> {
   errors?: ShopifyGraphQLError[];
 }
 
+export interface AttributeInput {
+  key: string;
+  value: string;
+}
+
 // ---------------------------------------------------------------------------
 // Cart types
 // ---------------------------------------------------------------------------

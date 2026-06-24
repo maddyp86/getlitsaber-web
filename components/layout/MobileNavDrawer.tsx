@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { mediaUrl } from "@/lib/media";
+import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -180,7 +181,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
             onClick={onClose}
             className="block w-full py-md text-center font-label text-label tracking-widest uppercase border border-accent-cyan text-accent-cyan bg-accent-cyan-alpha-10 rounded-md hover:bg-accent-cyan hover:text-background-primary transition-colors duration-200"
           >
-            GET YOURS — $59.99
+            GET YOURS · ${`${BASE_UNIT_PRICE.toFixed(2)}`}
           </Link>
           <a
             href={ACCOUNT_URL}

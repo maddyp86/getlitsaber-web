@@ -15,6 +15,7 @@ import WhatCustomersSay from "@/components/home/WhatCustomersSay/WhatCustomersSa
 import WholesaleCTABanner from "@/components/home/WholesaleCTABanner/WholesaleCTABanner";
 import EmailSignupBanner from "@/components/global/EmailSignupBanner/EmailSignupBanner";
 import { getProductByHandle } from "@/lib/shopify/queries";
+import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -32,6 +33,9 @@ export default async function HomePage() {
   // If Shopify is not configured (local dev without env vars), default to
   // showing the buy buttons rather than "Currently unavailable".
   const available = shopifyConfigured ? silverVariant !== null : true;
+  const basePrice = silverVariant?.price?.amount
+    ? parseFloat(silverVariant.price.amount)
+    : BASE_UNIT_PRICE;
 
   return (
     <>
@@ -50,6 +54,7 @@ export default async function HomePage() {
           variantId={silverVariant?.id ?? ""}
           available={available}
           surface="homepage_buy"
+          basePrice={basePrice}
         />
       </WhatWereShipping>
       <WhatCustomersSay />

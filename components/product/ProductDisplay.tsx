@@ -16,9 +16,10 @@ interface ProductDisplayProps {
   variantId: string;
   available: boolean;
   surface: "homepage_buy" | "pdp";
+  basePrice?: number;
 }
 
-export default function ProductDisplay({ variantId, available, surface }: ProductDisplayProps) {
+export default function ProductDisplay({ variantId, available, surface, basePrice }: ProductDisplayProps) {
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [activeBundle, setActiveBundle] = useState<BundleId>("single");
@@ -36,7 +37,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
   const selectedQty =
     activeBundle === "single" ? 1 : activeBundle === "twopack" ? 2 : moreQty;
 
-  const displayPrice = `$${getTierPrice(selectedQty).toFixed(2)}`;
+  const displayPrice = `$${getTierPrice(selectedQty, basePrice).toFixed(2)}`;
 
   return (
     <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
@@ -102,6 +103,7 @@ export default function ProductDisplay({ variantId, available, surface }: Produc
                 variantId={variantId}
                 available={available}
                 surface={surface}
+                basePrice={basePrice}
               />
             </div>
           )}

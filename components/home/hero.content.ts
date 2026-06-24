@@ -1,4 +1,5 @@
 import { mediaUrl, videoUrl } from "@/lib/media";
+import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 
 export const HERO_VIDEO_SRC = videoUrl("home/litsaber-hero.mp4");
 export const HERO_POSTER_SRC = mediaUrl("home/litsaber-hero-image.png");
@@ -17,7 +18,7 @@ export const SUBHEADLINE =
   "Interactive 510 battery built for festivals, nightlife, and the moments worth showing off.";
 
 export const CTA_PRIMARY = {
-  label: "GET YOURS — $59.99",
+  label: `GET YOURS · $${BASE_UNIT_PRICE.toFixed(2)}`,
   href: "/shop/litsaber-og",
 };
 
