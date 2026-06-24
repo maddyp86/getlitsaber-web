@@ -20,14 +20,6 @@ const BRAND_LINKS = [
   { label: "Activate", href: "/activate" },
 ] as const;
 
-const QUICK_LINKS = [
-  { label: "FAQs", href: "/contact" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "Start a Return", href: "https://checkout.getlitsaber.com/apps/return_prime" },
-  { label: "Track Your Order", href: "https://account.getlitsaber.com/orders" },
-  { label: "Login to Your Account", href: "https://account.getlitsaber.com/" },
-] as const;
-
 export default function Footer() {
   return (
     <footer className="bg-background-primary"
@@ -69,7 +61,6 @@ export default function Footer() {
             <NavColumn heading="Explore" links={EXPLORE_LINKS} />
             <NavColumn heading="Support" links={SUPPORT_LINKS} />
             <NavColumn heading="Brand" links={BRAND_LINKS} />
-            <NavColumn heading="Quick Links" links={QUICK_LINKS} />
           </div>
         </div>
 
@@ -134,29 +125,16 @@ function NavColumn({
         {heading}
       </h3>
       <ul className="space-y-sm">
-        {links.map((link) => {
-          const isExternal = link.href.startsWith("http");
-          const className =
-            "font-body text-body-sm sm:text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200";
-          return (
-            <li key={link.href}>
-              {isExternal ? (
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={className}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link href={link.href} className={className}>
-                  {link.label}
-                </Link>
-              )}
-            </li>
-          );
-        })}
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="font-body text-body-sm sm:text-label text-text-secondary hover:text-accent-cyan transition-colors duration-200"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );
