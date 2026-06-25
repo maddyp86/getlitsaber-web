@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "posthog-js";
-import { track, EVENTS } from "@/lib/analytics/events";
+import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 
 const SESSION_KEY = "litsaber_discount";
 
@@ -17,10 +16,7 @@ export function useDiscountCapture(): void {
     const code = params.get("discount")?.trim();
     if (code && sessionStorage.getItem(SESSION_KEY) !== code) {
       sessionStorage.setItem(SESSION_KEY, code);
-
-      posthog.onFeatureFlags(() => {
-        track(EVENTS.promo_code_captured, { code });
-      });
+      trackWhenReady(EVENTS.promo_code_captured, { code });
     }
   }, []);
 }

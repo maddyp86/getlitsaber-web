@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import posthog from "posthog-js";
 
 export default function PostHogProvider({
@@ -8,7 +8,7 @@ export default function PostHogProvider({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
     if (typeof window === "undefined" || !token) return;
 
