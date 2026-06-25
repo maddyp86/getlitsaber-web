@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { track, trackWhenReady, EVENTS } from "@/lib/analytics/events";
+import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 
 const SESSION_KEY = "litsaber_discount";
 
