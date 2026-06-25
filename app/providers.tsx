@@ -14,7 +14,8 @@ export default function PostHogProvider({
 
     posthog.init(token, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      defaults: "2026-01-30",
+      ui_host: "https://us.posthog.com",
+      person_profiles: "identified_only",
       capture_exceptions: {
         capture_unhandled_errors: true,
         capture_unhandled_rejections: true,
