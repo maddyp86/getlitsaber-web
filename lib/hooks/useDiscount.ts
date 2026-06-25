@@ -1,41 +1,31 @@
 "use client";
 import { useEffect } from "react";
-import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
-
+import posthog from "posthog-js";
+import { track, EVENTS } from "@/lib/analytics/events";
 const SESSION_KEY = "litsaber_discount";
-
 /**
  * Reads ?discount=CODE from the URL on landing and persists it to sessionStorage.
- * Only writes when the param is present; never clears an existing stored code.
+ * Only writes when the param is present — never clears an existing stored code.
  * Mount this once per app (CartHydrator) so it runs on every page load.
  */
 export function useDiscountCapture(): void {
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get("discount")?.trim();
-    if (!code) return;
-
-    let stored: string | null = null;
-    try {
-      stored = sessionStorage.getItem(SESSION_KEY);
-    } catch {
-      // sessionStorage unavailable (private-mode edge); treat as no stored value
-    }
-    if (code === stored) return; // genuinely-NEW only: same code already captured this session
-
-    try {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("discount")?.trim();
+    if (code && sessionStorage.getItem(SESSION_KEY) !== code) {
+      // Write immediately — auto-apply at checkout depends on this being in
+      // storage as early as possible, independent of PostHog readiness.
       sessionStorage.setItem(SESSION_KEY, code);
-    } catch {
-      // can't persist; still fire once so the arrival is measured
+      // Defer the track() call until PostHog has finished initializing.
+      // track() checks posthog.__loaded and silently no-ops at mount because
+      // posthog.init() is async. onFeatureFlags fires exactly once per
+      // registration, after init completes, so the event reaches PostHog.
+      posthog.onFeatureFlags(() => {
+        track(EVENTS.promo_code_captured, { code });
+      });
     }
-
-    // Fires immediately when posthog.__loaded is true, falling back to
-    // onFeatureFlags only if it isn't. This decouples capture from the
-    // flags round-trip, so a flags/decide failure no longer silently
-    // drops the event. Matches the standard near-mount pattern (ADR-005).
-    trackWhenReady(EVENTS.promo_code_captured, { code });
   }, []);
 }
-
 /**
  * Reads the stored discount code (if any) and appends it to the given
  * Shopify checkoutUrl as a ?discount=CODE query param. Returns the URL
@@ -46,7 +36,7 @@ export function appendDiscountToCheckoutUrl(checkoutUrl: string): string {
     const code = sessionStorage.getItem(SESSION_KEY);
     if (!code) return checkoutUrl;
     const sep = checkoutUrl.includes("?") ? "&" : "?";
-    return `${checkoutUrl}${sep}discount=${encodeURIComponent(code)}`;
+    return ${checkoutUrl}${sep}discount=${encodeURIComponent(code)};
   } catch {
     // sessionStorage unavailable (private browsing edge cases)
     return checkoutUrl;
