@@ -26,13 +26,37 @@ export default function ProductDisplay({ variantId, available, surface, basePric
   const [moreQty, setMoreQty] = useState(3);
 
   const productViewedFired = useRef(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (productViewedFired.current) return;
-    productViewedFired.current = true;
-    trackWhenReady(EVENTS.product_viewed, { surface });
-    // surface is a static prop set at the call site and never changes per mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const el = rootRef.current;
+    if (!el) return;
+
+    // Fallback for browsers without IntersectionObserver: fire on mount.
+    if (typeof IntersectionObserver === "undefined") {
+      productViewedFired.current = true;
+      trackWhenReady(EVENTS.product_viewed, { surface });
+      return;
+    }
+
+    // threshold 0 because the block can be taller than the viewport (a high
+    // threshold may never be reached). Bottom inset so it fires when the
+    // section is genuinely on screen, not from a 1px clip.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && !productViewedFired.current) {
+          productViewedFired.current = true;
+          trackWhenReady(EVENTS.product_viewed, { surface });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: "0px 0px -15% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [surface]);
 
   const selectedQty =
     activeBundle === "single" ? 1 : activeBundle === "twopack" ? 2 : moreQty;
@@ -40,7 +64,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
   const displayPrice = `$${getTierPrice(selectedQty, basePrice).toFixed(2)}`;
 
   return (
-    <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
+    <div ref={rootRef} className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
       {/* Left: image gallery */}
       <div
         className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[30px]"
