@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { getProductByHandle } from "@/lib/shopify/queries";
 import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import ProductDisplay from "@/components/product/ProductDisplay";
-import PdpViewTracker from "@/components/product/PdpViewTracker";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
 {/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
 
@@ -26,8 +25,6 @@ export default async function PDPPage() {
 
   return (
     <div className="pt-navbar py-xl">
-      <PdpViewTracker />
-
       <div className="mx-auto w-full justify-center max-w-content pt-xl px-content pb-xl">
         <ProductDisplay
           variantId={silverVariant?.id ?? ""}
