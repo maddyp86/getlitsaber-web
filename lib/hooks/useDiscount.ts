@@ -36,7 +36,7 @@ export function appendDiscountToCheckoutUrl(checkoutUrl: string): string {
     const code = sessionStorage.getItem(SESSION_KEY);
     if (!code) return checkoutUrl;
     const sep = checkoutUrl.includes("?") ? "&" : "?";
-    return ${checkoutUrl}${sep}discount=${encodeURIComponent(code)};
+    return `${checkoutUrl}${sep}discount=${encodeURIComponent(code)}`;
   } catch {
     // sessionStorage unavailable (private browsing edge cases)
     return checkoutUrl;
