@@ -66,8 +66,8 @@ export default function ActivateCharging() {
           {intro}
         </motion.p>
 
-        {/* Two-column: content left, media right */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
+      {/* Two-column: content left, media right */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
           {/* Content column */}
           <div className="flex flex-col items-start gap-8 flex-[1_0_0] min-w-0">
