@@ -56,7 +56,7 @@ export default function AboutHero() {
           <div className="flex flex-col justify-center gap-6 max-w-[800px]">
 
             <motion.h1
-              className="font-display font-bold uppercase leading-[1.05]"
+              className="font-display font-bold uppercase"
               style={{ fontSize: "clamp(55px, 7vw, 100px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
