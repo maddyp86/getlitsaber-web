@@ -95,9 +95,9 @@ export default function ActivateBattery() {
           </div>
 
                    {/* Media column */}
-          <div className="mt-12 lg:mt-0 lg:w-[45%] lg:self-stretch">
+          <div className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
             {media.src ? (
-              <div className="relative w-full aspect-video lg:h-full lg:aspect-auto rounded-card overflow-hidden">
+              <div className="relative w-full aspect-[9/16] lg:aspect-[3/4] rounded-card overflow-hidden">
                 <video
                   src={media.src}
                   poster={media.poster ?? undefined}
@@ -109,7 +109,7 @@ export default function ActivateBattery() {
                 />
               </div>
             ) : (
-              <div className="relative w-full aspect-video lg:h-full lg:aspect-auto rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+              <div className="w-full aspect-[9/16] lg:aspect-[3/4] rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
