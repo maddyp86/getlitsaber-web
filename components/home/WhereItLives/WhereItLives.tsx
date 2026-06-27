@@ -104,7 +104,7 @@ export default function WhereItLives() {
 
         {/* Headline */}
         <motion.h2
-          className="font-display max-w-[600px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
+          className="font-display max-w-[650px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
           style={{
             fontSize: "clamp(45px, 5vw, 75px)",
             lineHeight: "1.05",
@@ -120,7 +120,7 @@ export default function WhereItLives() {
         {/* Body */}
         <motion.p
           className="font-body text-text-secondary"
-          style={{ fontSize: "clamp(16px, 1.4vw, 20px)", maxWidth: "500px", lineHeight: "1.6" }}
+          style={{ fontSize: "clamp(16px, 1.4vw, 20px)", maxWidth: "550px", lineHeight: "1.6" }}
           initial={{ opacity: 0, y: 20 }}
           animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
