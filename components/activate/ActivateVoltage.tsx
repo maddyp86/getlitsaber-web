@@ -49,8 +49,8 @@ export default function ActivateVoltage() {
           {intro}
         </motion.p>
 
-        {/* Two-column: cards left, media right */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
+{/* Two-column: cards left, media right */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
           {/* Voltage cards — three separate cards stacked with gaps */}
           <div className="flex flex-col items-stretch gap-4 flex-[1_0_0] min-w-0 w-full">
