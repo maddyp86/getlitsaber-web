@@ -142,7 +142,7 @@ export default function ActivateModes() {
               {/* Mode name + badge */}
               <div className="flex flex-wrap items-center justify between gap-3">
                 <h3
-                  className="font-subhead font-bold text-white leading-none"
+                  className="font-subhead font-bold uppercase text-white leading-none"
                   style={{ fontSize: "clamp(25px, 3vw, 35px)" }}
                 >
                   {mode.name}
