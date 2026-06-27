@@ -216,7 +216,7 @@ export const ACTIVATE_VOLTAGE = {
     },
   ],
   media: {
-    src: null as string | null,
+    src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/voltage-modes.mp4" as string | null,
     poster: null as string | null,
     alt: "Voltage cycling demo",
   },
@@ -288,7 +288,7 @@ export const ACTIVATE_CHARGING = {
   },
   barLabel: { left: "BUTTON", center: "CHARGING BEHAVIOR", right: "TIP" },
   caption: "Watch the segments fill in order. The green segment going solid means you\u2019re fully charged.",
-  media: { src: null as string | null, poster: null as string | null, alt: "Charging the device demo" },
+  media: { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/litsaber-charging.mp4" as string | null, poster: null as string | null, alt: "Charging the device demo" },
 } as const;
 
 // ─── Cart Troubleshooting section ─────────────────────────────────────────────

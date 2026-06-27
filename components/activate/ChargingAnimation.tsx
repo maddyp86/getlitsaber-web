@@ -42,8 +42,7 @@ export default function ChargingAnimation() {
       {[1, 2, 3, 4, 5].map((n) => (
         <div
           key={n}
-          className={`seg seg-${n}`}
-          style={{ aspectRatio: "1 / 1" }}
+          className={`seg seg-${n} h-12 sm:h-14 md:h-16`}
         />
       ))}
     </div>

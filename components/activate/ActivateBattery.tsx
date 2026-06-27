@@ -1,6 +1,12 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import { SECTION_IDS, ACTIVATE_BATTERY, LED_COLORS } from "./activate.content";
 
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function ActivateBattery() {
+  const prefersReduced = useReducedMotion();
   const {
     eyebrow, title, intro, cardLabel, cardBadge, tagline,
     points, callout, legend, legendAxis, caption, media,
@@ -95,7 +101,13 @@ export default function ActivateBattery() {
           </div>
 
                    {/* Media column */}
-          <div className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+          <motion.div
+            className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            initial={prefersReduced ? false : { opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
+          >
             {media.src ? (
               <div className="relative w-full aspect-[9/16] lg:aspect-[3/4] rounded-card overflow-hidden">
                 <video
@@ -103,7 +115,6 @@ export default function ActivateBattery() {
                   poster={media.poster ?? undefined}
                   aria-label={media.alt}
                   controls
-                  loop
                   playsInline
                   className="absolute inset-0 w-full h-full object-cover object-center"
                 />
@@ -115,7 +126,7 @@ export default function ActivateBattery() {
                 </span>
               </div>
             )}
-          </div>
+          </motion.div>
 
         </div>
 

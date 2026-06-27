@@ -137,10 +137,10 @@ export default function ActivateModes() {
             className="flex flex-col lg:flex-row lg:items-start lg:gap-16"
           >
             {/* Text column */}
-            <div className="flex flex-col justify-start items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
+            <div className="flex flex-col justify-center items-start gap-5 flex-[1_0_0] self-stretch min-w-0">
 
               {/* Mode name + badge */}
-              <div className="flex flex-wrap items-center justify between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3
                   className="font-subhead font-bold text-white leading-none"
                   style={{ fontSize: "clamp(25px, 3vw, 35px)" }}
@@ -192,8 +192,14 @@ export default function ActivateModes() {
 
             </div>
 
-{/* Media column — right on desktop, below text on mobile */}
-            <div className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0">
+            {/* Media column — right on desktop, below text on mobile */}
+            <motion.div
+              className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+              initial={prefersReduced ? false : { opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.75, delay: 0.15, ease: EASE }}
+            >
               {mode.media.src ? (
                 <div className="relative w-full aspect-[9/16] lg:aspect-[3/4] rounded-card overflow-hidden">
                   <video
@@ -213,7 +219,7 @@ export default function ActivateModes() {
                   </span>
                 </div>
               )}
-            </div>
+            </motion.div>
 
           </motion.div>
         </AnimatePresence>

@@ -49,15 +49,15 @@ export default function ActivateVoltage() {
           {intro}
         </motion.p>
 
-        {/* Two-column: cards left, media right */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
+{/* Two-column: cards left, media right */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
-{/* Voltage cards — three separate cards stacked with gaps */}
-          <div className="flex flex-col items-stretch gap-4 flex-[1_0_0] self-stretch min-w-0 w-full">
+          {/* Voltage cards — three separate cards stacked with gaps */}
+          <div className="flex flex-col items-stretch gap-4 flex-[1_0_0] min-w-0 w-full">
             {rows.map((row, i) => (
               <motion.div
                 key={row.voltage}
-                className="flex flex-1 overflow-hidden border border-[rgba(255,255,255,0.08)] bg-surface-card"
+                className="flex overflow-hidden border border-[rgba(255,255,255,0.08)] bg-surface-card"
                 initial={prefersReduced ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -113,25 +113,26 @@ export default function ActivateVoltage() {
 
           {/* Media column */}
           <motion.div
-            className="mt-12 flex min-h-[400px] lg:min-h-[600px] flex-col lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
+            className="mt-12 lg:mt-0 lg:w-[380px] xl:w-[440px] shrink-0"
             initial={prefersReduced ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.75, delay: 0.2, ease: EASE }}
           >
             {media.src ? (
-              <video
-                src={media.src}
-                poster={media.poster ?? undefined}
-                aria-label={media.alt}
-                muted
-                autoPlay
-                loop
-                playsInline
-                className="w-full rounded-card object-cover"
-              />
+              <div className="relative w-full aspect-[9/16] lg:aspect-[3/4] rounded-card overflow-hidden">
+                <video
+                  src={media.src}
+                  poster={media.poster ?? undefined}
+                  aria-label={media.alt}
+                  controls
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                />
+              </div>
             ) : (
-            <div className="w-full flex-1 rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
+              <div className="w-full aspect-[9/16] lg:aspect-[3/4] rounded-card border border-border-pill bg-[#000000] flex flex-col items-center justify-center gap-3">
                 <span className="font-label text-eyebrow tracking-[0.12em] uppercase text-text-muted">
                   media pending hosting
                 </span>
