@@ -57,7 +57,7 @@ export const EVENT_IMAGES = [
 ] as const;
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────
-export const HERO_HEADLINE_LINE1 = "BUILT FOR THE NIGHT YOU CAME TO";
+export const HERO_HEADLINE_LINE1 = "FOR THE NIGHT YOU CAME TO";
 export const HERO_HEADLINE_ACCENT = "BE A PART OF.";
 export const HERO_BODY =
   "A small family team in Los Angeles. Six years of engineering. One vape battery that actually gets noticed. Not for being first to the party. For being the reason people remembered they showed up.";
