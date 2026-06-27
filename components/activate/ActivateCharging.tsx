@@ -165,7 +165,6 @@ export default function ActivateCharging() {
                 aria-label={media.alt}
                 controls
                 loop
-                playsInline
                 className="w-full rounded-card object-cover"
               />
             ) : (
