@@ -125,8 +125,7 @@ export default function ActivateVoltage() {
                 poster={media.poster ?? undefined}
                 aria-label={media.alt}
                 muted
-                autoPlay
-                loop
+                controls
                 playsInline
                 className="w-full rounded-card object-cover"
               />
