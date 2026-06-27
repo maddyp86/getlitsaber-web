@@ -56,7 +56,7 @@ export default function AboutHero() {
           <div className="flex flex-col justify-center gap-6 max-w-[800px]">
 
             <motion.h1
-              className="font-display font-bold uppercase leading-[1.05]"
+              className="font-display font-bold uppercase"
               style={{ fontSize: "clamp(55px, 7vw, 100px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -134,9 +134,9 @@ export default function AboutHero() {
             priority
           />
 
-          {/* Caption pill — floats near the bottom of the image */}
+ {/* Caption pill — floats near the bottom of the image */}
           <motion.div
-            className="absolute left-1/2 -translate-x-1/2 bottom-6 lg:bottom-[70px] z-10
+            className="absolute left-4 sm:left-6 bottom-6 lg:bottom-[70px] z-10
                        whitespace-nowrap rounded-[6px] border border-accent-cyan bg-black/90
                        px-5 py-3"
             initial={prefersReduced ? false : { opacity: 0, y: 12 }}
