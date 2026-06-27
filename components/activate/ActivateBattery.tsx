@@ -103,7 +103,6 @@ export default function ActivateBattery() {
                   poster={media.poster ?? undefined}
                   aria-label={media.alt}
                   controls
-                  loop
                   playsInline
                   className="absolute inset-0 w-full h-full object-cover object-center"
                 />
