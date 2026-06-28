@@ -59,6 +59,7 @@ export default function WhereItLives() {
     <section
       id="where-it-lives"
       className="relative w-full overflow-hidden bg-background-primary py-section-y-mobile lg:py-section-y"
+      style={{ contain: "layout paint" }}
       aria-label="Where It Lives"
     >
       {/* Background glow orb — mobile */}
@@ -68,7 +69,8 @@ export default function WhereItLives() {
           width: "375px",
           height: "500px",
           background: "rgba(0, 153, 170, 0.25)",
-          filter: "blur(150px)",
+          filter: "blur(100px)",
+          willChange: "transform",
           zIndex: 0,
         }}
         aria-hidden="true"
@@ -81,7 +83,8 @@ export default function WhereItLives() {
           height: "402px",
           top: "500px",
           background: "rgba(0, 153, 170, 0.39)",
-          filter: "blur(150px)",
+          filter: "blur(100px)",
+          willChange: "transform",
           zIndex: 0,
         }}
         aria-hidden="true"
@@ -133,7 +136,7 @@ export default function WhereItLives() {
       <div className="relative z-10 w-full overflow-hidden">
         <div
           className={`flex gap-4 lg:gap-6 ${prefersReduced ? "" : "animate-marquee-slow"}`}
-          style={{ width: "max-content" }}
+          style={{ width: "max-content", willChange: "transform" }}
         >
           {loopedCards.map((card, i) => (
             <VenueCardItem key={i} card={card} />
