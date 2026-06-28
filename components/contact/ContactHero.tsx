@@ -164,7 +164,7 @@ export default function ContactHero() {
               className="block text-white"
               style={{
                 fontSize: "clamp(50px, 6.5vw, 90px)",
-                textShadow: "0 0 50px rgba(255,255,255,0.75)",
+                textShadow: "0 0 50px rgba(255,255,255,0.25)",
                 WebkitTextStrokeWidth: "1px",
                 WebkitTextStrokeColor: "#000",
               }}
