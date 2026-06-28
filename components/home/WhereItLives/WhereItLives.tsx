@@ -7,7 +7,7 @@ import { EYEBROW, HEADLINE, BODY, VENUE_CARDS, VenueCard } from "./whereitlives.
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function VenueCardItem({ card }: { card: VenueCard }) {
+function VenueCardItem({ card, eager }: { card: VenueCard; eager?: boolean }) {
   return (
     <div
       className="relative flex-shrink-0 overflow-hidden rounded-card border border-accent-cyan/20"
@@ -20,6 +20,8 @@ function VenueCardItem({ card }: { card: VenueCard }) {
         fill
         className="object-cover"
         sizes="(max-width: 1024px) 240px, 365px"
+        priority={eager}
+        loading={eager ? undefined : "lazy"}
       />
       {/* Label pill */}
       <div
@@ -59,7 +61,7 @@ export default function WhereItLives() {
     <section
       id="where-it-lives"
       className="relative w-full overflow-hidden bg-background-primary py-section-y-mobile lg:py-section-y"
-      style={{ contain: "layout paint" }}
+      style={{ contain: "paint" }}
       aria-label="Where It Lives"
     >
       {/* Background glow orb — mobile */}
@@ -139,7 +141,7 @@ export default function WhereItLives() {
           style={{ width: "max-content", willChange: "transform" }}
         >
           {loopedCards.map((card, i) => (
-            <VenueCardItem key={i} card={card} />
+            <VenueCardItem key={i} card={card} eager={i < VENUE_CARDS.length} />
           ))}
         </div>
       </div>
