@@ -1,4 +1,4 @@
-<"use client";
+"use client";
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
@@ -83,14 +83,14 @@ export default function PartyVideo() {
             style={{
               fontSize: "clamp(45px, 6vw, 75px)",
               lineHeight: "1.05",
-              maxWidth: "1200x",
+              maxWidth: "1000px",
               textShadow: "0 0 50px rgba(0,0,0,0.6)",
             }}
             initial={{ opacity: 0, y: 28 }}
             animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: 0.8, ease: EASE }}
           >
-            THE ULTIMATE VAPING EXPERIENCE<br />>DESIGNED FOR THE PARTY
+            THE ULTIMATE VAPING EXPERIENCE<br />DESIGNED FOR THE PARTY
           </motion.h2>
           <motion.p
             className="font-body text-text-primary"
