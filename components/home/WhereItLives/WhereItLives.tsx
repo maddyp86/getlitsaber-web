@@ -7,7 +7,7 @@ import { EYEBROW, HEADLINE, BODY, VENUE_CARDS, VenueCard } from "./whereitlives.
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-function VenueCardItem({ card }: { card: VenueCard }) {
+function VenueCardItem({ card, eager }: { card: VenueCard; eager?: boolean }) {
   return (
     <div
       className="relative flex-shrink-0 overflow-hidden rounded-card border border-accent-cyan/20"
@@ -20,6 +20,8 @@ function VenueCardItem({ card }: { card: VenueCard }) {
         fill
         className="object-cover"
         sizes="(max-width: 1024px) 240px, 365px"
+        priority={eager}
+        loading={eager ? undefined : "lazy"}
       />
       {/* Label pill */}
       <div
@@ -59,6 +61,7 @@ export default function WhereItLives() {
     <section
       id="where-it-lives"
       className="relative w-full overflow-hidden bg-background-primary py-section-y-mobile lg:py-section-y"
+      style={{ contain: "paint" }}
       aria-label="Where It Lives"
     >
       {/* Background glow orb — mobile */}
@@ -68,7 +71,8 @@ export default function WhereItLives() {
           width: "375px",
           height: "500px",
           background: "rgba(0, 153, 170, 0.25)",
-          filter: "blur(150px)",
+          filter: "blur(100px)",
+          willChange: "transform",
           zIndex: 0,
         }}
         aria-hidden="true"
@@ -81,7 +85,8 @@ export default function WhereItLives() {
           height: "402px",
           top: "500px",
           background: "rgba(0, 153, 170, 0.39)",
-          filter: "blur(150px)",
+          filter: "blur(100px)",
+          willChange: "transform",
           zIndex: 0,
         }}
         aria-hidden="true"
@@ -104,7 +109,7 @@ export default function WhereItLives() {
 
         {/* Headline */}
         <motion.h2
-          className="font-display max-w-[650px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
+          className="font-display max-w-[700px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
           style={{
             fontSize: "clamp(45px, 5vw, 75px)",
             lineHeight: "1.05",
@@ -133,10 +138,10 @@ export default function WhereItLives() {
       <div className="relative z-10 w-full overflow-hidden">
         <div
           className={`flex gap-4 lg:gap-6 ${prefersReduced ? "" : "animate-marquee-slow"}`}
-          style={{ width: "max-content" }}
+          style={{ width: "max-content", willChange: "transform" }}
         >
           {loopedCards.map((card, i) => (
-            <VenueCardItem key={i} card={card} />
+            <VenueCardItem key={i} card={card} eager={i < VENUE_CARDS.length} />
           ))}
         </div>
       </div>
