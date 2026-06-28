@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { videoUrl } from "@/lib/media";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -9,9 +9,20 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const VIDEO_SRC = videoUrl("home/litsaber-party.mp4");
 
 export default function PartyVideo() {
+  const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const prefersReduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced ? ["0%", "0%"] : ["-15%", "15%"]
+  );
 
   useEffect(() => {
     if (prefersReduced) { setVisible(true); return; }
@@ -27,6 +38,7 @@ export default function PartyVideo() {
 
   return (
     <section
+      ref={sectionRef}
       id="party-video"
       className="relative w-full overflow-hidden"
       style={{ minHeight: "800px" }}
@@ -56,13 +68,16 @@ export default function PartyVideo() {
         />
       </div>
 
-      {/* Text block */}
+      {/* Text block with parallax */}
       <div
-        ref={textRef}
         className="relative z-10 flex items-center justify-center w-full h-full"
         style={{ minHeight: "800px" }}
       >
-        <div className="mx-auto w-full max-w-content px-content text-center flex flex-col items-center gap-6">
+        <motion.div
+          ref={textRef}
+          className="mx-auto w-full max-w-content px-content text-center flex flex-col items-center gap-6"
+          style={{ y }}
+        >
           <motion.h2
             className="font-display font-bold text-text-primary uppercase"
             style={{
@@ -89,9 +104,13 @@ export default function PartyVideo() {
             animate={visible ? { opacity: 0.9, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
           >
-            Made with high-quality material for a superior lighting experience and built for long lasting use in all situations that life throws your way.
+            Made with{" "}
+            <strong style={{ color: "#ffffff", fontWeight: 700 }}>high-quality material</strong>
+            {" "}for a superior lighting experience and built for{" "}
+            <strong style={{ color: "#ffffff", fontWeight: 700 }}>long lasting use</strong>
+            {" "}in all situations that life throws your way.
           </motion.p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
