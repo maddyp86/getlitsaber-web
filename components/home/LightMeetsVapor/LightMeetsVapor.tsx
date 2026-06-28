@@ -7,7 +7,20 @@ export default function LightMeetsVapor() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const prefersReduced = useReducedMotion();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1025px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Scroll listener only active on desktop — mobile gets static layout
+  const enableParallax = isDesktop && !prefersReduced;
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -15,7 +28,7 @@ export default function LightMeetsVapor() {
   const y = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["-15%", "15%"]
+    enableParallax ? ["-15%", "15%"] : ["0%", "0%"]
   );
   useEffect(() => {
     if (prefersReduced) { setVisible(true); return; }
