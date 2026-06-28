@@ -8,7 +8,7 @@ A live log of the build, decisions made, and story beats captured along the way.
 
 **2026-06-27 · Final consistency + numbering pass (this revision).** Cleanup sweep to ready the doc as the project-completion reference. Changes:
 - **Build Log restructured (Phase 2 / Phase 3).** Phase 2 is now one contiguous, sequentially numbered block: **Phase 2 (umbrella) → 2.1 Foundation built → 2.2 Foundation audit + deploy → 2.3 Palette + Motion → 2.4 Hero → 2.5 public/ incident.** The Claude Code handoff + architecture work that was mislabeled and sitting mid-Phase-2 is now its own clean **Phase 3 (Claude Code Audit, Architecture & Homepage Completion)**, with the "Remaining homepage sections" folded under it as **Phase 3.1** (where Be Seen / StatBar and the rest were actually built). The previously unnumbered commerce sections are grouped after Phase 3 with explicit track numbers: **Commerce Phase 1 (planning) → 1a/1b → 2a/2b/2c + 3a/3b/3c-1 → Quantity-discount refactor.** No build text was rewritten; sections were moved and re-headed, story-beat captions realigned to the new numbers (beat IDs kept stable), and one cross-reference fixed.
-- **Section labels fixed.** "Phase 1.1" heading corrected to **Phase 1.5** (every internal reference and the glossary already used 1.5). The duplicate **"Phase 6.1"** heading on the launch-baseline section renumbered to **Phase 6.6** (it follows 6.5 and the done/pending summary). The **"5.5a" channel-attribution** heading renumbered to **5.5d** (5.5a/b/c are the device-type fixes inside 5.5); its story-beats label corrected from "(5.5e)" to "(5.5d)".
+- **Section labels fixed.** "Phase 1.1" heading corrected to **Phase 1.5** (every internal reference and the glossary already used 1.5). The duplicate **"Phase 6.1"** heading on the launch-baseline section renumbered to **Phase 6.6** (it follows 6.5 and the done/pending summary). In Phase 5 the channel-attribution section had collided with the **5.5a** device-type sub-item; it is now its own subsection **5.6 - Channel attribution reworked**, and the init-before-mount section moved from 5.6 to **5.7**, giving a clean 5.1 to 5.7 sequence (5.5 keeps its internal a/b/c fixes).
 - **Story beat numbering made sequential.** The Phase 5 beats table under 5.5 had carried 11 verbatim duplicates of Phase 4 / Phase 2 / Media beats (old P5-1 through P5-11); those were removed. All genuine Phase 5 beats renumbered to a clean **P5-1 through P5-8**, eliminating the duplicate P5-13 and P5-14 IDs that appeared twice.
 - **Completed items closed.** Build-Phase-3 remainder items (Gold modal, Future Drops modal, Editions wiring, cart Festival Drop List) marked resolved against the commerce build log. Three Phase 7 cutover items (Authorize.net live flip, box-QR repoint, account-subdomain branding) moved out of the pre-launch open list into Resolved, dated 2026-06-27.
 - **Stale reference fixed.** Replaced the legacy global "beat #28" pointer with the phase-scoped reference (QD-1).
@@ -18,7 +18,7 @@ A live log of the build, decisions made, and story beats captured along the way.
 
 **2026-06-27 — Deploy workflow correction (staging/preview pipeline).** [full entry: documents that the doc claimed PR/preview-from-Phase-2 but Bolt was committing straight to main with no preview deploy ever existing; staging branch created in Bolt and switched onto; first push produced the first preview deploy; promote path is staging → main via GitHub PR. Notes the downstream edits and that branch protection is logged but not enabled.]
 
-**2026-06-25 — Near-mount event race root-caused and fixed at the provider layer; product_viewed fidelity and dedup fixed.** The onFeatureFlags patch from 5.2 was a partial fix: a `posthog.onFeatureFlags()` callback registered before `posthog.init()` runs never fires, so `product_viewed` and `promo_code_captured` fired about 5 minutes late or not at all on real traffic. Fixed by initializing PostHog before child components mount (`useLayoutEffect` in `providers.tsx`) and routing `useDiscount.ts` through `trackWhenReady`. Separately: removed the duplicate `product_viewed` emitter on the PDP (two components were both firing it), and moved `product_viewed` from mount to viewport entry (IntersectionObserver), closing the homepage false positive logged in 5.2. Full detail in new section 5.6. The 5.2 fidelity gap and the 5.5c "hanging onFeatureFlags" both trace to this one root cause.
+**2026-06-25 — Near-mount event race root-caused and fixed at the provider layer; product_viewed fidelity and dedup fixed.** The onFeatureFlags patch from 5.2 was a partial fix: a `posthog.onFeatureFlags()` callback registered before `posthog.init()` runs never fires, so `product_viewed` and `promo_code_captured` fired about 5 minutes late or not at all on real traffic. Fixed by initializing PostHog before child components mount (`useLayoutEffect` in `providers.tsx`) and routing `useDiscount.ts` through `trackWhenReady`. Separately: removed the duplicate `product_viewed` emitter on the PDP (two components were both firing it), and moved `product_viewed` from mount to viewport entry (IntersectionObserver), closing the homepage false positive logged in 5.2. Full detail in new section 5.7. The 5.2 fidelity gap and the 5.5c "hanging onFeatureFlags" both trace to this one root cause.
 
 **2026-06-22 — Consistency pass (this revision).** Swept the document for drift accumulated across phases. Changes:
 - Reviews provider corrected throughout: **ReviewInfra → Judge.me** (Judge.me is the confirmed provider; historical entries annotated as superseded, forward-looking items resolved, a Judge.me closeout entry added). Related open questions closed.
@@ -832,7 +832,7 @@ defer the track() until ready via posthog.onFeatureFlags(); keep the sessionStor
 write at mount (auto-apply needs it early). [SUPERSEDED 2026-06-25: onFeatureFlags
 alone is insufficient. A callback registered before init() runs never fires, so the
 event resolved only on a much later flag reload (about 5 minutes) or not at all. The
-durable fix is init-before-mount. See 5.6.]
+durable fix is init-before-mount. See 5.7.]
 
 **The audit was the payoff:** asked Bolt whether any OTHER event fires near mount.
 It found product_viewed — funnel STEP 3, every PDP visit — had the identical bug.
@@ -844,13 +844,13 @@ lib/analytics/events.ts — now the rule ("near-mount events use trackWhenReady"
 enforced by a function name, not tribal knowledge. ADR-005 updated with the rule +
 the four promo events + the promo_code_applied supersede.
 
-**Fidelity gap (RESOLVED 2026-06-25, see 5.6):** product_viewed is specced as
+**Fidelity gap (RESOLVED 2026-06-25, see 5.7):** product_viewed is specced as
 viewport-entry but originally fired at MOUNT (no IntersectionObserver), so on the
 homepage with the buy section below the fold it measured "page loaded" more than
 "saw product." Now fires on first viewport entry via IntersectionObserver in
 ProductDisplay.tsx. The note about "both call sites" was itself a second bug: the
 two call sites were both firing on the PDP, double-counting product_viewed. That
-duplicate emitter was removed in 5.6 as well.
+duplicate emitter was removed in 5.7 as well.
 
 ---
 
@@ -935,7 +935,7 @@ domain moves.
 
 **5.5c — ActivationTracker fixes (components/activate/ActivationTracker.tsx)**
 - **Bug 1 (firing on multiple page visits):** `useRef` guard resets on every component remount during navigation. Fixed: localStorage guard persists across navigation. Fires exactly once per device, never again.
-- **Bug 2 (10–20 min delay / not firing):** `trackWhenReady()` relied on `posthog.onFeatureFlags()` callback that was hanging. Fixed: simple `setTimeout(500)` + direct `track()` call, scope to localStorage-guarded condition. [2026-06-25: this "hanging onFeatureFlags" is the same init-race later root-caused in 5.6. The setTimeout(500) here was a local workaround for one event. With init-before-mount now shipped at the provider layer, this could in principle be simplified back to `trackWhenReady`, but `device_activated` is the North Star, so leave it untouched unless there is a concrete reason. Logged as a low-priority consideration.]
+- **Bug 2 (10–20 min delay / not firing):** `trackWhenReady()` relied on `posthog.onFeatureFlags()` callback that was hanging. Fixed: simple `setTimeout(500)` + direct `track()` call, scope to localStorage-guarded condition. [2026-06-25: this "hanging onFeatureFlags" is the same init-race later root-caused in 5.7. The setTimeout(500) here was a local workaround for one event. With init-before-mount now shipped at the provider layer, this could in principle be simplified back to `trackWhenReady`, but `device_activated` is the North Star, so leave it untouched unless there is a concrete reason. Logged as a low-priority consideration.]
 - **Build errors resolved:** removed `(window as any)` type assertions, removed unnecessary posthog loaded check.
 - **Result:** event fires ~500ms after `/activate` load on first visit with `is_first_activation: true`, never fires again. Console logs cleaned for production.
 
@@ -965,7 +965,7 @@ domain moves.
 
 ---
 
-#### 5.5d — Channel attribution reworked: synchronous derivation through the cart-attribute pipe (2026-06-21) ✅
+#### 5.6 — Channel attribution reworked: synchronous derivation through the cart-attribute pipe (2026-06-21) ✅
 
 **Supersedes the 5.1 person-based channel approach for the purchase event.** 5.1 assumed channel should be read off the PERSON (`$virt_initial_channel_type`) and that identify-on-email would resolve it. Live inspection disproved the premise: on a direct typed-URL test, the pageview event stored `Referrer URL = $direct` and carried NO readable `$channel_type` property at all, and `window.posthog.get_property('$channel_type')` returns nothing client-side. Confirmed against the PostHog docs: channel type is COMPUTED AT QUERY TIME from referrer + UTM inputs, never persisted on the event, never exposed for a client read. So neither the event nor a cart-time client read can pull `$channel_type` directly. The whole `posthog.get_property('$channel_type')` path was dead and always fell back to "unknown."
 
@@ -998,7 +998,7 @@ domain moves.
 - `window.posthog` is undefined in the console because the module is not aliased to `window`; this does NOT mean PostHog failed to load. Confirm load via the Network tab (`/e/` requests to `us.i.posthog.com`), not the global.
 - "Desktop shows Mobile" during testing was DevTools device emulation (UA reported `Pixel 9`); `detectDeviceType()` was correct. Not a bug. (Separately noted: the Tablet branch in `lib/device.ts` is effectively dead code — Android tablets are caught by the Mobile rule first and modern iPads report a desktop UA — left unfixed, low priority.)
 
-**Story beats captured (5.5d)**
+**Story beats captured (5.6)**
 
 | ID | Beat | Tag |
 |---|------|-----|
@@ -1007,7 +1007,7 @@ domain moves.
 
 ---
 
-#### 5.6 — Init-before-mount: root cause and durable fix for the near-mount race (2026-06-25) ✅
+#### 5.7 — Init-before-mount: root cause and durable fix for the near-mount race (2026-06-25) ✅
  
 Pre-launch promo testing reopened the near-mount event problem from 5.2. Despite the
 onFeatureFlags patch, promo_code_captured and product_viewed were still missing on
@@ -1116,7 +1116,7 @@ Phase 5 instrumentation is now complete end to end:
 - Device detection: type at cart creation, persisted through purchase ✅
 - North Star: device_activated fires once per device on first activation ✅
 - Funnel complete: age_gate_confirmed → product_viewed → add_to_cart → checkout_started → device_activated
-- Near-mount event race root-caused and closed at the provider layer (init-before-mount); product_viewed moved to viewport entry and the PDP duplicate emitter removed (2026-06-25, see 5.6). Init fix verified; dedup and viewport swap shipped, pending one final incognito confirmation. ✅
+- Near-mount event race root-caused and closed at the provider layer (init-before-mount); product_viewed moved to viewport entry and the PDP duplicate emitter removed (2026-06-25, see 5.7). Init fix verified; dedup and viewport swap shipped, pending one final incognito confirmation. ✅
 - Daily flagged sessions pipeline: flags and summarizes friction signals ✅
 - Weekly agent: reads both streams (deterministic funnel tiles + qualitative session evidence) ✅
 
