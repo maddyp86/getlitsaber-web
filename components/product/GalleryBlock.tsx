@@ -21,22 +21,26 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      {/* Main viewer — all images pre-loaded and stacked; opacity swap is instant */}
+      {/* Main viewer — only the ACTIVE image is mounted. Previously all 24
+          full-size images were rendered and eagerly loaded at once, decoding
+          dozens of large bitmaps into memory and crashing mobile (iOS OOM).
+          The browser caches each image after first view, so navigation stays
+          fast without holding them all in memory. */}
       <div className="group relative w-full aspect-square rounded-card overflow-hidden">
-        {GALLERY_IMAGES.map((img, i) => (
-          <Image
-            key={img.src}
-            src={img.src}
-            alt={img.alt}
-            fill
-            className={`object-cover transition-opacity duration-200 ${
-              i === activeThumb ? "opacity-100" : "opacity-0"
-            }`}
-            sizes="(min-width: 600px) 50vw, 100vw"
-            priority={i === 0}
-            loading="eager"
-          />
-        ))}
+        {(() => {
+          const active = GALLERY_IMAGES[activeThumb] ?? GALLERY_IMAGES[0];
+          return (
+            <Image
+              key={active.src}
+              src={active.src}
+              alt={active.alt}
+              fill
+              className="object-cover"
+              sizes="(min-width: 600px) 50vw, 100vw"
+              priority
+            />
+          );
+        })()}
 
         {/* Prev arrow */}
         <button
