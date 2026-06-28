@@ -3,6 +3,7 @@ import Hero from "@/components/home/Hero";
 import StatBar from "@/components/home/StatBar";
 import BeSeen from "@/components/home/BeSeen/BeSeen";
 import ThreeModes from "@/components/home/ThreeModes/ThreeModes";
+import PartyVideo from "@/components/home/PartyVideo/PartyVideo";
 import UnderTheHood from "@/components/home/UnderTheHood/UnderTheHood";
 import LightMeetsVapor from "@/components/home/LightMeetsVapor/LightMeetsVapor";
 import WhereItLives from "@/components/home/WhereItLives/WhereItLives";
@@ -44,6 +45,7 @@ export default async function HomePage() {
       <StatBar />
       <BeSeen />
       <ThreeModes />
+      <PartyVideo />
       <UnderTheHood />
       <LightMeetsVapor />
       <WhereItLives />
