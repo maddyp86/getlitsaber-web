@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { videoUrl } from "@/lib/media";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -14,6 +15,7 @@ export default function PartyVideo() {
   const [visible, setVisible] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const prefersReduced = useReducedMotion();
+  const videoRef = usePlayWhenVisible<HTMLVideoElement>();
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1025px)");
@@ -61,13 +63,14 @@ export default function PartyVideo() {
           <div className="absolute inset-0 bg-background-primary" />
         ) : (
           <video
+            ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
             src={VIDEO_SRC}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             aria-hidden="true"
           />
         )}
