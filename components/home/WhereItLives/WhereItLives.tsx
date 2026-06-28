@@ -109,7 +109,7 @@ export default function WhereItLives() {
 
         {/* Headline */}
         <motion.h2
-          className="font-display max-w-[650px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
+          className="font-display max-w-[700px] font-bold text-text-primary uppercase whitespace-pre-line mb-6"
           style={{
             fontSize: "clamp(45px, 5vw, 75px)",
             lineHeight: "1.05",
