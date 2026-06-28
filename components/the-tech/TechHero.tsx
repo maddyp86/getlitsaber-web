@@ -39,8 +39,8 @@ export default function TechHero() {
           {/* Inner content — capped readable copy width, left-aligned (matches About) */}
           <div className="flex flex-col justify-center gap-6 max-w-[700px]">
             <motion.h1
-              className="block font-display font-bold text-text-primary"
-              style={{ fontSize: "clamp(55px, 7vw, 100px)" }}
+              className="block font-display font-bold text-text-primary leading-[1.1]"
+              style={{ fontSize: "clamp(55px, 6.5vw, 100px)" }}
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, delay: 0.1, ease: EASE }}
