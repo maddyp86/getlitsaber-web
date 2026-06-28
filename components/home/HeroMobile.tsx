@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { mediaUrl } from "@/lib/media";
 import {
   HEADLINE_MOBILE,
@@ -25,6 +26,7 @@ interface HeroMobileProps {
 export default function HeroMobile({ className }: HeroMobileProps) {
   const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
+  const setVideoRef = usePlayWhenVisible();
 
   return (
     <section
@@ -149,6 +151,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             />
           ) : (
             <video
+              ref={setVideoRef}
               autoPlay
               muted
               loop

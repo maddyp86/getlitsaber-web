@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { mediaUrl } from "@/lib/media";
 
 interface ThreeModesDesktopProps {
@@ -28,6 +29,7 @@ const IMAGE_FADE = {
 
 export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps) {
   const { activeMode, activePullBuild, setMode, togglePullBuild } = useModesState();
+  const setVideoRef = usePlayWhenVisible();
   const [reducedMotion, setReducedMotion] = useState(false);
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
@@ -470,6 +472,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
           />
         ) : (
           <motion.video
+            ref={setVideoRef}
             key={mediaKey}
             src={mediaSrc.video}
             poster={mediaSrc.image}
@@ -481,7 +484,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             aria-hidden={true}
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
           />

@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { mediaUrl } from "@/lib/media";
 import {
   HEADLINE_DESKTOP,
@@ -25,6 +26,7 @@ interface HeroDesktopProps {
 export default function HeroDesktop({ className }: HeroDesktopProps) {
   const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
+  const setVideoRef = usePlayWhenVisible();
 
   return (
     <section
@@ -68,6 +70,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           />
         ) : (
           <video
+            ref={setVideoRef}
             autoPlay
             muted
             loop
