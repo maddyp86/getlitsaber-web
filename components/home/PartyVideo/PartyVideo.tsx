@@ -80,7 +80,7 @@ export default function PartyVideo() {
           <motion.p
             className="font-body text-text-primary"
             style={{
-              fontSize: "clamp(16px, 2vw, 20px)",
+              fontSize: "clamp(16px, 2vw, 22px)",
               lineHeight: "1.6",
               maxWidth: "600px",
               opacity: 0.9,
