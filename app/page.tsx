@@ -19,6 +19,7 @@ import { getProductByHandle } from "@/lib/shopify/queries";
 import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import DiagProvider from "@/components/diag/DiagContext";
 import { parseDiag } from "@/lib/diag";
+import LazyMount from "@/components/primitives/LazyMount";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -52,27 +53,53 @@ export default async function HomePage({
       <StatBar />
       {/* `?diag=lite` renders only the above-the-fold hero, to isolate whether
           the crash is cumulative below-the-fold weight vs. something global. */}
+      {/* Below-the-fold sections are lazy-mounted: each renders only as it nears
+          the viewport and unmounts once well past, so the full heavy DOM never
+          exists at once. This keeps peak memory near the `?diag=lite` level and
+          fixes the mobile OOM crash. `?diag=lite` still strips them entirely. */}
       {!diag.lite && (
         <>
-          <BeSeen />
-          <ThreeModes />
-          <PartyVideo />
-          <UnderTheHood />
-          <LightMeetsVapor />
-          <WhereItLives />
-          <CommonQuestions />
-          <WhatWereShipping>
-            <EditionsSection />
-            <ProductDisplay
-              variantId={silverVariant?.id ?? ""}
-              available={available}
-              surface="homepage_buy"
-              basePrice={basePrice}
-            />
-          </WhatWereShipping>
-          <WhatCustomersSay />
-          <EmailSignupBanner />
-          <WholesaleCTABanner />
+          <LazyMount minHeight="300vh">
+            <BeSeen />
+          </LazyMount>
+          <LazyMount minHeight="1800px">
+            <ThreeModes />
+          </LazyMount>
+          <LazyMount minHeight="480px">
+            <PartyVideo />
+          </LazyMount>
+          <LazyMount minHeight="900px">
+            <UnderTheHood />
+          </LazyMount>
+          <LazyMount minHeight="600px">
+            <LightMeetsVapor />
+          </LazyMount>
+          <LazyMount minHeight="600px">
+            <WhereItLives />
+          </LazyMount>
+          <LazyMount minHeight="800px">
+            <CommonQuestions />
+          </LazyMount>
+          <LazyMount minHeight="1200px">
+            <WhatWereShipping>
+              <EditionsSection />
+              <ProductDisplay
+                variantId={silverVariant?.id ?? ""}
+                available={available}
+                surface="homepage_buy"
+                basePrice={basePrice}
+              />
+            </WhatWereShipping>
+          </LazyMount>
+          <LazyMount minHeight="800px">
+            <WhatCustomersSay />
+          </LazyMount>
+          <LazyMount minHeight="400px">
+            <EmailSignupBanner />
+          </LazyMount>
+          <LazyMount minHeight="400px">
+            <WholesaleCTABanner />
+          </LazyMount>
         </>
       )}
     </DiagProvider>
