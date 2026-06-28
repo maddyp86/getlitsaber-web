@@ -17,6 +17,8 @@ import WholesaleCTABanner from "@/components/home/WholesaleCTABanner/WholesaleCT
 import EmailSignupBanner from "@/components/global/EmailSignupBanner/EmailSignupBanner";
 import { getProductByHandle } from "@/lib/shopify/queries";
 import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import DiagProvider from "@/components/diag/DiagContext";
+import { parseDiag } from "@/lib/diag";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -25,7 +27,12 @@ export const metadata: Metadata = {
 const SILVER_SKU = "LTS-OG-SLV";
 const shopifyConfigured = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
+  const diag = parseDiag(searchParams);
   const product = await getProductByHandle("litsaber-og");
   const silverVariant = product?.variants.edges
     .map((e) => e.node)
@@ -39,29 +46,35 @@ export default async function HomePage() {
     : BASE_UNIT_PRICE;
 
   return (
-    <>
+    <DiagProvider value={diag}>
       <HomepageEngagementTracker />
       <Hero />
       <StatBar />
-      <BeSeen />
-      <ThreeModes />
-      <PartyVideo />
-      <UnderTheHood />
-      <LightMeetsVapor />
-      <WhereItLives />
-      <CommonQuestions />
-      <WhatWereShipping>
-        <EditionsSection />
-        <ProductDisplay
-          variantId={silverVariant?.id ?? ""}
-          available={available}
-          surface="homepage_buy"
-          basePrice={basePrice}
-        />
-      </WhatWereShipping>
-      <WhatCustomersSay />
-      <EmailSignupBanner />
-      <WholesaleCTABanner />
-    </>
+      {/* `?diag=lite` renders only the above-the-fold hero, to isolate whether
+          the crash is cumulative below-the-fold weight vs. something global. */}
+      {!diag.lite && (
+        <>
+          <BeSeen />
+          <ThreeModes />
+          <PartyVideo />
+          <UnderTheHood />
+          <LightMeetsVapor />
+          <WhereItLives />
+          <CommonQuestions />
+          <WhatWereShipping>
+            <EditionsSection />
+            <ProductDisplay
+              variantId={silverVariant?.id ?? ""}
+              available={available}
+              surface="homepage_buy"
+              basePrice={basePrice}
+            />
+          </WhatWereShipping>
+          <WhatCustomersSay />
+          <EmailSignupBanner />
+          <WholesaleCTABanner />
+        </>
+      )}
+    </DiagProvider>
   );
 }

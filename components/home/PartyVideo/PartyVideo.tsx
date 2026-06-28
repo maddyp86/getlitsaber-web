@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { videoUrl } from "@/lib/media";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
+import { useDiag } from "@/components/diag/DiagContext";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -16,6 +17,7 @@ export default function PartyVideo() {
   const [isDesktop, setIsDesktop] = useState(false);
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
+  const { novideo } = useDiag();
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1025px)");
@@ -59,7 +61,7 @@ export default function PartyVideo() {
     >
       {/* Background video */}
       <div className="absolute inset-0">
-        {prefersReduced ? (
+        {prefersReduced || novideo ? (
           <div className="absolute inset-0 bg-background-primary" />
         ) : (
           <video

@@ -2,6 +2,7 @@
 
 import { useLayoutEffect } from "react";
 import posthog from "posthog-js";
+import { readDiagFromLocation } from "@/lib/diag";
 
 export default function PostHogProvider({
   children,
@@ -11,6 +12,10 @@ export default function PostHogProvider({
   useLayoutEffect(() => {
     const token = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
     if (typeof window === "undefined" || !token) return;
+
+    // `?diag=noreplay` disables the rrweb session recorder to test whether it
+    // is the source of the mobile OOM crash. Diagnostic only.
+    const { noreplay } = readDiagFromLocation();
 
     posthog.init(token, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
@@ -22,6 +27,7 @@ export default function PostHogProvider({
         capture_console_errors: false,
       },
       capture_dead_clicks: true,
+      disable_session_recording: noreplay,
     });
   }, []);
 
