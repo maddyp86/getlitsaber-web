@@ -6,11 +6,19 @@ A live log of the build, decisions made, and story beats captured along the way.
 
 ## Revision Log
 
+**2026-06-27 · Final consistency + numbering pass (this revision).** Cleanup sweep to ready the doc as the project-completion reference. Changes:
+- **Build Log restructured (Phase 2 / Phase 3).** Phase 2 is now one contiguous, sequentially numbered block: **Phase 2 (umbrella) → 2.1 Foundation built → 2.2 Foundation audit + deploy → 2.3 Palette + Motion → 2.4 Hero → 2.5 public/ incident.** The Claude Code handoff + architecture work that was mislabeled and sitting mid-Phase-2 is now its own clean **Phase 3 (Claude Code Audit, Architecture & Homepage Completion)**, with the "Remaining homepage sections" folded under it as **Phase 3.1** (where Be Seen / StatBar and the rest were actually built). The previously unnumbered commerce sections are grouped after Phase 3 with explicit track numbers: **Commerce Phase 1 (planning) → 1a/1b → 2a/2b/2c + 3a/3b/3c-1 → Quantity-discount refactor.** No build text was rewritten; sections were moved and re-headed, story-beat captions realigned to the new numbers (beat IDs kept stable), and one cross-reference fixed.
+- **Section labels fixed.** "Phase 1.1" heading corrected to **Phase 1.5** (every internal reference and the glossary already used 1.5). The duplicate **"Phase 6.1"** heading on the launch-baseline section renumbered to **Phase 6.6** (it follows 6.5 and the done/pending summary). In Phase 5 the channel-attribution section had collided with the **5.5a** device-type sub-item; it is now its own subsection **5.6 - Channel attribution reworked**, and the init-before-mount section moved from 5.6 to **5.7**, giving a clean 5.1 to 5.7 sequence (5.5 keeps its internal a/b/c fixes).
+- **Story beat numbering made sequential.** The Phase 5 beats table under 5.5 had carried 11 verbatim duplicates of Phase 4 / Phase 2 / Media beats (old P5-1 through P5-11); those were removed. All genuine Phase 5 beats renumbered to a clean **P5-1 through P5-8**, eliminating the duplicate P5-13 and P5-14 IDs that appeared twice.
+- **Completed items closed.** Build-Phase-3 remainder items (Gold modal, Future Drops modal, Editions wiring, cart Festival Drop List) marked resolved against the commerce build log. Three Phase 7 cutover items (Authorize.net live flip, box-QR repoint, account-subdomain branding) moved out of the pre-launch open list into Resolved, dated 2026-06-27.
+- **Stale reference fixed.** Replaced the legacy global "beat #28" pointer with the phase-scoped reference (QD-1).
+- **Still genuinely open (left as-is, not closed):** outreach-PDF rewrites (wholesale + cheat sheet), warranty/guarantee messaging reconciliation (30-day vs 14-day + 6-month), footer $49.99/$59.99 price bug, "light-show" PDP headline, and the n8n error-notification workflow.
+
 **2026-06-27 — Phase 7 cutover executed (store is LIVE).** DNS flipped: `getlitsaber.com` now resolves to Vercel, WooCommerce retired. Cutover was a nameserver migration (DNS was delegated to HostGator `ns157/158.websitewelcome.com`, not Namecheap BasicDNS as assumed), which required manually recreating Google Workspace MX (5 × `aspmx.l.google.com` set) + SPF (`v=spf1 include:_spf.google.com ~all`) at Namecheap after the switch. Three new subdomains live: `checkout.getlitsaber.com` (Online Store primary, serves checkout + app proxies), `account.getlitsaber.com` (passwordless Customer Accounts), `returns.getlitsaber.com` (connected but unused — see Returns below). Customer accounts required a Google OAuth redirect-URI reconfig (callback drops the store ID on the custom domain: `https://account.getlitsaber.com/authentication/social/google/callback`). Warehut handed scoped Shopify credentials. Claude Code now operational as write path (native installer, on `staging`). Returns policy fully re-specified (no RA, fault-based shipping split). Free USPS shipping confirmed. STILL UNVERIFIED post-launch: Authorize.net live-vs-test, and `maintenanceMode` flag state (policy URL fetched the maintenance splash on 06-27). Both are now LIVE-store risks, not pre-launch checkboxes.
 
 **2026-06-27 — Deploy workflow correction (staging/preview pipeline).** [full entry: documents that the doc claimed PR/preview-from-Phase-2 but Bolt was committing straight to main with no preview deploy ever existing; staging branch created in Bolt and switched onto; first push produced the first preview deploy; promote path is staging → main via GitHub PR. Notes the downstream edits and that branch protection is logged but not enabled.]
 
-**2026-06-25 — Near-mount event race root-caused and fixed at the provider layer; product_viewed fidelity and dedup fixed.** The onFeatureFlags patch from 5.2 was a partial fix: a `posthog.onFeatureFlags()` callback registered before `posthog.init()` runs never fires, so `product_viewed` and `promo_code_captured` fired about 5 minutes late or not at all on real traffic. Fixed by initializing PostHog before child components mount (`useLayoutEffect` in `providers.tsx`) and routing `useDiscount.ts` through `trackWhenReady`. Separately: removed the duplicate `product_viewed` emitter on the PDP (two components were both firing it), and moved `product_viewed` from mount to viewport entry (IntersectionObserver), closing the homepage false positive logged in 5.2. Full detail in new section 5.6. The 5.2 fidelity gap and the 5.5c "hanging onFeatureFlags" both trace to this one root cause.
+**2026-06-25 — Near-mount event race root-caused and fixed at the provider layer; product_viewed fidelity and dedup fixed.** The onFeatureFlags patch from 5.2 was a partial fix: a `posthog.onFeatureFlags()` callback registered before `posthog.init()` runs never fires, so `product_viewed` and `promo_code_captured` fired about 5 minutes late or not at all on real traffic. Fixed by initializing PostHog before child components mount (`useLayoutEffect` in `providers.tsx`) and routing `useDiscount.ts` through `trackWhenReady`. Separately: removed the duplicate `product_viewed` emitter on the PDP (two components were both firing it), and moved `product_viewed` from mount to viewport entry (IntersectionObserver), closing the homepage false positive logged in 5.2. Full detail in new section 5.7. The 5.2 fidelity gap and the 5.5c "hanging onFeatureFlags" both trace to this one root cause.
 
 **2026-06-22 — Consistency pass (this revision).** Swept the document for drift accumulated across phases. Changes:
 - Reviews provider corrected throughout: **ReviewInfra → Judge.me** (Judge.me is the confirmed provider; historical entries annotated as superseded, forward-looking items resolved, a Judge.me closeout entry added). Related open questions closed.
@@ -26,10 +34,10 @@ A live log of the build, decisions made, and story beats captured along the way.
 
 Two parallel phase numberings run through this doc. They are NOT the same track:
 
-- **Build track** — `Phase 1 … Phase 7`. The overall project arc: tokens/repo → foundation → audit → Shopify → observability → production agent → launch.
-- **Commerce sub-phase track** — `Commerce Phase 1a/1b`, `2a/2b/2c`, `3a/3b/3c-1`, `4a/4b/4c`. The decoupled cart build that runs INSIDE build-Phase-2 and build-Phase-4. "Commerce Phase 4" = the Shopify swap; it lands during build-Phase-4.
+- **Build track** — `Phase 1 … Phase 7`. The overall project arc: tokens/repo → foundation → homepage build → audit → Shopify → observability → production agent → launch.
+- **Commerce sub-phase track** — `Commerce Phase 1`, `1a/1b`, `2a/2b/2c`, `3a/3b/3c-1`, `4a/4b/4c`. The decoupled cart build that runs INSIDE build-Phase-2/3 and build-Phase-4. Its sections are grouped together under their own `Commerce Phase …` headings (after Phase 3 in the Build Log). "Commerce Phase 4" = the Shopify swap; it lands during build-Phase-4.
 
-Where a heading says a bare "Phase 3a/3b/3c-1," it means the **commerce** track. Build-Phase-3 is the Claude Code audit. When in doubt, the commerce track is always the cart/checkout work.
+Where a heading reads `Commerce Phase …`, it is the **commerce** track. Build-Phase-3 is the Claude Code audit + architecture + homepage completion. When in doubt, the commerce track is always the cart/checkout work.
 
 ---
 
@@ -109,7 +117,7 @@ Where a heading says a bare "Phase 3a/3b/3c-1," it means the **commerce** track.
 
 ---
 
-### Phase 1.1 — Scope Expansion & Mobile/Desktop Reconciliation ✅
+### Phase 1.5 — Scope Expansion & Mobile/Desktop Reconciliation ✅
 
 **Goal:** Pull the rest of the design context (mobile frames, additional pages, cart system, modals) before kicking off Phase 2.
 
@@ -192,7 +200,20 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 2 — Foundation Complete (2026-05-20) ✅
+### Phase 2 — Foundation & Homepage Build (2026-05-20 to 05-26) ✅
+
+**Goal:** Build all homepage sections, local cart store, cart drawer, and waitlist form + API route.
+
+**Sequencing (locked in ADR-002):**
+1. Foundation — Layout shell, Navbar, Footer, mobile drawer, age gate modal ✅
+2. Homepage — All sections in scroll order ✅
+3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data. (pending at time of writing)
+4. Cart — Drawer + page + line items + promo code (local state, no Shopify yet) ✅ (drawer + store built; `/cart` page pending at time of writing)
+5. Wholesale + About — Lower-risk pages (pending)
+6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav) (pending)
+7. Contact + Policies — Templated, fastest to ship (pending)
+
+#### Phase 2.1 — Foundation built (2026-05-20) ✅
 
 **Goal:** Foundation phase — layout shell, global components, page stubs, token system.
 
@@ -216,7 +237,7 @@ None. Phase 2 unblocked.
 3. **Footer drift resolved.** COMPONENTS.md flagged that the desktop footer was missing social icons and "DESIGNED IN LA" tagline (they existed on mobile only). Both are now on both breakpoints from the start — no deferred reconciliation needed.
 4. **js-cookie removed.** Age gate uses `document.cookie` directly rather than introducing a dependency. Simpler, no bundle cost, sufficient for a single compliance cookie.
 
-**Story beats (Phase 2 foundation)**
+**Story beats (Phase 2.1 · foundation)**
 
 | ID | Beat | Tag |
 |---|------|-----|
@@ -226,20 +247,7 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 2.1 — Homepage + Commerce Phases 2 + 3a/3b/3c-1 complete (2026-05-26) ✅
-
-**Goal:** Build all homepage sections, local cart store, cart drawer, and waitlist form + API route.
-
-**Sequencing (locked in ADR-002):**
-1. Foundation — Layout shell, Navbar, Footer, mobile drawer, age gate modal ✅
-2. Homepage — All sections in scroll order ✅
-3. PDP — Product info, styles/bundles, mock data only. Reviews subsystem with seed data. (pending at time of writing)
-4. Cart — Drawer + page + line items + promo code (local state, no Shopify yet) ✅ (drawer + store built; `/cart` page pending at time of writing)
-5. Wholesale + About — Lower-risk pages (pending)
-6. Engineering + Activate — Higher complexity (kinetic animation, sticky chip nav) (pending)
-7. Contact + Policies — Templated, fastest to ship (pending)
-
-#### Phase 2.1 — Step 1: Foundation ✅ (deployed to Vercel) — see entry above
+#### Phase 2.2 — Foundation audit + Vercel deploy ✅
 
 **Bolt output audited.** Build passes, preview works, all 13 routes render. Quality of token integration in `tailwind.config.ts` is gold-standard — every value imports from `tokens.json`, no inline hex anywhere. Accessibility on the modal/drawer is genuinely good (scroll lock, focus management, Escape close, full ARIA labeling). Footer drift from Phase 1.5 resolved — socials + "DESIGNED IN LA" present on both mobile and desktop.
 
@@ -255,7 +263,7 @@ None. Phase 2 unblocked.
 - Live preview URL responsive to all 5 verification tests: Age Gate appears, dismisses on confirm, persists across refresh, all 5 nav routes work, mobile drawer opens with full nav
 - From here forward, every push to `main` auto-deploys; every PR gets a unique preview URL [CORRECTION 2026-06-27: the PR/preview half did not hold in practice; work continued to land directly on `main` until the `staging` pipeline was set up on 2026-06-27. See the 2026-06-27 revision entry and Deploy Topology.]
 
-**Story beats captured (Phase 2 Step 1)**
+**Story beats captured (Phase 2.2 · foundation audit + deploy)**
 
 | ID | Beat | Tag |
 |---|------|-----|
@@ -266,7 +274,7 @@ None. Phase 2 unblocked.
 
 ---
 
-#### Phase 2 — Step 1.6: Palette reconciliation + Motion system
+#### Phase 2.3 — Palette reconciliation + Motion system ✅
 
 **What happened:** User surfaced a motion design system doc and two component files (`BuySection.tsx`, `SectionStarfield.tsx`) from an earlier Vite prototype. Audited them. The motion doc was high-quality and worth keeping; the two `.tsx` files carried stale data (3-pack bundles, $60/$110/$150 pricing, "12 Colors", 30-day-vs-6-month warranty conflict, a different synthwave palette).
 
@@ -286,7 +294,7 @@ None. Phase 2 unblocked.
 
 **The two prototype `.tsx` files: reference only, NOT merged.** Useful patterns (carousel with fade, sticky product image, bundle selector, accordions, section starfield) but wrong framework (Vite not Next.js), wrong palette, wrong prices, wrong bundle count. Bolt re-implements fresh against current spec. Starfield *technique* captured in MOTION.md Part 5.
 
-**Story beats captured (Phase 2 Step 1.6)**
+**Story beats captured (Phase 2.3 · palette + motion)**
 
 | ID | Beat | Tag |
 |---|------|-----|
@@ -297,7 +305,7 @@ None. Phase 2 unblocked.
 
 ---
 
-#### Phase 2 — Step 2: Hero section (built, corrected)
+#### Phase 2.4 — Hero section built, corrected ✅
 
 **Built hero-first** (broke the homepage into per-section chunks rather than the original two-pass split). Bolt produced `<Hero />` plus reusable `<Reveal>` and `<SpecPill>` primitives. The hero is the most-judged component and sets the motion/color patterns for every later section, so it earned its own pass.
 
@@ -314,7 +322,7 @@ None. Phase 2 unblocked.
 
 **Corrective prompt issued** to wire real images, add the product render, resize the tagline — as a patch to existing `<Hero />`, not a rebuild.
 
-#### Phase 2 — INCIDENT: public/ folder wiped by Bolt sync
+#### Phase 2.5 — INCIDENT: public/ folder wiped by Bolt sync
 
 **What happened:** The entire `public/images/` folder (uploaded across 3 commits ~17–19h prior) disappeared from the repo. Root cause: two-sources-of-truth collision. Images were added directly via GitHub/GitHub Desktop; Bolt's workspace never had them; a Bolt sync produced a `Merge branch 'main'` commit that dropped `public/` because Bolt's view didn't include it.
 
@@ -322,7 +330,7 @@ None. Phase 2 unblocked.
 
 **Prevention (now locked in CLAUDE.md):** Single write path to the repo. During Phase 2, all files enter through Bolt. No direct GitHub edits while Bolt is the active editor. This is the second Bolt collision (first was the Netlify dependency leak in Step 1) — both are arguments for the Claude Code handoff after the homepage scaffold.
 
-**Story beats captured (Phase 2 Step 2 + incident)**
+**Story beats captured (Phase 2.4 to 2.5 · hero + incident)**
 
 | ID | Beat | Tag |
 |---|------|-----|
@@ -332,7 +340,7 @@ None. Phase 2 unblocked.
 
 ---
 
-### Phase 3 — Claude Code Audit & Structural Fixes ✅ (handoff complete; Phase-3-remainder items verified — see Open Questions)
+### Phase 3 — Claude Code Audit, Architecture & Homepage Completion ✅ (handoff complete; Phase-3-remainder items verified — see Open Questions)
 
 Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMPONENTS.md`, and tokens. Fix component composition, type safety, routing, accessibility. Mobile responsiveness verified or built where Bolt fell short.
 
@@ -372,7 +380,33 @@ Planning session: have Claude Code audit Bolt's output against `BRAND.md`, `COMP
 
 ---
 
-### Commerce — Editions + Commerce section build-phasing plan (2026-05-23, planning)
+#### Phase 3.1 — Remaining homepage sections built (2026-05-24 to 05-26) ✅
+
+All homepage sections are now built and composed in `app/page.tsx` in scroll order:
+
+1. `<Hero />` — split desktop/mobile per ADR-003 ✅ (logged above)
+2. `<StatBar />` — continuous CSS marquee, 5 stats ✅ (logged above)
+3. `<BeSeen />` — scroll-pinned scrollytelling, 3 stages ✅ (logged above)
+4. `<ThreeModes />` — split desktop/mobile per ADR-003
+5. `<UnderTheHood />` — split desktop/mobile per ADR-003
+6. `<LightMeetsVapor />` — single responsive component, Framer Motion parallax scroll + intersection-observer text reveal
+7. `<WhereItLives />` — venue marquee (CSS animation, duplicated-track technique for seamless loop) + animated headline block with intersection observer
+8. `<CommonQuestions />` — split desktop/mobile per ADR-003
+9. `<WhatWereShipping />` wrapping `<EditionsSection />` + `<ProductDisplay />` ✅ (built in Commerce Phase 1a/1b)
+
+**ThreeModes:** Three product modes (Fade, Pulse, Strobe or equivalent) with shared `useModesState.ts` hook. Split per ADR-003 — structural layout divergence between breakpoints, not just reflow. Files: `ThreeModesDesktop.tsx`, `ThreeModesMobile.tsx`, `ThreeModes.tsx` (CSS-toggle wrapper), `modes.content.ts`, `useModesState.ts`.
+
+**UnderTheHood:** Engineering specs / exploded-view section. Split per ADR-003. Files: `UnderTheHoodDesktop.tsx`, `UnderTheHoodMobile.tsx`, `UnderTheHood.tsx`, `underthehood.content.ts`.
+
+**LightMeetsVapor:** Full-height parallax section ("WHERE LIGHT AND VAPOR MEET"). Single responsive component. Framer Motion `useScroll`/`useTransform` for parallax bg; intersection observer triggers text reveal. Separate aspect ratios per breakpoint (375/600 mobile, 8/5 desktop). Respects `prefers-reduced-motion`.
+
+**WhereItLives:** Venue/lifestyle placement section. CSS marquee strip of venue cards (same duplicated-track technique as StatBar — consistent pattern across the codebase now). Animated headline + body block. Files: `WhereItLives.tsx`, `whereitlives.content.ts`.
+
+**CommonQuestions:** FAQ accordion section. Split per ADR-003. Files: `CommonQuestionsDesktop.tsx`, `CommonQuestionsMobile.tsx`, `CommonQuestions.tsx`, `commonquestions.content.ts`.
+
+---
+
+### Commerce Phase 1 — Editions + product-display build-phasing plan (2026-05-23, planning)
 
 The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inline PDP-style product display, Figma node `3312:2`). This is the frame previously logged as the empty "Section 6" open question — now resolved as this feature. Planned the build before writing any code because it bundles UI, cart state, form capture, and a payment integration that, done in one pass, would produce something that looks right and breaks on real commerce data.
 
@@ -395,7 +429,7 @@ The homepage's most complex section ("WHAT WE'RE SHIPPING" / Editions + the inli
 
 ---
 
-### Commerce — WhatWereShipping — Phase 1a + 1b built (2026-05-23) ✅
+### Commerce Phase 1a/1b — WhatWereShipping built (2026-05-23) ✅
 
 Static layout for both children of the section is built, reviewed, and committed (repo `getlitsaber-web`, `components/home/`).
 
@@ -421,33 +455,7 @@ Static layout for both children of the section is built, reviewed, and committed
 
 ---
 
-### Phase 2 — Remaining homepage sections built (2026-05-24–26) ✅
-
-All homepage sections are now built and composed in `app/page.tsx` in scroll order:
-
-1. `<Hero />` — split desktop/mobile per ADR-003 ✅ (logged above)
-2. `<StatBar />` — continuous CSS marquee, 5 stats ✅ (logged above)
-3. `<BeSeen />` — scroll-pinned scrollytelling, 3 stages ✅ (logged above)
-4. `<ThreeModes />` — split desktop/mobile per ADR-003
-5. `<UnderTheHood />` — split desktop/mobile per ADR-003
-6. `<LightMeetsVapor />` — single responsive component, Framer Motion parallax scroll + intersection-observer text reveal
-7. `<WhereItLives />` — venue marquee (CSS animation, duplicated-track technique for seamless loop) + animated headline block with intersection observer
-8. `<CommonQuestions />` — split desktop/mobile per ADR-003
-9. `<WhatWereShipping />` wrapping `<EditionsSection />` + `<ProductDisplay />` ✅ (logged above)
-
-**ThreeModes:** Three product modes (Fade, Pulse, Strobe or equivalent) with shared `useModesState.ts` hook. Split per ADR-003 — structural layout divergence between breakpoints, not just reflow. Files: `ThreeModesDesktop.tsx`, `ThreeModesMobile.tsx`, `ThreeModes.tsx` (CSS-toggle wrapper), `modes.content.ts`, `useModesState.ts`.
-
-**UnderTheHood:** Engineering specs / exploded-view section. Split per ADR-003. Files: `UnderTheHoodDesktop.tsx`, `UnderTheHoodMobile.tsx`, `UnderTheHood.tsx`, `underthehood.content.ts`.
-
-**LightMeetsVapor:** Full-height parallax section ("WHERE LIGHT AND VAPOR MEET"). Single responsive component. Framer Motion `useScroll`/`useTransform` for parallax bg; intersection observer triggers text reveal. Separate aspect ratios per breakpoint (375/600 mobile, 8/5 desktop). Respects `prefers-reduced-motion`.
-
-**WhereItLives:** Venue/lifestyle placement section. CSS marquee strip of venue cards (same duplicated-track technique as StatBar — consistent pattern across the codebase now). Animated headline + body block. Files: `WhereItLives.tsx`, `whereitlives.content.ts`.
-
-**CommonQuestions:** FAQ accordion section. Split per ADR-003. Files: `CommonQuestionsDesktop.tsx`, `CommonQuestionsMobile.tsx`, `CommonQuestions.tsx`, `commonquestions.content.ts`.
-
----
-
-### Commerce — Phase 2a/2b/2c + Phase 3a/3b/3c-1 — Commerce UI on a local store (2026-05-25) ✅
+### Commerce Phase 2a/2b/2c + 3a/3b/3c-1 — Commerce UI on a local store (2026-05-25) ✅
 
 The full commerce UI is built and verified against the local cart store. Shopify is still untouched (Commerce-Phase 4). Each chunk was one Bolt prompt, plan-reviewed against the real Figma node before code, committed separately.
 
@@ -595,7 +603,7 @@ Pre-build provisioning work and API surface discovery. The `/shopify-check` temp
 **Two Pack — bundle exposure failure and pivot:**
 - Two Pack was set up as a native Shopify Bundles app product (`handle: litsaber-og-two-pack`), composing 2× Silver. Expected behavior: the bundle surfaces as its own fetchable Storefront product.
 - Actual behavior: `getProductByHandle("litsaber-og-two-pack")` returned null even after confirming (a) product published to Headless/Storefront channel, and (b) product status Active. Native Shopify Bundles do not reliably expose via the Storefront API regardless of publish/status state. Confirmed limitation, not a config error.
-- **Pivot (FINAL):** Two Pack = 2× the Silver variant (`gid://...316239`, qty 2) + a Shopify automatic discount (−$20 when qty ≥ 2). One inventory pool, no bundle product needed in the cart path. This matches the FINAL bundle decision from beat #28 ("two of the single SKU, one inventory pool") and makes the Bundles product redundant for the cart.
+- **Pivot (FINAL):** Two Pack = 2× the Silver variant (`gid://...316239`, qty 2) + a Shopify automatic discount (−$20 when qty ≥ 2). One inventory pool, no bundle product needed in the cart path. This matches the FINAL bundle decision from the Quantity Discount Refactor (beat QD-1, "two of the single SKU, one inventory pool") and makes the Bundles product redundant for the cart.
 
 **SKU convention locked:**
 - Unit SKU = `LTS-OG-SLV`. Quantity is the dimension, not the SKU.
@@ -824,7 +832,7 @@ defer the track() until ready via posthog.onFeatureFlags(); keep the sessionStor
 write at mount (auto-apply needs it early). [SUPERSEDED 2026-06-25: onFeatureFlags
 alone is insufficient. A callback registered before init() runs never fires, so the
 event resolved only on a much later flag reload (about 5 minutes) or not at all. The
-durable fix is init-before-mount. See 5.6.]
+durable fix is init-before-mount. See 5.7.]
 
 **The audit was the payoff:** asked Bolt whether any OTHER event fires near mount.
 It found product_viewed — funnel STEP 3, every PDP visit — had the identical bug.
@@ -836,13 +844,13 @@ lib/analytics/events.ts — now the rule ("near-mount events use trackWhenReady"
 enforced by a function name, not tribal knowledge. ADR-005 updated with the rule +
 the four promo events + the promo_code_applied supersede.
 
-**Fidelity gap (RESOLVED 2026-06-25, see 5.6):** product_viewed is specced as
+**Fidelity gap (RESOLVED 2026-06-25, see 5.7):** product_viewed is specced as
 viewport-entry but originally fired at MOUNT (no IntersectionObserver), so on the
 homepage with the buy section below the fold it measured "page loaded" more than
 "saw product." Now fires on first viewport entry via IntersectionObserver in
 ProductDisplay.tsx. The note about "both call sites" was itself a second bug: the
 two call sites were both firing on the PDP, double-counting product_viewed. That
-duplicate emitter was removed in 5.6 as well.
+duplicate emitter was removed in 5.7 as well.
 
 ---
 
@@ -927,7 +935,7 @@ domain moves.
 
 **5.5c — ActivationTracker fixes (components/activate/ActivationTracker.tsx)**
 - **Bug 1 (firing on multiple page visits):** `useRef` guard resets on every component remount during navigation. Fixed: localStorage guard persists across navigation. Fires exactly once per device, never again.
-- **Bug 2 (10–20 min delay / not firing):** `trackWhenReady()` relied on `posthog.onFeatureFlags()` callback that was hanging. Fixed: simple `setTimeout(500)` + direct `track()` call, scope to localStorage-guarded condition. [2026-06-25: this "hanging onFeatureFlags" is the same init-race later root-caused in 5.6. The setTimeout(500) here was a local workaround for one event. With init-before-mount now shipped at the provider layer, this could in principle be simplified back to `trackWhenReady`, but `device_activated` is the North Star, so leave it untouched unless there is a concrete reason. Logged as a low-priority consideration.]
+- **Bug 2 (10–20 min delay / not firing):** `trackWhenReady()` relied on `posthog.onFeatureFlags()` callback that was hanging. Fixed: simple `setTimeout(500)` + direct `track()` call, scope to localStorage-guarded condition. [2026-06-25: this "hanging onFeatureFlags" is the same init-race later root-caused in 5.7. The setTimeout(500) here was a local workaround for one event. With init-before-mount now shipped at the provider layer, this could in principle be simplified back to `trackWhenReady`, but `device_activated` is the North Star, so leave it untouched unless there is a concrete reason. Logged as a low-priority consideration.]
 - **Build errors resolved:** removed `(window as any)` type assertions, removed unnecessary posthog loaded check.
 - **Result:** event fires ~500ms after `/activate` load on first visit with `is_first_activation: true`, never fires again. Console logs cleaned for production.
 
@@ -952,23 +960,12 @@ domain moves.
 
 | ID | Beat | Tag |
 |---|------|-----|
-| P5-1 | "I reviewed the builder's plan before it wrote a line of code, the way you'd review a PR. Three real bugs in the 4a plan, six gaps in the 4b plan, all caught at the plan stage. It is far cheaper to fix a paragraph than a commit, and the builder doesn't push back on a plan the way it defends code it's already written." | `ai-collaboration`, `pm-discipline` |
-| P5-2 | "The add-to-cart button stayed live after I marked the variant unavailable in Shopify. The builder pasted the file, declared its own code correct, and pointed me at a different function. The bug was one line it had pasted but never quoted back in its analysis: it checked whether the variant existed, not whether it was available for sale. The lesson is blunt. When the tool says 'my code is correct,' the bug is in the line it skipped reading." | `integration-depth`, `ai-collaboration` |
-| P5-3 | "Three different Shopify admin states — product in draft, zero inventory, variant unpublished from the channel — all return the same null from the Storefront API. One code branch handles all three correctly, but they're indistinguishable to the API, so you can't show 'sold out' vs 'paused' vs 'discontinued' until a second variant exists. Logged it so I don't rediscover it the hard way when Gold ships." | `integration-depth` |
-| P5-4 | "On the Shopify swap the obvious move is to persist the whole cart locally. I persisted only the cart ID and re-fetch the lines from Shopify on load. The server cart is the source of truth; cached local line data only drifts. The Phase 2a seam paid off exactly as designed — I swapped the store's internals and didn't touch a single component that reads it." | `integration-depth`, `pm-discipline` |
-| P5-5 | "The PDP capped quantity at 5 but the cart didn't. Buy five, go back, add two more, and you're at seven, priced wrong because the discounts only cover two through five. I fixed it at the store action, not the button, so every path that can add inventory passes through one cap. And I used an idempotent 'set quantity to exactly 5' update so a retried request can't overshoot. Enforce invariants at the chokepoint, not at every entrance." | `integration-depth`, `pm-discipline` |
-| P5-6 | "I'd written a client-side pricing module. Once the real discounts went into Shopify, the cart started returning the discounted total in its own cost field, so I sourced price from Shopify and demoted my module to an optimistic-UI fallback. Two sources of truth for money is a bug waiting to happen. The server wins at checkout, so the server has to win in the cart too." | `integration-depth`, `pm-discipline` |
-| P5-7 | "The dismissed promo popup kept coming back because dismiss only hid it and never set a cookie — only showing it did. I fixed dismiss to suppress for 72 hours. The deeper clarity was realizing 'stop the popup' and 'stop the code being reused' are two different layers: a browser cookie on the client and Shopify's one-per-customer rule on the server. Conflate them and you ship a promo that either nags forever or pays out twice." | `integration-depth`, `pm-discipline` |
-| P5-8 | "Inherited a motion design doc and two component files from an earlier prototype. The doc was gold; the components carried stale prices, bundle structure, and a different palette. Rather than paste them in and re-introduce resolved inconsistencies, I extracted the doc into a permanent MOTION.md artifact and flagged the components as reference-only. Knowing what to keep vs. what to quarantine is the actual skill." | `pm-discipline`, `discovery` |
-| P5-9 | "Palette went hybrid mid-build: purple-black canvas, three accents, a dedicated pink CTA color. Because everything routes through tokens.json, the change was one file edit — every component referencing named tokens inherited it automatically. This is why we built the token system in Phase 1 instead of inlining colors. The discipline compounds." | `pm-discipline`, `ai-augmented-build` |
-| P5-10 | "The same env var had to live in three places that don't talk to each other: Vercel for deploys, local for dev, and the builder's sandbox for its preview. Media rendered blank in the preview not because the code was wrong but because the builder's environment is walled off from Vercel's secrets by design. The lesson is to map where a value is actually read before debugging why it's missing, three environments means three copies, and that wall is a security feature, not a bug." | `integration-depth`, `tool-choice` |
-| P5-11 | "A talking-head video ballooned past its column because a video with only a width takes its own intrinsic height. The fix wasn't a magic height value, it was a constrained-aspect wrapper with the video positioned absolutely inside it, so the box defines the size and the video fills it. Then I found the identical bug in every Activate media slot. A defect that appears in nine places is one duplicated component waiting to be extracted, not nine bugs to fix nine times." | `integration-depth`, `pm-discipline` |
-| P5-12 | "PostHog's $device_type is computed after an event fires, so a cart read at creation time gets undefined. The whole cart-attribute pipe was silently failing — the webhook returned 200 to Shopify anyway, but the attribute never wrote. I replaced the async dependency with a synchronous userAgent read at the exact moment the cart exists. Same cart, same three attributes now; Shopify is the source of truth for money, userAgent is the source for device. The pattern: when an integration point doesn't fire, read the artifact (the webhook response, the cart row) to see what actually landed, not what the code intended." | `integration-depth`, `analytics-rigor` |
-| P5-13 | "The ActivationTracker fired on every page visit and hung for 10 to 20 minutes because useRef resets on component remount — navigation remounts the component and triggers another fire, and trackWhenReady() waits on an async callback that sometimes never resolves. Switched to localStorage (persists across navigation) and a timeout (always fires, doesn't wait). The fix had a name — localStorage guard + setTimeout — that made it obvious once I stopped reasoning about the code and started reasoning about the test behavior: 'fires on every visit' + 'resets on navigation' = useRef is the wrong guard. The North Star event is too important to ship guessing." | `analytics-rigor`, `integration-depth` |
+| P5-1 | "PostHog's $device_type is computed after an event fires, so a cart read at creation time gets undefined. The whole cart-attribute pipe was silently failing — the webhook returned 200 to Shopify anyway, but the attribute never wrote. I replaced the async dependency with a synchronous userAgent read at the exact moment the cart exists. Same cart, same three attributes now; Shopify is the source of truth for money, userAgent is the source for device. The pattern: when an integration point doesn't fire, read the artifact (the webhook response, the cart row) to see what actually landed, not what the code intended." | `integration-depth`, `analytics-rigor` |
+| P5-2 | "The ActivationTracker fired on every page visit and hung for 10 to 20 minutes because useRef resets on component remount — navigation remounts the component and triggers another fire, and trackWhenReady() waits on an async callback that sometimes never resolves. Switched to localStorage (persists across navigation) and a timeout (always fires, doesn't wait). The fix had a name — localStorage guard + setTimeout — that made it obvious once I stopped reasoning about the code and started reasoning about the test behavior: 'fires on every visit' + 'resets on navigation' = useRef is the wrong guard. The North Star event is too important to ship guessing." | `analytics-rigor`, `integration-depth` |
 
 ---
 
-#### 5.5a — Channel attribution reworked: synchronous derivation through the cart-attribute pipe (2026-06-21) ✅
+#### 5.6 — Channel attribution reworked: synchronous derivation through the cart-attribute pipe (2026-06-21) ✅
 
 **Supersedes the 5.1 person-based channel approach for the purchase event.** 5.1 assumed channel should be read off the PERSON (`$virt_initial_channel_type`) and that identify-on-email would resolve it. Live inspection disproved the premise: on a direct typed-URL test, the pageview event stored `Referrer URL = $direct` and carried NO readable `$channel_type` property at all, and `window.posthog.get_property('$channel_type')` returns nothing client-side. Confirmed against the PostHog docs: channel type is COMPUTED AT QUERY TIME from referrer + UTM inputs, never persisted on the event, never exposed for a client read. So neither the event nor a cart-time client read can pull `$channel_type` directly. The whole `posthog.get_property('$channel_type')` path was dead and always fell back to "unknown."
 
@@ -1001,16 +998,16 @@ domain moves.
 - `window.posthog` is undefined in the console because the module is not aliased to `window`; this does NOT mean PostHog failed to load. Confirm load via the Network tab (`/e/` requests to `us.i.posthog.com`), not the global.
 - "Desktop shows Mobile" during testing was DevTools device emulation (UA reported `Pixel 9`); `detectDeviceType()` was correct. Not a bug. (Separately noted: the Tablet branch in `lib/device.ts` is effectively dead code — Android tablets are caught by the Mobile rule first and modern iPads report a desktop UA — left unfixed, low priority.)
 
-**Story beats captured (5.5e)**
+**Story beats captured (5.6)**
 
 | ID | Beat | Tag |
 |---|------|-----|
-| P5-13 | "Spent the back half of a session trying to read PostHog's channel type onto the purchase event, off the person, off the cart, before the docs settled it: $channel_type is computed at query time and never stored, so there was nothing to read. The fix wasn't a better read, it was to stop reading PostHog and start deriving the channel myself from the raw referrer and UTM inputs at the one moment they exist client-side, then carry it through the cart exactly like device. The lesson: when a platform property won't materialize where you need it, check whether it's stored at all before building three mechanisms to fetch a thing that was always computed on demand. The coarse channel rides as our own event property; the UTM source carries the granularity the channel never could." | `integration-depth`, `analytics-rigor` |
-| P5-14 | "Three 'bugs' in a row were all environment, not code: a purchase reading the wrong channel was a stale localStorage cart (mismatched distinct_id was the tell), a console error was PostHog not being aliased to window (it was loading fine, visible in the Network tab), and desktop reading as Mobile was DevTools emulating a Pixel 9. Reading the artifact, the actual distinct_id, the actual network calls, the actual userAgent, beat reasoning about the code every time." | `analytics-rigor`, `pm-discipline` |
+| P5-3 | "Spent the back half of a session trying to read PostHog's channel type onto the purchase event, off the person, off the cart, before the docs settled it: $channel_type is computed at query time and never stored, so there was nothing to read. The fix wasn't a better read, it was to stop reading PostHog and start deriving the channel myself from the raw referrer and UTM inputs at the one moment they exist client-side, then carry it through the cart exactly like device. The lesson: when a platform property won't materialize where you need it, check whether it's stored at all before building three mechanisms to fetch a thing that was always computed on demand. The coarse channel rides as our own event property; the UTM source carries the granularity the channel never could." | `integration-depth`, `analytics-rigor` |
+| P5-4 | "Three 'bugs' in a row were all environment, not code: a purchase reading the wrong channel was a stale localStorage cart (mismatched distinct_id was the tell), a console error was PostHog not being aliased to window (it was loading fine, visible in the Network tab), and desktop reading as Mobile was DevTools emulating a Pixel 9. Reading the artifact, the actual distinct_id, the actual network calls, the actual userAgent, beat reasoning about the code every time." | `analytics-rigor`, `pm-discipline` |
 
 ---
 
-#### 5.6 — Init-before-mount: root cause and durable fix for the near-mount race (2026-06-25) ✅
+#### 5.7 — Init-before-mount: root cause and durable fix for the near-mount race (2026-06-25) ✅
  
 Pre-launch promo testing reopened the near-mount event problem from 5.2. Despite the
 onFeatureFlags patch, promo_code_captured and product_viewed were still missing on
@@ -1104,10 +1101,10 @@ entry, with surface set by prop.
  
 | ID | Beat | Tag |
 |---|------|-----|
-| P5-14 | "The promo and product-view events 'fired, just five minutes late.' Reading the exact capture timestamps on the live project showed a page load at 11:08:58 and the two events at 11:13:58, exactly five minutes later, and a fifteen-second visit that recorded neither. The cause: a posthog.onFeatureFlags callback registered before posthog.init() runs never fires, so it only resolves on a much later flag reload. The earlier onFeatureFlags 'fix' was a patch over the race, not a fix for it. The durable fix was to initialize PostHog before any child component mounts, so the ready path is taken at mount instead of the flaky fallback. A five-minute delay on a funnel step is not a slow event, it is a broken one, because almost no real visitor stays that long." | `analytics-rigor`, `integration-depth` |
-| P5-15 | "A doubled product_viewed on the PDP looked like a bad dependency array or a re-render, but both components that fired it were individually correct. There were simply two of them: a generic product display that stamps the surface from a prop, and a dedicated PDP tracker that hardcodes the same surface, both mounting on the same page. The data proved it: two distinct event ids, identical surface and session, a millisecond apart, while the homepage fired once. The fix was deletion, not another guard. Two correct emitters on one page is still a bug, and the answer is one source of truth, not two guards fighting." | `analytics-rigor`, `integration-depth` |
-| P5-16 | "Fixing the init race made product_viewed fire on time at mount, which immediately exposed a worse problem: on the homepage the buy section is below the fold, so 'mounted' was never 'seen.' Moved the event to an IntersectionObserver that fires on first viewport entry, with a zero threshold because the block is taller than the screen and a high threshold would never trip. The count will drop when this ships, and that drop is the measurement getting honest. The event finally means what its name says." | `analytics-rigor`, `pm-discipline` |
-| P5-17 | "Half a debugging stretch went to querying the wrong analytics project: the test project while the live site reported to the live one. A failed project switch had silently fallen back to test, so empty results read as 'the event never fires' when they only meant 'wrong project.' The guardrail is cheap and easy to relearn the hard way: confirm the active project before trusting a single live query, and treat empty live results as a reversion signal, not a verdict." | `analytics-rigor` |
+| P5-5 | "The promo and product-view events 'fired, just five minutes late.' Reading the exact capture timestamps on the live project showed a page load at 11:08:58 and the two events at 11:13:58, exactly five minutes later, and a fifteen-second visit that recorded neither. The cause: a posthog.onFeatureFlags callback registered before posthog.init() runs never fires, so it only resolves on a much later flag reload. The earlier onFeatureFlags 'fix' was a patch over the race, not a fix for it. The durable fix was to initialize PostHog before any child component mounts, so the ready path is taken at mount instead of the flaky fallback. A five-minute delay on a funnel step is not a slow event, it is a broken one, because almost no real visitor stays that long." | `analytics-rigor`, `integration-depth` |
+| P5-6 | "A doubled product_viewed on the PDP looked like a bad dependency array or a re-render, but both components that fired it were individually correct. There were simply two of them: a generic product display that stamps the surface from a prop, and a dedicated PDP tracker that hardcodes the same surface, both mounting on the same page. The data proved it: two distinct event ids, identical surface and session, a millisecond apart, while the homepage fired once. The fix was deletion, not another guard. Two correct emitters on one page is still a bug, and the answer is one source of truth, not two guards fighting." | `analytics-rigor`, `integration-depth` |
+| P5-7 | "Fixing the init race made product_viewed fire on time at mount, which immediately exposed a worse problem: on the homepage the buy section is below the fold, so 'mounted' was never 'seen.' Moved the event to an IntersectionObserver that fires on first viewport entry, with a zero threshold because the block is taller than the screen and a high threshold would never trip. The count will drop when this ships, and that drop is the measurement getting honest. The event finally means what its name says." | `analytics-rigor`, `pm-discipline` |
+| P5-8 | "Half a debugging stretch went to querying the wrong analytics project: the test project while the live site reported to the live one. A failed project switch had silently fallen back to test, so empty results read as 'the event never fires' when they only meant 'wrong project.' The guardrail is cheap and easy to relearn the hard way: confirm the active project before trusting a single live query, and treat empty live results as a reversion signal, not a verdict." | `analytics-rigor` |
 
 ---
 
@@ -1119,7 +1116,7 @@ Phase 5 instrumentation is now complete end to end:
 - Device detection: type at cart creation, persisted through purchase ✅
 - North Star: device_activated fires once per device on first activation ✅
 - Funnel complete: age_gate_confirmed → product_viewed → add_to_cart → checkout_started → device_activated
-- Near-mount event race root-caused and closed at the provider layer (init-before-mount); product_viewed moved to viewport entry and the PDP duplicate emitter removed (2026-06-25, see 5.6). Init fix verified; dedup and viewport swap shipped, pending one final incognito confirmation. ✅
+- Near-mount event race root-caused and closed at the provider layer (init-before-mount); product_viewed moved to viewport entry and the PDP duplicate emitter removed (2026-06-25, see 5.7). Init fix verified; dedup and viewport swap shipped, pending one final incognito confirmation. ✅
 - Daily flagged sessions pipeline: flags and summarizes friction signals ✅
 - Weekly agent: reads both streams (deterministic funnel tiles + qualitative session evidence) ✅
 
@@ -1358,7 +1355,7 @@ Cadence: a Monday Jun 22 run reports Jun 15 to 21 (W25); a Monday Jun 29 run rep
 | P6-8 | "The report's week math took a trailing seven days ending yesterday, which gave a correct Monday-to-Sunday week only because the job happened to fire on a Monday. Anchored it to fixed weekdays so the boundary holds no matter the run day, and set PostHog's own week-start to Monday so the tiles and the report window slice the same seven days. A boundary that is right by coincidence of the fire day is a latent bug; pin it to the calendar, and make the two systems that cut the week agree." | `integration-depth`, `pm-discipline` |
 | P6-9 | "Almost left every target null until a measured baseline, then caught that the rule was too blunt. Inventory targets and funnel-rate targets ground differently: the $143,250 and the 2,866-unit sell-through come top-down from what we already bought and the price we set, no traffic history needed, while conversion and activation rates are the only things that actually need a baseline. So the launch row commits the outcomes now and leaves the rates in calibration, with weekly pace as informational reference between them. 'No numbers yet' was protecting against inventing funnel rates; it shouldn't have grounded out the commitments we could already stand behind." | `pm-discipline`, `analytics-rigor` |
 
-#### Phase 6.1 — Launch baseline target set + targets-table mechanics (2026-06-27)
+#### Phase 6.6 — Launch baseline target set + targets-table mechanics (2026-06-27)
 
 **Launch baseline target row inserted and active (`litsaber_targets`, id 2, `active = true`).** First real target row, set the weekend before the getlitsaber.com launch. The kata frame's three text fields plus a structured benchmark scaffold:
 - **business_outcome:** "Sell through current D2C inventory of approximately 2,866 units at a blended ASP of $49.99, realizing $143,250 in revenue."
@@ -1507,12 +1504,12 @@ A site-wide maintenance gate that takes the public storefront down to a branded 
 
 ## Open Questions (rolling)
 
-**Build-Phase-3 remainder — VERIFY status (Phases 4–6 have since shipped):**
-These were logged as Phase-3-remainder items. Given Commerce-Phase 4 (Shopify), Phase 5 (instrumentation), and Phase 6 (agent) all completed, confirm whether these are done and close, or genuinely still open:
-1. Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2
-2. Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3
-3. Editions box action wiring: Box 1 → `/shop/litsaber-og`; Box 2 → Gold modal; Box 3 → Future Drops modal
-4. "FESTIVAL DROP LIST" signup on `/cart` page (deferred from Commerce-Phase 3b)
+**Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**
+All four items were built during the decoupled commerce build and confirmed at the Phase 3 verification:
+1. ~~Gold waitlist modal (wraps `WaitlistForm list="gold"`) — triggered by Editions Box 2~~ → built in Commerce-Phase 3c
+2. ~~Future Drops modal (wraps `WaitlistForm list="general"`) — triggered by Editions Box 3~~ → built in Commerce-Phase 3c
+3. ~~Editions box action wiring: Box 1 → `/shop/litsaber-og`; Box 2 → Gold modal; Box 3 → Future Drops modal~~ → wired in Commerce-Phase 3c (confirmed at WhatWereShipping build)
+4. ~~"FESTIVAL DROP LIST" signup on `/cart` page (deferred from Commerce-Phase 3b)~~ → built via the reusable `WaitlistForm` + HubSpot seam in Commerce-Phase 3c-1
 
 **Carry-forward items from Commerce-Phase 3c-1:**
 - Confirm WaitlistForm border is cyan-20% per Figma node `3703:7914` — verify it didn't inherit a drifted value
@@ -1527,6 +1524,9 @@ These were logged as Phase-3-remainder items. Given Commerce-Phase 4 (Shopify), 
 - ~~Section 6 empty frame~~ → RESOLVED: Editions + commerce display (node `3312:2`)
 - ~~2-Pack "SAVE $20" badge math~~ → RESOLVED: quantity discount — exact tier prices ($99.99/$134.99/$169.99/$199.99), display badges round to nearest dollar
 - ~~REVIEWINFRA placeholder needs real provider name~~ → RESOLVED: Judge.me
+- ~~Flip Authorize.net from test to live before launch~~ → DONE 2026-06-27 (Phase 7 cutover)
+- ~~Repoint the dynamic box QR to the production `/activate` URL~~ → DONE 2026-06-27 (Phase 7 cutover)
+- ~~Brand the customer-account subdomain `account.getlitsaber.com`~~ → DONE 2026-06-27 (Phase 7 cutover)
 
 **Inconsistencies flagged for resolution:**
 - **ADR-006 numbering conflict** → RESOLVED: ADR-006 is the Customer Data Architecture ADR (HubSpot CRM + three-destination order flow), a real file-backed decision. The "one-system-per-job" references in the media/ADR-007 context were using it as shorthand for a general design principle, not claiming a separate ADR. No renumber needed; citations corrected to stop implying a distinct ADR-006 "one-system-per-job" decision exists.
@@ -1537,9 +1537,6 @@ These were logged as Phase-3-remainder items. Given Commerce-Phase 4 (Shopify), 
 - Build promo box frontend (Figma `3770:1315`) — bundled pre-launch with the ADR-004 backend, on top of Phase 5 instrumentation. Design the error state first (absent in Figma); consider auto-apply via `?discount=` checkout URL.
 - Remove `console.log("[PDP]")` from `app/shop/litsaber-og/page.tsx`
 - Remove `/shopify-check` debug route before Phase 7
-- Flip Authorize.net from test to live before launch
-- Repoint the dynamic box QR at Phase 7 cutover (see cutover checklist)
-- Brand the customer-account subdomain at Phase 7 cutover (`account.getlitsaber.com`)
 - Venue card photography sourcing
 - FAQ #3 placeholder copy (homepage)
 - Contact page FAQ body copy (mostly placeholder)
