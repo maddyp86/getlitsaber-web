@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
+import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { mediaUrl } from "@/lib/media";
 
 interface ThreeModesMobileProps {
@@ -26,6 +27,7 @@ const IMAGE_FADE = {
 
 export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
   const { activeMode, activePullBuild, setMode, togglePullBuild } = useModesState();
+  const setVideoRef = usePlayWhenVisible();
   const [reducedMotion, setReducedMotion] = useState(false);
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
@@ -229,6 +231,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                     />
                   ) : (
                     <motion.video
+                      ref={setVideoRef}
                       key={`mode-img-mobile-0-${activePullBuild}`}
                       src={PULL_BUILD[activePullBuild].video}
                       poster={PULL_BUILD[activePullBuild].image}
@@ -240,7 +243,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                       muted
                       loop
                       playsInline
-                      preload="metadata"
+                      preload="none"
                       aria-hidden={true}
                       style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                     />
@@ -295,6 +298,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                   />
                 ) : (
                   <motion.video
+                    ref={setVideoRef}
                     src={MODES[1].video}
                     poster={MODES[1].image}
                     variants={IMAGE_FADE}
@@ -304,7 +308,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                     muted
                     loop
                     playsInline
-                    preload="metadata"
+                    preload="none"
                     aria-hidden={true}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                   />
@@ -358,6 +362,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                   />
                 ) : (
                   <motion.video
+                    ref={setVideoRef}
                     src={MODES[2].video}
                     poster={MODES[2].image}
                     variants={IMAGE_FADE}
@@ -367,7 +372,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
                     muted
                     loop
                     playsInline
-                    preload="metadata"
+                    preload="none"
                     aria-hidden={true}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                   />

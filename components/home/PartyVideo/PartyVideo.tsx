@@ -15,7 +15,7 @@ export default function PartyVideo() {
   const [visible, setVisible] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const prefersReduced = useReducedMotion();
-  const videoRef = usePlayWhenVisible<HTMLVideoElement>();
+  const setVideoRef = usePlayWhenVisible();
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1025px)");
@@ -63,7 +63,7 @@ export default function PartyVideo() {
           <div className="absolute inset-0 bg-background-primary" />
         ) : (
           <video
-            ref={videoRef}
+            ref={setVideoRef}
             className="absolute inset-0 w-full h-full object-cover"
             src={VIDEO_SRC}
             autoPlay
