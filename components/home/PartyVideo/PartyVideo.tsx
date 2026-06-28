@@ -83,7 +83,7 @@ export default function PartyVideo() {
             style={{
               fontSize: "clamp(45px, 6vw, 75px)",
               lineHeight: "1.05",
-              maxWidth: "1000px",
+              maxWidth: "1200x",
               textShadow: "0 0 50px rgba(0,0,0,0.6)",
             }}
             initial={{ opacity: 0, y: 28 }}
