@@ -68,21 +68,21 @@ export default function PartyVideo() {
             style={{
               fontSize: "clamp(45px, 6vw, 75px)",
               lineHeight: "1.05",
-              maxWidth: "900px",
+              maxWidth: "1000px",
               textShadow: "0 0 50px rgba(0,0,0,0.6)",
             }}
             initial={{ opacity: 0, y: 28 }}
             animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: 0.8, ease: EASE }}
           >
-            THE ULTIMATE VAPING EXPERIENCE <br></br>DESIGNED FOR THE PARTY
+            THE ULTIMATE VAPING EXPERIENCE DESIGNED FOR THE PARTY
           </motion.h2>
           <motion.p
             className="font-body text-text-primary"
             style={{
               fontSize: "clamp(16px, 2vw, 22px)",
               lineHeight: "1.6",
-              maxWidth: "600px",
+              maxWidth: "650px",
               opacity: 0.9,
             }}
             initial={{ opacity: 0, y: 20 }}
