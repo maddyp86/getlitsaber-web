@@ -75,8 +75,7 @@ export default function PartyVideo() {
             animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: 0.8, ease: EASE }}
           >
-            THE ULTIMATE VAPING EXPERIENCE <br>
-              DESIGNED FOR THE PARTY
+            THE ULTIMATE VAPING EXPERIENCE <br></br>DESIGNED FOR THE PARTY
           </motion.h2>
           <motion.p
             className="font-body text-text-primary"
