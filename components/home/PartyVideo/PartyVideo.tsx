@@ -12,7 +12,18 @@ export default function PartyVideo() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const prefersReduced = useReducedMotion();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1025px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const enableParallax = isDesktop && !prefersReduced;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -21,7 +32,7 @@ export default function PartyVideo() {
   const y = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReduced ? ["0%", "0%"] : ["-15%", "15%"]
+    enableParallax ? ["-15%", "15%"] : ["0%", "0%"]
   );
 
   useEffect(() => {
@@ -41,7 +52,7 @@ export default function PartyVideo() {
       ref={sectionRef}
       id="party-video"
       className="relative w-full overflow-hidden"
-      style={{ minHeight: "800px" }}
+      style={{ aspectRatio: "16/9", minHeight: "480px" }}
       aria-label="The Ultimate Vaping Experience"
     >
       {/* Background video */}
@@ -70,8 +81,7 @@ export default function PartyVideo() {
 
       {/* Text block with parallax */}
       <div
-        className="relative z-10 flex items-center justify-center w-full h-full"
-        style={{ minHeight: "800px" }}
+        className="absolute inset-0 z-10 flex items-center justify-center w-full h-full"
       >
         <motion.div
           ref={textRef}

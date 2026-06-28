@@ -38,7 +38,9 @@ function VenueCardItem({ card, eager }: { card: VenueCard; eager?: boolean }) {
 
 export default function WhereItLives() {
   const ref = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [sectionVisible, setSectionVisible] = useState(false);
   const prefersReduced = useReducedMotion();
 
   useEffect(() => {
@@ -50,6 +52,19 @@ export default function WhereItLives() {
         if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
       },
       { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [prefersReduced]);
+
+  // Pause the marquee CSS animation when the section is off-screen
+  useEffect(() => {
+    if (prefersReduced) return;
+    const el = marqueeRef.current?.parentElement ?? null;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setSectionVisible(entry.isIntersecting),
+      { rootMargin: "200px 0px 200px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -134,8 +149,13 @@ export default function WhereItLives() {
       {/* Ticker strip */}
       <div className="relative z-10 w-full overflow-hidden">
         <div
+          ref={marqueeRef}
           className={`flex gap-4 lg:gap-6 ${prefersReduced ? "" : "animate-marquee-slow"}`}
-          style={{ width: "max-content", willChange: "transform" }}
+          style={{
+            width: "max-content",
+            willChange: "transform",
+            animationPlayState: sectionVisible ? "running" : "paused",
+          }}
         >
           {loopedCards.map((card, i) => (
             <VenueCardItem key={i} card={card} eager={i < VENUE_CARDS.length} />

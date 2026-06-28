@@ -177,11 +177,11 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
         <div
           className="absolute pointer-events-none"
          style={{
-  width: "800px",
-  height: "800px",
-  borderRadius: "800px",
+  width: "500px",
+  height: "500px",
+  borderRadius: "500px",
   background: "rgba(30, 0, 77, 0.50)",
-  filter: "blur(150px)",
+  filter: "blur(80px)",
   top: "150px",
   left: "320px",
   zIndex: 0,
