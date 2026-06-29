@@ -3,6 +3,12 @@
 import { useLayoutEffect } from "react";
 import posthog from "posthog-js";
 
+declare global {
+  interface Window {
+    posthog?: typeof posthog;
+  }
+}
+
 export default function PostHogProvider({
   children,
 }: {
@@ -26,7 +32,7 @@ export default function PostHogProvider({
     });
 
     if (typeof window !== "undefined") {
-      ;(window as any).posthog = posthog;
+      window.posthog = posthog;
       const INTERNAL_FLAG_TOKEN = "lts_team_21WDJC";
       const internalParam = new URLSearchParams(window.location.search).get("internal");
       if (internalParam === INTERNAL_FLAG_TOKEN) {
