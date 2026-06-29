@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
-import { useDiag } from "@/components/diag/DiagContext";
 import { mediaUrl } from "@/lib/media";
 
 interface ThreeModesMobileProps {
@@ -29,9 +28,7 @@ const IMAGE_FADE = {
 export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
   const { activeMode, activePullBuild, setMode, togglePullBuild } = useModesState();
   const setVideoRef = usePlayWhenVisible();
-  const { novideo } = useDiag();
   const [reducedMotion, setReducedMotion] = useState(false);
-  const noMotionMedia = reducedMotion || novideo;
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
   const [contentVisible, setContentVisible] = useState(false);
@@ -221,7 +218,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
             {activeMode === 0 && (
               <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
                 <AnimatePresence mode="wait">
-                  {noMotionMedia ? (
+                  {reducedMotion ? (
                     <motion.img
                       key={`mode-img-mobile-0-${activePullBuild}`}
                       src={PULL_BUILD[activePullBuild].image}
@@ -290,7 +287,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
 
             {activeMode === 1 && (
               <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
-                {noMotionMedia ? (
+                {reducedMotion ? (
                   <motion.img
                     src={MODES[1].image}
                     alt={MODES[1].title}
@@ -354,7 +351,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
 
             {activeMode === 2 && (
               <div style={{ position: "relative", width: "100%", aspectRatio: "574 / 670", borderRadius: "20px", overflow: "hidden" }}>
-                {noMotionMedia ? (
+                {reducedMotion ? (
                   <motion.img
                     src={MODES[2].image}
                     alt={MODES[2].title}
