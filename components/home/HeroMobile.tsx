@@ -7,7 +7,6 @@ import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
-import { useDiag } from "@/components/diag/DiagContext";
 import { mediaUrl } from "@/lib/media";
 import {
   HEADLINE_MOBILE,
@@ -28,7 +27,6 @@ export default function HeroMobile({ className }: HeroMobileProps) {
   const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
-  const { novideo } = useDiag();
 
   return (
     <section
@@ -144,7 +142,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           animate="visible"
           custom={0.35}
         >
-          {prefersReduced || novideo ? (
+          {prefersReduced ? (
             <Image
               src={HERO_POSTER_SRC}
               alt="Litsaber device"

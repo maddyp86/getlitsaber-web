@@ -26,9 +26,8 @@ interface LazyMountProps {
  * Why: the homepage crashed on mobile (iOS WebContent OOM) because all the
  * below-the-fold sections — heavy framer-motion trees, a 300vh scrollytelling,
  * large images, blurred GPU layers — were instantiated in one synchronous
- * render on load. The `?diag=lite` test (which dropped them) proved it. By
- * keeping only the ~2-3 sections near the viewport mounted at any time, peak
- * memory stays at the level that already survives.
+ * render on load. By keeping only the ~2-3 sections near the viewport mounted
+ * at any time, peak memory stays at a level that survives.
  *
  * Trade-offs: below-the-fold sections are not in the SSR HTML, and interactive
  * sections lose internal state if scrolled past and back. Acceptable for a

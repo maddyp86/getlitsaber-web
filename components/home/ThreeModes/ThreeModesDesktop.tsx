@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MODES, PULL_BUILD } from "./modes.content";
 import { useModesState } from "./useModesState";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
-import { useDiag } from "@/components/diag/DiagContext";
 import { mediaUrl } from "@/lib/media";
 
 interface ThreeModesDesktopProps {
@@ -31,9 +30,7 @@ const IMAGE_FADE = {
 export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps) {
   const { activeMode, activePullBuild, setMode, togglePullBuild } = useModesState();
   const setVideoRef = usePlayWhenVisible();
-  const { novideo } = useDiag();
   const [reducedMotion, setReducedMotion] = useState(false);
-  const noMotionMedia = reducedMotion || novideo;
   const [lightstreakVisible, setLightstreakVisible] = useState(false);
   const lightstreakRef = useRef<HTMLDivElement>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -462,7 +459,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       {(() => {
         const mediaSrc = activeMode === 0 ? PULL_BUILD[activePullBuild] : MODES[activeMode];
         const mediaKey = activeMode === 0 ? `mode-image-0-${activePullBuild}` : `mode-image-${activeMode}`;
-        return noMotionMedia ? (
+        return reducedMotion ? (
           <motion.img
             key={mediaKey}
             src={mediaSrc.image}

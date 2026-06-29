@@ -17,8 +17,6 @@ import WholesaleCTABanner from "@/components/home/WholesaleCTABanner/WholesaleCT
 import EmailSignupBanner from "@/components/global/EmailSignupBanner/EmailSignupBanner";
 import { getProductByHandle } from "@/lib/shopify/queries";
 import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
-import DiagProvider from "@/components/diag/DiagContext";
-import { parseDiag } from "@/lib/diag";
 import LazyMount from "@/components/primitives/LazyMount";
 
 export const metadata: Metadata = {
@@ -28,12 +26,7 @@ export const metadata: Metadata = {
 const SILVER_SKU = "LTS-OG-SLV";
 const shopifyConfigured = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams?: Record<string, string | string[] | undefined>;
-}) {
-  const diag = parseDiag(searchParams);
+export default async function HomePage() {
   const product = await getProductByHandle("litsaber-og");
   const silverVariant = product?.variants.edges
     .map((e) => e.node)
@@ -47,18 +40,14 @@ export default async function HomePage({
     : BASE_UNIT_PRICE;
 
   return (
-    <DiagProvider value={diag}>
+    <>
       <HomepageEngagementTracker />
       <Hero />
       <StatBar />
-      {/* `?diag=lite` renders only the above-the-fold hero, to isolate whether
-          the crash is cumulative below-the-fold weight vs. something global. */}
       {/* Below-the-fold sections are lazy-mounted: each renders only as it nears
           the viewport and unmounts once well past, so the full heavy DOM never
-          exists at once. This keeps peak memory near the `?diag=lite` level and
-          fixes the mobile OOM crash. `?diag=lite` still strips them entirely. */}
-      {!diag.lite && (
-        <>
+          exists at once. This keeps peak memory low and fixes the mobile OOM
+          crash. */}
           <LazyMount minHeight="300vh">
             <BeSeen />
           </LazyMount>
@@ -100,8 +89,6 @@ export default async function HomePage({
           <LazyMount minHeight="400px">
             <WholesaleCTABanner />
           </LazyMount>
-        </>
-      )}
-    </DiagProvider>
+    </>
   );
 }
