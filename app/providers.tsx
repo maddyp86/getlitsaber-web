@@ -33,9 +33,9 @@ export default function PostHogProvider({
 
     if (typeof window !== "undefined") {
       window.posthog = posthog;
-      const INTERNAL_FLAG_TOKEN = "lts_team_21WDJC";
+      const INTERNAL_FLAG_TOKEN = process.env.NEXT_PUBLIC_INTERNAL_FLAG_TOKEN;
       const internalParam = new URLSearchParams(window.location.search).get("internal");
-      if (internalParam === INTERNAL_FLAG_TOKEN) {
+      if (INTERNAL_FLAG_TOKEN && internalParam === INTERNAL_FLAG_TOKEN) {
         posthog.setInternalOrTestUser();
       } else if (internalParam === "off") {
         posthog.setPersonProperties({ $internal_or_test_user: false });
