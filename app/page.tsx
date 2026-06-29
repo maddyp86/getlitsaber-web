@@ -74,7 +74,7 @@ export default async function HomePage({
           <LazyMount minHeight="600px">
             <LightMeetsVapor />
           </LazyMount>
-          <LazyMount minHeight="600px">
+          <LazyMount minHeight="850px">
             <WhereItLives />
           </LazyMount>
           <LazyMount minHeight="800px">
