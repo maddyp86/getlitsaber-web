@@ -85,7 +85,7 @@ export default function WhereItLives() {
           width: "375px",
           height: "500px",
           background: "rgba(0, 153, 170, 0.25)",
-          filter: "blur(100px)",
+          filter: "blur(70px)",
           zIndex: 0,
         }}
         aria-hidden="true"
@@ -98,7 +98,7 @@ export default function WhereItLives() {
           height: "402px",
           top: "500px",
           background: "rgba(0, 153, 170, 0.39)",
-          filter: "blur(100px)",
+          filter: "blur(60px)",
           zIndex: 0,
         }}
         aria-hidden="true"
@@ -158,7 +158,9 @@ export default function WhereItLives() {
           }}
         >
           {loopedCards.map((card, i) => (
-            <VenueCardItem key={i} card={card} eager={i < VENUE_CARDS.length} />
+            // All lazy: eager-decoding every card on mount was part of the
+            // scroll-in jank. In-view cards still load promptly via lazy IO.
+            <VenueCardItem key={i} card={card} />
           ))}
         </div>
       </div>
