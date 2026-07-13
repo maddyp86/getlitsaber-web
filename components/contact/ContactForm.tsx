@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS } from "@/lib/analytics/events";
+import TurnstileWidget, {
+  type TurnstileHandle,
+} from "@/components/security/TurnstileWidget";
 import {
   FORM_HEADLINE,
   FORM_SUBHEAD,
   FORM_REASON_OPTIONS,
 } from "./contact.content";
+
+const CAPTCHA_ENABLED = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -115,6 +120,8 @@ export default function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const handleChange = (name: keyof FormFields, value: string) => {
     setFields((prev) => ({ ...prev, [name]: value }));
@@ -133,6 +140,11 @@ export default function ContactForm() {
       return;
     }
 
+    if (CAPTCHA_ENABLED && !captchaToken) {
+      setServerError("Please complete the verification below before sending.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await fetch("/api/contact", {
@@ -141,6 +153,7 @@ export default function ContactForm() {
         body: JSON.stringify({
           ...fields,
           source: "contact-page",
+          turnstileToken: captchaToken,
         }),
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
@@ -161,6 +174,9 @@ export default function ContactForm() {
       setServerError("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
+      // Turnstile tokens are single-use — clear and refresh for any retry.
+      setCaptchaToken("");
+      turnstileRef.current?.reset();
     }
   };
 
@@ -355,6 +371,16 @@ export default function ContactForm() {
                   ].join(" ")}
                 />
               </div>
+
+              {CAPTCHA_ENABLED && (
+                <TurnstileWidget
+                  ref={turnstileRef}
+                  onToken={setCaptchaToken}
+                  onExpire={() => setCaptchaToken("")}
+                  onError={() => setCaptchaToken("")}
+                  className="mt-1"
+                />
+              )}
 
               {serverError && (
                 <p className="font-body text-[13px] text-[#EC5793] leading-snug">

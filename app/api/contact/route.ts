@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyTurnstile } from "@/lib/security/turnstile";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
 
@@ -41,6 +42,7 @@ interface ContactPayload {
   message?: unknown;
   source?: unknown;
   botField?: unknown;
+  turnstileToken?: unknown;
 }
 
 export async function POST(req: NextRequest) {
@@ -70,12 +72,31 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { firstname, lastname, email, reason, company, phone, message, source, botField } =
-    body as ContactPayload;
+  const {
+    firstname,
+    lastname,
+    email,
+    reason,
+    company,
+    phone,
+    message,
+    source,
+    botField,
+    turnstileToken,
+  } = body as ContactPayload;
 
   // Honeypot
   if (typeof botField === "string" && botField.length > 0) {
     return NextResponse.json({ ok: true });
+  }
+
+  // Cloudflare Turnstile — verify before doing any downstream work.
+  const captchaOk = await verifyTurnstile(turnstileToken, ip);
+  if (!captchaOk) {
+    return NextResponse.json(
+      { ok: false, error: "Verification failed. Please try again." },
+      { status: 403 }
+    );
   }
 
   if (typeof firstname !== "string" || firstname.trim().length === 0) {
