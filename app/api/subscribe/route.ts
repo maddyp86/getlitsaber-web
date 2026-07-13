@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyTurnstile } from "@/lib/security/turnstile";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
 
@@ -80,17 +81,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Missing required fields" }, { status: 400 });
   }
 
-  const { email, list, source, company } = body as {
+  const { email, list, source, company, turnstileToken } = body as {
     email: unknown;
     list: unknown;
     source?: unknown;
     company?: unknown;
+    turnstileToken?: unknown;
   };
 
   // Honeypot: bots fill this field, humans never see it. Silently succeed so
   // the bot doesn't learn it was caught.
   if (typeof company === "string" && company.length > 0) {
     return NextResponse.json({ ok: true });
+  }
+
+  // Cloudflare Turnstile — verify before any downstream work.
+  const captchaOk = await verifyTurnstile(turnstileToken, ip);
+  if (!captchaOk) {
+    return NextResponse.json(
+      { ok: false, error: "Verification failed. Please try again." },
+      { status: 403 }
+    );
   }
 
   if (typeof email !== "string" || !EMAIL_RE.test(email) || isTypoDomain(email)) {
