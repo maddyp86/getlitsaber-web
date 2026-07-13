@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useToastActions } from "@/lib/toast/store";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { mediaUrl } from "@/lib/media";
 import { motion } from "framer-motion";
+import TurnstileWidget, {
+  type TurnstileHandle,
+} from "@/components/security/TurnstileWidget";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
+
+const CAPTCHA_ENABLED = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const TYPO_DOMAINS: Record<string, string> = {
   "gmai.com":    "gmail.com",
@@ -37,6 +42,8 @@ export default function EmailSignupBanner() {
   const [honeypot, setHoneypot] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const { addToast } = useToastActions();
 
   const isValid = EMAIL_RE.test(email);
@@ -55,6 +62,14 @@ export default function EmailSignupBanner() {
     e.preventDefault();
     if (!canSubmit) return;
 
+    if (CAPTCHA_ENABLED && !captchaToken) {
+      const msg = "Verifying you're human. Please try again in a moment.";
+      setErrorMsg(msg);
+      setState("error");
+      addToast({ variant: "error", message: msg });
+      return;
+    }
+
     setState("submitting");
 
     try {
@@ -66,6 +81,7 @@ export default function EmailSignupBanner() {
           list: "general",
           source: WAITLIST_SOURCES.footerSignup,
           company: honeypot,
+          turnstileToken: captchaToken,
         }),
       });
 
@@ -86,6 +102,10 @@ export default function EmailSignupBanner() {
       setErrorMsg(msg);
       setState("error");
       addToast({ variant: "error", message: msg });
+    } finally {
+      // Turnstile tokens are single-use — clear and refresh for any retry.
+      setCaptchaToken("");
+      turnstileRef.current?.reset();
     }
   }
 
@@ -128,7 +148,7 @@ export default function EmailSignupBanner() {
         <form
           onSubmit={handleSubmit}
           noValidate
-          className="flex flex-col sm:flex-row gap-3 w-full max-w-xl mt-2"
+          className="flex flex-col gap-3 w-full max-w-xl mt-2"
         >
           {/* Honeypot */}
           <input
@@ -142,6 +162,7 @@ export default function EmailSignupBanner() {
             style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px" }}
           />
 
+          <div className="flex flex-col sm:flex-row gap-3 w-full">
           <div className="flex flex-col gap-1 flex-1">
          <input
   type="email"
@@ -211,6 +232,18 @@ export default function EmailSignupBanner() {
           >
             {state === "submitting" ? "SENDING..." : "SEND IT"}
           </button>
+          </div>
+
+          {CAPTCHA_ENABLED && (
+            <TurnstileWidget
+              ref={turnstileRef}
+              appearance="interaction-only"
+              onToken={setCaptchaToken}
+              onExpire={() => setCaptchaToken("")}
+              onError={() => setCaptchaToken("")}
+              className="flex justify-center sm:justify-start"
+            />
+          )}
         </form>
       </div>
     </section>

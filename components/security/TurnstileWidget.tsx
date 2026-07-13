@@ -33,6 +33,7 @@ interface TurnstileRenderOptions {
   "expired-callback"?: () => void;
   "error-callback"?: () => void;
   theme?: "auto" | "light" | "dark";
+  appearance?: "always" | "execute" | "interaction-only";
   action?: string;
 }
 
@@ -87,10 +88,19 @@ interface TurnstileWidgetProps {
   onExpire?: () => void;
   onError?: () => void;
   className?: string;
+  /**
+   * "always" (default) renders the widget box up front. "interaction-only"
+   * keeps it invisible for legit users and only surfaces a visible challenge
+   * when Cloudflare requires one — use it on compact / high-conversion forms.
+   */
+  appearance?: "always" | "execute" | "interaction-only";
 }
 
 const TurnstileWidget = forwardRef<TurnstileHandle, TurnstileWidgetProps>(
-  function TurnstileWidget({ onToken, onExpire, onError, className }, ref) {
+  function TurnstileWidget(
+    { onToken, onExpire, onError, className, appearance = "always" },
+    ref
+  ) {
     const containerRef = useRef<HTMLDivElement>(null);
     const widgetIdRef = useRef<string | null>(null);
     const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -114,6 +124,7 @@ const TurnstileWidget = forwardRef<TurnstileHandle, TurnstileWidgetProps>(
           widgetIdRef.current = window.turnstile.render(containerRef.current, {
             sitekey,
             theme: "dark",
+            appearance,
             callback: (token) => onToken(token),
             "expired-callback": () => onExpire?.(),
             "error-callback": () => onError?.(),

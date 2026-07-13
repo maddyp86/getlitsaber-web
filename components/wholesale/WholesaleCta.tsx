@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useToastActions } from "@/lib/toast/store";
 import { motion, useReducedMotion } from "framer-motion";
+import TurnstileWidget, {
+  type TurnstileHandle,
+} from "@/components/security/TurnstileWidget";
 import {
   CTA_EYEBROW,
   CTA_HEADLINE_PART1,
@@ -19,6 +22,8 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const FIELD_BASE =
   "w-full px-4 py-3 rounded-[5px] border bg-[#0A0515] text-white font-body text-body-sm focus:outline-none focus:ring-1 transition-colors";
+
+const CAPTCHA_ENABLED = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 interface FormFields {
   firstname: string;
@@ -195,6 +200,8 @@ export default function WholesaleCta() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const handleChange = (name: keyof FormFields, value: string) => {
     setFields((prev) => ({ ...prev, [name]: value }));
@@ -213,6 +220,11 @@ export default function WholesaleCta() {
       return;
     }
 
+    if (CAPTCHA_ENABLED && !captchaToken) {
+      setServerError("Please complete the verification below before submitting.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await fetch("/api/wholesale", {
@@ -221,6 +233,7 @@ export default function WholesaleCta() {
         body: JSON.stringify({
           ...fields,
           source: "wholesale-page",
+          turnstileToken: captchaToken,
         }),
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
@@ -237,6 +250,9 @@ export default function WholesaleCta() {
       setServerError("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
+      // Turnstile tokens are single-use — clear and refresh for any retry.
+      setCaptchaToken("");
+      turnstileRef.current?.reset();
     }
   };
 
@@ -482,6 +498,16 @@ export default function WholesaleCta() {
                     placeholder="TikTok, a rep, a show..."
                   />
                 </div>
+
+                {CAPTCHA_ENABLED && (
+                  <TurnstileWidget
+                    ref={turnstileRef}
+                    onToken={setCaptchaToken}
+                    onExpire={() => setCaptchaToken("")}
+                    onError={() => setCaptchaToken("")}
+                    className="mt-1"
+                  />
+                )}
 
                 {serverError && (
                   <p className="font-body text-[13px] text-[#EC5793] leading-snug">

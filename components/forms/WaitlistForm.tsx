@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { WaitlistSource } from "@/lib/forms/sources";
+import TurnstileWidget, {
+  type TurnstileHandle,
+} from "@/components/security/TurnstileWidget";
 
 type WaitlistList = "gold" | "general";
 type FormState = "idle" | "submitting" | "error";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]{2,}\.[^\s@]{2,}$/;
+
+const CAPTCHA_ENABLED = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // Common fat-finger domains → suggested correction
 const TYPO_DOMAINS: Record<string, string> = {
@@ -68,6 +73,8 @@ export default function WaitlistForm({
   const [honeypot, setHoneypot] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const isValid = EMAIL_RE.test(email);
   const typoHint = isValid ? getTypoSuggestion(email) : null;
@@ -85,6 +92,14 @@ export default function WaitlistForm({
     e.preventDefault();
     if (!canSubmit || state === "submitting") return;
 
+    if (CAPTCHA_ENABLED && !captchaToken) {
+      const msg = "Verifying you're human. Please try again in a moment.";
+      setErrorMsg(msg);
+      setState("error");
+      onError?.(msg);
+      return;
+    }
+
     setState("submitting");
 
     try {
@@ -96,6 +111,7 @@ export default function WaitlistForm({
           list,
           source: source ?? DEFAULT_SOURCE[list],
           company: honeypot,
+          turnstileToken: captchaToken,
         }),
       });
 
@@ -116,6 +132,10 @@ export default function WaitlistForm({
       setErrorMsg(msg);
       setState("error");
       onError?.(msg);
+    } finally {
+      // Turnstile tokens are single-use — clear and refresh for any retry.
+      setCaptchaToken("");
+      turnstileRef.current?.reset();
     }
   }
 
@@ -204,6 +224,16 @@ export default function WaitlistForm({
             </p>
           )}
         </div>
+
+        {CAPTCHA_ENABLED && (
+          <TurnstileWidget
+            ref={turnstileRef}
+            appearance="interaction-only"
+            onToken={setCaptchaToken}
+            onExpire={() => setCaptchaToken("")}
+            onError={() => setCaptchaToken("")}
+          />
+        )}
 
         <button
           type="submit"
