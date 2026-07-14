@@ -9,9 +9,7 @@ import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
 import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
-import ShippingUpsellNudge from "./ShippingUpsellNudge";
 import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
-import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { mediaUrl } from "@/lib/media";
 
@@ -65,9 +63,8 @@ export default function BundleAndCTA({
   const { openCart } = useCartUIActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
-  // Surcharge arm states the shipping for the current selection up front.
+  // Surcharge arm shows a FREE SHIPPING badge on the two-or-more tiles.
   const shippingVariant = useShippingVariant();
-  const shippingDisplay = formatDisplayShipping(getDisplayShipping(selectedQty, shippingVariant));
 
   const moreTierPrice = getTierPrice(moreQty, basePrice);
   const moreSavingsDisplay = getTierSavings(moreQty, basePrice).toFixed(2);
@@ -172,10 +169,30 @@ export default function BundleAndCTA({
                         </span>
                         {saveLabel && (
                           <span
-                            className="font-label text-[12px] text-accent-cyan rounded-pill px-2 py-0.5"
-                            style={{ background: "rgba(0, 229, 255, 0.05)" }}
+                            className="font-label text-accent-magenta"
+                            style={{
+                              fontSize: "10.5px",
+                              letterSpacing: "0.5px",
+                              background: "rgba(236, 87, 147, 0.12)",
+                              borderRadius: "5px",
+                              padding: "3px 8px",
+                            }}
                           >
                             {saveLabel}
+                          </span>
+                        )}
+                        {shippingVariant === "surcharge" && q >= 2 && (
+                          <span
+                            className="font-label text-accent-cyan"
+                            style={{
+                              fontSize: "10.5px",
+                              letterSpacing: "0.5px",
+                              background: "rgba(0, 229, 255, 0.12)",
+                              borderRadius: "5px",
+                              padding: "3px 8px",
+                            }}
+                          >
+                            FREE SHIPPING
                           </span>
                         )}
                       </div>
@@ -260,9 +277,6 @@ export default function BundleAndCTA({
               </Link>
             </p>
           )}
-
-          {/* Surcharge-arm upsell — bump the selection to the two-pack (free shipping) */}
-          <ShippingUpsellNudge units={selectedQty} onAddOne={() => onBundleChange("twopack")} />
         </>
       )}
 
@@ -270,15 +284,6 @@ export default function BundleAndCTA({
       <div className="flex flex-col gap-3">
         {available ? (
           <>
-            {shippingVariant === "surcharge" && (
-              <p className="font-label text-[12px] text-text-secondary tracking-wide">
-                Shipping:{" "}
-                <span className="text-accent-cyan font-bold">{shippingDisplay}</span>
-                {selectedQty < 2 && (
-                  <span className="text-text-muted"> · Free when you buy 2 or more</span>
-                )}
-              </p>
-            )}
             <button
               type="button"
               onClick={handleAddToCart}

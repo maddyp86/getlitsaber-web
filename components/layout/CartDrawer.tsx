@@ -19,7 +19,7 @@ import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
 import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
-import ShippingUpsellNudge from "@/components/product/ShippingUpsellNudge";
+import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
 export default function CartDrawer() {
   const isOpen = useIsCartOpen();
@@ -28,7 +28,7 @@ export default function CartDrawer() {
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
-  const { removeItem, updateQty } = useCartActions();
+  const { removeItem } = useCartActions();
   const capReached = useCapReached();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
@@ -37,9 +37,6 @@ export default function CartDrawer() {
   const shippingDisplay = formatDisplayShipping(shippingCost);
   const shippingCalcPending = shippingCost === null;
   const displayTotal = subtotal + (shippingCost ?? 0);
-  const bumpToTwoPack = () => {
-    if (items[0]) updateQty(items[0].id, 2);
-  };
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -311,8 +308,8 @@ export default function CartDrawer() {
                 </span>
               </div>
 
-              {/* Surcharge-arm upsell to the free-shipping two-pack */}
-              <ShippingUpsellNudge units={itemCount} onAddOne={bumpToTwoPack} />
+              {/* Surcharge single-unit: progress toward free shipping at 2 */}
+              <ShippingUnlockMeter itemCount={itemCount} />
 
               {/* Total */}
               <div
