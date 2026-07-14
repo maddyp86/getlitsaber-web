@@ -1,5 +1,6 @@
 import AgeGateModal from "@/components/modals/AgeGateModal";
 import CartDrawer from "@/components/layout/CartDrawer";
+import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import EmailSignupBannerGuard from "@/components/global/EmailSignupBanner/EmailSignupBannerGuard";
@@ -23,6 +24,7 @@ export default function SiteChrome({
   return (
     <>
       <AgeGateModal />
+      <AnnouncementBar />
       <Navbar />
       <main>{children}</main>
       <EmailSignupBannerGuard />

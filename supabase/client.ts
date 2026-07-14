@@ -16,6 +16,8 @@ export interface OrderRow {
   email: string | null;
   customer_name: string | null;
   device_type: string | null;
+  shipping_variant: string | null;
+  shipping_amount: number;
   raw: Record<string, unknown> | null;
   created_at: string;
 }
