@@ -37,10 +37,9 @@ export default function Navbar() {
     <>
       <header
         className={[
-          "fixed left-0 right-0 z-navbar h-navbar transition-colors duration-300",
+          "fixed top-0 left-0 right-0 z-navbar h-navbar transition-colors duration-300",
           scrolled ? "bg-background-primary" : "bg-transparent",
         ].join(" ")}
-        style={{ top: "var(--shipping-bar-h, 0px)" }}
       >
 <div className=" w-full mx-auto max-w-content h-full px-content flex items-center">
 

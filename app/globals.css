@@ -114,20 +114,6 @@
   body.scroll-locked {
     overflow: hidden;
   }
-
-  /* Shipping-surcharge announcement bar. When the surcharge arm mounts the bar,
-     it sets .has-shipping-bar on <html>, which reserves the bar's height so the
-     fixed navbar and the page content both shift down by exactly that amount.
-     Defaults to 0 so control / not-in-test / SSR render with no gap. */
-  :root {
-    --shipping-bar-h: 0px;
-  }
-  :root.has-shipping-bar {
-    --shipping-bar-h: 40px;
-  }
-  main {
-    padding-top: var(--shipping-bar-h);
-  }
 }
 
 /* ─── Charging bar animation ─────────────────────────────────────────────────

@@ -19,7 +19,11 @@ import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
 import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
-import ShippingUpsellNudge from "@/components/product/ShippingUpsellNudge";
+import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
+
+// Silver (LTS-OG-SLV) Shopify variant GID — the only physical SKU. The unlock
+// meter bumps this line to two units, which trips free shipping.
+const SILVER_VARIANT_ID = "gid://shopify/ProductVariant/45098118316239";
 
 export default function CartDrawer() {
   const isOpen = useIsCartOpen();
@@ -37,8 +41,10 @@ export default function CartDrawer() {
   const shippingDisplay = formatDisplayShipping(shippingCost);
   const shippingCalcPending = shippingCost === null;
   const displayTotal = subtotal + (shippingCost ?? 0);
-  const bumpToTwoPack = () => {
-    if (items[0]) updateQty(items[0].id, 2);
+  // Tapping the surcharge unlock meter bumps the single Silver line to two.
+  const unlockFreeShipping = () => {
+    const line = items.find((l) => l.variantId === SILVER_VARIANT_ID) ?? items[0];
+    if (line) updateQty(line.id, 2);
   };
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -311,8 +317,8 @@ export default function CartDrawer() {
                 </span>
               </div>
 
-              {/* Surcharge-arm upsell to the free-shipping two-pack */}
-              <ShippingUpsellNudge units={itemCount} onAddOne={bumpToTwoPack} />
+              {/* Surcharge single-unit: tap to bump to the free-shipping two-pack */}
+              <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
 
               {/* Total */}
               <div
