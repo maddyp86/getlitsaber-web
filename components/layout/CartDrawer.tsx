@@ -17,6 +17,9 @@ import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
+import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
+import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
+import ShippingUpsellNudge from "@/components/product/ShippingUpsellNudge";
 
 export default function CartDrawer() {
   const isOpen = useIsCartOpen();
@@ -25,8 +28,18 @@ export default function CartDrawer() {
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
-  const { removeItem } = useCartActions();
+  const { removeItem, updateQty } = useCartActions();
   const capReached = useCapReached();
+
+  // Display-only mirror of the shipping the Shopify Function will charge.
+  const shippingVariant = useShippingVariant();
+  const shippingCost = getDisplayShipping(itemCount, shippingVariant); // number | null
+  const shippingDisplay = formatDisplayShipping(shippingCost);
+  const shippingCalcPending = shippingCost === null;
+  const displayTotal = subtotal + (shippingCost ?? 0);
+  const bumpToTwoPack = () => {
+    if (items[0]) updateQty(items[0].id, 2);
+  };
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -290,8 +303,16 @@ export default function CartDrawer() {
               {/* Shipping */}
               <div className="flex justify-between items-center">
                 <span className="font-label text-text-muted uppercase tracking-widest" style={{ fontSize: "12px" }}>SHIPPING</span>
-                <span className="font-label text-text-muted uppercase tracking-wider" style={{ fontSize: "11px" }}>CALCULATED AT CHECKOUT</span>
+                <span
+                  className={`font-label uppercase tracking-wider ${shippingCalcPending ? "text-text-muted" : "text-text-primary font-bold"}`}
+                  style={{ fontSize: shippingCalcPending ? "11px" : "14px" }}
+                >
+                  {shippingDisplay}
+                </span>
               </div>
+
+              {/* Surcharge-arm upsell to the free-shipping two-pack */}
+              <ShippingUpsellNudge units={itemCount} onAddOne={bumpToTwoPack} />
 
               {/* Total */}
               <div
@@ -299,7 +320,7 @@ export default function CartDrawer() {
                 style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
               >
                 <span className="font-label font-bold text-text-primary uppercase tracking-widest" style={{ fontSize: "14px" }}>TOTAL</span>
-                <span className="font-label font-bold text-text-primary" style={{ fontSize: "20px" }}>${subtotal.toFixed(2)}</span>
+                <span className="font-label font-bold text-text-primary" style={{ fontSize: "20px" }}>${displayTotal.toFixed(2)}</span>
               </div>
 
               {/* View cart button */}

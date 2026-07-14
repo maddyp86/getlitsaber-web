@@ -18,6 +18,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
+import { readShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getChannelAttribution } from "@/lib/analytics/channel";
 import { getTierPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
@@ -233,6 +234,10 @@ export const useCartStore = create<CartStore>()(
               attributes.push({ key: "utm_medium", value: channel.utm_medium });
               attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
               attributes.push({ key: "referrer", value: channel.referrer });
+              // Shipping-surcharge arm, frozen once at cartCreate. Underscore-prefixed
+              // so it is suppressed from the checkout UI while visible to the Order API.
+              // Only stamped here (never on cartLinesAdd), so it cannot flip mid-cart.
+              attributes.push({ key: "_shipping_variant", value: readShippingVariant() ?? "control" });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
                 attributes,

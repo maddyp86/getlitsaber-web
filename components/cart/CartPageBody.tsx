@@ -14,13 +14,29 @@ import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
+import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
+import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
+import ShippingUpsellNudge from "@/components/product/ShippingUpsellNudge";
 
 export default function CartPageBody() {
   const items = useCartItems();
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
-  const { removeItem } = useCartActions();
+  const { removeItem, updateQty } = useCartActions();
+
+  // Display-only mirror of the shipping the Shopify Function will charge.
+  const shippingVariant = useShippingVariant();
+  const shippingCost = getDisplayShipping(itemCount, shippingVariant); // number | null
+  const shippingDisplay = formatDisplayShipping(shippingCost);
+  const shippingCalcPending = shippingCost === null;
+  // Fold a known shipping charge into the shown total so it is stated up front;
+  // when unknown (flag loading) fall back to subtotal, matching "at checkout".
+  const displayTotal = subtotal + (shippingCost ?? 0);
+  // Surcharge upsell bumps the (single) Silver line to two, which is free shipping.
+  const bumpToTwoPack = () => {
+    if (items[0]) updateQty(items[0].id, 2);
+  };
 
   return (
     <div
@@ -160,6 +176,8 @@ export default function CartPageBody() {
                 className="flex flex-col items-center mx-auto mt-4"
                 style={{ width: "100%", maxWidth: "100%", gap: "15px" }}
               >
+                <ShippingUpsellNudge units={itemCount} onAddOne={bumpToTwoPack} />
+
                 {/* PROMO-FIELD-DISABLED: replaced by ?discount= auto-apply via sessionStorage on checkout redirect
                 <button
                   type="button"
@@ -180,7 +198,7 @@ export default function CartPageBody() {
                 {/* Summary rows */}
                 <div className="flex flex-col gap-0 w-full">
                   <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
-                  <MobileSummaryRow label="Shipping" value="CALCULATED AT CHECKOUT" muted />
+                  <MobileSummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
                   <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted noBorder />
                 </div>
 
@@ -199,7 +217,7 @@ export default function CartPageBody() {
                     className="font-body font-bold text-text-primary"
                     style={{ fontSize: "20px" }}
                   >
-                    ${subtotal.toFixed(2)}
+                    ${displayTotal.toFixed(2)}
                   </span>
                 </div>
 
@@ -399,9 +417,11 @@ export default function CartPageBody() {
 
                   <div className="flex flex-col gap-2">
                     <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
-                    <SummaryRow label="Shipping" value="AT CHECKOUT" muted />
+                    <SummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
                     <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted noBorder/>
                   </div>
+
+                  <ShippingUpsellNudge units={itemCount} onAddOne={bumpToTwoPack} />
 
                   {/* PROMO-FIELD-DISABLED: replaced by ?discount= auto-apply via sessionStorage on checkout redirect
                   <button
@@ -433,7 +453,7 @@ export default function CartPageBody() {
                       className="font-body font-bold text-text-primary"
                       style={{ fontSize: "18px" }}
                     >
-                      ${subtotal.toFixed(2)}
+                      ${displayTotal.toFixed(2)}
                     </span>
                   </div>
 

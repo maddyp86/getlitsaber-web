@@ -26,6 +26,9 @@ interface ShopifyOrder {
   currency: string;
   total_price: string;
   total_discounts: string;
+  current_subtotal_price: string;
+  total_shipping_price_set?: { shop_money?: { amount?: string } };
+  shipping_lines?: Array<{ price: string }>;
   line_items: ShopifyLineItem[];
   discount_codes: ShopifyDiscountCode[];
   note_attributes?: Array<{ name: string; value: string }>;
@@ -113,6 +116,16 @@ export async function POST(req: Request): Promise<Response> {
   const referrer =
     order.note_attributes?.find((a) => a.name === "referrer")?.value?.trim() || "";
 
+  // Shipping surcharge A/B — product revenue after discounts, before shipping/tax.
+  const subtotal = parseFloat(order.current_subtotal_price) || 0;
+  // Shopify charges shipping (0 or 5.99). Prefer the money set; fall back to summing lines.
+  const shippingAmount =
+    parseFloat(order.total_shipping_price_set?.shop_money?.amount ?? "") ||
+    (order.shipping_lines ?? []).reduce((sum, l) => sum + (parseFloat(l.price) || 0), 0);
+  // Arm label, stamped to the cart at cartCreate. Same read path as channel_type.
+  const shippingVariant =
+    order.note_attributes?.find((a) => a.name === "_shipping_variant")?.value?.trim() || "unknown";
+
   // customer_name: join non-empty name parts; null if both absent.
   const nameParts = [order.customer?.first_name, order.customer?.last_name]
     .filter((p): p is string => Boolean(p?.trim()));
@@ -132,6 +145,8 @@ export async function POST(req: Request): Promise<Response> {
     email: order.email ?? null,
     customer_name: customerName,
     device_type: deviceType === "unknown" ? null : deviceType,
+    shipping_variant: shippingVariant === "unknown" ? null : shippingVariant,
+    shipping_amount: shippingAmount,
     raw: JSON.parse(rawBody) as Record<string, unknown>,
   });
 
@@ -164,6 +179,9 @@ export async function POST(req: Request): Promise<Response> {
           discount_amount: discountAmount,
           device_type: deviceType,
           channel_type: channelType,
+          subtotal: subtotal,
+          shipping_amount: shippingAmount,
+          shipping_variant: shippingVariant,
           utm_source: utmSource,
           utm_medium: utmMedium,
           utm_campaign: utmCampaign,
