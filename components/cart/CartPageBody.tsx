@@ -18,12 +18,16 @@ import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
+// Silver (LTS-OG-SLV) Shopify variant GID — the only physical SKU. The unlock
+// meter bumps this line to two units, which trips free shipping.
+const SILVER_VARIANT_ID = "gid://shopify/ProductVariant/45098118316239";
+
 export default function CartPageBody() {
   const items = useCartItems();
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
-  const { removeItem } = useCartActions();
+  const { removeItem, updateQty } = useCartActions();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
   const shippingVariant = useShippingVariant();
@@ -33,6 +37,11 @@ export default function CartPageBody() {
   // Fold a known shipping charge into the shown total so it is stated up front;
   // when unknown (flag loading) fall back to subtotal, matching "at checkout".
   const displayTotal = subtotal + (shippingCost ?? 0);
+  // Tapping the surcharge unlock meter bumps the single Silver line to two.
+  const unlockFreeShipping = () => {
+    const line = items.find((l) => l.variantId === SILVER_VARIANT_ID) ?? items[0];
+    if (line) updateQty(line.id, 2);
+  };
 
   return (
     <div
@@ -193,7 +202,7 @@ export default function CartPageBody() {
                 <div className="flex flex-col gap-0 w-full">
                   <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                   <MobileSummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
-                  <ShippingUnlockMeter itemCount={itemCount} className="py-2" />
+                  <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
                   <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted noBorder />
                 </div>
 
@@ -413,7 +422,7 @@ export default function CartPageBody() {
                   <div className="flex flex-col gap-2">
                     <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                     <SummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
-                    <ShippingUnlockMeter itemCount={itemCount} className="py-1" />
+                    <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
                     <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted noBorder/>
                   </div>
 
