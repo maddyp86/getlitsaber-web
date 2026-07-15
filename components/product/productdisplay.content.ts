@@ -1,4 +1,4 @@
-import { mediaUrl } from "@/lib/media";
+import { mediaUrl, videoUrl } from "@/lib/media";
 
 // mediaUrl still used for swatch SVGs below
 
@@ -69,6 +69,8 @@ export const TRUST_LINE =
   "SHIPS IN 24 HOURS · FREE US SHIPPING · 6 MONTH GUARANTEE";
 
 export interface GalleryImage {
+  /** Defaults to "image" when omitted. */
+  type?: "image" | "video";
   src: string;
   alt: string;
 }
@@ -76,6 +78,10 @@ export interface GalleryImage {
 export const GALLERY_IMAGES: GalleryImage[] = [
     { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-2.jpg", alt: "Litsaber OG packaging detail" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-1.jpg", alt: "Litsaber OG packaging" },
+  { type: "video", src: videoUrl("pdp/unbox-pdp.mp4"), alt: "Litsaber unboxing" },
+  { type: "video", src: videoUrl("pdp/litsaber-pdp.mp4"), alt: "Litsaber in action" },
+  { type: "video", src: videoUrl("pdp/glowstick-pdp.mp4"), alt: "Litsaber glowstick mode" },
+  { type: "video", src: videoUrl("pdp/lightshow-pdp.mp4"), alt: "Litsaber light show" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-multi-handheld.jpg", alt: "Multiple Litsabers handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-hand-turqoise.jpg", alt: "Litsaber in turquoise handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-rwb-handheld.jpg", alt: "Litsaber in red, white and blue handheld" },
