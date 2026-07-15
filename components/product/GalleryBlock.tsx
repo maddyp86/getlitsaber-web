@@ -29,6 +29,19 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
       <div className="group relative w-full aspect-square rounded-card overflow-hidden">
         {(() => {
           const active = GALLERY_IMAGES[activeThumb] ?? GALLERY_IMAGES[0];
+          if (active.type === "video") {
+            return (
+              <video
+                key={active.src}
+                src={active.src}
+                aria-label={active.alt}
+                controls
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            );
+          }
           return (
             <Image
               key={active.src}
@@ -84,13 +97,30 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
                 : "brightness-50 hover:brightness-100"
             }`}
           >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              className="object-cover"
-              sizes="72px"
-            />
+            {img.type === "video" ? (
+              <>
+                <video
+                  src={`${img.src}#t=0.1`}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <span className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-white drop-shadow">
+                    <polygon points="8 5 19 12 8 19 8 5" />
+                  </svg>
+                </span>
+              </>
+            ) : (
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                className="object-cover"
+                sizes="72px"
+              />
+            )}
           </button>
         ))}
       </div>
