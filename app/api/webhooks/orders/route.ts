@@ -126,6 +126,16 @@ export async function POST(req: Request): Promise<Response> {
   const shippingVariant =
     order.note_attributes?.find((a) => a.name === "_shipping_variant")?.value?.trim() || "unknown";
 
+  // Contribution per order — the shipping-surcharge experiment's true success
+  // metric, baked onto the event so PostHog can test it natively (metrics can
+  // only aggregate a single property). Product margin + shipping collected,
+  // minus product cost and one postage per shipment. COGS is landed unit cost;
+  // POSTAGE is the $6 to $9 average. Both are constants, applied consistently
+  // across arms; revisit if either cost moves.
+  const COGS_PER_UNIT = 13.33;
+  const POSTAGE_PER_ORDER = 7.5;
+  const contribution = subtotal - COGS_PER_UNIT * itemCount + shippingAmount - POSTAGE_PER_ORDER;
+
   // customer_name: join non-empty name parts; null if both absent.
   const nameParts = [order.customer?.first_name, order.customer?.last_name]
     .filter((p): p is string => Boolean(p?.trim()));
@@ -182,6 +192,7 @@ export async function POST(req: Request): Promise<Response> {
           subtotal: subtotal,
           shipping_amount: shippingAmount,
           shipping_variant: shippingVariant,
+          contribution: contribution,
           utm_source: utmSource,
           utm_medium: utmMedium,
           utm_campaign: utmCampaign,
