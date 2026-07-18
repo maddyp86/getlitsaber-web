@@ -68,16 +68,6 @@ export default function RebateHero() {
             </div>
           </motion.div>
 
-          {/* Vertical cyan separator — sits in the gutter between copy and image */}
-          <div
-            aria-hidden="true"
-            className="hidden lg:block w-px lg:h-[600px] flex-shrink-0"
-            style={{
-              background:
-                "linear-gradient(180deg, #150C2D 0%, #00E5FF 48%, #150C2D 100%)",
-            }}
-          />
-
           {/* Right — lifestyle image (below the copy on mobile) */}
           <motion.div
             className="w-full lg:w-[400px] lg:flex-shrink-0"
@@ -98,6 +88,16 @@ export default function RebateHero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Full-width cyan divider between the hero and section 2 */}
+      <div
+        aria-hidden="true"
+        className="w-full h-[2px]"
+        style={{
+          background:
+            "linear-gradient(90deg, #150C2D 0%, #00E5FF 48%, #150C2D 100%)",
+        }}
+      />
     </section>
   );
 }

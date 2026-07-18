@@ -105,6 +105,16 @@ export default function HowItWorks() {
           </motion.div>
         </div>
       </div>
+
+      {/* Full-width cyan divider between section 2 and section 3 */}
+      <div
+        aria-hidden="true"
+        className="w-full h-[2px]"
+        style={{
+          background:
+            "linear-gradient(90deg, #150C2D 0%, #00E5FF 48%, #150C2D 100%)",
+        }}
+      />
     </section>
   );
 }

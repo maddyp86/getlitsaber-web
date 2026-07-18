@@ -250,20 +250,20 @@ export default function RebateForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <InputField
-              label="Last Name"
-              name="lastname"
-              value={fields.lastname}
-              onChange={handleChange}
-              error={errors.lastname}
-              autoComplete="family-name"
-            />
-            <InputField
               label="First Name"
               name="firstname"
               value={fields.firstname}
               onChange={handleChange}
               error={errors.firstname}
               autoComplete="given-name"
+            />
+            <InputField
+              label="Last Name"
+              name="lastname"
+              value={fields.lastname}
+              onChange={handleChange}
+              error={errors.lastname}
+              autoComplete="family-name"
             />
           </div>
 
