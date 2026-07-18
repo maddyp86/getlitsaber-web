@@ -28,7 +28,7 @@ export default function WholesaleStatsBar() {
     <div
       key={stat.label}
       className={[
-        "flex flex-col items-center justify-center text-center gap-1 py-8 px-4 border-[#4A4A4A]",
+        "flex flex-col items-center justify-center text-center gap-1 py-8 px-4 border-[#4A4A4A] cursor-default select-text",
         // vertical divider — mobile: after left-column items; desktop: after all but the last
         i % 2 === 0 ? "border-r" : "",
         i !== STATS_BAR.length - 1 ? "lg:border-r" : "lg:border-r-0",

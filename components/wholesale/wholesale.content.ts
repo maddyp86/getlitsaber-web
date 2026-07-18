@@ -1,4 +1,4 @@
-import { mediaUrl } from "@/lib/media";
+import { mediaUrl, videoUrl } from "@/lib/media";
 
 // ─── Images / Video ──────────────────────────────────────────────────────────
 // Set SRC values to hosted URLs when assets land. Empty string triggers
@@ -7,8 +7,12 @@ import { mediaUrl } from "@/lib/media";
 export const HERO_IMAGE_SRC = "";
 export const HERO_IMAGE_ALT = "Litsaber OG glowing at a festival crowd";
 
-export const SELLS_ITSELF_VIDEO_SRC = "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/wholesale/wholesale_demand.mp4";
-export const SELLS_ITSELF_IMAGE_SRC = "";
+export const SELLS_ITSELF_VIDEO_SRC = videoUrl("wholesale/wholesale_demand.mp4");
+// Poster / graceful-degradation still. Shown while the ~12MB clip buffers, when
+// the source fails to load, and for prefers-reduced-motion. Reuses the verified
+// wholesale demo photo until a dedicated sells-itself frame is uploaded to Blob.
+export const SELLS_ITSELF_POSTER_SRC = mediaUrl("wholesale/jack-herer-demo-wholesale.jpg");
+export const SELLS_ITSELF_IMAGE_SRC = SELLS_ITSELF_POSTER_SRC;
 export const SELLS_ITSELF_IMAGE_ALT = "Litsaber held at a show, LED lights cycling";
 
 export const DEMAND_IMAGE_SRC = mediaUrl("wholesale/jack-herer-demo-wholesale.jpg");
