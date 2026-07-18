@@ -231,8 +231,7 @@ export default function RebateForm() {
             Submission received.
           </p>
           <p className="font-body text-body-sm text-text-secondary leading-relaxed max-w-[360px]">
-            We'll confirm your post and refund $5 to your original payment method,
-            usually within 3 to 5 business days.
+            {"We'll confirm your post and refund $5 to your original payment method, usually within 3 to 5 business days."}
           </p>
         </div>
       ) : (
