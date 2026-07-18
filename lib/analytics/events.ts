@@ -52,6 +52,23 @@ type FunnelEvents = {
   festival_droplist_signup: {
     source: string;
   };
+  rebate_page_viewed: {
+    source: string;
+  };
+  rebate_form_started: Record<string, never>;
+  rebate_form_submitted: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    order_number: string;
+    platform: string;
+    post_url: string;
+    source: string;
+  };
+  rebate_submit_error: {
+    reason: string;
+    source: string;
+  };
   device_activated: {
     activation_source: "packaging_qr" | "direct";
     is_first_activation: boolean;
@@ -76,6 +93,10 @@ export const EVENTS = {
   contact_form_submitted: "contact_form_submitted",
   festival_droplist_signup: "festival_droplist_signup",
   device_activated: "device_activated",
+  rebate_page_viewed: "rebate_page_viewed",
+  rebate_form_started: "rebate_form_started",
+  rebate_form_submitted: "rebate_form_submitted",
+  rebate_submit_error: "rebate_submit_error",
 } as const satisfies Record<keyof FunnelEvents, string>;
 
 // ---------------------------------------------------------------------------
