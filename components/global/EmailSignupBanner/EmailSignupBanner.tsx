@@ -145,6 +145,13 @@ export default function EmailSignupBanner() {
           Get $5 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
         </motion.p>
 
+        <motion.p
+          className="font-body text-text-muted"
+          style={{ fontSize: "13px" }}
+        >
+          Applies to a single Litsaber. Not combinable with multi-pack pricing.
+        </motion.p>
+
         <form
           onSubmit={handleSubmit}
           noValidate
