@@ -36,8 +36,10 @@ export default function Navbar() {
   return (
     <>
       <header
+        // top tracks the ShippingBanner height (0 when absent/dismissed)
+        style={{ top: "var(--promo-h, 0px)" }}
         className={[
-          "fixed top-0 left-0 right-0 z-navbar h-navbar transition-colors duration-300",
+          "fixed left-0 right-0 z-navbar h-navbar transition-colors duration-300",
           scrolled ? "bg-background-primary" : "bg-transparent",
         ].join(" ")}
       >

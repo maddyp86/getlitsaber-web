@@ -91,6 +91,9 @@ export default function FloatingPromoPopup() {
             >
               ✓ AUTO-APPLIED&nbsp;&nbsp;✓ ONE-TIME USE&nbsp;&nbsp;✓ 14-DAY VALID
             </p>
+            <p className="font-label text-text-muted" style={{ fontSize: "11px" }}>
+              Applies to a single Litsaber. Not combinable with multi-pack pricing.
+            </p>
           </div>
         </div>
       </div>
