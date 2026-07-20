@@ -5,27 +5,32 @@ import {
   SHIPPING_NOTICE_LEAD,
   SHIPPING_NOTICE_CONTEXT,
 } from "@/lib/promo/shippingNotice";
+import { useShippingNoticeEnabled } from "@/lib/promo/useShippingNotice";
 
 // TEMP — warehouse transition banner. See lib/promo/shippingNotice.ts for rollback.
 const DISMISS_KEY = "litsaber_ship_notice_dismissed";
 
 /**
- * Site-wide shipping-delay bar. It publishes its own height to the global
+ * Site-wide shipping-delay bar. Gated by the `warehouse-shipping-notice` PostHog
+ * flag (toggle off Monday, no deploy). It publishes its own height to the global
  * `--promo-h` CSS variable; the fixed navbar binds its `top` to that variable
  * and SiteChrome pads <main> by it, so the bar pushes everything down cleanly
- * and collapses to 0 when dismissed. Dismissal is per browser session.
+ * and collapses to 0 when off or dismissed. Dismissal is per browser session.
  */
 export default function ShippingBanner() {
-  const [visible, setVisible] = useState(true);
+  const enabled = useShippingNoticeEnabled();
+  const [dismissed, setDismissed] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (sessionStorage.getItem(DISMISS_KEY) === "true") setVisible(false);
+    setDismissed(sessionStorage.getItem(DISMISS_KEY) === "true");
   }, []);
+
+  const show = enabled && !dismissed;
 
   useEffect(() => {
     const root = document.documentElement;
-    if (!visible) {
+    if (!show) {
       root.style.setProperty("--promo-h", "0px");
       return;
     }
@@ -37,9 +42,9 @@ export default function ShippingBanner() {
     const ro = new ResizeObserver(sync);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [visible]);
+  }, [show]);
 
-  if (!visible) return null;
+  if (!show) return null;
 
   return (
     <div
@@ -59,7 +64,7 @@ export default function ShippingBanner() {
           type="button"
           onClick={() => {
             sessionStorage.setItem(DISMISS_KEY, "true");
-            setVisible(false);
+            setDismissed(true);
           }}
           aria-label="Dismiss shipping notice"
           className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors"

@@ -18,6 +18,7 @@ import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
+import { useShippingNoticeEnabled } from "@/lib/promo/useShippingNotice";
 
 // Silver (LTS-OG-SLV) Shopify variant GID — the only physical SKU. The unlock
 // meter bumps this line to two units, which trips free shipping.
@@ -28,6 +29,7 @@ export default function CartPageBody() {
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
+  const shippingNoticeOn = useShippingNoticeEnabled();
   const { removeItem, updateQty } = useCartActions();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
@@ -226,10 +228,12 @@ export default function CartPageBody() {
                   </span>
                 </div>
 
-                {/* Warehouse shipping delay notice — TEMP */}
-                <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide">
-                  {SHIPPING_NOTICE_COMPACT}
-                </p>
+                {/* Warehouse shipping delay notice — TEMP, PostHog-gated */}
+                {shippingNoticeOn && (
+                  <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide">
+                    {SHIPPING_NOTICE_COMPACT}
+                  </p>
+                )}
 
                 {/* Checkout button */}
                 <button

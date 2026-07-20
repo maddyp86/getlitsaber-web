@@ -13,6 +13,7 @@ import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { mediaUrl } from "@/lib/media";
 import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
+import { useShippingNoticeEnabled } from "@/lib/promo/useShippingNotice";
 
 const MORE_MIN = 3;
 const MORE_MAX = MAX_QTY;
@@ -61,6 +62,7 @@ export default function BundleAndCTA({
   basePrice,
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
+  const shippingNoticeOn = useShippingNoticeEnabled();
   const { openCart } = useCartUIActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
@@ -303,10 +305,12 @@ export default function BundleAndCTA({
               {buyNowLoading ? "REDIRECTING..." : "BUY NOW"}
             </button>
 
-            {/* Warehouse shipping delay notice — TEMP */}
-            <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide">
-              {SHIPPING_NOTICE_COMPACT}
-            </p>
+            {/* Warehouse shipping delay notice — TEMP, PostHog-gated */}
+            {shippingNoticeOn && (
+              <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide">
+                {SHIPPING_NOTICE_COMPACT}
+              </p>
+            )}
 
             {/* Trust line */}
             <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
