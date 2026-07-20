@@ -142,7 +142,7 @@ export default function EmailSignupBanner() {
             fontSize: "clamp(16px, 1.8vw, 20px)",
           }}
         >
-          Get $10 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
+          Get $5 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
         </motion.p>
 
         <form

@@ -453,5 +453,5 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
 export const DROP_LIST_EYEBROW = "WAIT LIST";
 export const DROP_LIST_HEADLINE = "FESTIVAL DROP LIST";
 export const DROP_LIST_BODY =
-  "Get $10 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.";
+  "Get $5 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.";
 export const DROP_LIST_CTA = "SEND IT";

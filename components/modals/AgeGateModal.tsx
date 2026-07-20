@@ -34,7 +34,7 @@ export default function AgeGateModal() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/activate") return;
+    if (pathname === "/activate" || pathname === "/show-it-off") return;
     const verified = getCookie(COOKIE_NAME);
     if (!verified) {
       setVisible(true);

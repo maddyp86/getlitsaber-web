@@ -45,4 +45,24 @@ export async function insertOrder(
   return { error: error ?? null };
 }
 
+// Look up a mirrored order by its Shopify numeric id. Used by the refunds
+// webhook to recover the stitched distinct_id + email (the refund payload
+// carries neither). Returns null when the order is not mirrored or on error.
+export async function getOrderByShopifyId(
+  shopifyOrderId: string
+): Promise<OrderRow | null> {
+  const supabase = getSupabaseAdmin();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from("orders")
+    .select("*")
+    .eq("shopify_order_id", shopifyOrderId)
+    .maybeSingle();
+  if (error) {
+    console.error("[supabase] getOrderByShopifyId failed:", error.message);
+    return null;
+  }
+  return (data as OrderRow | null) ?? null;
+}
+
 export { getSupabaseAdmin };

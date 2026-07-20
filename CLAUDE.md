@@ -31,7 +31,7 @@ Brand and strategy live in `BRAND.md`. Component spec lives in `COMPONENTS.md`. 
 
 ## Deployment topology
 
-- **Bolt** is the active builder (resumed 2026-05-23). It generates code and pushes to GitHub. It is the single write path right now — see the critical workflow rule below.
+- **Claude Code** is the active/primary write path (as of 2026-07-17). It generates code and pushes to GitHub. **Bolt is now secondary** (the earlier "Bolt is the single write path" rule is retired). The invariant below still holds: only one tool writes at a time — see the critical workflow rule.
 - **GitHub** holds the source of truth. Every push to `main` triggers a Vercel production deploy.
 - **Vercel** auto-deploys every PR to a unique preview URL. Production deploys on merge to `main`.
 - **Namecheap** is the domain registrar. DNS records will be pointed at Vercel in Phase 6/7 during launch cutover. Until then, the live site `getlitsaber.com` continues running on the existing WordPress/Avada install while the new build is verified on the Vercel-provided preview URL (`getlitsaber-web.vercel.app` or similar).
@@ -137,20 +137,19 @@ the video fills it. NEVER give a `<video>` `w-full object-cover` with no height
 constraint.
 
 **Critical workflow rule — single write path to the repo:**
-- The repo has ONE write path at a time. **As of 2026-05-23 that path is Bolt**
-  (the earlier handoff to local Claude Code was reverted; the team is back on
-  Bolt and not yet on Claude Code). Code enters through Bolt, which pushes to
-  GitHub.
+- The repo has ONE write path at a time. **As of 2026-07-17 that path is Claude
+  Code** (Bolt is now secondary — the earlier "back on Bolt" note is retired).
+  Code enters through Claude Code, which commits/pushes to GitHub.
 - The rule that matters is NOT "which tool" — it is "only one tool writes at a
   time." The past collisions (a Netlify dependency leak, then a merge that
   dropped the entire `public/images/` folder, recovered via
   `git checkout <commit> -- public/`) were caused by TWO write paths to one repo,
-  not by Bolt specifically. Whichever tool is active, do not write through a
-  second one concurrently.
-- While Bolt is the active path: do NOT add or edit files via the GitHub web UI,
-  a local clone, or any other tool. That recreates the two-source divergence that
-  caused the collisions. Assets that can't go through Bolt should be added in a
-  deliberate, announced single-tool window, then control handed back to Bolt.
+  not by any one tool specifically. Whichever tool is active, do not write
+  through a second one concurrently.
+- While Claude Code is the active path: do NOT also push through Bolt, the GitHub
+  web UI, or a second local clone. That recreates the two-source divergence that
+  caused the collisions. If Bolt needs to make a change, do it in a deliberate,
+  announced single-tool window (Claude Code paused), then hand control back.
 
 ---
 

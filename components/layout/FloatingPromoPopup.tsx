@@ -40,7 +40,7 @@ export default function FloatingPromoPopup() {
         className="promo-popup-wrapper z-modal"
         role="dialog"
         aria-modal="true"
-        aria-label="Get $10 off your first Litsaber"
+        aria-label="Get $5 off your first Litsaber"
         aria-hidden={!shouldShow}
         // Mobile: clicking the backdrop dismisses; desktop: no backdrop to click
         onClick={() => dismiss("backdrop")}
@@ -65,7 +65,7 @@ export default function FloatingPromoPopup() {
             list="general"
             source={WAITLIST_SOURCES.promoPopup}
             eyebrow="/ FIRST ORDER"
-            headline="$10 OFF YOUR FIRST LITSABER"
+            headline="$5 OFF YOUR FIRST LITSABER"
             copy="Drop your email. We'll send a code + early access to the next drop."
             buttonLabel="SEND MY CODE"
             cardless
