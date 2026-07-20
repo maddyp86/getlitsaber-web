@@ -91,6 +91,13 @@
 }
 
 @layer base {
+  /* TEMP — warehouse shipping banner offset. Approximates ShippingBanner height
+     so SSR content sits below it without a load-time shift; ShippingBanner then
+     syncs the exact value (and sets 0 when dismissed). Remove with the banner. */
+  :root {
+    --promo-h: 36px;
+  }
+
   html {
     background-color: #0A0518;
     color: #ffffff;

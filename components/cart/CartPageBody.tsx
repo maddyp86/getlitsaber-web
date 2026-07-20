@@ -17,6 +17,7 @@ import { identifyByEmail } from "@/lib/analytics/identify";
 import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
+import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
 
 // Silver (LTS-OG-SLV) Shopify variant GID — the only physical SKU. The unlock
 // meter bumps this line to two units, which trips free shipping.
@@ -224,6 +225,11 @@ export default function CartPageBody() {
                     ${displayTotal.toFixed(2)}
                   </span>
                 </div>
+
+                {/* Warehouse shipping delay notice — TEMP */}
+                <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide">
+                  {SHIPPING_NOTICE_COMPACT}
+                </p>
 
                 {/* Checkout button */}
                 <button
