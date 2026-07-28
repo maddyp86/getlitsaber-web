@@ -18,8 +18,6 @@ import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
 import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
-import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
-import { useShippingNoticeEnabled } from "@/lib/promo/useShippingNotice";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
@@ -35,7 +33,6 @@ export default function CartDrawer() {
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
   const { removeItem, updateQty } = useCartActions();
-  const shippingNoticeOn = useShippingNoticeEnabled();
   const capReached = useCapReached();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
@@ -345,13 +342,6 @@ export default function CartDrawer() {
               >
                 VIEW CART
               </Link>
-
-              {/* Warehouse shipping delay notice — TEMP, PostHog-gated */}
-              {shippingNoticeOn && (
-                <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide mb-2">
-                  {SHIPPING_NOTICE_COMPACT}
-                </p>
-              )}
 
               {/* Checkout button */}
               <button

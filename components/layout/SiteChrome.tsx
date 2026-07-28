@@ -1,7 +1,6 @@
 import AgeGateModal from "@/components/modals/AgeGateModal";
 import CartDrawer from "@/components/layout/CartDrawer";
 import Navbar from "@/components/layout/Navbar";
-import ShippingBanner from "@/components/layout/ShippingBanner";
 import Footer from "@/components/layout/Footer";
 import EmailSignupBannerGuard from "@/components/global/EmailSignupBanner/EmailSignupBannerGuard";
 import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
@@ -24,10 +23,8 @@ export default function SiteChrome({
   return (
     <>
       <AgeGateModal />
-      <ShippingBanner />
       <Navbar />
-      {/* paddingTop tracks the ShippingBanner height (0 when absent/dismissed) */}
-      <main style={{ paddingTop: "var(--promo-h, 0px)" }}>{children}</main>
+      <main>{children}</main>
       <EmailSignupBannerGuard />
       <Footer />
       <CartDrawer />
