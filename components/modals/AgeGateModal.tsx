@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAgeGateActions } from "@/lib/ui/store";
 import { mediaUrl } from "@/lib/media";
-import { track, EVENTS } from "@/lib/analytics/events";
+import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 
 const COOKIE_NAME =
   process.env.NEXT_PUBLIC_AGE_GATE_COOKIE_NAME ?? "litsaber_age_verified";
@@ -46,7 +46,10 @@ export default function AgeGateModal() {
 
   function handleConfirm() {
     setCookie(COOKIE_NAME, "true", COOKIE_MAX_AGE_DAYS);
-    track(EVENTS.age_gate_confirmed, {});
+    // trackWhenReady (not track): PostHog init is deferred to after first paint,
+    // so at the moment of the very first tap it may not be loaded yet. track()
+    // would silently drop this event; trackWhenReady flushes it once init lands.
+    trackWhenReady(EVENTS.age_gate_confirmed, {});
     setVisible(false);
     dismissAgeGate();
     document.body.classList.remove("scroll-locked");
@@ -87,24 +90,40 @@ export default function AgeGateModal() {
               -webkit-backdrop-filter: blur(6px);
             }
           }
+          .age-gate-confirm, .age-gate-exit {
+            /* Kill the mobile tap delay and give an immediate pressed state so a
+               tap that is still being processed (busy main thread during
+               hydration) feels acknowledged instead of dead, curbing re-taps. */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+          }
           .age-gate-confirm {
             background: #050510;
             border: 1px solid #00E5FF;
             color: #00E5FF;
-            transition: background 0.2s ease, color 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.05s ease;
           }
           .age-gate-confirm:hover {
             background: #00E5FF;
             color: #050510;
           }
+          .age-gate-confirm:active {
+            background: #00E5FF;
+            color: #050510;
+            transform: scale(0.98);
+          }
           .age-gate-exit {
             background: transparent;
             border: 1px solid rgba(240, 240, 245, 0.20);
             color: #F0F0F5;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, transform 0.05s ease;
           }
           .age-gate-exit:hover {
             border-color: rgba(240, 240, 245, 1);
+          }
+          .age-gate-exit:active {
+            border-color: rgba(240, 240, 245, 1);
+            transform: scale(0.98);
           }
         `}</style>
 

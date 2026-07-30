@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ACCORDION_ITEMS } from "./accordion.content";
+
+// Event other product components dispatch to open a specific accordion panel
+// and scroll it into view — e.g. the spec pills linking to "Tech Specs".
+export const ACCORDION_OPEN_EVENT = "litsaber:accordion-open";
 import type { AccordionBody, AccordionBullet, AccordionSpecGroup, AccordionProseBlock } from "./accordion.content";
 
 function BulletsBody({ items }: { items: AccordionBullet[] }) {
@@ -97,6 +101,25 @@ export default function ProductAccordion() {
   function toggle(id: string) {
     setOpenId((prev) => (prev === id ? null : id));
   }
+
+  // Open + scroll to a panel when another component requests it (e.g. a spec
+  // pill linking to Tech Specs). Kept as an event so the accordion owns its
+  // open state rather than exposing a controlled prop up the tree.
+  useEffect(() => {
+    function onOpenRequest(e: Event) {
+      const id = (e as CustomEvent<{ id?: string }>).detail?.id;
+      if (!id || !ACCORDION_ITEMS.some((item) => item.id === id)) return;
+      setOpenId(id);
+      // Scroll to the header (not the panel): the panel expands below it, so the
+      // header's position is stable and we don't need to wait for the re-render.
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document
+        .getElementById(`accordion-header-${id}`)
+        ?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    }
+    window.addEventListener(ACCORDION_OPEN_EVENT, onOpenRequest);
+    return () => window.removeEventListener(ACCORDION_OPEN_EVENT, onOpenRequest);
+  }, []);
 
   return (
     <div className="w-full">

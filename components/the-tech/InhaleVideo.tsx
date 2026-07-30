@@ -7,6 +7,7 @@ import {
   INHALE_HEADLINE_LINE2,
   INHALE_BODY,
   VIDEO_SRC,
+  VIDEO_POSTER_SRC,
   BREATH_HEADLINE,
   BREATH_BODY_BLOCKS,
   BREATH_RESPONSE_IMAGE_SRC,
@@ -75,21 +76,34 @@ export default function InhaleVideo() {
 
         {/* 16:9 video block */}
         <motion.div
-          className="w-full aspect-video rounded-card overflow-hidden bg-surface-card border border-border-pill max-w-content"
+          className="relative w-full aspect-video rounded-card overflow-hidden bg-surface-card border border-border-pill max-w-content"
           initial={prefersReduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
         >
           {VIDEO_SRC ? (
-            <video
-              src={VIDEO_SRC}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-            />
+            prefersReduced ? (
+              <Image
+                src={VIDEO_POSTER_SRC}
+                alt="Litsaber lighting up mid-inhale"
+                fill
+                sizes="(min-width: 1024px) 1250px, 100vw"
+                className="object-cover"
+              />
+            ) : (
+              <video
+                src={VIDEO_SRC}
+                poster={VIDEO_POSTER_SRC}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+                className="w-full h-full object-cover"
+              />
+            )
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center gap-4">
               <div className="w-16 h-16 rounded-full border-2 border-text-muted flex items-center justify-center">

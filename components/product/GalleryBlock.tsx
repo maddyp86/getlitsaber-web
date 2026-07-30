@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { GALLERY_IMAGES } from "./productdisplay.content";
 
 interface GalleryBlockProps {
@@ -10,6 +11,32 @@ interface GalleryBlockProps {
 
 export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlockProps) {
   const total = GALLERY_IMAGES.length;
+  const active = GALLERY_IMAGES[activeThumb] ?? GALLERY_IMAGES[0];
+  const activeIsVideo = active.type === "video";
+
+  // Tap-to-zoom lightbox. Session review showed the single largest cluster of
+  // dead clicks was people tapping the product/packaging image expecting a
+  // zoom that did not exist. Only still images zoom; videos keep their own
+  // controls.
+  const [zoomed, setZoomed] = useState(false);
+
+  useEffect(() => {
+    if (!zoomed) return;
+    document.body.classList.add("scroll-locked");
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setZoomed(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.classList.remove("scroll-locked");
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [zoomed]);
+
+  // Close the lightbox whenever the selected media changes away from an image.
+  useEffect(() => {
+    if (activeIsVideo) setZoomed(false);
+  }, [activeIsVideo, activeThumb]);
 
   function prev() {
     onThumbClick((activeThumb - 1 + total) % total);
@@ -20,6 +47,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   }
 
   return (
+    <>
     <div className="flex flex-col gap-3 w-full">
       {/* Main viewer — only the ACTIVE image is mounted. Previously all 24
           full-size images were rendered and eagerly loaded at once, decoding
@@ -27,22 +55,23 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           The browser caches each image after first view, so navigation stays
           fast without holding them all in memory. */}
       <div className="group relative w-full aspect-square rounded-card overflow-hidden">
-        {(() => {
-          const active = GALLERY_IMAGES[activeThumb] ?? GALLERY_IMAGES[0];
-          if (active.type === "video") {
-            return (
-              <video
-                key={active.src}
-                src={active.src}
-                aria-label={active.alt}
-                controls
-                playsInline
-                preload="metadata"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            );
-          }
-          return (
+        {activeIsVideo ? (
+          <video
+            key={active.src}
+            src={active.src}
+            aria-label={active.alt}
+            controls
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setZoomed(true)}
+            aria-label={`Zoom image: ${active.alt}`}
+            className="absolute inset-0 w-full h-full cursor-zoom-in"
+          >
             <Image
               key={active.src}
               src={active.src}
@@ -52,8 +81,8 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               sizes="(min-width: 600px) 50vw, 100vw"
               priority
             />
-          );
-        })()}
+          </button>
+        )}
 
         {/* Prev arrow */}
         <button
@@ -125,5 +154,42 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
         ))}
       </div>
     </div>
+
+      {/* Zoom lightbox — full-screen view of the active still image */}
+      {zoomed && !activeIsVideo && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Zoomed image: ${active.alt}`}
+          onClick={() => setZoomed(false)}
+          className="fixed inset-0 z-modal flex items-center justify-center bg-black/90 p-4 cursor-zoom-out"
+          style={{ touchAction: "manipulation" }}
+        >
+          <button
+            type="button"
+            onClick={() => setZoomed(false)}
+            aria-label="Close zoom"
+            className="absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+          <div
+            className="relative w-full h-full max-w-[1000px] max-h-[85vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={active.src}
+              alt={active.alt}
+              fill
+              className="object-contain"
+              sizes="100vw"
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

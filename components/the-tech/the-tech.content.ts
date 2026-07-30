@@ -1,9 +1,10 @@
-import { mediaUrl } from "@/lib/media";
+import { mediaUrl, videoUrl } from "@/lib/media";
 
 // ─── Video ───────────────────────────────────────────────────────────────────
 // Set VIDEO_SRC to the hosted video URL when available.
 // When empty, the InhaleVideo section renders a styled placeholder.
-export const VIDEO_SRC = "";
+export const VIDEO_SRC = videoUrl("the-tech/litsaber_mode_demo.mp4");
+export const VIDEO_POSTER_SRC = videoUrl("the-tech/litsaber-demo_cover.jpg");
 
 // ─── Images ──────────────────────────────────────────────────────────────────
 // All images are remote URLs (GitHub-hosted). next.config.mjs must have

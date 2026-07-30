@@ -155,7 +155,7 @@ export default function BundleAndCTA({
                   <button
                     type="button"
                     onClick={() => onBundleChange(option.id)}
-                    className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors w-full ${
+                    className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors touch-manipulation active:opacity-90 w-full ${
                       isChecked ? "border-accent-cyan" : "border-border-inactive"
                     } ${
                       option.id === "more" && isChecked
