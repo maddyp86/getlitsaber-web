@@ -3,6 +3,10 @@ node_modules/
 .pnp
 .pnp.js
 .yarn/install-state.gz
+# This is a pnpm project — pnpm-lock.yaml is the only lockfile. Ignore npm/yarn
+# locks so a stray `npm install` can't reintroduce a second write path.
+package-lock.json
+yarn.lock
 
 # Testing
 coverage/
