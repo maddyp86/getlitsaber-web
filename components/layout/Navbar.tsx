@@ -38,9 +38,14 @@ export default function Navbar() {
       <header
         // top tracks the ShippingBanner height (0 when absent/dismissed)
         style={{ top: "var(--promo-h, 0px)" }}
+        // While transparent (at the top of the page, over the hero) the header
+        // is 90px of invisible bar. `pointer-events-none` here stops its empty
+        // area from swallowing clicks on the content beneath it; the actual
+        // controls below opt back in with `pointer-events-auto`. Once scrolled
+        // the bar is opaque, so it correctly blocks clicks again.
         className={[
           "fixed left-0 right-0 z-navbar h-navbar transition-colors duration-300",
-          scrolled ? "bg-background-primary" : "bg-transparent",
+          scrolled ? "bg-background-primary" : "bg-transparent pointer-events-none",
         ].join(" ")}
       >
 <div className=" w-full mx-auto max-w-content h-full px-content flex items-center">
@@ -48,7 +53,7 @@ export default function Navbar() {
           {/* ── Mobile: three-column grid ── Desktop: standard flex row ── */}
 
           {/* Left zone — hamburger/close (mobile) | empty spacer (desktop, handled by nav below) */}
-          <div className="flex items-center lg:hidden w-8">
+          <div className="flex items-center lg:hidden w-8 pointer-events-auto">
             <button
               aria-label={drawerOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={drawerOpen}
@@ -64,7 +69,7 @@ export default function Navbar() {
           <div className="flex-1 lg:flex-none lg:w-40 flex items-center lg:justify-start justify-center">
             <Link
               href="/"
-              className="shrink-0"
+              className="shrink-0 pointer-events-auto"
               aria-label="Litsaber — go to homepage"
             >
               <Image
@@ -79,7 +84,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop nav links */}
-          <nav className="hidden lg:flex items-center gap-8 mx-auto" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-8 mx-auto pointer-events-auto" aria-label="Main navigation">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -93,7 +98,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right icons — user (desktop only) + cart + hamburger spacer balance */}
-          <div className="flex items-center justify-end gap-1 lg:w-20">
+          <div className="flex items-center justify-end gap-1 lg:w-20 pointer-events-auto">
             {/* User icon — desktop only */}
             <a
               href={ACCOUNT_URL}

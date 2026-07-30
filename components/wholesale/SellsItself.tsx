@@ -1,11 +1,13 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useCallback, useState } from "react";
 import {
   SELLS_HEADLINE_PART1,
   SELLS_HEADLINE_PART2,
   SELLS_BODY,
   SELLS_ITSELF_VIDEO_SRC,
+  SELLS_ITSELF_POSTER_SRC,
   SELLS_ITSELF_IMAGE_SRC,
   SELLS_ITSELF_IMAGE_ALT,
 } from "./wholesale.content";
@@ -27,6 +29,23 @@ function renderEmphasis(text: string) {
 
 export default function SellsItself() {
   const prefersReduced = useReducedMotion();
+  // Swap to the poster/still if the clip fails to load, so a bad or slow source
+  // degrades gracefully instead of hanging on the browser's loading spinner.
+  const [videoFailed, setVideoFailed] = useState(false);
+  const showVideo = Boolean(SELLS_ITSELF_VIDEO_SRC) && !prefersReduced && !videoFailed;
+
+  // The <video> is server-rendered, so the media "error" event can fire during
+  // hydration before React's onError prop binds. Check the element's error
+  // state on mount (and keep listening) so a bad source reliably falls back to
+  // the poster/still instead of hanging on the browser spinner.
+  const videoRef = useCallback((node: HTMLVideoElement | null) => {
+    if (!node) return;
+    if (node.error) {
+      setVideoFailed(true);
+      return;
+    }
+    node.addEventListener("error", () => setVideoFailed(true));
+  }, []);
 
   return (
     <section
@@ -82,20 +101,25 @@ export default function SellsItself() {
 
           {/* Video / image — right on desktop, below on mobile */}
           <motion.div
-           className="mt-10 lg:mt-0 w-full max-w-[500px] mx-auto lg:mx-0 lg:w-[500px] lg:flex-shrink-0 aspect-[4/5] rounded-card overflow-hidden bg-surface-card border border-border-pill"
+           className="relative mt-10 lg:mt-0 w-full max-w-[500px] mx-auto lg:mx-0 lg:w-[500px] lg:flex-shrink-0 aspect-[4/5] rounded-card overflow-hidden bg-surface-card border border-border-pill"
             initial={prefersReduced ? false : { opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.85, delay: 0.15, ease: EASE }}
           >
-            {SELLS_ITSELF_VIDEO_SRC ? (
+            {showVideo ? (
               <video
+                ref={videoRef}
                 src={SELLS_ITSELF_VIDEO_SRC}
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="w-full h-full object-cover"
+                preload="metadata"
+                poster={SELLS_ITSELF_POSTER_SRC || undefined}
+                aria-hidden="true"
+                onError={() => setVideoFailed(true)}
+                className="absolute inset-0 w-full h-full object-cover"
               />
             ) : SELLS_ITSELF_IMAGE_SRC ? (
               <Image

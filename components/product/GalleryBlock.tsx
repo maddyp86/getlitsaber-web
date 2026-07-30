@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { GALLERY_IMAGES } from "./productdisplay.content";
 
@@ -23,6 +23,38 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   // Portals target document.body, which only exists after mount on the client.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  // Video playback. The main viewer used to render a bare metadata-only <video>
+  // with no poster and no play affordance, so on the dark page it was an empty
+  // black square that swallowed taps (dead clicks). Now the active clip shows
+  // its own first frame (the `#t=0.1` fragment, same trick as the thumbnails),
+  // a big play overlay makes the whole surface a play target while paused, and
+  // selecting a video (thumbnail play badge or arrows) starts playback.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!activeIsVideo) {
+      setVideoPlaying(false);
+      return;
+    }
+    const v = videoRef.current;
+    if (!v) return;
+    // Show the play overlay until playback actually begins.
+    setVideoPlaying(false);
+    // Navigating to a video is a user gesture, so play() is allowed. If a
+    // browser still blocks it, the first frame + play overlay remain.
+    const p = v.play();
+    if (p !== undefined) p.catch(() => setVideoPlaying(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeThumb, activeIsVideo]);
+
+  function playVideo() {
+    const v = videoRef.current;
+    if (!v) return;
+    const p = v.play();
+    if (p !== undefined) p.catch(() => {});
+  }
 
   useEffect(() => {
     if (!zoomed) return;
@@ -60,15 +92,40 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           fast without holding them all in memory. */}
       <div className="group relative w-full aspect-square rounded-card overflow-hidden">
         {activeIsVideo ? (
-          <video
-            key={active.src}
-            src={active.src}
-            aria-label={active.alt}
-            controls
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          <>
+            <video
+              key={active.src}
+              ref={videoRef}
+              // `#t=0.1` paints a real first frame under metadata-only preload,
+              // so the viewer is never a blank black square (same as thumbs).
+              src={`${active.src}#t=0.1`}
+              aria-label={active.alt}
+              controls
+              playsInline
+              preload="metadata"
+              onPlay={() => setVideoPlaying(true)}
+              onPause={() => setVideoPlaying(false)}
+              onEnded={() => setVideoPlaying(false)}
+              className="absolute inset-0 w-full h-full object-cover bg-black"
+            />
+            {/* Play overlay — turns the whole surface into a play target while
+                paused. Sits below the prev/next arrows (z-10) so navigation
+                stays clickable; unmounts on play so native controls take over. */}
+            {!videoPlaying && (
+              <button
+                type="button"
+                onClick={playVideo}
+                aria-label={`Play video: ${active.alt}`}
+                className="absolute inset-0 flex items-center justify-center bg-black/25 hover:bg-black/10 transition-colors cursor-pointer"
+              >
+                <span className="flex items-center justify-center w-[70px] h-[70px] rounded-full bg-black/60 text-white">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="8 5 19 12 8 19 8 5" />
+                  </svg>
+                </span>
+              </button>
+            )}
+          </>
         ) : (
           <button
             type="button"
