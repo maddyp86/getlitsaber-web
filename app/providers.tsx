@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import posthog from "posthog-js";
 import type { CaptureResult } from "posthog-js";
 
@@ -51,7 +51,13 @@ export default function PostHogProvider({
 }: {
   children: React.ReactNode;
 }) {
-  useLayoutEffect(() => {
+  // useEffect (not useLayoutEffect): PostHog init spins up autocapture, dead-click
+  // capture, and session recording (rrweb), which observe the DOM and issue
+  // network requests. Running that synchronously before first paint blocks the
+  // main thread during hydration — exactly when a visitor makes their first tap
+  // (age gate, nav, accordions), so that tap reads as a "dead click" until the
+  // thread frees. Deferring to after paint lets those handlers respond promptly.
+  useEffect(() => {
     const token = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
     if (typeof window === "undefined" || !token) return;
 
