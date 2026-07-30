@@ -104,7 +104,7 @@ export default function RetailKit() {
             {KIT_ITEMS.map((item, i) => (
               <motion.div
                 key={item.num}
-                className="flex flex-col gap-2 py-8 border-b border-[#1E1040] first:border-t"
+                className="flex flex-col gap-2 py-8 border-b border-[#1E1040] first:border-t cursor-default select-text"
                 initial={prefersReduced ? false : { opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
