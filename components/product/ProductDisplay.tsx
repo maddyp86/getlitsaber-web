@@ -67,7 +67,11 @@ export default function ProductDisplay({ variantId, available, surface, basePric
     <div ref={rootRef} className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
       {/* Left: image gallery */}
       <div
-        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[30px]"
+        // Sticky offset must clear the fixed navbar (h-navbar = 90px) plus the
+        // shipping banner (--promo-h). At the old 30px the top ~60px of the
+        // gallery sat under the navbar, which swallowed clicks on the image,
+        // its zoom trigger, and the upper half of the prev/next arrows.
+        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[calc(var(--promo-h,0px)+110px)]"
         style={{ gap: "20px" }}
       >
         <GalleryBlock activeThumb={activeThumb} onThumbClick={setActiveThumb} />
