@@ -36,12 +36,25 @@ export default function ShippingBanner() {
     }
     const el = ref.current;
     if (!el) return;
-    const sync = () =>
-      root.style.setProperty("--promo-h", `${el.offsetHeight}px`);
+    // Defer the CSS-variable write out of the ResizeObserver callback. Writing
+    // --promo-h synchronously re-lays-out the navbar (top) and <main> (padding),
+    // which the browser can't settle in the same frame and reports as the benign
+    // "ResizeObserver loop completed with undelivered notifications" warning.
+    // A rAF breaks the observe -> layout -> observe chain.
+    let frame = 0;
+    const sync = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() =>
+        root.style.setProperty("--promo-h", `${el.offsetHeight}px`),
+      );
+    };
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+    };
   }, [show]);
 
   if (!show) return null;
