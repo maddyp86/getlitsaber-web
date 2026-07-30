@@ -10,7 +10,7 @@ import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
 import WaitlistCard from "./WaitlistCard";
 import DescriptionSection from "./DescriptionSection";
-import ProductAccordion from "./ProductAccordion";
+import ProductAccordion, { ACCORDION_OPEN_EVENT } from "./ProductAccordion";
 
 interface ProductDisplayProps {
   variantId: string;
@@ -96,16 +96,26 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             </p>
           </div>
 
-          {/* Spec pills — 2 rows × 3, rectangular (no border radius) */}
+          {/* Spec pills — 2 rows × 3, rectangular (no border radius). The cyan
+              border reads as interactive, and session review showed people
+              tapping them expecting detail, so they now open the Tech Specs
+              accordion instead of being dead. */}
           <div className="grid grid-cols-3 gap-2 w-full">
             {SPEC_PILLS.map((pill) => (
-              <div
+              <button
                 key={pill}
-                className="font-label text-label text-accent-cyan border border-accent-cyan/20 text-center px-3 flex items-center justify-center"
+                type="button"
+                onClick={() =>
+                  window.dispatchEvent(
+                    new CustomEvent(ACCORDION_OPEN_EVENT, { detail: { id: "specs" } })
+                  )
+                }
+                aria-label={`${pill} — see full tech specs`}
+                className="font-label text-label text-accent-cyan border border-accent-cyan/20 text-center px-3 flex items-center justify-center cursor-pointer touch-manipulation transition-colors hover:border-accent-cyan/50 active:opacity-80"
                 style={{ minHeight: "35px", fontSize: "12px" }}
               >
                 {pill}
-              </div>
+              </button>
             ))}
           </div>
 
