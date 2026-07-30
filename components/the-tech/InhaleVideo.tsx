@@ -95,12 +95,9 @@ export default function InhaleVideo() {
               <video
                 src={VIDEO_SRC}
                 poster={VIDEO_POSTER_SRC}
-                autoPlay
-                muted
-                loop
+                controls
                 playsInline
                 preload="metadata"
-                aria-hidden="true"
                 className="w-full h-full object-cover"
               />
             )
