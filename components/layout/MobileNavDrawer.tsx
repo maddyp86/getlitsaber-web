@@ -112,18 +112,16 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
             <ul className="space-y-0">
               {PRIMARY_NAV.map((item) => (
                 <li key={item.href} className="border-b border-surface-tint-white">
-                  <div className="flex items-center justify-between py-md">
-                    <Link
-                      href={item.href}
-                      onClick={onClose}
-                      className="font-subhead text-lg font-bold text-text-primary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
-                    >
-                      {item.label}
-                    </Link>
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className="group flex items-center justify-between py-md font-subhead text-lg font-bold text-text-primary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
+                  >
+                    <span>{item.label}</span>
                     {item.hasSubmenu && (
-                      <ChevronRightIcon className="text-text-muted" />
+                      <ChevronRightIcon className="text-text-muted group-hover:text-accent-cyan transition-colors duration-200" />
                     )}
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>
