@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { GALLERY_IMAGES } from "./productdisplay.content";
 
 interface GalleryBlockProps {
@@ -19,6 +20,9 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   // zoom that did not exist. Only still images zoom; videos keep their own
   // controls.
   const [zoomed, setZoomed] = useState(false);
+  // Portals target document.body, which only exists after mount on the client.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!zoomed) return;
@@ -155,14 +159,17 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
       </div>
     </div>
 
-      {/* Zoom lightbox — full-screen view of the active still image */}
-      {zoomed && !activeIsVideo && (
+      {/* Zoom lightbox — full-screen view of the active still image.
+          Portaled to <body> so it escapes the gallery's sticky/transformed
+          ancestors (which create stacking contexts that would trap a `fixed`
+          overlay behind the navbar and let sibling content paint over it). */}
+      {mounted && zoomed && !activeIsVideo && createPortal(
         <div
           role="dialog"
           aria-modal="true"
           aria-label={`Zoomed image: ${active.alt}`}
           onClick={() => setZoomed(false)}
-          className="fixed inset-0 z-modal flex items-center justify-center bg-black/90 p-4 cursor-zoom-out"
+          className="fixed inset-0 z-age-gate flex items-center justify-center bg-black/[0.97] backdrop-blur-md p-4 cursor-zoom-out"
           style={{ touchAction: "manipulation" }}
         >
           <button
@@ -188,7 +195,8 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               sizes="100vw"
             />
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
