@@ -1,0 +1,18 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "baseBranches": ["staging"],
+  "dependencyDashboard": true,
+  "labels": ["dependencies"],
+  "schedule": ["before 6am on monday"],
+  "packageRules": [
+    {
+      "description": "Keep the PostHog SDKs current automatically. Auto-merge into staging after a 3-day supply-chain buffer, per https://posthog.com/docs/health-checks/keeping-sdks-current. Renovate waits for the Vercel preview check before merging; staging is then promoted to main (production) by a human.",
+      "matchPackageNames": ["posthog-js", "posthog-node"],
+      "groupName": "posthog SDKs",
+      "rangeStrategy": "bump",
+      "minimumReleaseAge": "3 days",
+      "automerge": true
+    }
+  ]
+}
