@@ -22,7 +22,7 @@ export default function StyleSelector({ activeStyle, onStyleChange }: StyleSelec
             key={option.id}
             type="button"
             onClick={() => onStyleChange(option.id)}
-            className={`bg-surface-card-deep rounded-selector p-3 flex flex-row items-center justify-between gap-3 cursor-pointer border text-left transition-colors ${
+            className={`bg-surface-card-deep rounded-selector p-3 flex flex-row items-center justify-between gap-3 cursor-pointer border text-left transition-colors touch-manipulation active:opacity-90 ${
               option.id === activeStyle ? "border-accent-cyan" : "border-border-inactive"
             }`}
           >
