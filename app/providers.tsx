@@ -46,6 +46,71 @@ function dropOpaqueScriptErrors(
   return allOpaque ? null : event;
 }
 
+/**
+ * Drop exceptions thrown by an injected in-app browser bridge, not our code.
+ *
+ * Meta's in-app browsers (Instagram, Facebook) inject their own script that
+ * posts to a native handler on pagehide via `window.webkit.messageHandlers`.
+ * On iOS that handler is not always present, so the injected script throws
+ * `TypeError: undefined is not an object (evaluating
+ * 'window.webkit.messageHandlers')` from its `sendPageHideMessage` /
+ * `sendDataToNative` functions. The injected script has no source URL, so the
+ * browser attributes the frames to our document and posthog-js's global
+ * onerror captures it as one of ours. Nothing breaks for the visitor — the
+ * message just fails silently — but it clutters error tracking, and Instagram
+ * link-in-bio is a live acquisition channel so it keeps recurring.
+ *
+ * This matches narrowly: the exact `window.webkit.messageHandlers` message,
+ * plus a stack whose named frames are only the known bridge functions (any
+ * other frame must be anonymous). None of these function names exist anywhere
+ * in this codebase, so a real first-party error cannot match.
+ */
+const IN_APP_BROWSER_BRIDGE_FUNCTIONS = new Set([
+  "sendDataToNative",
+  "sendPageHideMessage",
+]);
+
+function dropInAppBrowserBridgeErrors(
+  event: CaptureResult | null
+): CaptureResult | null {
+  if (!event || event.event !== "$exception") return event;
+
+  const exceptions = event.properties?.$exception_list;
+  if (!Array.isArray(exceptions) || exceptions.length === 0) return event;
+
+  const allBridge = exceptions.every((exception) => {
+    const value = typeof exception?.value === "string" ? exception.value : "";
+    if (!value.includes("window.webkit.messageHandlers")) return false;
+
+    const frames = exception?.stacktrace?.frames;
+    if (!Array.isArray(frames) || frames.length === 0) return false;
+
+    // Every named frame must be a known bridge function; other frames must be
+    // anonymous (no function name). At least one bridge frame must be present.
+    let hasBridgeFrame = false;
+    const framesOk = frames.every((frame) => {
+      const fn = typeof frame?.function === "string" ? frame.function : "";
+      if (!fn || fn === "?") return true;
+      if (IN_APP_BROWSER_BRIDGE_FUNCTIONS.has(fn)) {
+        hasBridgeFrame = true;
+        return true;
+      }
+      return false;
+    });
+
+    return framesOk && hasBridgeFrame;
+  });
+
+  return allBridge ? null : event;
+}
+
+function filterThirdPartyNoise(
+  event: CaptureResult | null
+): CaptureResult | null {
+  const afterScriptErrors = dropOpaqueScriptErrors(event);
+  return dropInAppBrowserBridgeErrors(afterScriptErrors);
+}
+
 export default function PostHogProvider({
   children,
 }: {
@@ -72,7 +137,7 @@ export default function PostHogProvider({
       },
       capture_dead_clicks: true,
       internal_or_test_user_hostname: /^(localhost|127\.0\.0\.1|.*\.vercel\.app)$/,
-      before_send: dropOpaqueScriptErrors,
+      before_send: filterThirdPartyNoise,
     });
 
     if (typeof window !== "undefined") {
