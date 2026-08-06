@@ -66,6 +66,9 @@ export interface ShopifyCart {
   lines: {
     edges: Array<{ node: ShopifyCartLineNode }>;
   };
+  // Cart-level attributes (attribution + experiment arm). Read back on hydrate
+  // so an already-frozen arm is never overwritten.
+  attributes?: Array<{ key: string; value: string | null }>;
 }
 
 export interface ShopifyCartResponse {
@@ -73,5 +76,6 @@ export interface ShopifyCartResponse {
   cartLinesAdd?: { cart: ShopifyCart };
   cartLinesRemove?: { cart: ShopifyCart };
   cartLinesUpdate?: { cart: ShopifyCart };
+  cartAttributesUpdate?: { cart: ShopifyCart };
   cart?: ShopifyCart | null;
 }
