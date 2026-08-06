@@ -51,6 +51,15 @@ function deterministicUuid(seed: string): string {
   return [h.slice(0, 8), h.slice(8, 12), version, variant, h.slice(20, 32)].join("-");
 }
 
+// Parse a Shopify money string, distinguishing "absent or unparseable" (null)
+// from a genuine zero. `parseFloat(x) || 0` conflates the two, which is how a
+// missing subtotal turned into a negative contribution on the experiment metric.
+function parseMoney(raw: string | null | undefined): number | null {
+  if (raw === null || raw === undefined || String(raw).trim() === "") return null;
+  const parsed = parseFloat(String(raw));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 function verifyShopifyHmac(rawBody: string, headerHmac: string, secret: string): boolean {
   const computed = createHmac("sha256", secret).update(rawBody, "utf8").digest("base64");
   try {
@@ -132,14 +141,22 @@ export async function POST(req: Request): Promise<Response> {
     order.note_attributes?.find((a) => a.name === "referrer")?.value?.trim() || "";
 
   // Shipping surcharge A/B — product revenue after discounts, before shipping/tax.
-  const subtotal = parseFloat(order.current_subtotal_price) || 0;
+  // Nullable on purpose: an absent field must not collapse to 0, or the
+  // contribution below silently becomes "costs with no revenue" and subtracts a
+  // fabricated loss from the experiment's primary metric.
+  const subtotal = parseMoney(order.current_subtotal_price);
   // Shopify charges shipping (0 or 5.99). Prefer the money set; fall back to summing lines.
+  // Absent genuinely means nothing was charged here, so 0 is the right default.
   const shippingAmount =
     parseFloat(order.total_shipping_price_set?.shop_money?.amount ?? "") ||
     (order.shipping_lines ?? []).reduce((sum, l) => sum + (parseFloat(l.price) || 0), 0);
-  // Arm label, stamped to the cart at cartCreate. Same read path as channel_type.
+  // Arm label, frozen onto the cart client-side. Same read path as channel_type.
   const shippingVariant =
     order.note_attributes?.find((a) => a.name === "_shipping_variant")?.value?.trim() || "unknown";
+  // Only a real arm counts. "unknown" (cart predates the stamp) and "unresolved"
+  // (flags had not loaded) are both non-answers and must not be filed as control.
+  const assignedArm =
+    shippingVariant === "control" || shippingVariant === "surcharge" ? shippingVariant : null;
 
   // Contribution per order — the shipping-surcharge experiment's true success
   // metric, baked onto the event so PostHog can test it natively (metrics can
@@ -147,9 +164,17 @@ export async function POST(req: Request): Promise<Response> {
   // minus product cost and one postage per shipment. COGS is landed unit cost;
   // POSTAGE is the $6 to $9 average. Both are constants, applied consistently
   // across arms; revisit if either cost moves.
+  // Null when subtotal is unknown: no number is far better than a negative one,
+  // which PostHog would happily sum into the arm.
   const COGS_PER_UNIT = 13.33;
   const POSTAGE_PER_ORDER = 7.5;
-  const contribution = subtotal - COGS_PER_UNIT * itemCount + shippingAmount - POSTAGE_PER_ORDER;
+  const contribution =
+    subtotal === null
+      ? null
+      : subtotal - COGS_PER_UNIT * itemCount + shippingAmount - POSTAGE_PER_ORDER;
+  if (subtotal === null) {
+    console.warn("[webhook/orders] no current_subtotal_price, omitting contribution", orderId);
+  }
 
   // customer_name: join non-empty name parts; null if both absent.
   const nameParts = [order.customer?.first_name, order.customer?.last_name]
@@ -172,7 +197,7 @@ export async function POST(req: Request): Promise<Response> {
     email: order.email ?? null,
     customer_name: customerName,
     device_type: deviceType === "unknown" ? null : deviceType,
-    shipping_variant: shippingVariant === "unknown" ? null : shippingVariant,
+    shipping_variant: assignedArm,
     shipping_amount: shippingAmount,
     raw,
   });
@@ -232,6 +257,16 @@ export async function POST(req: Request): Promise<Response> {
           shipping_amount: shippingAmount,
           shipping_variant: shippingVariant,
           contribution: contribution,
+          // Stamp the arm the shopper actually checked out under. The exposure
+          // event is captured client-side under whichever distinct_id was
+          // current at the time, so a purchase that arrives from the server has
+          // no arm of its own to be grouped by. Carrying it on the event makes
+          // the result analysable directly from the purchase, independent of how
+          // the exposure was recorded. Omitted entirely when the arm is unknown,
+          // so an unbucketed order is absent rather than miscounted.
+          ...(assignedArm
+            ? { "$feature/single-unit-shipping-surcharge": assignedArm }
+            : {}),
           utm_source: utmSource,
           utm_medium: utmMedium,
           utm_campaign: utmCampaign,

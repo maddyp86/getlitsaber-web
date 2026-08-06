@@ -18,7 +18,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
-import { readShippingVariant } from "@/lib/experiments/useShippingVariant";
+import { adoptShippingVariant, readShippingVariant } from "@/lib/experiments/useShippingVariant";
+import type { ShippingVariant } from "@/lib/shipping";
 import { getChannelAttribution } from "@/lib/analytics/channel";
 import { getTierPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
@@ -48,6 +49,11 @@ export type CartState = {
   // Shared promise while a cartCreate is in-flight.
   // A second concurrent addItem awaits this, then routes through cartLinesAdd.
   pendingCartCreate: Promise<void> | null;
+  // Persisted alongside cartId. Attribution attributes are written at cartCreate
+  // only, so a cart that predates them (or was created before posthog-js had
+  // loaded) would reach the orders webhook bare and lose the purchase. False on
+  // those carts, which makes hydrate() backfill once.
+  attributesStamped: boolean;
 };
 
 type CartActions = {
@@ -67,6 +73,10 @@ type CartStore = CartState & CartActions;
 const CART_FRAGMENT = `
   id
   checkoutUrl
+  attributes {
+    key
+    value
+  }
   lines(first: 10) {
     edges {
       node {
@@ -120,6 +130,14 @@ const CART_LINES_UPDATE = `
   }
 `;
 
+const CART_ATTRIBUTES_UPDATE = `
+  mutation CartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart { ${CART_FRAGMENT} }
+    }
+  }
+`;
+
 const CART_QUERY = `
   query GetCart($cartId: ID!) {
     cart(id: $cartId) { ${CART_FRAGMENT} }
@@ -152,6 +170,43 @@ function fulfillmentSku(qty: number): string {
   return qty <= 1 ? "LTS-OG-SLV" : `LTS-OG-SLV-${qty}`;
 }
 
+// Attribution attributes the orders webhook reads back off the order: who the
+// visitor is, where they came from, and which experiment arm they shopped under.
+// Shared by cartCreate and the hydrate() backfill so the two cannot drift.
+// `frozenArm` is the arm already on an existing cart; when present it wins over
+// a fresh flag read so a re-stamp cannot move a price mid-cart.
+function buildCartAttributes(frozenArm?: ShippingVariant): AttributeInput[] {
+  const attributes: AttributeInput[] = [];
+
+  const phId = getCartAnalyticsId();
+  if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
+
+  const storedDiscount = sessionStorage.getItem("litsaber_discount");
+  if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
+
+  attributes.push({ key: "device_type", value: detectDeviceType() });
+
+  const channel = getChannelAttribution();
+  attributes.push({ key: "channel_type", value: channel.channel_type });
+  attributes.push({ key: "utm_source", value: channel.utm_source });
+  attributes.push({ key: "utm_medium", value: channel.utm_medium });
+  attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
+  attributes.push({ key: "referrer", value: channel.referrer });
+
+  // Shipping-surcharge arm. Underscore-prefixed so it is suppressed from the
+  // checkout UI while visible to the Order API. readShippingVariant() is sticky
+  // per device, so re-stamping cannot flip a shopper's arm. "unresolved" when
+  // flags have not loaded: the Shopify delivery Function treats anything that is
+  // not "surcharge" as free shipping, and labelling it honestly keeps an
+  // unbucketed order from being filed under control and diluting that arm.
+  attributes.push({
+    key: "_shipping_variant",
+    value: frozenArm ?? readShippingVariant() ?? "unresolved",
+  });
+
+  return attributes;
+}
+
 // ---------------------------------------------------------------------------
 // Store
 // ---------------------------------------------------------------------------
@@ -164,6 +219,7 @@ export const useCartStore = create<CartStore>()(
       checkoutUrl: null,
       capReached: false,
       pendingCartCreate: null,
+      attributesStamped: false,
 
       async addItem(line) {
         // Compute clamped quantities before touching state.
@@ -218,26 +274,10 @@ export const useCartStore = create<CartStore>()(
             set({ pendingCartCreate: createPromise });
 
             try {
-              const phId = getCartAnalyticsId();
+              const attributes = buildCartAttributes();
               if (process.env.NODE_ENV !== "production") {
-                console.log("[cart] posthog_distinct_id attr =", phId);
+                console.log("[cart] cart attributes =", attributes);
               }
-              const attributes: AttributeInput[] = [];
-              if (phId) attributes.push({ key: "posthog_distinct_id", value: phId });
-              const storedDiscount = sessionStorage.getItem("litsaber_discount");
-              if (storedDiscount) attributes.push({ key: "discount_code", value: storedDiscount });
-              const deviceType = detectDeviceType();
-              attributes.push({ key: "device_type", value: deviceType });
-              const channel = getChannelAttribution();
-              attributes.push({ key: "channel_type", value: channel.channel_type });
-              attributes.push({ key: "utm_source", value: channel.utm_source });
-              attributes.push({ key: "utm_medium", value: channel.utm_medium });
-              attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
-              attributes.push({ key: "referrer", value: channel.referrer });
-              // Shipping-surcharge arm, frozen once at cartCreate. Underscore-prefixed
-              // so it is suppressed from the checkout UI while visible to the Order API.
-              // Only stamped here (never on cartLinesAdd), so it cannot flip mid-cart.
-              attributes.push({ key: "_shipping_variant", value: readShippingVariant() ?? "control" });
               const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
                 lines: [{ merchandiseId: line.variantId, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
                 attributes,
@@ -248,6 +288,11 @@ export const useCartStore = create<CartStore>()(
                 items: transformShopifyCart(cart),
                 checkoutUrl: cart.checkoutUrl,
                 pendingCartCreate: null,
+                // Only "stamped" once identity actually made it on. posthog-js
+                // may still have been loading here, and without the visitor id
+                // the purchase cannot be joined back to an exposure — leave the
+                // flag false so hydrate() retries on the next visit.
+                attributesStamped: attributes.some((a) => a.key === "posthog_distinct_id"),
               });
             } finally {
               resolveCreate();
@@ -360,7 +405,7 @@ export const useCartStore = create<CartStore>()(
             lineIds,
           });
           // Null cartId only on confirmed success. Next addItem triggers a fresh cartCreate.
-          set({ cartId: null, checkoutUrl: null });
+          set({ cartId: null, checkoutUrl: null, attributesStamped: false });
         } catch (err) {
           console.error("[cart] clear failed:", err);
           // TODO: wire toast — "Failed to clear cart. Please try again."
@@ -379,10 +424,37 @@ export const useCartStore = create<CartStore>()(
           const cart = data.cart;
           if (!cart) {
             // Cart expired or invalid — clean up stale localStorage reference.
-            set({ cartId: null, items: [], checkoutUrl: null });
+            set({ cartId: null, items: [], checkoutUrl: null, attributesStamped: false });
             return;
           }
           set({ items: transformShopifyCart(cart), checkoutUrl: cart.checkoutUrl });
+
+          // An arm already frozen on the cart is authoritative — the shopper has
+          // been quoted a price under it. Adopt it as this device's sticky value
+          // so the UI and any re-stamp agree with what checkout will charge.
+          const frozenArm = adoptShippingVariant(
+            cart.attributes?.find((a) => a.key === "_shipping_variant")?.value
+          );
+
+          // Backfill attribution onto a cart that never got it. Carts are only
+          // stamped at cartCreate, so one created before this shipped (or before
+          // posthog-js had loaded) reaches the orders webhook with no visitor id
+          // and the purchase falls back to a synthetic `order_<id>` that can
+          // never join an experiment exposure. Channel here is the current
+          // session's rather than first touch, which is still strictly better
+          // than the "unknown" those orders carry today. The arm is carried over
+          // verbatim, never re-resolved: the brief's "if already present, NEVER
+          // overwrite" rule is what keeps a mid-cart price from moving.
+          if (!get().attributesStamped) {
+            const attributes = buildCartAttributes(frozenArm);
+            if (attributes.some((a) => a.key === "posthog_distinct_id")) {
+              await shopifyFetch<ShopifyCartResponse>(CART_ATTRIBUTES_UPDATE, {
+                cartId,
+                attributes,
+              });
+              set({ attributesStamped: true });
+            }
+          }
         } catch (err) {
           console.error("[cart] hydrate failed:", err);
           // Silently fail — user sees stale local state; next action will surface any real error.
@@ -391,8 +463,12 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "litsaber-cart",
-      // Only persist cartId. Items and checkoutUrl are re-fetched from Shopify on hydration.
-      partialize: (state) => ({ cartId: state.cartId }),
+      // Only persist cartId and whether its attribution attributes landed. Items
+      // and checkoutUrl are re-fetched from Shopify on hydration.
+      partialize: (state) => ({
+        cartId: state.cartId,
+        attributesStamped: state.attributesStamped,
+      }),
     }
   )
 );
