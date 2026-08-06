@@ -1,7 +1,7 @@
 // SERVER ONLY — Shopify orders/create webhook receiver.
 // Verifies HMAC signature, writes to Supabase, fires PostHog purchase event.
 
-import { createHmac, timingSafeEqual } from "crypto";
+import { createHash, createHmac, timingSafeEqual } from "crypto";
 import { PostHog } from "posthog-node";
 import { insertOrder } from "@/supabase/client";
 
@@ -22,6 +22,7 @@ interface ShopifyDiscountCode {
 interface ShopifyOrder {
   id: number;
   name: string;
+  created_at?: string;
   email: string | null;
   currency: string;
   total_price: string;
@@ -38,6 +39,17 @@ interface ShopifyOrder {
 // ---------------------------------------------------------------------------
 // Signature verification
 // ---------------------------------------------------------------------------
+
+// A stable, v5-shaped UUID derived from a seed string. Same seed always yields
+// the same UUID, which lets a redelivered webhook produce a byte-identical
+// PostHog event id. See the capture call for why that matters.
+function deterministicUuid(seed: string): string {
+  const h = createHash("sha1").update(seed).digest("hex");
+  // Force version 5 and the RFC 4122 variant bits so the value is a valid UUID.
+  const version = "5" + h.slice(13, 16);
+  const variant = ((parseInt(h[16], 16) & 0x3) | 0x8).toString(16) + h.slice(17, 20);
+  return [h.slice(0, 8), h.slice(8, 12), version, variant, h.slice(20, 32)].join("-");
+}
 
 function verifyShopifyHmac(rawBody: string, headerHmac: string, secret: string): boolean {
   const computed = createHmac("sha256", secret).update(rawBody, "utf8").digest("base64");
@@ -69,15 +81,18 @@ export async function POST(req: Request): Promise<Response> {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  // 3. Parse only after verification passes
-  let order: ShopifyOrder;
+  // 3. Parse only after verification passes. Parsed once and reused for both
+  // the field reads and the `raw` column — the payload is large enough that a
+  // second parse is wasted time on a path Shopify only allows 5 seconds.
+  let raw: Record<string, unknown>;
   try {
-    order = JSON.parse(rawBody) as ShopifyOrder;
+    raw = JSON.parse(rawBody) as Record<string, unknown>;
   } catch (err) {
     console.error("[webhook/orders] Failed to parse order JSON", err);
     // Return 200 so Shopify doesn't retry a malformed payload
     return new Response("Bad payload", { status: 200 });
   }
+  const order = raw as unknown as ShopifyOrder;
 
   const orderId = String(order.id);
   const orderValue = parseFloat(order.total_price) || 0;
@@ -141,8 +156,10 @@ export async function POST(req: Request): Promise<Response> {
     .filter((p): p is string => Boolean(p?.trim()));
   const customerName = nameParts.length > 0 ? nameParts.join(" ") : null;
 
-  // 4. Write to Supabase — upsert so duplicate deliveries are a no-op
-  const { error: dbError } = await insertOrder({
+  // 4. Write to Supabase — upsert so duplicate deliveries are a no-op.
+  // `inserted` is true only on the delivery that actually created the row; it
+  // is the idempotency gate for the PostHog event below.
+  const { inserted, error: dbError } = await insertOrder({
     shopify_order_id: orderId,
     order_number: order.name,
     order_value: orderValue,
@@ -157,7 +174,7 @@ export async function POST(req: Request): Promise<Response> {
     device_type: deviceType === "unknown" ? null : deviceType,
     shipping_variant: shippingVariant === "unknown" ? null : shippingVariant,
     shipping_amount: shippingAmount,
-    raw: JSON.parse(rawBody) as Record<string, unknown>,
+    raw,
   });
 
   if (dbError) {
@@ -165,11 +182,29 @@ export async function POST(req: Request): Promise<Response> {
     // Continue — Supabase hiccup must not cause Shopify to retry-storm
   }
 
-  // 5. Fire PostHog server-side purchase event
+  // 5. Fire PostHog server-side purchase event.
+  //
+  // Shopify delivers webhooks AT LEAST ONCE: a delivery that doesn't get a 2xx
+  // within Shopify's 5-second budget is retried, even when the handler in fact
+  // ran to completion. Order #1040 landed three times that way and was counted
+  // three times in revenue and in the shipping-surcharge experiment.
+  //
+  // Two independent guards, because either one alone has a hole:
+  //   a) Skip the capture when the Supabase insert was a no-op — a redelivery.
+  //      Skipped when the DB itself errored, since we can't tell a duplicate
+  //      from an outage and a lost purchase is worse than a duplicate one.
+  //   b) Pin the event uuid and timestamp to values derived from the order, so
+  //      any capture that does slip through guard (a) carries an identical
+  //      dedupe key and PostHog collapses it into the first one.
   const posthogToken = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
   const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
 
-  if (posthogToken) {
+  const alreadyCaptured = !inserted && !dbError;
+  if (alreadyCaptured) {
+    console.info("[webhook/orders] duplicate delivery, skipping PostHog capture", orderId);
+  }
+
+  if (posthogToken && !alreadyCaptured) {
     const posthog = new PostHog(posthogToken, { host: posthogHost });
     try {
       if (canIdentify) {
@@ -178,6 +213,10 @@ export async function POST(req: Request): Promise<Response> {
       posthog.capture({
         distinctId,
         event: "purchase",
+        // Both derived from the order, never from the delivery — a retry must
+        // reproduce them exactly for PostHog's dedupe to bite.
+        uuid: deterministicUuid("purchase:" + orderId),
+        timestamp: order.created_at ? new Date(order.created_at) : undefined,
         properties: {
           order_id: orderId,
           order_number: order.name,
@@ -202,10 +241,14 @@ export async function POST(req: Request): Promise<Response> {
       // Flush before the serverless function freezes — unflushed events are lost
       await posthog.shutdown();
     } catch (err) {
-      console.error("[webhook/orders] PostHog capture failed:", err);
-      // Continue — analytics failure must not surface as a non-200 to Shopify
+      // Continue — analytics failure must not surface as a non-200 to Shopify.
+      // Note the trade-off in guard (a): the Supabase row already exists, so a
+      // Shopify retry will now skip this capture and the event is lost. Logged
+      // with the order id because the full payload is in orders.raw and the
+      // event can be replayed from there.
+      console.error("[webhook/orders] PostHog capture failed, order needs replay:", orderId, err);
     }
-  } else {
+  } else if (!posthogToken) {
     console.warn("[webhook/orders] NEXT_PUBLIC_POSTHOG_TOKEN not set — skipping PostHog event");
   }
 
