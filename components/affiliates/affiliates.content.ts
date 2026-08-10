@@ -137,6 +137,11 @@ export const FAQ_ITEMS = [
       "Whatever fits your channel. The product does the work on camera, since it's a glowing accessory that people ask about. We send you b-roll, product shots, and hooks that have worked, but the best content is usually yours.",
   },
   {
+    question: "Do you send free samples?",
+    answer:
+      "Not free, but close. You can order one at $20 instead of $59.99, plus shipping, so you've got one in hand to shoot with. Then the moment you make your first sale, that $20 comes back as credit on your first payout. Make a sale in your first 30 days and the sample effectively costs you nothing.",
+  },
+  {
     question: "How do I know I'll get credited?",
     answer:
       "Two ways. Your link sets a 30-day cookie, and your personal code works even if someone buys on a different device weeks later. Codes catch what cookies miss.",
