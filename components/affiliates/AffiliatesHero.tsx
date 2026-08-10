@@ -29,7 +29,9 @@ export default function AffiliatesHero() {
 
   return (
     <section
-      className="relative w-full pt-[132px] pb-16 lg:pt-[190px] lg:pb-[110px]"
+      // Top padding only needs to clear the fixed 90px navbar. Kept close to
+      // the bottom padding so the block reads centered, not bottom-weighted.
+      className="relative w-full pt-[112px] pb-16 lg:pt-[130px] lg:pb-[110px]"
       aria-label="Litsaber affiliate program"
     >
       <div className="mx-auto w-full max-w-content px-content">

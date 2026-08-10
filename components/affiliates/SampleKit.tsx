@@ -24,7 +24,7 @@ export default function SampleKit() {
   return (
     <section className="relative w-full py-16 lg:py-[110px]" aria-label="Getting started">
       <div className="mx-auto w-full max-w-content px-content">
-        <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-2 lg:gap-[90px]">
+        <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-2 lg:items-center lg:gap-[90px]">
           {/* Pitch */}
           <div className="flex flex-col items-start gap-5">
             <motion.span

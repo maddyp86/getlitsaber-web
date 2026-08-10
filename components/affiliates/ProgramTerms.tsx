@@ -30,7 +30,8 @@ export default function ProgramTerms() {
             {TERMS_EYEBROW}
           </motion.span>
 
-          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 lg:gap-[60px]">
+          {/* items-stretch on desktop so the image column matches the table's height */}
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-[60px]">
             {/* Terms table */}
             <motion.div
               className="rounded-card border border-white/10 bg-white/[0.04] px-5 pb-5 pt-2 backdrop-blur-sm lg:px-[30px] lg:pb-[26px] lg:pt-2.5"
@@ -58,7 +59,7 @@ export default function ProgramTerms() {
 
             {/* Lifestyle frame */}
             <motion.div
-              className="relative h-[260px] w-full overflow-hidden rounded-card border border-border-pill shadow-[0_0_90px_rgba(236,87,147,0.14)] lg:h-[470px]"
+              className="relative h-[260px] w-full overflow-hidden rounded-card border border-border-pill shadow-[0_0_90px_rgba(236,87,147,0.14)] lg:h-auto"
               initial={prefersReduced ? false : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
