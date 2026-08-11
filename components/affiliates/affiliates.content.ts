@@ -7,17 +7,18 @@ export const SIGNUP_URL = "https://affiliate-litsaber.goaffpro.com/create-accoun
 export const LOGIN_URL = "https://affiliate-litsaber.goaffpro.com/login";
 
 // ─── Imagery ─────────────────────────────────────────────────────────────────
-export const HERO_IMAGE_SRC = mediaUrl("home/litsaber-festival.jpg");
+export const HERO_IMAGE_SRC = mediaUrl("affiliate/hero-shot-blue.jpg");
 export const HERO_IMAGE_ALT =
-  "A Litsaber glowing cyan, held in one hand above a festival crowd at night";
+  "A Litsaber glowing cyan, held out toward the camera in a dark room";
 
-export const CONVERSATION_IMAGE_SRC = mediaUrl("home/rave.jpg");
+export const CONVERSATION_IMAGE_SRC = mediaUrl("affiliate/conversation-starter.jpg");
 export const CONVERSATION_IMAGE_ALT =
-  "Two people laughing at a party, one holding a lit Litsaber";
+  "A crowd at night with Litsabers raised and lit above the dance floor";
 
-export const TERMS_IMAGE_SRC = mediaUrl("home/house_party.jpg");
+// Blob filename is spelled "fushcia" — matched verbatim, do not correct here.
+export const TERMS_IMAGE_SRC = mediaUrl("affiliate/litsaber-hand-fushcia.jpg");
 export const TERMS_IMAGE_ALT =
-  "A Litsaber lit magenta at a house party, held mid-conversation";
+  "A Litsaber glowing fuchsia, held in one hand against a dark background";
 
 // ─── Section 1 — Hero ────────────────────────────────────────────────────────
 export const HERO_EYEBROW = "AFFILIATE";

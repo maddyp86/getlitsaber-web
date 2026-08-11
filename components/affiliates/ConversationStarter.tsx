@@ -51,7 +51,10 @@ export default function ConversationStarter() {
           </div>
 
           <motion.div
-            className="relative h-[220px] w-full overflow-hidden rounded-card border border-border-pill shadow-[0_0_90px_rgba(157,95,255,0.14)] lg:h-[400px]"
+            // Desktop uses the kit's 16:7 band, which is within a hair of the
+            // source's own 2.215:1 — the shot lands essentially uncropped.
+            // Mobile keeps a fixed height so the band doesn't get too short.
+            className="relative h-[220px] w-full overflow-hidden rounded-card border border-border-pill shadow-[0_0_90px_rgba(157,95,255,0.14)] lg:h-auto lg:aspect-[16/7]"
             initial={prefersReduced ? false : { opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -62,7 +65,7 @@ export default function ConversationStarter() {
               alt={CONVERSATION_IMAGE_ALT}
               fill
               sizes="(min-width: 1024px) 1250px, 100vw"
-              className="object-cover object-[50%_42%]"
+              className="object-cover object-center"
             />
           </motion.div>
         </div>

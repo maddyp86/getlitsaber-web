@@ -70,7 +70,7 @@ export default function ProgramTerms() {
                 alt={TERMS_IMAGE_ALT}
                 fill
                 sizes="(min-width: 1024px) 600px, 100vw"
-                className="object-cover object-[50%_35%]"
+                className="object-cover object-center"
               />
             </motion.div>
           </div>
