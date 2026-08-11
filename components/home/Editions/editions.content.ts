@@ -51,7 +51,7 @@ export const EDITIONS: Edition[] = [
   },
   {
     id: "gold-edition",
-    badge: "/ DROPS IN JUNE",
+    badge: "/ COMING SOON",
     badgeBorderColor: "#EB3E7C",
     badgeTextColor: "#EB3E7C",
     cardBorderColor: "#EB3E7C",
