@@ -1,5 +1,6 @@
 import type { Para } from "./shipping-returns";
 import type { AddressBlockData } from "@/components/policies/AddressBlock";
+import { RETURN_ADDRESS_LINES } from "./shared";
 
 export type { Para };
 
@@ -332,8 +333,5 @@ export const PRIVACY_CONTACT_BLOCK: AddressBlockData = {
     { rowLabel: "Website", display: "getlitsaber.com", href: "/" },
   ],
   addressLabel: "Returns Address",
-  recipient: "Litsaber c/o Premier Fulfillment West",
-  attn: "Attn: Rudy Tinoco",
-  line1: "19050 Messenia Ln, Building 8",
-  line2: "Perris, CA 92571, USA",
+  ...RETURN_ADDRESS_LINES,
 };

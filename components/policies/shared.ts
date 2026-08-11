@@ -9,13 +9,20 @@ export const POLICIES_HERO = {
   effectiveLabel: "EFFECTIVE: MAY 15, 2026",
 } as const;
 
-// Return address confirmed with Premier Fulfillment West
+// The one place the return address is written down. The refunds, warranty and
+// privacy pages all render these same four lines, so they spread this rather
+// than restating it — a mailing address that disagrees with itself across
+// three policy pages is a support ticket waiting to happen.
+export const RETURN_ADDRESS_LINES = {
+  recipient: "Innovape Concepts",
+  attn: "Attn: Brendan Friedrich",
+  line1: "801 E Chapman Ave, Suite #105",
+  line2: "Fullerton, CA 92831, USA",
+} as const;
+
 export const RETURN_ADDRESS = {
   label: "RETURN SHIPMENTS",
-  recipient: "Litsaber c/o Premier Fulfillment West",
-  attn: "Attn: Rudy Tinoco",
-  line1: "19050 Messenia Ln, Building 8",
-  line2: "Perris, CA 92571, USA",
+  ...RETURN_ADDRESS_LINES,
 } as const;
 
 export const RELATED_RESOURCES = [
