@@ -1646,6 +1646,30 @@ New campaign landing page for the $5 post-and-share rebate. A customer posts the
 
 ---
 
+### Affiliate landing page (`/affiliates`) (2026-08-09)
+
+Recruitment page for the online affiliate program. Built from a supplied UI kit (`~/Desktop/ui_kits/affiliates`, a standalone React/JSX prototype with its own mini design system). Marketing only, no form: every CTA hands off to **GoAffPro**, which owns accounts, links, codes and payouts. Signup `https://affiliate-litsaber.goaffpro.com/create-account`, login `https://affiliate-litsaber.goaffpro.com/login`. Note the kit's JSX had the older host `litsaber.goaffpro.com`; Matt's URLs (the `affiliate-` subdomain) are the ones shipped.
+
+**Structure.** `app/affiliates/page.tsx` + `components/affiliates/`: `AffiliatesHero`, `AffiliateEarnings` (3 stat cards), `ConversationStarter` (image band), `SampleKit` (pitch + 4-step milestone ladder), `WhoItsFor` (fit / not-a-fit cards), `ProgramTerms` (definition list + lifestyle frame), `AffiliatesFaq` (plus-icon accordion), `AffiliatesCta`, plus `AffiliateCta` (shared pink/outline link button), `AffiliatesAtmosphere` (glow field) and `affiliates.content.ts` for all copy. Follows the wholesale/rebate conventions: content file, `EASE = [0.16,1,0.3,1]`, `useReducedMotion`, `max-w-content px-content`.
+
+**Palette drift resolved toward the token system.** The kit shipped its own page-scoped values (`#050510` bg, `#0A0A1A` card, `#1E1E2E` hairline, `#8A8A99` muted) that sit a shade darker and less purple than v0.3.0. Per the CLAUDE.md precedence rule (tokens beat any incoming design source), the page uses `background-primary` / `surface-card` / `border-pill` / `text-muted` instead, so it reads as the same site rather than a fork. Only the FAQ band, the final-CTA radial and the three glow pools carry literal values.
+
+**Kit primitives that do not exist in this repo.** The JSX imported `Button`, `EyebrowLabel`, `SectionStarfield`, `FilmGrain`, `GlowOrb` from a prototype-only bundle. No equivalents here, so: CTAs became a small local `AffiliateCta`, and the starfield/grain/orb layer became `AffiliatesAtmosphere` — three CSS radial gradients rather than blurred solids or a canvas, since the blur filter would repaint on every scroll frame for no visual gain.
+
+**Kit placeholders replaced with real brand-library shots** (the kit's README flagged all three as needing real photography). `home/litsaber-festival.jpg` for the 4:5 hero — it is literally the brief's ask, device glowing cyan held in one hand against a near-black crowd. `home/rave.jpg` for the conversation-starter band (group mid-laugh, device lit). `home/house_party.jpg` for the terms column (the magenta-lit frame the kit asked for). No new uploads needed.
+
+**Dead link avoided.** The kit's "what this isn't" card linked `/ambassadors`, which does not exist in the site map. That line now points at `/contact` instead; `/wholesale` was kept as-is.
+
+**Verification friction worth remembering.** Local dev has no `NEXT_PUBLIC_MEDIA_BASE_URL` in `.env.local` (only `BLOB_STORE_ID` + `BLOB_READ_WRITE_TOKEN`), so every Blob asset 404s site-wide, logo and footer included — not a page bug, but it makes visual checks useless until the var is exported for the dev process. Separately, when the Browser pane is hidden the tab reports `document.visibilityState === "hidden"`, rAF stops, and every framer-motion entry animation freezes at `opacity: 0` — the page looks blank and screenshots come back empty while the DOM is perfectly fine. Diagnose with `visibilityState` before hunting for a CSS bug. Verified instead via computed grid columns (single-column at 375, 1fr+400px / 3-col / 2-col at 1440, no horizontal overflow), `get_page_text`, image `naturalWidth`, and a clean production build (`/affiliates` 8.31 kB, 151 kB first load).
+
+**Vertical-rhythm pass (2026-08-09, Matt's review of the first render).** Three fixes, all alignment: (1) hero top padding 190 → 130px, since it only needs to clear the 90px fixed navbar and 190 left the block bottom-weighted; (2) the getting-started grid gained `lg:items-center` so the four-step ladder centers against the pitch column instead of top-aligning; (3) the terms grid gained `lg:items-stretch` and the image dropped its fixed `lg:h-[470px]` for `lg:h-auto`, so the photo now matches the terms table's height exactly (both 547px) rather than guessing at it. The image is `next/image` with `fill`, so the stretched grid row supplies the height and nothing collapses.
+
+**Real affiliate photography landed (2026-08-09).** Matt uploaded three purpose-shot images under a new `images/affiliate/` Blob prefix, replacing the brand-library stand-ins: `hero-shot-blue.jpg` (630×942, device held toward camera, cyan), `conversation-starter.jpg` (1925×869, crowd with Litsabers raised), `litsaber-hand-fushcia.jpg` (604×517, magenta in hand). Note the Blob filename misspells "fuchsia" as `fushcia` — matched verbatim in `affiliates.content.ts` with a comment, since renaming the asset would 404 the page. Framing adjusted to the new sources: the conversation band moved from a fixed `lg:h-[400px]` to `lg:aspect-[16/7]`, which is within a hair of the source's own 2.215:1 so the shot lands essentially uncropped (was cropping ~30%); both below-fold images dropped their tuned `object-[50%_x%]` for plain `object-center`, since the new crops are shallow enough not to need nudging.
+
+**Open:** the commercial terms all came from the supplied brief (20% commission, 30-day window, $50 fast-start bonus, $20 sample credited back, $25 minimum, PayPal, monthly by the 5th). They are copy on the page but contracts in GoAffPro — the portal's actual config has not been checked against them. Also unlinked: `/affiliates` is not in the navbar or footer yet.
+
+---
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

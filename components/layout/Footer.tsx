@@ -6,6 +6,7 @@ const EXPLORE_LINKS = [
   { label: "Home", href: "/" },
   { label: "Shop Litsaber", href: "/shop/litsaber-og" },
   { label: "Wholesale", href: "/wholesale" },
+  { label: "Affiliate Program", href: "/affiliates" },
 ] as const;
 
 const SUPPORT_LINKS = [
@@ -144,7 +145,7 @@ function SocialIconRow() {
   return (
     <div className="flex items-center gap-sm" role="list" aria-label="Social media links">
       <a
-        href="https://www.instagram.com/getlitsaber"
+        href="https://www.instagram.com/get.litsaber"
         target="_blank"
         rel="noopener noreferrer"
         role="listitem"
