@@ -46,7 +46,7 @@ export default function AffiliatesHero() {
             </motion.span>
 
             <motion.h1
-              className="font-display font-bold leading-[0.98] tracking-tight text-text-primary"
+              className="font-display font-bold uppercase leading-[0.98] tracking-tight text-text-primary"
               style={{ fontSize: "clamp(40px, 7.4vw, 115px)" }}
               {...rise(0.08)}
             >
