@@ -16,7 +16,6 @@ const NAV_LINKS = [
   { label: "Shop", href: "/shop/litsaber-og" },
   { label: "The Tech", href: "/the-tech" },
   { label: "About", href: "/about" },
-  { label: "Wholesale", href: "/wholesale" },
 ] as const;
 
 export default function Navbar() {

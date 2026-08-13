@@ -16,7 +16,6 @@ const PRIMARY_NAV = [
   { label: "Shop", href: "/shop/litsaber-og", hasSubmenu: true },
   { label: "The Tech", href: "/the-tech", hasSubmenu: true },
   { label: "About", href: "/about", hasSubmenu: false },
-  { label: "Wholesale", href: "/wholesale", hasSubmenu: false },
 ] as const;
 
 const QUICK_LINKS = [
