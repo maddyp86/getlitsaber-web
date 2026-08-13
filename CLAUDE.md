@@ -203,7 +203,7 @@ Full version in `BRAND.md`. The non-negotiables:
 - **No em-dashes in body copy.** Use periods, semicolons, or restructure.
 - **No exclamation marks.** Ever.
 - **No superlatives** ("premium," "revolutionary," "best-in-class," "amazing," "world's first," "ignite," "glow up").
-- **MSRP is $59.99.** Locked. If you see other prices anywhere in the codebase, flag them — don't silently change.
+- **MSRP is $49.99.** Locked (supersedes the earlier $59.99 rule; the Shopify variant, the tier ladder in `lib/cart/pricing.ts`, and the live storefront were already at $49.99, so this brings the spec in line with what ships). If you see other prices anywhere in the codebase, flag them — don't silently change.
 - **Lead with the moment, not the spec.** "The headliner" before "800 mAh."
 - **"X, not Y" is a recurring rhetorical move.** Use it when defining the product against alternatives.
 - **PDP copy currently in Figma is AI-toned and violates these rules.** The product description block ("Ignite your night... world's first... glow-up accessory") needs rewrite. Flag to the user before scaffolding the PDP long-form copy verbatim.
@@ -318,14 +318,16 @@ If any of these aren't true, the work isn't done — say so and propose what's l
 
   **Tier prices** (defined in `lib/cart/pricing.ts`):
   ```
-  qty 1 -> $59.99   ($59.99/unit)               (no discount)
-  qty 2 -> $99.99   ($50.00/unit)   save $19.99 (17% off)
-  qty 3 -> $134.99  ($45.00/unit)   save $44.98 (25% off)
-  qty 4 -> $169.99  ($42.50/unit)   save $69.97 (29% off)
-  qty 5 -> $199.99  ($40.00/unit)   save $99.96 (33% off)
+  qty 1 -> $49.99   ($49.99/unit)               (no discount)
+  qty 2 -> $89.99   ($45.00/unit)   save $9.99  (10% off)
+  qty 3 -> $119.99  ($40.00/unit)   save $29.98 (20% off)
+  qty 4 -> $149.99  ($37.50/unit)   save $49.97 (25% off)
+  qty 5 -> $179.99  ($36.00/unit)   save $69.96 (28% off)
   ```
 
-  Each tier's per-unit drop creates a real incentive to move up; $199.99 at the cap is the marketable "save $100" anchor. $40/unit floor stays well above wholesale Tier 1 ($24/unit) to protect channel separation.
+  Each tier's per-unit drop creates a real incentive to move up; $179.99 at the cap is the marketable "save $70" anchor. $36/unit floor stays above wholesale pricing to protect channel separation.
+
+  These are the totals `lib/cart/pricing.ts` currently produces at the $49.99 base, and they mirror Shopify's automatic discounts, which are configured as FIXED AMOUNTS. **Shopify is the source of truth for charged amounts.** If the Shopify discount amounts change, update `TIER_DISCOUNTS` so these four totals still match, or the PDP will quote a price checkout does not honor. The earlier ladder ($59.99 / $99.99 / $134.99 / $169.99 / $199.99) is retired along with the $59.99 MSRP.
 
   **Cart cap:** 5 units per Silver line. At cap, PDP surfaces a "Need more? See wholesale →" link to `/wholesale`.
 
