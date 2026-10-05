@@ -26,34 +26,27 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
 
   // Video playback. The main viewer used to render a bare metadata-only <video>
   // with no poster and no play affordance, so on the dark page it was an empty
-  // black square that swallowed taps (dead clicks). Now the active clip shows
-  // its own first frame (the `#t=0.1` fragment, same trick as the thumbnails),
-  // a big play overlay makes the whole surface a play target while paused, and
-  // selecting a video (thumbnail play badge or arrows) starts playback.
+  // black square that swallowed taps (dead clicks). The active clip shows its
+  // poster (or its own first frame via `#t=0.1`) under a big play overlay.
+  //
+  // Clips no longer autoplay when selected: arrowing through the gallery used
+  // to start a 10-12MB download per clip, and on a phone that showed a spinner
+  // that taps couldn't move (18 of 45 PDP dead clicks, Aug 24 to Oct 5). The
+  // overlay now stays up until frames actually render (`playing`, not `play`)
+  // and shows a loading state while the clip buffers.
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoState, setVideoState] = useState<"idle" | "loading" | "playing">("idle");
 
   useEffect(() => {
-    if (!activeIsVideo) {
-      setVideoPlaying(false);
-      return;
-    }
-    const v = videoRef.current;
-    if (!v) return;
-    // Show the play overlay until playback actually begins.
-    setVideoPlaying(false);
-    // Navigating to a video is a user gesture, so play() is allowed. If a
-    // browser still blocks it, the first frame + play overlay remain.
-    const p = v.play();
-    if (p !== undefined) p.catch(() => setVideoPlaying(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeThumb, activeIsVideo]);
+    setVideoState("idle");
+  }, [activeThumb]);
 
   function playVideo() {
     const v = videoRef.current;
     if (!v) return;
+    setVideoState("loading");
     const p = v.play();
-    if (p !== undefined) p.catch(() => {});
+    if (p !== undefined) p.catch(() => setVideoState("idle"));
   }
 
   useEffect(() => {
@@ -99,29 +92,41 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               // `#t=0.1` paints a real first frame under metadata-only preload,
               // so the viewer is never a blank black square (same as thumbs).
               src={`${active.src}#t=0.1`}
+              poster={active.poster}
               aria-label={active.alt}
-              controls
+              controls={videoState === "playing"}
               playsInline
               preload="metadata"
-              onPlay={() => setVideoPlaying(true)}
-              onPause={() => setVideoPlaying(false)}
-              onEnded={() => setVideoPlaying(false)}
+              onPlaying={() => setVideoState("playing")}
+              onWaiting={() => setVideoState("loading")}
+              onPause={() => setVideoState("idle")}
+              onEnded={() => setVideoState("idle")}
               className="absolute inset-0 w-full h-full object-cover bg-black"
             />
-            {/* Play overlay — turns the whole surface into a play target while
-                paused. Sits below the prev/next arrows (z-10) so navigation
-                stays clickable; unmounts on play so native controls take over. */}
-            {!videoPlaying && (
+            {/* Play / loading overlay — the whole surface is a play target until
+                frames render. Sits below the prev/next arrows (z-10) so
+                navigation stays clickable; unmounts once playing so native
+                controls take over. */}
+            {videoState !== "playing" && (
               <button
                 type="button"
                 onClick={playVideo}
-                aria-label={`Play video: ${active.alt}`}
-                className="absolute inset-0 flex items-center justify-center bg-black/25 hover:bg-black/10 transition-colors cursor-pointer"
+                disabled={videoState === "loading"}
+                aria-label={videoState === "loading" ? `Loading video: ${active.alt}` : `Play video: ${active.alt}`}
+                aria-busy={videoState === "loading"}
+                className="absolute inset-0 flex items-center justify-center bg-black/25 hover:bg-black/10 transition-colors cursor-pointer disabled:cursor-progress"
               >
                 <span className="flex items-center justify-center w-[70px] h-[70px] rounded-full bg-black/60 text-white">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="8 5 19 12 8 19 8 5" />
-                  </svg>
+                  {videoState === "loading" ? (
+                    <span
+                      className="w-8 h-8 rounded-full border-[3px] border-white/30 border-t-white animate-spin motion-reduce:animate-none"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <polygon points="8 5 19 12 8 19 8 5" />
+                    </svg>
+                  )}
                 </span>
               </button>
             )}
@@ -191,6 +196,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               <>
                 <video
                   src={`${img.src}#t=0.1`}
+                  poster={img.poster}
                   muted
                   playsInline
                   preload="metadata"
