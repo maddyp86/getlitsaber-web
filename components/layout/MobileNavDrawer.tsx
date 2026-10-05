@@ -5,6 +5,9 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { mediaUrl } from "@/lib/media";
 import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { track, EVENTS } from "@/lib/analytics/events";
+
+const SHOP_HREF = "/shop/litsaber-og";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -13,7 +16,7 @@ interface MobileNavDrawerProps {
 
 const PRIMARY_NAV = [
   { label: "Home", href: "/", hasSubmenu: false },
-  { label: "Shop", href: "/shop/litsaber-og", hasSubmenu: true },
+  { label: "Shop", href: SHOP_HREF, hasSubmenu: true },
   { label: "The Tech", href: "/the-tech", hasSubmenu: true },
   { label: "About", href: "/about", hasSubmenu: false },
 ] as const;
@@ -113,7 +116,10 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
                 <li key={item.href} className="border-b border-surface-tint-white">
                   <Link
                     href={item.href}
-                    onClick={onClose}
+                    onClick={() => {
+                      if (item.href === SHOP_HREF) track(EVENTS.cta_clicked, { cta: "nav_shop" });
+                      onClose();
+                    }}
                     className="group flex items-center justify-between py-md font-subhead text-lg font-bold text-text-primary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
                   >
                     <span>{item.label}</span>

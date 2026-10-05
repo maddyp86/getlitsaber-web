@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
-import { getTierPrice, getTierSavings, getTierUnitPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { getTierPrice, getTierSavings, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { useCartActions, useCartStore } from "@/lib/cart/store";
-import { useCartUIActions } from "@/lib/ui/store";
+import { useAddToCart } from "@/lib/cart/useAddToCart";
 import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
@@ -62,8 +62,8 @@ export default function BundleAndCTA({
   basePrice,
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
+  const addToCart = useAddToCart({ variantId, basePrice, source: surface });
   const shippingNoticeOn = useShippingNoticeEnabled();
-  const { openCart } = useCartUIActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
   // Surcharge arm shows a FREE SHIPPING badge on the two-or-more tiles.
@@ -73,30 +73,7 @@ export default function BundleAndCTA({
   const moreSavingsDisplay = getTierSavings(moreQty, basePrice).toFixed(2);
 
   function handleAddToCart() {
-    // Open the drawer synchronously so the tap has an instant, visible response.
-    // addItem applies its optimistic update synchronously (before it awaits the
-    // Shopify mutation), so the drawer shows the added line immediately. Awaiting
-    // the network before opening left the primary CTA visually frozen for the
-    // length of the round-trip — poor feedback, and on a slow connection long
-    // enough that the working click was flagged as a dead click.
-    const done = addItem({
-      variantId,
-      qty: selectedQty,
-      title: "Litsaber OG — Silver",
-      variantTitle: "Silver",
-      price: basePrice ?? BASE_UNIT_PRICE,
-      image: mediaUrl("product/litsaber-lights-off.jpg"),
-    });
-    openCart();
-    void done.then(() => {
-      track(EVENTS.cart_add_to_cart, {
-        variant: "silver",
-        quantity: selectedQty,
-        tier_price: getTierPrice(selectedQty, basePrice),
-        unit_price: getTierUnitPrice(selectedQty, basePrice),
-        source: surface,
-      });
-    });
+    addToCart(selectedQty);
   }
 
   async function handleBuyNow() {
@@ -291,8 +268,8 @@ export default function BundleAndCTA({
         </>
       )}
 
-      {/* CTAs */}
-      <div className="flex flex-col gap-3">
+      {/* CTAs — data-pdp-cta is what the mobile StickyBuyBar watches */}
+      <div data-pdp-cta className="flex flex-col gap-3">
         {available ? (
           <>
             <button
