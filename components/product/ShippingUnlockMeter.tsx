@@ -1,13 +1,13 @@
 "use client";
 
-// Surcharge-arm free-shipping progress meter. Renders only for the surcharge
-// arm below 2 units; returns null otherwise (control, 2 or more, or flag loading).
+// Free-shipping progress meter. A single unit pays shipping and two or more
+// ship free, so this renders below 2 units and returns null otherwise.
 // The whole meter (track + label) is a button: tapping calls the caller-supplied
 // onUnlock, which bumps the cart to the free-shipping two-pack via the existing
 // cart updateQty path. After that mutation itemCount reaches 2 and this hides
 // itself through the itemCount < 2 condition below.
 
-import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
+import { SINGLE_UNIT_SHIPPING } from "@/lib/shipping";
 
 interface ShippingUnlockMeterProps {
   itemCount: number;
@@ -16,10 +16,9 @@ interface ShippingUnlockMeterProps {
 }
 
 export default function ShippingUnlockMeter({ itemCount, onUnlock, className }: ShippingUnlockMeterProps) {
-  const variant = useShippingVariant();
-  if (variant !== "surcharge" || itemCount >= 2) return null;
+  if (itemCount >= 2) return null;
 
-  // Single-unit surcharge cart resolves to 50%.
+  // A single-unit cart resolves to 50%.
   const pct = Math.max(0, Math.min(100, (itemCount / 2) * 100));
 
   return (
@@ -43,7 +42,7 @@ export default function ShippingUnlockMeter({ itemCount, onUnlock, className }: 
         className="font-label"
         style={{ marginTop: "8px", fontSize: "11px", letterSpacing: "1px", color: "#9a9ab5" }}
       >
-        ADD 1 MORE TO UNLOCK FREE SHIPPING · <span style={{ color: "#00E5FF" }}>SAVE $5.99</span>
+        ADD 1 MORE TO UNLOCK FREE SHIPPING · <span style={{ color: "#00E5FF" }}>SAVE ${SINGLE_UNIT_SHIPPING.toFixed(2)}</span>
       </p>
     </button>
   );

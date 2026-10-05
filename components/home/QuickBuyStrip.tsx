@@ -48,7 +48,7 @@ export default function QuickBuyStrip({ variantId, available, basePrice }: Quick
             </p>
             <p className="font-body text-[13px] text-text-secondary">
               {available
-                ? `In stock. Ships in 24 hrs. Two for $${twoPackPrice.toFixed(2)}.`
+                ? `In stock. Ships in 24 hrs. Two for $${twoPackPrice.toFixed(2)}, shipped free.`
                 : "Sold out for now. Join the restock list on the product page."}
             </p>
           </div>

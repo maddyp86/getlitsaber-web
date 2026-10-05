@@ -17,7 +17,6 @@ import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
-import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
 import { useShippingNoticeEnabled } from "@/lib/promo/useShippingNotice";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
@@ -39,8 +38,7 @@ export default function CartDrawer() {
   const capReached = useCapReached();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
-  const shippingVariant = useShippingVariant();
-  const shippingCost = getDisplayShipping(itemCount, shippingVariant); // number | null
+  const shippingCost = getDisplayShipping(itemCount); // number | null
   const shippingDisplay = formatDisplayShipping(shippingCost);
   const shippingCalcPending = shippingCost === null;
   const displayTotal = subtotal + (shippingCost ?? 0);

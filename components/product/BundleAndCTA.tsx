@@ -9,7 +9,6 @@ import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useAddToCart } from "@/lib/cart/useAddToCart";
 import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
-import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { mediaUrl } from "@/lib/media";
 import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
@@ -66,8 +65,8 @@ export default function BundleAndCTA({
   const shippingNoticeOn = useShippingNoticeEnabled();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
-  // Surcharge arm shows a FREE SHIPPING badge on the two-or-more tiles.
-  const shippingVariant = useShippingVariant();
+  // Two or more ship free (single units pay $5.99), so those tiles carry a
+  // FREE SHIPPING badge.
 
   const moreTierPrice = getTierPrice(moreQty, basePrice);
   const moreSavingsDisplay = getTierSavings(moreQty, basePrice).toFixed(2);
@@ -169,7 +168,7 @@ export default function BundleAndCTA({
                             {saveLabel}
                           </span>
                         )}
-                        {shippingVariant === "surcharge" && q >= 2 && (
+                        {q >= 2 && (
                           <span
                             className="font-label text-accent-cyan"
                             style={{

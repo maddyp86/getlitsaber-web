@@ -14,7 +14,6 @@ import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
-import { useShippingVariant } from "@/lib/experiments/useShippingVariant";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
@@ -33,8 +32,7 @@ export default function CartPageBody() {
   const { removeItem, updateQty } = useCartActions();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
-  const shippingVariant = useShippingVariant();
-  const shippingCost = getDisplayShipping(itemCount, shippingVariant); // number | null
+  const shippingCost = getDisplayShipping(itemCount); // number | null
   const shippingDisplay = formatDisplayShipping(shippingCost);
   const shippingCalcPending = shippingCost === null;
   // Fold a known shipping charge into the shown total so it is stated up front;

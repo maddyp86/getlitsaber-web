@@ -18,8 +18,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
-import { adoptShippingVariant, readShippingVariant } from "@/lib/experiments/useShippingVariant";
-import type { ShippingVariant } from "@/lib/shipping";
+import { SHIPPING_ATTRIBUTE_VALUE } from "@/lib/shipping";
 import { getChannelAttribution } from "@/lib/analytics/channel";
 import { getTierPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { mediaUrl } from "@/lib/media";
@@ -170,12 +169,11 @@ function fulfillmentSku(qty: number): string {
   return qty <= 1 ? "LTS-OG-SLV" : `LTS-OG-SLV-${qty}`;
 }
 
-// Attribution attributes the orders webhook reads back off the order: who the
-// visitor is, where they came from, and which experiment arm they shopped under.
-// Shared by cartCreate and the hydrate() backfill so the two cannot drift.
-// `frozenArm` is the arm already on an existing cart; when present it wins over
-// a fresh flag read so a re-stamp cannot move a price mid-cart.
-function buildCartAttributes(frozenArm?: ShippingVariant): AttributeInput[] {
+// Attribution attributes the orders webhook reads back off the order (who the
+// visitor is, where they came from) plus the shipping stamp the delivery
+// Function reads. Shared by cartCreate and the hydrate() backfill so the two
+// cannot drift.
+function buildCartAttributes(): AttributeInput[] {
   const attributes: AttributeInput[] = [];
 
   const phId = getCartAnalyticsId();
@@ -193,16 +191,11 @@ function buildCartAttributes(frozenArm?: ShippingVariant): AttributeInput[] {
   attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
   attributes.push({ key: "referrer", value: channel.referrer });
 
-  // Shipping-surcharge arm. Underscore-prefixed so it is suppressed from the
-  // checkout UI while visible to the Order API. readShippingVariant() is sticky
-  // per device, so re-stamping cannot flip a shopper's arm. "unresolved" when
-  // flags have not loaded: the Shopify delivery Function treats anything that is
-  // not "surcharge" as free shipping, and labelling it honestly keeps an
-  // unbucketed order from being filed under control and diluting that arm.
-  attributes.push({
-    key: "_shipping_variant",
-    value: frozenArm ?? readShippingVariant() ?? "unresolved",
-  });
+  // Shipping stamp. Underscore-prefixed so it is suppressed from the checkout
+  // UI while visible to the Function and the Order API. The delivery Function
+  // charges a single unit $5.99 only when this reads "surcharge" (anything else
+  // ships free), so every cart carries it now that the A/B has ended.
+  attributes.push({ key: "_shipping_variant", value: SHIPPING_ATTRIBUTE_VALUE });
 
   return attributes;
 }
@@ -429,12 +422,12 @@ export const useCartStore = create<CartStore>()(
           }
           set({ items: transformShopifyCart(cart), checkoutUrl: cart.checkoutUrl });
 
-          // An arm already frozen on the cart is authoritative — the shopper has
-          // been quoted a price under it. Adopt it as this device's sticky value
-          // so the UI and any re-stamp agree with what checkout will charge.
-          const frozenArm = adoptShippingVariant(
-            cart.attributes?.find((a) => a.key === "_shipping_variant")?.value
-          );
+          // Carts created during the shipping A/B may carry "control" (or no
+          // stamp), which the delivery Function ships free. Re-stamp them so
+          // checkout matches the shipping the UI now shows for every cart.
+          const needsShippingRestamp =
+            cart.attributes?.find((a) => a.key === "_shipping_variant")?.value !==
+            SHIPPING_ATTRIBUTE_VALUE;
 
           // Backfill attribution onto a cart that never got it. Carts are only
           // stamped at cartCreate, so one created before this shipped (or before
@@ -442,17 +435,16 @@ export const useCartStore = create<CartStore>()(
           // and the purchase falls back to a synthetic `order_<id>` that can
           // never join an experiment exposure. Channel here is the current
           // session's rather than first touch, which is still strictly better
-          // than the "unknown" those orders carry today. The arm is carried over
-          // verbatim, never re-resolved: the brief's "if already present, NEVER
-          // overwrite" rule is what keeps a mid-cart price from moving.
-          if (!get().attributesStamped) {
-            const attributes = buildCartAttributes(frozenArm);
-            if (attributes.some((a) => a.key === "posthog_distinct_id")) {
+          // than the "unknown" those orders carry today.
+          if (!get().attributesStamped || needsShippingRestamp) {
+            const attributes = buildCartAttributes();
+            const hasVisitorId = attributes.some((a) => a.key === "posthog_distinct_id");
+            if (hasVisitorId || needsShippingRestamp) {
               await shopifyFetch<ShopifyCartResponse>(CART_ATTRIBUTES_UPDATE, {
                 cartId,
                 attributes,
               });
-              set({ attributesStamped: true });
+              if (hasVisitorId) set({ attributesStamped: true });
             }
           }
         } catch (err) {
