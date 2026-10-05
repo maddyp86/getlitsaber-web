@@ -1,8 +1,7 @@
 "use client";
 
 // Gates the temporary warehouse shipping-delay notice behind a PostHog boolean
-// flag so it can be flipped off (Monday) with no deploy. Mirrors the singleton
-// pattern in lib/experiments/useShippingVariant.ts: the app inits one global
+// flag so it can be flipped off (Monday) with no deploy. The app inits one global
 // posthog instance in app/providers.tsx and does not mount the posthog-js/react
 // provider, so we read the singleton directly and re-read when flags land.
 //
