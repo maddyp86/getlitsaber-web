@@ -8,6 +8,7 @@ import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { mediaUrl } from "@/lib/media";
+import { track, EVENTS } from "@/lib/analytics/events";
 import {
   HEADLINE_MOBILE,
   SUBHEADLINE,
@@ -15,6 +16,7 @@ import {
   CTA_SECONDARY,
   TAGLINE,
   SPEC_PILLS,
+  SPEC_PILLS_HREF,
   HERO_VIDEO_SRC,
   HERO_POSTER_SRC,
 } from "./hero.content";
@@ -75,31 +77,29 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           {SUBHEADLINE}
         </motion.p>
 
-        <motion.div
-          className="flex flex-col gap-[20px] w-full"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.2}
-        >
+        {/* CTAs render without the reveal animation on purpose: framer-motion
+            SSRs `initial="hidden"` as opacity 0, so on a slow phone the buy
+            button stayed invisible until hydration finished (~3s). */}
+        <div className="flex flex-col gap-[20px] w-full">
           <Link
             href={CTA_PRIMARY.href}
+            onClick={() => track(EVENTS.cta_clicked, { cta: "hero_get_yours" })}
             className="
               flex items-center justify-center
               px-xl py-md rounded-sm w-full
-              border border-border-cta bg-surface-tint-cta text-text-primary
+              bg-cta text-text-primary font-bold
               font-label text-label tracking-widest uppercase
               shadow-glow-cta
               transition-all duration-200 ease-in-out
-              hover:-translate-y-px hover:shadow-glow-cta-hover
+              hover:-translate-y-px hover:shadow-glow-cta-hover active:opacity-80
             "
           >
             {CTA_PRIMARY.label}
-     
           </Link>
 
           <Link
             href={CTA_SECONDARY.href}
+            onClick={() => track(EVENTS.cta_clicked, { cta: "hero_see_motion" })}
             className="
               flex items-center justify-center
               px-xl py-md rounded-sm w-full
@@ -111,7 +111,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           >
             {CTA_SECONDARY.label}
           </Link>
-        </motion.div>
+        </div>
       </div>
 
       {/* Anchor zone — stacked flex column, black background, fixed dimensions per spec */}
@@ -180,7 +180,12 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               style={{ display: "flex", alignItems: "center", gap: "20px", alignSelf: "stretch" }}
             >
               {row.map((label) => (
-                <SpecPill key={label} label={label} />
+                <SpecPill
+                  key={label}
+                  label={label}
+                  href={SPEC_PILLS_HREF}
+                  onClick={() => track(EVENTS.cta_clicked, { cta: "hero_spec_pill" })}
+                />
               ))}
             </div>
           ))}

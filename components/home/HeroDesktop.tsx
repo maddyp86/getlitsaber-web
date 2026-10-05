@@ -8,6 +8,7 @@ import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { mediaUrl } from "@/lib/media";
+import { track, EVENTS } from "@/lib/analytics/events";
 import {
   HEADLINE_DESKTOP,
   SUBHEADLINE,
@@ -15,6 +16,7 @@ import {
   CTA_SECONDARY,
   TAGLINE,
   SPEC_PILLS,
+  SPEC_PILLS_HREF,
   HERO_VIDEO_SRC,
   HERO_POSTER_SRC,
 } from "./hero.content";
@@ -107,7 +109,12 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             custom={0.4}
           >
             {SPEC_PILLS.map((label) => (
-              <SpecPill key={label} label={label}/>
+              <SpecPill
+                key={label}
+                label={label}
+                href={SPEC_PILLS_HREF}
+                onClick={() => track(EVENTS.cta_clicked, { cta: "hero_spec_pill" })}
+              />
             ))}
           </motion.div>
         </div>
@@ -148,17 +155,12 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           {SUBHEADLINE}
         </motion.p>
 
-        <motion.div
-          className="flex flex-row gap-[50px] justify-center w-full"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.2}
-        >
-          {/* Primary CTA: pink border, cyan-tint bg, pink text */}
+        {/* CTAs skip the reveal animation so they are visible before hydration. */}
+        <div className="flex flex-row gap-[50px] justify-center w-full">
           <Link
             href={CTA_PRIMARY.href}
-            className="flex items-center justify-center px-[20px] py-[20px] rounded-sm w-[329px] border border-border-cta bg-surface-tint-cyan text-cta font-label text-label tracking-widest uppercase shadow-glow-cta transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-glow-cta-hover"
+            onClick={() => track(EVENTS.cta_clicked, { cta: "hero_get_yours" })}
+            className="flex items-center justify-center px-[20px] py-[20px] rounded-sm w-[329px] bg-cta text-text-primary font-bold font-label text-label tracking-widest uppercase shadow-glow-cta transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-glow-cta-hover active:opacity-80"
           >
             {CTA_PRIMARY.label}
           </Link>
@@ -166,11 +168,12 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           {/* Secondary CTA: grey border, white-tint bg, white text */}
           <Link
             href={CTA_SECONDARY.href}
+            onClick={() => track(EVENTS.cta_clicked, { cta: "hero_see_motion" })}
             className="flex items-center justify-center px-[20px] py-[20px] rounded-sm w-[329px] border border-border-default bg-surface-tint-white text-text-primary font-label text-label tracking-widest uppercase transition-all duration-200 ease-in-out hover:-translate-y-px hover:border-border-accent hover:text-accent-cyan hover:shadow-glow-cyan"
           >
             {CTA_SECONDARY.label}
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

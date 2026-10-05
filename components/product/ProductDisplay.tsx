@@ -9,6 +9,7 @@ import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
 import WaitlistCard from "./WaitlistCard";
+import StickyBuyBar from "./StickyBuyBar";
 import DescriptionSection from "./DescriptionSection";
 import ProductAccordion, { ACCORDION_OPEN_EVENT } from "./ProductAccordion";
 
@@ -27,6 +28,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
 
   const productViewedFired = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const ctaBlockRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (productViewedFired.current) return;
@@ -131,7 +133,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
               <WaitlistCard />
             </div>
           ) : (
-            <div className="w-full">
+            <div ref={ctaBlockRef} className="w-full">
               <BundleAndCTA
                 activeBundle={activeBundle}
                 onBundleChange={setActiveBundle}
@@ -148,6 +150,15 @@ export default function ProductDisplay({ variantId, available, surface, basePric
           <DescriptionSection />
           <ProductAccordion />
         </div>
+
+      {surface === "pdp" && available && activeStyle === "silver" && (
+        <StickyBuyBar
+          targetRef={ctaBlockRef}
+          variantId={variantId}
+          basePrice={basePrice}
+          qty={selectedQty}
+        />
+      )}
     </div>
   );
 }

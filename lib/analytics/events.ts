@@ -16,7 +16,10 @@ type FunnelEvents = {
     quantity: number;
     tier_price: number;
     unit_price: number;
-    source: "homepage_buy" | "pdp";
+    source: AddSource;
+  };
+  cta_clicked: {
+    cta: CtaId;
   };
   buy_now_clicked: {
     variant: "silver";
@@ -75,6 +78,17 @@ type FunnelEvents = {
   };
 };
 
+/** Every surface that can add Silver to the cart. */
+export type AddSource = "homepage_buy" | "pdp" | "home_strip" | "pdp_sticky";
+
+/** Buy-path CTAs, tracked on click so homepage -> PDP reach is measurable. */
+export type CtaId =
+  | "hero_get_yours"
+  | "hero_see_motion"
+  | "hero_spec_pill"
+  | "home_strip_details"
+  | "nav_shop";
+
 export type PayloadFor<E extends keyof FunnelEvents> = FunnelEvents[E];
 
 // Locked event name constants — components reference EVENTS.x, never raw strings
@@ -82,6 +96,7 @@ export const EVENTS = {
   age_gate_confirmed: "age_gate_confirmed",
   homepage_engaged: "homepage_engaged",
   product_viewed: "product_viewed",
+  cta_clicked: "cta_clicked",
   cart_add_to_cart: "cart_add_to_cart",
   buy_now_clicked: "buy_now_clicked",
   checkout_started: "checkout_started",

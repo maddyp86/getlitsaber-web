@@ -29,6 +29,9 @@ export const CTA_SECONDARY = {
 
 export const TAGLINE = "Glowstick meets 510 battery. This is Litsaber.";
 
+/** Hero spec pills link to the engineering deep-dive they summarize. */
+export const SPEC_PILLS_HREF = "/the-tech";
+
 export const SPEC_PILLS = [
   "41 LEDS",
   "10 Colors",

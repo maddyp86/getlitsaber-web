@@ -7,6 +7,7 @@ import MobileNavDrawer from "./MobileNavDrawer";
 import { useItemCount } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
 import { mediaUrl } from "@/lib/media";
+import { track, EVENTS } from "@/lib/analytics/events";
 
 const ACCOUNT_URL =
   process.env.NEXT_PUBLIC_ACCOUNT_URL ?? "https://shopify.com/65425866959/account";
@@ -88,6 +89,11 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={
+                  link.label === "Shop"
+                    ? () => track(EVENTS.cta_clicked, { cta: "nav_shop" })
+                    : undefined
+                }
                 className="font-label text-text-secondary hover:text-accent-cyan transition-colors duration-200 tracking-wider uppercase"
                 style={{ fontSize: "clamp(15px, 1.2vw, 16px)" }}
               >

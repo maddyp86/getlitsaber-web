@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import StatBar from "@/components/home/StatBar";
+import QuickBuyStrip from "@/components/home/QuickBuyStrip";
 import BeSeen from "@/components/home/BeSeen/BeSeen";
 import ThreeModes from "@/components/home/ThreeModes/ThreeModes";
 import PartyVideo from "@/components/home/PartyVideo/PartyVideo";
@@ -44,6 +45,11 @@ export default async function HomePage() {
       <HomepageEngagementTracker />
       <Hero />
       <StatBar />
+      <QuickBuyStrip
+        variantId={silverVariant?.id ?? ""}
+        available={available}
+        basePrice={basePrice}
+      />
       {/* Below-the-fold sections are lazy-mounted: each renders only as it nears
           the viewport and unmounts once well past, so the full heavy DOM never
           exists at once. This keeps peak memory low and fixes the mobile OOM
