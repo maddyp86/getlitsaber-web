@@ -1670,6 +1670,22 @@ Recruitment page for the online affiliate program. Built from a supplied UI kit 
 
 ---
 
+### Conversion review: the buy button was never broken (2026-10-05)
+
+Three weekly agent reports (W38–W40) all read "product views, zero adds" and blamed a variant- or stock-conditional add failure. For four weeks running the agent's goal was the same manual add matrix, and nobody ran it. This session ran it on the live site with PostHog capture opted out: all five quantity tiers added at the exact Shopify ladder ($49.99 / $89.99 / $119.99 / $149.99 / $179.99), and Buy Now reached checkout. No code had shipped since Aug 12, and adds happened in August with the same code. At ~8 product viewers a week, four zero-add weeks happen about 1 time in 5 even at a healthy 5% add rate. **Small-n zeros are not a defect signal.** The agent should not grade below ~30 viewers.
+
+**The real leak was reach.** A session-level query (Aug 24 to Oct 5) showed 113 of 151 sessions start on `/`, and **1** clicked through to the PDP. Only 19 scrolled to the embedded buy section, which sits behind nine `LazyMount` sections (~13,200px on a phone). The hero's "Get yours" was an outline button, and its framer-motion reveal SSR'd it at `opacity: 0`, so on a phone it stayed invisible until hydration.
+
+**Other findings:** `/product/litsaber` (old WordPress PDP, still in social links) and `/products/litsaber-og` (Shopify checkout's back-to-store link) both 404'd. The promo popup went full screen 12s into the first page (2 signups from 68 views). 18 of 45 PDP dead clicks hit gallery videos that autoplayed 10–12MB clips on selection. All 19 orders since June came from warm channels (HubSpot email, referral, direct); the last was Aug 21.
+
+**A wrong turn worth remembering.** The live popup showed a visible Cloudflare "Verify you are human" box, and it looked like a CAPTCHA gate killing signups. But `WaitlistForm` already renders Turnstile with `appearance="interaction-only"`. The checkbox was Cloudflare challenging the *automated test browser*. Check the widget config before blaming the widget.
+
+**Shipped as PRs #62–#65:** legacy URL redirects; homepage `QuickBuyStrip` + filled, non-animated hero CTA + linked spec pills + `cta_clicked` event; PDP mobile `StickyBuyBar`; popup gated to the 2nd page, off `/shop`, as a non-modal mobile bottom sheet; gallery clips wait for a tap and show a loading state until `playing`. A PostHog "Buy-path reach" dashboard tracks homepage → buy surface → add.
+
+**Verification gotcha (again):** with the Browser pane hidden, IntersectionObserver callbacks don't fire, so the sticky bar looked permanently hidden. A screenshot forces a render and the observer catches up. Same family as the frozen framer-motion note under Affiliates.
+
+---
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**
