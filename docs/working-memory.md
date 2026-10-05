@@ -1686,6 +1686,18 @@ Three weekly agent reports (W38–W40) all read "product views, zero adds" and b
 
 ---
 
+### Shipping locked, failed adds surfaced, weekly agent retuned (2026-10-05)
+
+**Shipping.** Matt's call: charge shipping on a single unit. The surcharge A/B (experiment `383527`) had run since Jul 14 on about a dozen orders and could never read, so it was ended in PostHog with `surcharge` shipped at 100% (conclusion: inconclusive, business decision). In code the flag read was removed entirely (#67). Every cart now stamps `_shipping_variant=surcharge`, which the existing Shopify Function already charges $5.99 on singles, so **no Function redeploy was needed**. Carts frozen as `control` during the test are re-stamped on hydrate. The PDP trust line said "FREE US SHIPPING" while half of singles paid $5.99; it now reads "FREE US SHIPPING ON 2+".
+
+**Failed adds were invisible (#68).** `addItem` caught Shopify errors but restored the *post*-optimistic items, so the line stayed in the drawer, and every caller fired `cart_add_to_cart` anyway. Proof it was real: local dev has no `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`, so every local add had been failing while the drawer looked fine. That also means earlier local "verifications" of cart flows only exercised display state. `addItem` now returns `added | capped | failed`, rolls back to a pre-add snapshot, retries once with a fresh `cartCreate` when the persisted cart is dead, and callers show a toast and fire `cart_add_failed`. The same PR removed the July warehouse notice and fixed tier savings to the cent ($29.98, not $29.99).
+
+**Weekly agent (n8n `YAuS2fAQiJBWE67K`).** Why it kept saying "the button is broken": (1) no sample-size sense; (2) no view of homepage reach; (3) its prompt said the site was "separate desktop and mobile components" ("both builds"); (4) the scorecard silently read `b.metric` while benchmarks store `metric_key`, so every line was null and "calibration" for months. Fixes: five new insights pinned to the Conversion dashboard it already reads (`buy_path_reach`, `cta_clicks`, `cart_add_failures`, `off_route_pageviews`, `purchases_by_channel_12w`), a precomputed `sample_guard` (product viewers, gradeable at 30+, chance of zero adds at 5%), `recent_learning_goals` so it stops reissuing the same goal, the alias map for the scorecard, and prompt rules for all of it, plus MSRP $49.99 and a site change log. Verified with a pinned test run (no email, no writes), then published.
+
+**Target reset.** `litsaber_targets` row 2 (2,866 units by Sep 30) set inactive; new active row: by 2026-11-30, 50% of homepage sessions reach a buy surface (baseline 34%) and 2 paid orders a week. Matt can edit the row directly.
+
+---
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**
