@@ -73,6 +73,8 @@ export interface GalleryImage {
   type?: "image" | "video";
   src: string;
   alt: string;
+  /** Video only: still frame shown before playback. Falls back to the clip's own first frame. */
+  poster?: string;
 }
 
 export const GALLERY_IMAGES: GalleryImage[] = [
