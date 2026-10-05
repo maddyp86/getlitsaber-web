@@ -12,19 +12,6 @@ export default function FloatingPromoPopup() {
   const { shouldShow, dismiss, markSubscribed } = usePromoPopup();
   const { addToast } = useToastActions();
 
-  // Lock scroll on mobile only while visible
-  useEffect(() => {
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
-    if (shouldShow && isMobile) {
-      document.body.classList.add("scroll-locked");
-    } else {
-      document.body.classList.remove("scroll-locked");
-    }
-    return () => {
-      document.body.classList.remove("scroll-locked");
-    };
-  }, [shouldShow]);
-
   // Escape key to dismiss
   useEffect(() => {
     if (!shouldShow) return;
@@ -38,18 +25,14 @@ export default function FloatingPromoPopup() {
   return (
     <div
         className="promo-popup-wrapper z-modal"
+        // Non-modal on every breakpoint: a corner card on desktop, a bottom
+        // sheet on mobile, and the page stays scrollable behind both.
         role="dialog"
-        aria-modal="true"
+        aria-modal="false"
         aria-label="Get $5 off your first Litsaber"
         aria-hidden={!shouldShow}
-        // Mobile: clicking the backdrop dismisses; desktop: no backdrop to click
-        onClick={() => dismiss("backdrop")}
       >
-        {/* Card — stop propagation so clicking inside doesn't dismiss */}
-        <div
-          className="promo-popup-card"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="promo-popup-card">
           {/* Close button */}
           <button
             onClick={() => dismiss("close_button")}

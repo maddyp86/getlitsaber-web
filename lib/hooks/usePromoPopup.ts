@@ -8,6 +8,27 @@ import { track, EVENTS } from "@/lib/analytics/events";
 const COOKIE_SEEN = "litsaber_promo_seen";
 const COOKIE_SUBSCRIBED = "litsaber_promo_subscribed";
 const DELAY_MS = 12_000;
+// The timed popup waits for the visitor's second page. On first-page entry it
+// was the first thing new social traffic saw: 2 signups from 68 impressions
+// (Aug 24 to Oct 5) while dismissals climbed. Exit intent still fires anywhere.
+const PAGEVIEWS_KEY = "litsaber_pageviews";
+const MIN_PAGEVIEWS_FOR_TIMER = 2;
+
+function readPageviews(): number {
+  try {
+    return Number(window.localStorage.getItem(PAGEVIEWS_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function bumpPageviews(): void {
+  try {
+    window.localStorage.setItem(PAGEVIEWS_KEY, String(readPageviews() + 1));
+  } catch {
+    // Storage blocked: the timer simply never qualifies; exit intent still works.
+  }
+}
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
@@ -23,7 +44,15 @@ function setCookie(name: string, value: string, maxAgeDays: number) {
 }
 
 function isSuppressedRoute(pathname: string): boolean {
-  return pathname === "/cart" || pathname === "/activate" || pathname.startsWith("/checkout") || pathname === "/wholesale" || pathname === "/show-it-off" ;
+  return (
+    pathname === "/cart" ||
+    pathname === "/activate" ||
+    pathname.startsWith("/checkout") ||
+    pathname === "/wholesale" ||
+    pathname === "/show-it-off" ||
+    // The PDP is where the buy decision happens; don't cover it.
+    pathname.startsWith("/shop")
+  );
 }
 
 export interface UsePromoPopupReturn {
@@ -45,7 +74,14 @@ export function usePromoPopup(): UsePromoPopupReturn {
   const isCartOpenRef = useRef(isCartOpen);
   const activeModalRef = useRef(activeModal);
 
-  useEffect(() => { pathnameRef.current = pathname; }, [pathname]);
+  // Count each route once (StrictMode re-runs effects in dev).
+  const lastCountedRef = useRef<string | null>(null);
+  useEffect(() => {
+    pathnameRef.current = pathname;
+    if (lastCountedRef.current === pathname) return;
+    lastCountedRef.current = pathname;
+    bumpPageviews();
+  }, [pathname]);
   useEffect(() => { isCartOpenRef.current = isCartOpen; }, [isCartOpen]);
   useEffect(() => { activeModalRef.current = activeModal; }, [activeModal]);
 
@@ -64,6 +100,7 @@ export function usePromoPopup(): UsePromoPopupReturn {
 
     function tryShow() {
       // Re-evaluate ALL blocking conditions at fire time.
+      if (triggerRef.current === "time_delay" && readPageviews() < MIN_PAGEVIEWS_FOR_TIMER) return;
       if (getCookie(COOKIE_SUBSCRIBED)) return;
       if (getCookie(COOKIE_SEEN)) return;
       if (isSuppressedRoute(pathnameRef.current)) return;
@@ -102,10 +139,11 @@ export function usePromoPopup(): UsePromoPopupReturn {
       // Reset so the next run (triggered by age gate confirm) can re-arm.
       armedRef.current = false;
     };
-  // Only re-run when the age gate transitions from visible → dismissed.
+  // Re-run when the age gate is dismissed and on every navigation, so each
+  // page gets a fresh timer (the first page's timer is gated off above).
   // All other blocking conditions are checked via refs at fire time.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAgeGateVisible]);
+  }, [isAgeGateVisible, pathname]);
 
   // If a blocking surface (cart, modal) opens while popup is visible, hide it
   // temporarily. It will not re-appear — the user will need to reload and wait
