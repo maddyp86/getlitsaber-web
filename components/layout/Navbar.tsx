@@ -36,15 +36,13 @@ export default function Navbar() {
   return (
     <>
       <header
-        // top tracks the ShippingBanner height (0 when absent/dismissed)
-        style={{ top: "var(--promo-h, 0px)" }}
         // While transparent (at the top of the page, over the hero) the header
         // is 90px of invisible bar. `pointer-events-none` here stops its empty
         // area from swallowing clicks on the content beneath it; the actual
         // controls below opt back in with `pointer-events-auto`. Once scrolled
         // the bar is opaque, so it correctly blocks clicks again.
         className={[
-          "fixed left-0 right-0 z-navbar h-navbar transition-colors duration-300",
+          "fixed top-0 left-0 right-0 z-navbar h-navbar transition-colors duration-300",
           scrolled ? "bg-background-primary" : "bg-transparent pointer-events-none",
         ].join(" ")}
       >

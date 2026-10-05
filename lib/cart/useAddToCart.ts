@@ -3,6 +3,7 @@
 import { getTierPrice, getTierUnitPrice, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { useCartActions } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
+import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS, type AddSource } from "@/lib/analytics/events";
 import { mediaUrl } from "@/lib/media";
 
@@ -12,13 +13,16 @@ interface UseAddToCartOptions {
   source: AddSource;
 }
 
+export const ADD_FAILED_MESSAGE = "Couldn't add to cart. Check your connection and try again.";
+
 /**
  * Shared Silver add-to-cart used by every buy surface (PDP selector, homepage
  * strip, PDP sticky bar), so they all open the drawer and track identically.
  */
 export function useAddToCart({ variantId, basePrice, source }: UseAddToCartOptions) {
   const { addItem } = useCartActions();
-  const { openCart } = useCartUIActions();
+  const { openCart, closeCart } = useCartUIActions();
+  const { addToast } = useToastActions();
 
   return function addToCart(qty: number) {
     // Open the drawer synchronously so the tap has an instant, visible response.
@@ -36,14 +40,22 @@ export function useAddToCart({ variantId, basePrice, source }: UseAddToCartOptio
       image: mediaUrl("product/litsaber-lights-off.jpg"),
     });
     openCart();
-    void done.then(() => {
-      track(EVENTS.cart_add_to_cart, {
-        variant: "silver",
-        quantity: qty,
-        tier_price: getTierPrice(qty, basePrice),
-        unit_price: getTierUnitPrice(qty, basePrice),
-        source,
-      });
+    void done.then((result) => {
+      if (result.status === "added") {
+        track(EVENTS.cart_add_to_cart, {
+          variant: "silver",
+          quantity: qty,
+          tier_price: getTierPrice(qty, basePrice),
+          unit_price: getTierUnitPrice(qty, basePrice),
+          source,
+        });
+      } else if (result.status === "failed") {
+        // The store has already rolled the line back; close the drawer so the
+        // shopper isn't left looking at a cart that didn't change.
+        closeCart();
+        addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
+        track(EVENTS.cart_add_failed, { variant: "silver", quantity: qty, source, reason: result.reason });
+      }
     });
   };
 }

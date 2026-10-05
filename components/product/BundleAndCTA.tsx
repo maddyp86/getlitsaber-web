@@ -6,13 +6,12 @@ import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
 import type { BundleId } from "./productdisplay.content";
 import { getTierPrice, getTierSavings, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { useCartActions, useCartStore } from "@/lib/cart/store";
-import { useAddToCart } from "@/lib/cart/useAddToCart";
+import { useAddToCart, ADD_FAILED_MESSAGE } from "@/lib/cart/useAddToCart";
+import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { mediaUrl } from "@/lib/media";
-import { SHIPPING_NOTICE_COMPACT } from "@/lib/promo/shippingNotice";
-import { useShippingNoticeEnabled } from "@/lib/promo/useShippingNotice";
 
 const MORE_MIN = 3;
 const MORE_MAX = MAX_QTY;
@@ -62,7 +61,7 @@ export default function BundleAndCTA({
 }: BundleAndCTAProps) {
   const { addItem } = useCartActions();
   const addToCart = useAddToCart({ variantId, basePrice, source: surface });
-  const shippingNoticeOn = useShippingNoticeEnabled();
+  const { addToast } = useToastActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
   // Two or more ship free (single units pay $5.99), so those tiles carry a
@@ -78,7 +77,7 @@ export default function BundleAndCTA({
   async function handleBuyNow() {
     setBuyNowLoading(true);
     try {
-      await addItem({
+      const result = await addItem({
         variantId,
         qty: selectedQty,
         title: "Litsaber OG — Silver",
@@ -86,6 +85,16 @@ export default function BundleAndCTA({
         price: basePrice ?? BASE_UNIT_PRICE,
         image: mediaUrl("product/litsaber-lights-off.jpg"),
       });
+      if (result.status === "failed") {
+        addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
+        track(EVENTS.cart_add_failed, {
+          variant: "silver",
+          quantity: selectedQty,
+          source: "buy_now",
+          reason: result.reason,
+        });
+        return;
+      }
       // Read post-mutation values directly from store — hook closures would be stale
       const freshState = useCartStore.getState();
       const freshCartValue = freshState.items.reduce((acc, i) => acc + i.lineTotal, 0);
@@ -102,7 +111,11 @@ export default function BundleAndCTA({
         source: "buy_now",
       });
       const url = freshState.checkoutUrl;
-      if (url) window.location.href = url;
+      if (url) {
+        window.location.href = url;
+      } else {
+        addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
+      }
     } finally {
       setBuyNowLoading(false);
     }
@@ -289,12 +302,6 @@ export default function BundleAndCTA({
               {buyNowLoading ? "REDIRECTING..." : "BUY NOW"}
             </button>
 
-            {/* Warehouse shipping delay notice — TEMP, PostHog-gated */}
-            {shippingNoticeOn && (
-              <p className="font-label text-[12px] text-accent-cyan text-center tracking-wide">
-                {SHIPPING_NOTICE_COMPACT}
-              </p>
-            )}
 
             {/* Trust line */}
             <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
