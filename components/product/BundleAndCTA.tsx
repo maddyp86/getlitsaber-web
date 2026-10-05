@@ -83,7 +83,7 @@ export default function BundleAndCTA({
         title: "Litsaber OG — Silver",
         variantTitle: "Silver",
         price: basePrice ?? BASE_UNIT_PRICE,
-        image: mediaUrl("product/litsaber-lights-off.jpg"),
+        image: mediaUrl("product/litsaber-packaging-1.jpg"),
       });
       if (result.status === "failed") {
         addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
@@ -280,8 +280,8 @@ export default function BundleAndCTA({
         </>
       )}
 
-      {/* CTAs — data-pdp-cta is what the mobile StickyBuyBar watches */}
-      <div data-pdp-cta className="flex flex-col gap-3">
+      {/* CTAs — data-buy-cta tells StickyBuyBar to stay hidden while these are visible */}
+      <div data-buy-cta className="flex flex-col gap-3">
         {available ? (
           <>
             <button

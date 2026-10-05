@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import StatBar from "@/components/home/StatBar";
-import QuickBuyStrip from "@/components/home/QuickBuyStrip";
+import StickyBuyBar from "@/components/product/StickyBuyBar";
 import BeSeen from "@/components/home/BeSeen/BeSeen";
 import ThreeModes from "@/components/home/ThreeModes/ThreeModes";
 import PartyVideo from "@/components/home/PartyVideo/PartyVideo";
@@ -48,11 +48,6 @@ export default async function HomePage() {
       <HomepageEngagementTracker />
       <Hero />
       <StatBar />
-      <QuickBuyStrip
-        variantId={silverVariant?.id ?? ""}
-        available={available}
-        basePrice={basePrice}
-      />
       {/* Below-the-fold sections are lazy-mounted: each renders only as it nears
           the viewport and unmounts once well past, so the full heavy DOM never
           exists at once. This keeps peak memory low and fixes the mobile OOM
@@ -98,6 +93,19 @@ export default async function HomePage() {
           <LazyMount minHeight="400px">
             <WholesaleCTABanner />
           </LazyMount>
+      {/* Homepage buy bar: slides up once the hero's Get Yours scrolls away
+          and hides again at the buy section. Replaced an inline strip under
+          the stat bar that read as a bolted-on card in the hero band. */}
+      {available && (
+        <StickyBuyBar
+          variantId={silverVariant?.id ?? ""}
+          basePrice={basePrice}
+          qty={1}
+          source="home_strip"
+          showOnDesktop
+          detailsHref="/shop/litsaber-og"
+        />
+      )}
     </>
   );
 }

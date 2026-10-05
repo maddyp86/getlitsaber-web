@@ -159,6 +159,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         <div className="flex flex-row gap-[50px] justify-center w-full">
           <Link
             href={CTA_PRIMARY.href}
+            data-buy-cta
             onClick={() => track(EVENTS.cta_clicked, { cta: "hero_get_yours" })}
             className="flex items-center justify-center px-[20px] py-[20px] rounded-sm w-[329px] bg-cta text-text-primary font-bold font-label text-label tracking-widest uppercase shadow-glow-cta transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-glow-cta-hover active:opacity-80"
           >
