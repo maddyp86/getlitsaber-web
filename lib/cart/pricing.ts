@@ -40,11 +40,15 @@ export function getTierPrice(qty: number, base: number = BASE_UNIT_PRICE): numbe
   return charm(base * q * (1 - TIER_DISCOUNTS[q]));
 }
 
-/** Total dollars saved vs base x qty, charm-rounded to a .99 ending. */
+/**
+ * Total dollars saved vs base x qty, to the cent. Not charm-rounded: the saving
+ * is base x qty minus the charm-rounded tier total, so rounding it again
+ * overstated the 3-pack by a cent ("Save $29.99" for a $29.98 saving).
+ */
 export function getTierSavings(qty: number, base: number = BASE_UNIT_PRICE): number {
   const q = clamp(qty);
   if (q === 1) return 0;
-  return charm(base * q - getTierPrice(q, base));
+  return Math.round((base * q - getTierPrice(q, base)) * 100) / 100;
 }
 
 /** Effective per-unit price at the given quantity tier. */

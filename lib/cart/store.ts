@@ -55,8 +55,14 @@ export type CartState = {
   attributesStamped: boolean;
 };
 
+/** Outcome of addItem, so callers can track and message honestly. */
+export type AddResult =
+  | { status: "added" }
+  | { status: "capped" }
+  | { status: "failed"; reason: string };
+
 type CartActions = {
-  addItem(line: Omit<CartLine, "id" | "lineTotal">): Promise<void>;
+  addItem(line: Omit<CartLine, "id" | "lineTotal">): Promise<AddResult>;
   removeItem(lineId: string): Promise<void>;
   updateQty(lineId: string, qty: number): Promise<void>;
   clear(): Promise<void>;
@@ -225,8 +231,14 @@ export const useCartStore = create<CartStore>()(
         // Already at cap — nothing to add.
         if (effectiveAddQty <= 0) {
           set({ capReached: true });
-          return;
+          return { status: "capped" };
         }
+
+        // Snapshot BEFORE the optimistic update so a failure can restore it.
+        // (This used to restore the post-update items, which left a line in
+        // the drawer that Shopify never received.)
+        const prevItems = get().items;
+        const prevCapReached = get().capReached;
 
         // Optimistic update — lineTotal seeded from local tier table; overwritten on Shopify response.
         set((state) => {
@@ -247,50 +259,45 @@ export const useCartStore = create<CartStore>()(
           };
         });
 
-        const optimisticItems = get().items;
+        const lines = (qty: number) => [
+          { merchandiseId: line.variantId, quantity: qty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(qty) }] },
+        ];
 
-        try {
-          // If a cartCreate is already in-flight, wait for it so we have a cartId.
-          const pending = get().pendingCartCreate;
-          if (pending) {
-            await pending;
-          }
+        async function createCart(): Promise<void> {
+          let resolveCreate!: () => void;
+          const createPromise = new Promise<void>((res) => {
+            resolveCreate = res;
+          });
+          set({ pendingCartCreate: createPromise });
 
-          const { cartId } = get();
-
-          if (!cartId) {
-            // First item — create the cart.
-            let resolveCreate!: () => void;
-            const createPromise = new Promise<void>((res) => {
-              resolveCreate = res;
-            });
-            set({ pendingCartCreate: createPromise });
-
-            try {
-              const attributes = buildCartAttributes();
-              if (process.env.NODE_ENV !== "production") {
-                console.log("[cart] cart attributes =", attributes);
-              }
-              const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
-                lines: [{ merchandiseId: line.variantId, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
-                attributes,
-              });
-              const cart = data.cartCreate!.cart;
-              set({
-                cartId: cart.id,
-                items: transformShopifyCart(cart),
-                checkoutUrl: cart.checkoutUrl,
-                pendingCartCreate: null,
-                // Only "stamped" once identity actually made it on. posthog-js
-                // may still have been loading here, and without the visitor id
-                // the purchase cannot be joined back to an exposure — leave the
-                // flag false so hydrate() retries on the next visit.
-                attributesStamped: attributes.some((a) => a.key === "posthog_distinct_id"),
-              });
-            } finally {
-              resolveCreate();
+          try {
+            const attributes = buildCartAttributes();
+            if (process.env.NODE_ENV !== "production") {
+              console.log("[cart] cart attributes =", attributes);
             }
-          } else if (existingLine) {
+            const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
+              lines: lines(resultQty),
+              attributes,
+            });
+            const cart = data.cartCreate!.cart;
+            set({
+              cartId: cart.id,
+              items: transformShopifyCart(cart),
+              checkoutUrl: cart.checkoutUrl,
+              pendingCartCreate: null,
+              // Only "stamped" once identity actually made it on. posthog-js
+              // may still have been loading here, and without the visitor id
+              // the purchase cannot be joined back to an exposure — leave the
+              // flag false so hydrate() retries on the next visit.
+              attributesStamped: attributes.some((a) => a.key === "posthog_distinct_id"),
+            });
+          } finally {
+            resolveCreate();
+          }
+        }
+
+        async function addToExistingCart(cartId: string): Promise<void> {
+          if (existingLine) {
             // Variant already in cart — set to the absolute clamped total (idempotent on retry).
             const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_UPDATE, {
               cartId,
@@ -304,17 +311,45 @@ export const useCartStore = create<CartStore>()(
             // New variant — add line.
             const data = await shopifyFetch<ShopifyCartResponse>(CART_LINES_ADD, {
               cartId,
-              lines: [{ merchandiseId: line.variantId, quantity: resultQty, attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(resultQty) }] }],
+              lines: lines(resultQty),
             });
             set({
               items: transformShopifyCart(data.cartLinesAdd!.cart),
               checkoutUrl: data.cartLinesAdd!.cart.checkoutUrl,
             });
           }
+        }
+
+        try {
+          // If a cartCreate is already in-flight, wait for it so we have a cartId.
+          const pending = get().pendingCartCreate;
+          if (pending) {
+            await pending;
+          }
+
+          const { cartId } = get();
+
+          if (!cartId) {
+            await createCart();
+          } else {
+            try {
+              await addToExistingCart(cartId);
+            } catch (err) {
+              // The persisted cart can be dead (checkout completed, or expired
+              // between hydrate and this tap); Shopify then returns a null cart.
+              // Start a fresh cart once with what the shopper sees, rather than
+              // failing the add.
+              console.warn("[cart] add to existing cart failed, starting a new cart:", err);
+              set({ cartId: null, checkoutUrl: null, attributesStamped: false });
+              await createCart();
+            }
+          }
+          return { status: "added" };
         } catch (err) {
           console.error("[cart] addItem failed:", err);
-          // TODO: wire toast — "Failed to add item. Please try again."
-          set({ items: optimisticItems, pendingCartCreate: null });
+          set({ items: prevItems, capReached: prevCapReached, pendingCartCreate: null });
+          const reason = err instanceof Error ? err.message : String(err);
+          return { status: "failed", reason: reason.slice(0, 200) };
         }
       },
 

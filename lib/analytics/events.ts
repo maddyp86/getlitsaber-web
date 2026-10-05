@@ -21,6 +21,12 @@ type FunnelEvents = {
   cta_clicked: {
     cta: CtaId;
   };
+  cart_add_failed: {
+    variant: "silver";
+    quantity: number;
+    source: AddSource | "buy_now";
+    reason: string;
+  };
   buy_now_clicked: {
     variant: "silver";
     quantity: number;
@@ -97,6 +103,7 @@ export const EVENTS = {
   homepage_engaged: "homepage_engaged",
   product_viewed: "product_viewed",
   cta_clicked: "cta_clicked",
+  cart_add_failed: "cart_add_failed",
   cart_add_to_cart: "cart_add_to_cart",
   buy_now_clicked: "buy_now_clicked",
   checkout_started: "checkout_started",

@@ -35,7 +35,10 @@ export default async function HomePage() {
 
   // If Shopify is not configured (local dev without env vars), default to
   // showing the buy buttons rather than "Currently unavailable".
-  const available = shopifyConfigured ? silverVariant !== null : true;
+  // Same rule as the PDP: in stock only when Shopify says it can be sold.
+  // (This used to check only that the variant existed, so a sold-out Silver
+  // still showed Add to Cart on the homepage.)
+  const available = shopifyConfigured ? silverVariant?.availableForSale === true : true;
   const basePrice = silverVariant?.price?.amount
     ? parseFloat(silverVariant.price.amount)
     : BASE_UNIT_PRICE;
