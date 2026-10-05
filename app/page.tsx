@@ -93,8 +93,8 @@ export default async function HomePage() {
           <LazyMount minHeight="400px">
             <WholesaleCTABanner />
           </LazyMount>
-      {/* Homepage buy bar: slides up once the hero's Get Yours scrolls away
-          and hides again at the buy section. Replaced an inline strip under
+      {/* Mobile homepage buy bar: slides up once the hero's Get Yours scrolls
+          away and hides again at the buy section. Replaced an inline strip under
           the stat bar that read as a bolted-on card in the hero band. */}
       {available && (
         <StickyBuyBar
@@ -102,7 +102,6 @@ export default async function HomePage() {
           basePrice={basePrice}
           qty={1}
           source="home_strip"
-          showOnDesktop
           detailsHref="/shop/litsaber-og"
         />
       )}
