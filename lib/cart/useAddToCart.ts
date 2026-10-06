@@ -37,7 +37,7 @@ export function useAddToCart({ variantId, basePrice, source }: UseAddToCartOptio
       title: "Litsaber OG — Silver",
       variantTitle: "Silver",
       price: basePrice ?? BASE_UNIT_PRICE,
-      image: mediaUrl("product/litsaber-lights-off.jpg"),
+      image: mediaUrl("product/litsaber-packaging-1.jpg"),
     });
     openCart();
     void done.then((result) => {

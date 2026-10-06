@@ -28,7 +28,6 @@ export default function ProductDisplay({ variantId, available, surface, basePric
 
   const productViewedFired = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const ctaBlockRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (productViewedFired.current) return;
@@ -133,7 +132,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
               <WaitlistCard />
             </div>
           ) : (
-            <div ref={ctaBlockRef} className="w-full">
+            <div className="w-full">
               <BundleAndCTA
                 activeBundle={activeBundle}
                 onBundleChange={setActiveBundle}
@@ -153,10 +152,10 @@ export default function ProductDisplay({ variantId, available, surface, basePric
 
       {surface === "pdp" && available && activeStyle === "silver" && (
         <StickyBuyBar
-          targetRef={ctaBlockRef}
           variantId={variantId}
           basePrice={basePrice}
           qty={selectedQty}
+          source="pdp_sticky"
         />
       )}
     </div>

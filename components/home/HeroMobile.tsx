@@ -83,6 +83,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         <div className="flex flex-col gap-[20px] w-full">
           <Link
             href={CTA_PRIMARY.href}
+            data-buy-cta
             onClick={() => track(EVENTS.cta_clicked, { cta: "hero_get_yours" })}
             className="
               flex items-center justify-center
