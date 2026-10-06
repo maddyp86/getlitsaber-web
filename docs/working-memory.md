@@ -1708,6 +1708,12 @@ Three weekly agent reports (W38–W40) all read "product views, zero adds" and b
 
 **Target reset.** `litsaber_targets` row 2 (2,866 units by Sep 30) set inactive; new active row: by 2026-11-30, 50% of homepage sessions reach a buy surface (baseline 34%) and 2 paid orders a week. Matt can edit the row directly.
 
+### The SDK fix that never shipped, and the build that depended on Google (2026-10-06)
+
+**SDK Health still said 1.409.0.** The PostHog bump (#61) had merged into `staging`, and `staging` was never promoted, so production kept the old SDK and the warning came back the next day. PostHog reads the version off production events, so a fix only counts once it is on `main`. Re-applied on a branch off main (#75, posthog-js 1.438.1, posthog-node 5.55.0, lockfile regenerated as v6.0 with pnpm 8).
+
+**Then the build failed, in `next/font`, not PostHog.** `Cannot read properties of null (reading '1')` at the Google Fonts loader: a regex that expects the downloaded font URL to end in `.woff2` got a bad response from Google on the Vercel build machine. It looked like the bump caused it (both failures landed on bump commits), so the exact commit was built locally with the exact lockfile: clean. A retry fixed it, same as `staging` the day before. Two failures in two days is a pattern, not luck, and it could just as easily hit a production deploy. Fix: self-host Monoton, Orbitron, Inter and Space Mono in `public/fonts/` through `next/font/local`, same as Stellar. Orbitron and Inter are variable fonts; the one file is declared at 400 and 700, mirroring Google's CSS, so in-between weights keep snapping instead of rendering new weights. Same CSS variables, same rendering, zero build-time network calls for fonts.
+
 ---
 
 ## Open Questions (rolling)

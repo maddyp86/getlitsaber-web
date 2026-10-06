@@ -1,5 +1,11 @@
 import localFont from "next/font/local";
-import { Monoton, Orbitron, Inter, Space_Mono } from "next/font/google";
+
+// Every font is self-hosted so the build never fetches from Google Fonts
+// (next/font/google failed Vercel builds when Google returned a bad response).
+// Monoton, Orbitron, Inter and Space Mono are the Latin-subset woff2 files
+// Google served for these weights (all SIL Open Font License). Orbitron and
+// Inter are variable fonts: one file is declared at 400 and 700, as Google's
+// CSS does, so in-between weights still snap instead of interpolating.
 
 export const stellar = localFont({
   src: [
@@ -13,30 +19,35 @@ export const stellar = localFont({
   fallback: ["Arial", "system-ui", "sans-serif"],
 });
 
-export const monoton = Monoton({
-  weight: "400",
-  subsets: ["latin"],
+export const monoton = localFont({
+  src: [{ path: "../public/fonts/monoton-regular-latin.woff2", weight: "400", style: "normal" }],
   variable: "--font-monoton",
   display: "swap",
 });
 
-export const orbitron = Orbitron({
-  weight: ["400", "700"],
-  subsets: ["latin"],
+export const orbitron = localFont({
+  src: [
+    { path: "../public/fonts/orbitron-variable-latin.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/orbitron-variable-latin.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-orbitron",
   display: "swap",
 });
 
-export const inter = Inter({
-  weight: ["400", "700"],
-  subsets: ["latin"],
+export const inter = localFont({
+  src: [
+    { path: "../public/fonts/inter-variable-latin.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/inter-variable-latin.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-inter",
   display: "swap",
 });
 
-export const spaceMono = Space_Mono({
-  weight: ["400", "700"],
-  subsets: ["latin"],
+export const spaceMono = localFont({
+  src: [
+    { path: "../public/fonts/space-mono-regular-latin.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/space-mono-bold-latin.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-space-mono",
   display: "swap",
 });
