@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/cart/pricing";
 import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
@@ -95,7 +96,9 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               hover:-translate-y-px hover:shadow-glow-cta-hover active:opacity-80
             "
           >
-            {CTA_PRIMARY.label}
+            {/* ~230px of text room here; "GET YOURS · $49.99 $39.99" needs ~280px,
+                so mobile shows the sell price only. The PDP carries the MSRP anchor. */}
+            {`${CTA_PRIMARY.label} · ${formatPrice(CTA_PRIMARY.price)}`}
           </Link>
 
           <Link
@@ -126,7 +129,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             text-text-primary w-full
             drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
           "
-          style={{ height: "150px" }}
+          style={{ minHeight: "150px" }}
           variants={variants}
           initial="hidden"
           animate="visible"

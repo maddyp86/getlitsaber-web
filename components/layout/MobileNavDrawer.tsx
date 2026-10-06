@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { mediaUrl } from "@/lib/media";
-import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { BASE_UNIT_PRICE, MSRP_UNIT_PRICE } from "@/lib/cart/pricing";
+import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { track, EVENTS } from "@/lib/analytics/events";
 
 const SHOP_HREF = "/shop/litsaber-og";
@@ -193,7 +194,15 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
             onClick={onClose}
             className="block w-full py-md text-center font-label text-label tracking-widest uppercase border border-accent-cyan text-accent-cyan bg-accent-cyan-alpha-10 rounded-md hover:bg-accent-cyan hover:text-background-primary transition-colors duration-200"
           >
-            GET YOURS · ${`${BASE_UNIT_PRICE.toFixed(2)}`}
+            <span className="inline-flex items-baseline justify-center gap-2">
+              GET YOURS ·
+              <MsrpPrice
+                price={BASE_UNIT_PRICE}
+                msrp={MSRP_UNIT_PRICE}
+                showLabel={false}
+                msrpClassName="opacity-70"
+              />
+            </span>
           </Link>
         </div>
       </div>

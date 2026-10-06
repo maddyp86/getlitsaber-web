@@ -7,8 +7,6 @@
 // cart updateQty path. After that mutation itemCount reaches 2 and this hides
 // itself through the itemCount < 2 condition below.
 
-import { SINGLE_UNIT_SHIPPING } from "@/lib/shipping";
-
 interface ShippingUnlockMeterProps {
   itemCount: number;
   onUnlock: () => void;
@@ -25,7 +23,7 @@ export default function ShippingUnlockMeter({ itemCount, onUnlock, className }: 
     <button
       type="button"
       onClick={onUnlock}
-      aria-label="Add one more to unlock free shipping"
+      aria-label="Add a second Litsaber and shipping is free"
       className={`group block w-full text-left cursor-pointer ${className ?? ""}`}
       style={{ borderTop: "1px solid #1a1a30", paddingTop: "12px", paddingBottom: "2px" }}
     >
@@ -42,7 +40,7 @@ export default function ShippingUnlockMeter({ itemCount, onUnlock, className }: 
         className="font-label"
         style={{ marginTop: "8px", fontSize: "11px", letterSpacing: "1px", color: "#9a9ab5" }}
       >
-        ADD 1 MORE TO UNLOCK FREE SHIPPING · <span style={{ color: "#00E5FF" }}>SAVE ${SINGLE_UNIT_SHIPPING.toFixed(2)}</span>
+        ADD A SECOND AND SHIPPING&rsquo;S FREE
       </p>
     </button>
   );

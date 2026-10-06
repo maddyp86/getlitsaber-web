@@ -290,7 +290,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "Premium materials, chosen for where they matter. Aluminum and brass at the 510 connection for a solid, conductive thread. Polycarbonate diffuser and reinforced internal foam at the light section, so the 41-LED array glows evenly and the device shrugs off the drops a festival night guarantees. It feels like hardware, not a disposable.",
+            text: "Materials chosen for where they matter. Aluminum and brass at the 510 connection for a solid, conductive thread. Polycarbonate diffuser and reinforced internal foam at the light section, so the 41-LED array glows evenly and the device shrugs off the drops a festival night guarantees. It feels like hardware, not a disposable.",
           },
         ],
       },
@@ -305,7 +305,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "You're not buying a vape pen. You're buying an experience that has utility beyond one.",
+            text: "You're not buying a disposable battery. You're buying an experience that has utility beyond one.",
           },
           {
             type: "paragraph",
@@ -316,11 +316,11 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
             type: "ordered-list",
             items: [
               "41 individually-addressable LEDs beneath a polycarbonate diffuser. The whole device illuminates, not a tiny indicator.",
-              "Aluminum and brass at the connection, polycarbonate and reinforced foam at the light. Premium materials, drop-resistant build.",
+              "Aluminum and brass at the connection, polycarbonate and reinforced foam at the light. Drop-resistant build.",
               "800mAh cobalt cell with 1.48Wh energy capacity and 300+ recharge cycles.",
               "Custom-engineered 510 connection with 4.0mm center pin depth, tested for 95 to 99% cart compatibility.",
               "Three-voltage system (2.4V / 2.8V / 3.2V) mapped to specific oil types.",
-              "Designed in Los Angeles, manufactured by Dopex. A premium vaporization solutions partner.",
+              "Designed in Los Angeles, manufactured by Dopex, an established vaporization hardware partner.",
             ],
           },
           {
@@ -342,7 +342,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Litsaber is built around visibility. The cart sits exposed at the top, and the entire body of the device illuminates from a 41-LED array beneath a polycarbonate diffuser. The whole device glows like a lightsaber blade. Our priority is making the device a piece of light to be seen with.",
+            text: "Litsaber is built around visibility. The cart sits exposed at the top, and the entire body of the device illuminates from a 41-LED array beneath a polycarbonate diffuser. The whole device glows, end to end. Our priority is making the device a piece of light to be seen with.",
           },
           {
             type: "paragraph",
@@ -449,9 +449,3 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
   },
 ];
 
-// ─── Festival Drop List ────────────────────────────────────────────────────────
-export const DROP_LIST_EYEBROW = "WAIT LIST";
-export const DROP_LIST_HEADLINE = "FESTIVAL DROP LIST";
-export const DROP_LIST_BODY =
-  "Get $5 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.";
-export const DROP_LIST_CTA = "SEND IT";

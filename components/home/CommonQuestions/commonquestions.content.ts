@@ -12,7 +12,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 01",
     question: "How is this different from other 510 batteries?",
     answer:
-      "Most 510 batteries are designed to disappear in your pocket. Litsaber is built to be seen with 41 individually-addressable LEDs across the body, three lighting modes, aluminum and brass construction, polycarbonate diffuser. It's a glowstick that hits 510 carts, not a vape pen with a small indicator light.",
+      "Most 510 batteries are designed to disappear in your pocket. Litsaber is built to be seen with 41 individually-addressable LEDs across the body, three lighting modes, aluminum and brass construction, polycarbonate diffuser. It's a glowstick that hits 510 carts, not a battery with a small indicator light.",
   },
   {
     number: "/ 02",
@@ -36,7 +36,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 05",
     question: "What if it breaks or stops working?",
     answer:
-      "30-day guarantee. The aluminum and brass top section handles the connection, while the polycarbonate body and reinforced foam diffuser absorb impact, designed to take a drop. If something goes wrong within 30 days, we replace it.",
+      "6-month limited warranty. The aluminum and brass top section handles the connection, while the polycarbonate body and reinforced foam diffuser absorb impact, designed to take a drop. If a manufacturing defect shows up within six months, we repair or replace it.",
   },
   {
     number: "/ 06",

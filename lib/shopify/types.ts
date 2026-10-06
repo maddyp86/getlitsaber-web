@@ -66,8 +66,8 @@ export interface ShopifyCart {
   lines: {
     edges: Array<{ node: ShopifyCartLineNode }>;
   };
-  // Cart-level attributes (attribution + experiment arm). Read back on hydrate
-  // so an already-frozen arm is never overwritten.
+  // Cart-level attributes (attribution + shipping stamp). Read back on hydrate
+  // so a refresh merges into them instead of overwriting them.
   attributes?: Array<{ key: string; value: string | null }>;
 }
 

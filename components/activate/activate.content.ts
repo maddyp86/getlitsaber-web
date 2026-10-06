@@ -132,7 +132,7 @@ export const ACTIVATE_MODES = {
       name: "Litsaber Mode",
       badge: "SIGNATURE MODE",
       badgeColor: "cyan" as const,
-      tagline: "Cascading lightsaber effect that responds to your breath.",
+      tagline: "A cascading light effect that responds to your breath.",
       points: [
         "To enter: press and hold the button for 2 seconds while in Glowstick Mode.",
         "When you inhale, LEDs cascade for 5 seconds from top to bottom.",

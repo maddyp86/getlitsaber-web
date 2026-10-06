@@ -181,11 +181,11 @@ export const MFG_EYEBROW = "/ 04 — MANUFACTURING";
 export const MFG_HEADLINE_PART1 = "Designed in LA. Built by ";
 export const MFG_HEADLINE_ACCENT = "DOPEX";
 export const MFG_BODY =
-  "Litsaber is designed and engineered in LA and SF. The hardware is manufactured by **DOPEX**, a premium cannabis vaporization solutions provider based in Shenzhen, China. **DOPEX is one of the most established vape hardware manufacturers in the industry.** They build to spec, they ship on time, and they hold to the kind of quality control that lets us put our name on every unit that comes out.";
+  "Litsaber is designed and engineered in LA and SF. The hardware is manufactured by **DOPEX**, a cannabis vaporization hardware provider based in Shenzhen, China. **DOPEX is one of the most established vape hardware manufacturers in the industry.** They build to spec, they ship on time, and they hold to the kind of quality control that lets us put our name on every unit that comes out.";
 export const DOPEX_CARD_EYEBROW = "— OUR MANUFACTURING PARTNER";
 export const DOPEX_CARD_NAME = "DOPEX";
 export const DOPEX_CARD_BODY =
-  "Premium cannabis vaporization solutions provider. Based in Shenzhen, China, with a US office in Walnut, CA.";
+  "Cannabis vaporization hardware provider. Based in Shenzhen, China, with a US office in Walnut, CA.";
 export const DOPEX_CARD_LINK = "www.dopex.com";
 export const DOPEX_CARD_HREF = "https://www.dopex.com";
 
@@ -193,14 +193,14 @@ export const DOPEX_CARD_HREF = "https://www.dopex.com";
 export const NOW_EYEBROW = "/ 05 — WHERE WE ARE NOW";
 export const NOW_HEADLINE = "Iterating in public.";
 export const NOW_BODY =
-  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition launches this summer 2026**. We're at festivals, events, the cannabis party bus circuit through summer. We're doing collabs with SoCal dispensaries. We're at trade shows in Jedi robes because that's the energy of this brand and we own it.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
+  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition launches this summer 2026**. We're at festivals, events, the cannabis party bus circuit through summer. We're doing collabs with SoCal dispensaries. We're at trade shows in full costume because that's the energy of this brand and we own it.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
 export const NOW_WILD_EYEBROW = "OUT IN THE WILD";
 
 // ─── Section 7 — Closing CTA ─────────────────────────────────────────────────
 export const CLOSING_HEADLINE_PART1 = "MADE IN LOS ANGELES,";
 export const CLOSING_HEADLINE_ACCENT = "BY PEOPLE WHO SHOW UP.";
 export const CLOSING_BODY =
-  "Litsaber ships from Los Angeles, backed by a 30-day guarantee and same-day fulfillment. We're a small company that makes one product. We'd love for you to have it.";
+  "Litsaber ships from Los Angeles, backed by a 6-month limited warranty and same-day fulfillment. We're a small company that makes one product. We'd love for you to have it.";
 export const CLOSING_CTA_PRIMARY = "GET YOURS";
 export const CLOSING_CTA_PRIMARY_HREF = "/shop/litsaber-og";
 export const CLOSING_CTA_SECONDARY = "GET IN TOUCH";
