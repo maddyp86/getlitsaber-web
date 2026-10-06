@@ -168,28 +168,24 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           )}
         </motion.div>
 
+        {/* Two columns on phones, three from sm up. Three-across at 375px could
+            not fit the longer labels: each pill's floor is its longest word
+            ("ADDRESSABLE", ~130px with padding), so the row overflowed and
+            widened the page. Same order as the 2x3 desktop and PDP grids. */}
         <motion.div
-          className="flex flex-col w-full"
-          style={{ gap: "20px", alignSelf: "stretch" }}
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full"
           variants={variants}
           initial="hidden"
           animate="visible"
           custom={0.4}
         >
-          {[SPEC_PILLS.slice(0, 3), SPEC_PILLS.slice(3)].map((row, i) => (
-            <div
-              key={i}
-              style={{ display: "flex", alignItems: "center", gap: "20px", alignSelf: "stretch" }}
-            >
-              {row.map((label) => (
-                <SpecPill
-                  key={label}
-                  label={label}
-                  href={SPEC_PILLS_HREF}
-                  onClick={() => track(EVENTS.cta_clicked, { cta: "hero_spec_pill" })}
-                />
-              ))}
-            </div>
+          {SPEC_PILLS.map((label) => (
+            <SpecPill
+              key={label}
+              label={label}
+              href={SPEC_PILLS_HREF}
+              onClick={() => track(EVENTS.cta_clicked, { cta: "hero_spec_pill" })}
+            />
           ))}
         </motion.div>
       </div>

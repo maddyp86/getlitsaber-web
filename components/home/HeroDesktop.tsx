@@ -102,8 +102,11 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             {TAGLINE}
           </motion.p>
 
+          {/* Two rows of three, matching the PDP and mobile hero. A single row
+              of six left ~142px per pill, and the longer labels (up to 242px,
+              "ALUMINUM + BRASS BUILD") wrapped to two or three lines. */}
           <motion.div
-            className="flex flex-row gap-sm items-center justify-center w-full max-w-[900px] mx-auto"
+            className="grid grid-cols-3 gap-sm w-full max-w-[900px] mx-auto"
             variants={variants}
             initial="hidden"
             animate="visible"

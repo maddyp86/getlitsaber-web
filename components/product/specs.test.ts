@@ -7,10 +7,10 @@ import { ACCORDION_ITEMS } from "./accordion.content";
 describe("spec pills", () => {
   it("are exactly the six locked pills, in order", () => {
     expect([...SPEC_PILLS]).toEqual([
-      "41 LEDS",
-      "10 COLORS",
-      "3 MODES",
-      "800 MAH",
+      "41 ADDRESSABLE LEDS",
+      "10 SELECTABLE COLORS",
+      "3 INTERACTIVE MODES",
+      "800 MAH BATTERY",
       "ALUMINUM + BRASS BUILD",
       "WARRANTY INCLUDED",
     ]);
