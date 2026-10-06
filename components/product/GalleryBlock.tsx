@@ -104,8 +104,34 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     playVideo();
   }
 
-  // Keep the active thumbnail in view when the slide changes by arrow or swipe.
+  // Thumbnails are the original photos (up to 14MB; image optimization is off
+  // site-wide), so each tile loads only once it is actually visible in the
+  // strip, and none before the photo on screen has loaded. Chrome's native
+  // lazy loading fetched ~8 off-screen tiles at once and starved the main
+  // photo on a slow connection.
   const stripRef = useRef<HTMLDivElement>(null);
+  const [seenThumbs, setSeenThumbs] = useState<Set<number>>(() => new Set([0]));
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip || !primaryReady || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).map((e) => Number((e.target as HTMLElement).dataset.thumb));
+        if (visible.length)
+          setSeenThumbs((prev) => {
+            const nextSet = new Set(prev);
+            visible.forEach((i) => nextSet.add(i));
+            return nextSet;
+          });
+      },
+      { root: strip, rootMargin: "0px 68px" }
+    );
+    strip.querySelectorAll("[data-thumb]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [primaryReady]);
+  const thumbLoads = (i: number) => primaryReady && (seenThumbs.has(i) || i === activeThumb);
+
+  // Keep the active thumbnail in view when the slide changes by arrow or swipe.
   const firstRender = useRef(true);
   useEffect(() => {
     if (firstRender.current) {
@@ -349,7 +375,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
             onClick={() => selectThumb(i)}
             aria-label={img.type === "video" ? `Play video: ${img.alt}` : img.alt}
             aria-current={i === activeThumb ? "true" : undefined}
-            className={`relative shrink-0 w-[60px] h-[60px] rounded-md overflow-hidden cursor-pointer transition-all duration-200 touch-manipulation ${
+            className={`relative shrink-0 w-[60px] h-[60px] rounded-md overflow-hidden bg-surface-card-deep cursor-pointer transition-all duration-200 touch-manipulation ${
               i === activeThumb
                 ? "border-2 border-accent-cyan brightness-100"
                 : "brightness-50 hover:brightness-100"
@@ -359,7 +385,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               <>
                 <video
                   // Preview frame only after the photo on screen has loaded.
-                  src={primaryReady ? `${img.src}#t=0.1` : undefined}
+                  src={thumbLoads(i) ? `${img.src}#t=0.1` : undefined}
                   poster={img.poster}
                   muted
                   playsInline
@@ -374,7 +400,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
                 </span>
               </>
             ) : (
-              <Image src={img.src} alt="" fill className="object-cover" sizes="72px" />
+              thumbLoads(i) && <Image src={img.src} alt="" fill className="object-cover" sizes="72px" />
             )}
           </button>
         ))}
