@@ -185,7 +185,9 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
 
   function toggleDetail(e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation();
-    setDetail((d) => (d ? null : originFrom(e)));
+    // Read the point now: React clears e.currentTarget once the handler
+    // returns, so it must not be read inside a deferred state updater.
+    setDetail(detail ? null : originFrom(e));
   }
 
   function panDetail(e: ReactPointerEvent<HTMLDivElement>) {
