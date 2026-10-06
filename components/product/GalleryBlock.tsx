@@ -52,11 +52,12 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     if (retry) v.load();
     const p = v.play();
     if (p !== undefined) {
-      p.catch((err: unknown) => {
-        // Unsupported media is an error; a blocked or interrupted play just
-        // leaves the play button up. Network failures arrive via onError.
-        const unsupported = err instanceof DOMException && err.name === "NotSupportedError";
-        setVideo({ src, state: unsupported ? "error" : "idle" });
+      p.catch(() => {
+        // If the media itself failed (network, blocked, unsupported), show the
+        // error state; the element's own error event can fire before this
+        // rejection, so never let the rejection overwrite it with "idle". A
+        // play that was merely blocked or interrupted leaves the play button.
+        setVideo({ src, state: v.error ? "error" : "idle" });
       });
     }
   }
