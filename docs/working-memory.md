@@ -1734,6 +1734,16 @@ Matt set the six pill labels: 41 ADDRESSABLE LEDS · 10 SELECTABLE COLORS · 3 I
 
 ---
 
+### Blob read-write token retired for OIDC (2026-10-06)
+
+Vercel flagged `BLOB_READ_WRITE_TOKEN` (a "readable secret") for revocation now that the project has OIDC. The audit was shorter than expected: the storefront never calls the Blob SDK at all. Every image and video is a public URL built by `lib/media.ts`, so the token was only ever used by `scripts/migrate-media.ts`, the one-off ADR-007 upload. No GitHub Actions exist and the repo has no Actions secrets.
+
+The catch was the SDK. `@vercel/blob` 0.27.3 has no OIDC path; it reads `BLOB_READ_WRITE_TOKEN` or throws. OIDC landed in 2.4.0 and the expired-token refresh in 2.5.0, so it went to ^2.8.1 (lockfile kept at v6.0 via pnpm 8). The two majors in between were safe here: 1.0 made `addRandomSuffix` default false and overwrites opt-in, and the script already passed both explicitly; 2.0 only changed client-upload callbacks, which we don't use.
+
+**The subtle part is the fallback order.** 2.8.1 tries OIDC first (`VERCEL_OIDC_TOKEN` + `BLOB_STORE_ID`), but if the OIDC token is missing or expired it quietly falls back to `BLOB_READ_WRITE_TOKEN`. A stale `.env.local` would keep "working" on the old token until the day it is revoked, then fail with a generic "no credentials" error. The script now deletes any `BLOB_READ_WRITE_TOKEN` from its environment and checks the pulled JWT's `exp` before uploading, so an expired pull says "re-run `vercel env pull`" instead.
+
+---
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

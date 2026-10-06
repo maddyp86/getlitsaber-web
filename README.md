@@ -105,6 +105,25 @@ Never commit `.env.local`. Production secrets live in Vercel's dashboard.
 
 ---
 
+## Vercel Blob auth (OIDC, no token)
+
+Blob writes authenticate with Vercel OIDC, not `BLOB_READ_WRITE_TOKEN`. The site itself never writes to Blob (media is read from public URLs via `lib/media.ts`), so this only matters for local upload scripts such as `pnpm migrate-media`.
+
+`@vercel/blob` (2.4+) picks up `VERCEL_OIDC_TOKEN` and `BLOB_STORE_ID` from the environment on its own. Nothing in the code passes a token. To get both locally:
+
+```bash
+vercel link
+vercel env pull
+pnpm migrate-media
+```
+
+- `vercel link` runs once per clone and connects it to the `get-litsaber` project in the `get-litsaber` team.
+- `vercel env pull` writes the Development environment, including a short-lived `VERCEL_OIDC_TOKEN`, to `.env.local`. **It replaces the whole file.** Any local-only value not stored in Vercel's Development environment has to be re-added afterward.
+- The OIDC token lasts about 12 hours. If a script reports it expired, run `vercel env pull` again.
+- The upload script ignores any leftover `BLOB_READ_WRITE_TOKEN` so it can't fall back to the revoked token by accident.
+
+---
+
 ## Hosting & deployment
 
 - **Host:** Vercel (Hobby tier at launch)

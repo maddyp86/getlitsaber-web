@@ -28,6 +28,43 @@ function loadEnvLocal(): void {
   }
 }
 
+// Blob auth is OIDC only. @vercel/blob reads VERCEL_OIDC_TOKEN + BLOB_STORE_ID
+// from the environment (both written to .env.local by `vercel env pull`). The
+// read-write token is revoked, so drop any stale copy: if OIDC is missing or
+// expired the SDK would otherwise fall back to it silently and fail later with
+// a less useful error.
+function assertOidcCredentials(): void {
+  delete process.env.BLOB_READ_WRITE_TOKEN;
+
+  const pullHint =
+    "Run `vercel link` once, then `vercel env pull` to write VERCEL_OIDC_TOKEN and BLOB_STORE_ID to .env.local.";
+  const token = process.env.VERCEL_OIDC_TOKEN;
+  if (!token || !process.env.BLOB_STORE_ID) {
+    console.error(`Missing VERCEL_OIDC_TOKEN or BLOB_STORE_ID. ${pullHint}`);
+    process.exit(1);
+  }
+
+  // The pulled token is a short-lived JWT (about 12 hours). Check its expiry
+  // here so a stale pull fails with a clear message.
+  let exp: unknown;
+  try {
+    const payload = token.split(".")[1] ?? "";
+    exp = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")).exp;
+  } catch {
+    exp = undefined;
+  }
+  if (typeof exp !== "number") {
+    console.error(`VERCEL_OIDC_TOKEN is not a valid JWT. ${pullHint}`);
+    process.exit(1);
+  }
+  if (exp * 1000 <= Date.now()) {
+    console.error(
+      `VERCEL_OIDC_TOKEN expired at ${new Date(exp * 1000).toISOString()}. Re-run \`vercel env pull\`.`
+    );
+    process.exit(1);
+  }
+}
+
 // Recursively collect every file under a directory, skipping dotfiles.
 function collectFiles(dir: string): string[] {
   const results: string[] = [];
@@ -45,13 +82,7 @@ function collectFiles(dir: string): string[] {
 
 async function main(): Promise<void> {
   loadEnvLocal();
-
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    console.error(
-      "Add BLOB_READ_WRITE_TOKEN to .env.local — copy the snippet from the Blob store's Quickstart in the Vercel dashboard."
-    );
-    process.exit(1);
-  }
+  assertOidcCredentials();
 
   const publicImagesDir = path.resolve(process.cwd(), "public/images");
   const files = collectFiles(publicImagesDir);

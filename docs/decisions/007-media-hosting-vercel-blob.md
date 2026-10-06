@@ -57,6 +57,10 @@ system with no new vendor.
   uploaded each file to Blob with matching pathnames, skipped dotfiles
   (`.DS_Store`), sequential uploads, one-year cache headers. Loaded
   `BLOB_READ_WRITE_TOKEN` from `.env.local` itself (tsx does not auto-load it).
+  **Superseded 2026-10-06:** the read-write token is retired in favor of Vercel
+  OIDC (`@vercel/blob` ^2.8.1). The script now authenticates with
+  `VERCEL_OIDC_TOKEN` + `BLOB_STORE_ID` from `vercel env pull`. See README
+  "Vercel Blob auth".
   `tsconfig.json` got `scripts` added to `exclude` so the app build does not
   type-check the migration script.
 - **Chunk B (repoint):** `lib/media.ts` created; `NEXT_PUBLIC_MEDIA_BASE_URL` set
