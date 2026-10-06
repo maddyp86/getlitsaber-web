@@ -76,6 +76,14 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   }, [active.src, activeIsVideo]);
   const imageLoading = !activeIsVideo && loadedSrc !== active.src;
 
+  // The photo on screen loads first. Neighbour preloads and the video
+  // thumbnails' preview frames wait until it has drawn, so on a slow
+  // connection they never compete with it. Once true, stays true.
+  const [primaryReady, setPrimaryReady] = useState(false);
+  useEffect(() => {
+    if (!primaryReady && (activeIsVideo || loadedSrc === active.src)) setPrimaryReady(true);
+  }, [primaryReady, activeIsVideo, loadedSrc, active.src]);
+
   // ─── Navigation ────────────────────────────────────────────────────────────
   const prev = useCallback(() => onThumbClick(prevIndex), [onThumbClick, prevIndex]);
   const next = useCallback(() => onThumbClick(nextIndex), [onThumbClick, nextIndex]);
@@ -195,9 +203,14 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     setDetail(originFrom(e));
   }
 
-  const neighbours = [prevIndex, nextIndex].filter(
-    (i, k, arr) => i !== activeThumb && arr.indexOf(i) === k && GALLERY_IMAGES[i]?.type !== "video"
-  );
+  // Only true neighbours: never wrap from the first slide to the last (the
+  // last photos are the heaviest files), and nothing until the photo on
+  // screen has loaded.
+  const neighbours = !primaryReady
+    ? []
+    : [activeThumb > 0 ? prevIndex : -1, activeThumb < total - 1 ? nextIndex : -1].filter(
+        (i) => i >= 0 && i !== activeThumb && GALLERY_IMAGES[i]?.type !== "video"
+      );
 
   return (
     <>
@@ -226,7 +239,8 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
               preload="metadata"
               onPlaying={() => setVideoState("playing")}
               onWaiting={() => setVideoState("loading")}
-              onPause={() => setVideoState("idle")}
+              // A failed play also fires "pause"; keep the error state then.
+              onPause={(e) => setVideoState(e.currentTarget.error ? "error" : "idle")}
               onEnded={() => setVideoState("idle")}
               onError={() => setVideoState("error")}
               className="absolute inset-0 w-full h-full object-cover bg-black"
@@ -344,7 +358,8 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
             {img.type === "video" ? (
               <>
                 <video
-                  src={`${img.src}#t=0.1`}
+                  // Preview frame only after the photo on screen has loaded.
+                  src={primaryReady ? `${img.src}#t=0.1` : undefined}
                   poster={img.poster}
                   muted
                   playsInline
