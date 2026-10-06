@@ -23,6 +23,8 @@ export const RETIRED_CLAIMS: ReadonlyArray<readonly [label: string, pattern: Reg
   ["If it's 510, it works", /if it(['’]|&#x27;)?s 510, it works/i],
   ["repair or replace", /repair or replace/i],
   ["dated Gold launch", /gold edition (launches|drops)[^.]*\b20\d\d\b/i],
+  ["glowstick that hits 510", /glowstick that hits 510/i],
+  ["repair or store credit", /replacement, repair,? or store credit/i],
 ];
 
 /** Labels of every retired claim found in the text. */

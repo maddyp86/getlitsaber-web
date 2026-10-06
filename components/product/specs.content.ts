@@ -13,9 +13,9 @@ export const SPEC_PILLS = [
   "WARRANTY INCLUDED",
 ] as const;
 
-// Compatibility statement, confirmed by Matt 2026-10-06. It is the verified claim
-// from the contact FAQ ("What carts work with Litsaber?") and the PDP Tech
-// Specs (4.0mm pin, 10.5 to 14.5mm, 95 to 99%), shortened. It replaces the
+// Compatibility statement, wording supplied by Matt 2026-10-06. It replaces the
 // absolute "works with any 510" style claims (see lib/copy/retiredClaims.ts).
+// The full caveats (10.5 to 14.5mm, backing off deeper-pin carts) stay in the
+// PDP Tech Specs and the contact FAQ.
 export const COMPATIBILITY_STATEMENT =
-  "Engineered for 95 to 99% compatibility with standard 510-thread carts from 10.5mm to 14.5mm in diameter. Some deeper-pin carts hit cleanest backed off a quarter to half turn.";
+  "Compatible with live resin, rosin, distillate and liquid diamonds. Has a 4.0mm pin depth, tuned for 95 to 99% cart compatibility. If it's 510, it likely works.";

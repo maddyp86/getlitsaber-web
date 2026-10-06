@@ -41,7 +41,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "Cart-agnostic.",
-          text: `${COMPATIBILITY_STATEMENT} Live resin, rosin, distillate, liquid diamonds.`,
+          text: COMPATIBILITY_STATEMENT,
         },
         {
           lead: "Three modes.",

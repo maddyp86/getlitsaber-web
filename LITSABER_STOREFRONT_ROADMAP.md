@@ -71,7 +71,8 @@ Goal: product page, cart, checkout handoff, policies, FAQ, About, and emails all
   - Remove "up to 5 days during launches or sales" and any other dispatch window that conflicts with the above.
 - [x] Colors: change every reference to 12 colors to 10 (product page, The Tech, FAQ, meta descriptions, alt text).
 - [x] Compatibility: replace "If it's 510, it works" and any absolute compatibility claims with the verified statement already in the specs or FAQ (about 95–99% of 510 carts, with diameter and contact caveats). **[OWNER]** confirms the statement.
-  - `COMPATIBILITY_STATEMENT` in `components/product/specs.content.ts`, confirmed by owner 2026-10-06: "Engineered for 95 to 99% compatibility with standard 510-thread carts from 10.5mm to 14.5mm in diameter. Some deeper-pin carts hit cleanest backed off a quarter to half turn."
+  - `COMPATIBILITY_STATEMENT` in `components/product/specs.content.ts`, owner wording 2026-10-06: "Compatible with live resin, rosin, distillate and liquid diamonds. Has a 4.0mm pin depth, tuned for 95 to 99% cart compatibility. If it's 510, it likely works."
+  - Owner follow-ups 2026-10-06: homepage FAQ 01 glowstick line replaced; Terms section 08 now replacement only; "UNIVERSAL 510 THREADING" kept; shipping policy keeps the section 01 wording.
 - [x] About page: replace the past Gold launch date with "Coming soon."
 - [x] Warranty: wherever warranty is mentioned on product, FAQ, and cart surfaces, describe it as a 6-month limited warranty against manufacturing defects, with replacement (not refund), linking to /policies/warranty.
 - [x] Add a test or script that checks the product page, cart, and policy pages for the old strings ("Free 14-day returns," "free shipping on all US orders," "12 colors," "$45.99," "$44.99," "$89.99") and fails if any reappear.

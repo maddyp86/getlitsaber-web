@@ -16,13 +16,13 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 01",
     question: "How is this different from other 510 batteries?",
     answer:
-      "Most 510 batteries are designed to disappear in your pocket. Litsaber is built to be seen with 41 individually-addressable LEDs across the body, three lighting modes, aluminum and brass construction, polycarbonate diffuser. It's a glowstick that hits 510 carts, not a battery with a small indicator light.",
+      "Most 510 batteries are designed to disappear in your pocket. Litsaber is built to be seen with 41 individually-addressable LEDs across the body, three lighting modes, aluminum and brass construction, polycarbonate diffuser. It's an interactive 510 battery, not a battery with a small indicator light.",
   },
   {
     number: "/ 02",
     question: "Will it work with my carts?",
     answer:
-      `Most likely. ${COMPATIBILITY_STATEMENT} Three-voltage tuning (2.4V, 2.8V, 3.2V) lets you match the voltage to your oil.`,
+      `${COMPATIBILITY_STATEMENT} Three-voltage tuning (2.4V, 2.8V, 3.2V) lets you match the voltage to your oil.`,
   },
   {
     number: "/ 03",

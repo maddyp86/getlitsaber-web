@@ -58,6 +58,8 @@ describe("retired storefront promises", () => {
       "If it's 510, it works": "If it's 510, it works.",
       "repair or replace": "we'll repair or replace it",
       "dated Gold launch": "Gold Edition launches this summer 2026",
+      "glowstick that hits 510": "An interactive glowstick that hits 510 carts.",
+      "repair or store credit": "issuing a replacement, repair, or store credit",
     };
     for (const [label] of RETIRED_CLAIMS) {
       expect(findRetiredClaims(samples[label]), label).toContain(label);
@@ -70,7 +72,7 @@ describe("retired storefront promises", () => {
       "14-day returns on unopened devices.",
       "10 color options including white and rainbow",
       "We resolve most issues within 1 to 2 business days.",
-      "replacement, repair, or store credit",
+      "If it's 510, it likely works.",
     ]) {
       expect(findRetiredClaims(ok), ok).toEqual([]);
     }
