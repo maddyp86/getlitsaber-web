@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
-import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, FREE_SHIPPING_LABEL } from "./productdisplay.content";
+import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.content";
 import { quoteOffer } from "@/lib/cart/offers";
-import { formatDisplayShipping } from "@/lib/shipping";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
@@ -90,21 +89,14 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             <p className="font-body text-[18px] text-text-secondary">
               {PRODUCT_SUBTITLE}
             </p>
-            <p className="flex flex-col gap-1" data-testid="pdp-price">
+            {/* Shipping is shown on each offer card below, so it is not repeated here. */}
+            <p data-testid="pdp-price">
               <MsrpPrice
                 price={quote.price}
                 msrp={quote.msrp}
                 msrpClassName="font-label text-[20px] text-text-muted"
                 priceClassName="font-label font-bold text-h3 text-text-primary [text-shadow:0_0_10px_theme(colors.cta.DEFAULT)]"
               />
-              {/* Shipping is shown up front so it is never a surprise at checkout. */}
-              <span
-                className={`font-label text-[14px] ${quote.shipping === 0 ? "text-accent-cyan" : "text-text-secondary"}`}
-              >
-                {quote.shipping === 0
-                  ? FREE_SHIPPING_LABEL
-                  : `+ ${formatDisplayShipping(quote.shipping)} shipping · free on 2+`}
-              </span>
             </p>
           </div>
 
