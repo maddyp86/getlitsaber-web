@@ -131,9 +131,9 @@ export default function EmailSignupBanner() {
            fontSize: "clamp(45px, 5vw, 75px)",
          fontWeight:"700"}}
         >
-          DON&rsquo;T LEAVE
+          GET THE NEXT
           <br />
-          EMPTY-HANDED.
+          DROP FIRST.
         </motion.h2>
 
         <motion.p
@@ -142,14 +142,7 @@ export default function EmailSignupBanner() {
             fontSize: "clamp(16px, 1.8vw, 20px)",
           }}
         >
-          Get $5 off your first Litsaber and early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
-        </motion.p>
-
-        <motion.p
-          className="font-body text-text-muted"
-          style={{ fontSize: "13px" }}
-        >
-          Applies to a single Litsaber. Not combinable with multi-pack pricing.
+          Early access to the Gold Edition drop. Festival giveaways. No spam. Just the good stuff.
         </motion.p>
 
         <form

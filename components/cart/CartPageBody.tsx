@@ -15,6 +15,8 @@ import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
+import { getMsrpLinePrice } from "@/lib/cart/pricing";
+import MsrpPrice from "@/components/primitives/MsrpPrice";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
 // Silver (LTS-OG-SLV) Shopify variant GID — the only physical SKU. The unlock
@@ -143,11 +145,6 @@ export default function CartPageBody() {
                         >
                           {line.variantTitle} × {line.qty}
                         </p>
-                        {line.qty > 1 && (
-                          <p className="font-label text-text-muted mt-1" style={{ fontSize: "11px" }}>
-                            Buy {line.qty} Litsabers, Save ${Math.round(line.price * line.qty - line.lineTotal)}
-                          </p>
-                        )}
 
                         {/* Price left, trash right — bottom of the text block */}
                         <div className="flex items-end justify-between mt-auto pt-2">
@@ -155,7 +152,7 @@ export default function CartPageBody() {
                             className="font-label font-bold"
                             style={{ fontSize: "14px", color: "#00E5FF" }}
                           >
-                            ${line.lineTotal.toFixed(2)}
+                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} showLabel={false} msrpClassName="font-normal text-text-muted text-[0.85em]" />
                           </span>
                           <button
                             onClick={() => {
@@ -340,11 +337,6 @@ export default function CartPageBody() {
                               >
                                 {line.variantTitle} × {line.qty}
                               </p>
-                              {line.qty > 1 && (
-                                <p className="font-label text-text-muted mt-1" style={{ fontSize: "12px" }}>
-                                  Buy {line.qty} Litsabers, Save ${Math.round(line.price * line.qty - line.lineTotal)}
-                                </p>
-                              )}
                             </div>
                           </div>
 
@@ -361,7 +353,7 @@ export default function CartPageBody() {
                             className="font-label font-bold text-text-primary text-left"
                             style={{ fontSize: "15px", width: "100px" }}
                           >
-                            ${line.lineTotal.toFixed(2)}
+                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} showLabel={false} msrpClassName="font-normal text-text-muted text-[0.85em]" />
                           </span>
 
                           {/* Remove column */}

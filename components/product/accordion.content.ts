@@ -42,7 +42,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "Three modes.",
-          text: "Glowstick for the breathing glow. Litsaber for the cascading saber effect. Stealth for when you don't want the show.",
+          text: "Glowstick for the breathing glow. Litsaber for the cascading light effect. Stealth for when you don't want the show.",
         },
         {
           lead: "Built for the night.",

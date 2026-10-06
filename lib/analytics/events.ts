@@ -1,6 +1,7 @@
 "use client";
 
 import posthog from "posthog-js";
+import type { OfferId } from "@/lib/cart/offers";
 
 // ---------------------------------------------------------------------------
 // Event name → payload type map (locked snake_case names)
@@ -11,11 +12,23 @@ type FunnelEvents = {
   age_gate_confirmed: Record<string, never>;
   homepage_engaged: { trigger: "scroll" | "dwell" | "cta_click" };
   product_viewed: { surface: "pdp" | "homepage_buy" };
+  // Fires when the shopper picks an offer card or steps the quantity on the
+  // product page. `offer` is derived from quantity (lib/cart/offers.ts), the
+  // same rule the orders webhook uses for `offer_selected` on purchase.
+  product_offer_selected: {
+    offer: OfferId;
+    quantity: number;
+    line_price: number;
+    surface: "pdp" | "homepage_buy";
+  };
+  // `tier_price` keeps its name for insight continuity; since ADR-009 it is
+  // simply the line price (unit price x quantity).
   cart_add_to_cart: {
     variant: "silver";
     quantity: number;
     tier_price: number;
     unit_price: number;
+    offer: OfferId;
     source: AddSource;
   };
   cta_clicked: {
@@ -31,6 +44,7 @@ type FunnelEvents = {
     variant: "silver";
     quantity: number;
     tier_price: number;
+    offer: OfferId;
   };
   checkout_started: {
     cart_value: number;
@@ -42,17 +56,16 @@ type FunnelEvents = {
     variant: "silver";
     quantity: number;
   };
-  promo_popup_shown: {
-    trigger: "time_delay" | "exit_intent";
-  };
-  promo_email_submitted: {
-    source: string;
-  };
   promo_code_captured: {
     code: string;
   };
-  promo_popup_dismissed: {
-    method: "close_button" | "backdrop" | "escape";
+  // Shopify returned a cart line priced below $39.99 a unit (an automatic
+  // discount or variant price is misconfigured). The storefront displays the
+  // floor instead; this event is the alarm that the Shopify config needs fixing.
+  price_floor_violation: {
+    quantity: number;
+    line_total: number;
+    source: "shopify_cart";
   };
   contact_form_submitted: {
     reason: string;
@@ -102,16 +115,15 @@ export const EVENTS = {
   age_gate_confirmed: "age_gate_confirmed",
   homepage_engaged: "homepage_engaged",
   product_viewed: "product_viewed",
+  product_offer_selected: "product_offer_selected",
   cta_clicked: "cta_clicked",
   cart_add_failed: "cart_add_failed",
   cart_add_to_cart: "cart_add_to_cart",
   buy_now_clicked: "buy_now_clicked",
   checkout_started: "checkout_started",
   cart_remove_item: "cart_remove_item",
-  promo_popup_shown: "promo_popup_shown",
-  promo_email_submitted: "promo_email_submitted",
   promo_code_captured: "promo_code_captured",
-  promo_popup_dismissed: "promo_popup_dismissed",
+  price_floor_violation: "price_floor_violation",
   contact_form_submitted: "contact_form_submitted",
   festival_droplist_signup: "festival_droplist_signup",
   device_activated: "device_activated",

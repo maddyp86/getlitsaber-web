@@ -5,7 +5,6 @@ import Footer from "@/components/layout/Footer";
 import EmailSignupBannerGuard from "@/components/global/EmailSignupBanner/EmailSignupBannerGuard";
 import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
 import FutureDropsModal from "@/components/modals/FutureDropsModal";
-import FloatingPromoPopup from "@/components/layout/FloatingPromoPopup";
 import CartHydrator from "@/components/layout/CartHydrator";
 import ToastContainer from "@/components/layout/ToastContainer";
 
@@ -30,7 +29,6 @@ export default function SiteChrome({
       <CartDrawer />
       <GoldWaitlistModal />
       <FutureDropsModal />
-      <FloatingPromoPopup />
       <CartHydrator />
       <ToastContainer />
     </>

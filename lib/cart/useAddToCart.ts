@@ -1,6 +1,7 @@
 "use client";
 
-import { getTierPrice, getTierUnitPrice, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { getLinePrice, getDisplayUnitPrice, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { offerForQty } from "@/lib/cart/offers";
 import { useCartActions } from "@/lib/cart/store";
 import { useCartUIActions } from "@/lib/ui/store";
 import { useToastActions } from "@/lib/toast/store";
@@ -36,7 +37,7 @@ export function useAddToCart({ variantId, basePrice, source }: UseAddToCartOptio
       qty,
       title: "Litsaber OG — Silver",
       variantTitle: "Silver",
-      price: basePrice ?? BASE_UNIT_PRICE,
+      price: getDisplayUnitPrice(basePrice ?? BASE_UNIT_PRICE),
       image: mediaUrl("product/litsaber-packaging-1.jpg"),
     });
     openCart();
@@ -45,8 +46,9 @@ export function useAddToCart({ variantId, basePrice, source }: UseAddToCartOptio
         track(EVENTS.cart_add_to_cart, {
           variant: "silver",
           quantity: qty,
-          tier_price: getTierPrice(qty, basePrice),
-          unit_price: getTierUnitPrice(qty, basePrice),
+          tier_price: getLinePrice(qty, basePrice),
+          unit_price: getDisplayUnitPrice(basePrice),
+          offer: offerForQty(qty),
           source,
         });
       } else if (result.status === "failed") {

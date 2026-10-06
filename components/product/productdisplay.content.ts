@@ -5,14 +5,7 @@ import { mediaUrl, videoUrl } from "@/lib/media";
 export const PRODUCT_TITLE = "LITSABER OG";
 export const PRODUCT_SUBTITLE = "The Interactive 510 Battery";
 
-export const SPEC_PILLS = [
-  "USB-C charging",
-  "3 modes",
-  "800 mAh",
-  "10 colors",
-  "3 voltage",
-  "Pre-heat",
-] as const;
+export { SPEC_PILLS } from "./specs.content";
 
 export interface StyleOption {
   id: "silver" | "gold";
@@ -39,34 +32,71 @@ export const STYLE_OPTIONS: StyleOption[] = [
   },
 ];
 
-export type BundleId = "single" | "twopack" | "more";
+// ─── Offers ──────────────────────────────────────────────────────────────────
+// Two merchandised offers plus a plain quantity stepper (ADR-009). Prices are
+// computed from the live unit price in lib/cart/offers.ts; only copy lives here.
+// No savings or percentage badges: the 2-pack's only perk is free shipping.
 
-export interface BundleOption {
-  id: BundleId;
+export interface OfferCopy {
+  qty: 1 | 2;
   title: string;
-  descriptor: string;
+  badge?: string;
+  /** Shown under the card. */
+  note?: string;
 }
 
-export const BUNDLE_OPTIONS: BundleOption[] = [
+export const OFFERS: OfferCopy[] = [
   {
-    id: "single",
+    qty: 1,
     title: "Single",
-    descriptor: "One Litsaber",
+    note: "Add a second and shipping's free.",
   },
   {
-    id: "twopack",
+    qty: 2,
     title: "Two Pack",
-    descriptor: "For the lightshow. For the partner. For the never-without.",
-  },
-  {
-    id: "more",
-    title: "More",
-    descriptor: "",
+    badge: "Most popular",
   },
 ];
 
+export const QUANTITY_LABEL = "Quantity";
+export const MSRP_LABEL = "MSRP";
+export const FREE_SHIPPING_LABEL = "Free shipping";
+
 export const TRUST_LINE =
-  "SHIPS IN 24 HOURS · FREE US SHIPPING ON 2+ · 6 MONTH GUARANTEE";
+  "SHIPS IN 24 HOURS · FREE US SHIPPING ON 2+ · 6-MONTH WARRANTY";
+
+// ─── Built to last ───────────────────────────────────────────────────────────
+// Three lines max. Materials per the Tech Specs accordion; warranty terms per
+// /policies/warranty (6-month limited warranty against defects in materials
+// and workmanship under normal use).
+
+export const BUILT_TO_LAST = {
+  heading: "Built to last",
+  lines: [
+    "Aluminum and brass build.",
+    "Full-body illumination: 41 LEDs, 10 colors, 3 modes.",
+  ],
+  warranty: "6-month limited warranty against defects.",
+  warrantyLink: { label: "Read the warranty", href: "/policies/warranty" },
+} as const;
+
+// ─── Comparison table ────────────────────────────────────────────────────────
+// Against "a typical light-up 510 battery". Never name a competitor here.
+
+export const COMPARISON = {
+  heading: "Litsaber vs. a typical light-up 510",
+  columns: ["Litsaber", "Typical light-up 510"] as const,
+  rows: [
+    { label: "Illumination", litsaber: "Full body, end to end", typical: "Single light ring" },
+    { label: "LEDs", litsaber: "41", typical: "1 ring" },
+    { label: "Colors", litsaber: "10", typical: "1" },
+    { label: "Light modes", litsaber: "3", typical: "On/off" },
+    { label: "Build", litsaber: "Aluminum + brass", typical: "Plastic" },
+    { label: "Battery", litsaber: "800 mAh", typical: "Often unlisted" },
+    { label: "Warranty", litsaber: "Included", typical: "Varies" },
+  ],
+  warrantyLink: { label: "See the warranty policy", href: "/policies/warranty" },
+} as const;
 
 export interface GalleryImage {
   /** Defaults to "image" when omitted. */
@@ -108,6 +138,8 @@ export const GALLERY_IMAGES: GalleryImage[] = [
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-button-2.jpg", alt: "Litsaber button side view" },
 ];
 
-export const DESCRIPTION_HEADING = "The vape battery that gets people talking.";
+export const DESCRIPTION_HEADING = "The 510 battery people walk over to ask about.";
+// TODO(copy review): rewrite pending approval. Replaces the Figma copy, which
+// used banned words and an off-brand weapon reference.
 export const DESCRIPTION_BODY =
-  "Designed for the night. Engineered for the show. Ignite your night with Litsaber, the world's first fully automated, interactive battery that turns every session into a light show. Inspired by iconic sci-fi weapons, it's built to stand out at nightlife spots, EDM festivals, concerts, and beyond. This isn't just a battery. It's your glow-up accessory.";
+  "Designed for the night and built to outlast it. Litsaber is an interactive 510 battery with 41 LEDs that run the full length of the body and respond to every draw. Three modes, ten colors, and an 800 mAh cell that keeps the show going long after the set ends. Made for festivals, nightlife, concerts, and every moment worth showing off. A glowstick dies by sunrise. This doesn't.";

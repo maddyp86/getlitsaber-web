@@ -203,7 +203,8 @@ Full version in `BRAND.md`. The non-negotiables:
 - **No em-dashes in body copy.** Use periods, semicolons, or restructure.
 - **No exclamation marks.** Ever.
 - **No superlatives** ("premium," "revolutionary," "best-in-class," "amazing," "world's first," "ignite," "glow up").
-- **MSRP is $49.99.** Locked (supersedes the earlier $59.99 rule; the Shopify variant, the tier ladder in `lib/cart/pricing.ts`, and the live storefront were already at $49.99, so this brings the spec in line with what ships). If you see other prices anywhere in the codebase, flag them — don't silently change.
+- **Sell price is $39.99 (MAP), MSRP is $49.99 (ADR-009, locked 2026-10-05).** $39.99 is the permanent price, not a sale. $49.99 appears only struck through and labeled "MSRP" (never "Was", "Sale" or "Save"). No sale badges, percentage-off badges, countdowns or urgency copy. **No displayed unit price may ever be below $39.99**; N units are always at least N × $39.99 (enforced in `lib/cart/pricing.ts`, tested). D2C only: wholesale pricing and B2B MSRP references are separate and unchanged. If you see other prices anywhere in the codebase, flag them — don't silently change.
+- **D2C copy bans (ADR-009):** never "premium," "sale," "deal," "affordable," "cheap," "pen," or "cart battery" in storefront copy, no 🔥, and no Star Wars or lightsaber references or imagery cues. `components/storefront-copy.test.ts` guards the main content files.
 - **Lead with the moment, not the spec.** "The headliner" before "800 mAh."
 - **"X, not Y" is a recurring rhetorical move.** Use it when defining the product against alternatives.
 - **PDP copy currently in Figma is AI-toned and violates these rules.** The product description block ("Ignite your night... world's first... glow-up accessory") needs rewrite. Flag to the user before scaffolding the PDP long-form copy verbatim.
@@ -219,9 +220,9 @@ Full version in `BRAND.md`. The non-negotiables:
   - Block site interaction until confirmed
   - Set a cookie on confirmation to suppress re-prompts within session/period (final policy TBD)
   - Provide an EXIT option that redirects to a safe external destination (e.g. `https://www.google.com`)
-- **Shipping policy (locked 2026-10-05, ended the single-unit surcharge A/B):** a single unit pays $5.99 shipping; two or more ship free. The charge is enforced by the `shipping-surcharge-gate` Shopify Function, which reads the `_shipping_variant` cart attribute; the storefront stamps `surcharge` on every cart (`lib/shipping.ts`). Never claim free shipping without "on 2+".
-- **Quantity cap is 5 units per add-to-cart action** (Silver only; Gold-specific cap revisited at launch). Quantity discount tiers are defined in `lib/cart/pricing.ts` and apply as total line prices, not per-unit discounts. In Phase 4, these become Shopify automatic discount rules. See "Phase 2 decisions (locked)" for the full tier table.
-- **Promo / welcome discount (locked — ADR-004).** Architecture A: HubSpot stores the contact and emails the code; Shopify owns one shared code (`WELCOME10`/`LITSABER`), "$10 off, one use per customer." Offer locked at **$10**. Two independent suppression layers: client cookie stops the popup (`COOKIE_SEEN` 72h on dismiss, `COOKIE_SUBSCRIBED` 365d on subscribe); Shopify "one per customer" stops code reuse. Frontend promo box (Figma `3770:1315`) is wired via `cartDiscountCodesUpdate` and ships as a pre-launch bundle with the backend, on Phase 5 instrumentation. Design the error state before building (absent in Figma).
+- **Shipping policy (locked 2026-10-05, ended the single-unit surcharge A/B):** a single unit pays $5.99 shipping; two or more ship free. The charge is enforced by the `shipping-surcharge-gate` Shopify Function, which reads the `_shipping_variant` cart attribute; the storefront stamps `surcharge` on every cart (`lib/shipping.ts`). Never claim free shipping without "on 2+" (the 2-pack card and a 2+ cart may say "Free shipping" on their own, since they already are 2+). Keep the `_shipping_variant=surcharge` stamp: without it the Function ships singles free.
+- **Quantity cap is 5 units per add-to-cart action** (Silver only; Gold-specific cap revisited at launch). There are no quantity discount tiers (retired 2026-10-05, ADR-009): every unit is $39.99, and the only multi-unit perk is free shipping on 2+.
+- **Promo / welcome discount — RETIRED 2026-10-05 (ADR-009).** The $5-off popup (`FloatingPromoPopup`) is deleted and the footer signup no longer offers a discount. No replacement discount. The `?discount=` passthrough stays for affiliate codes, which must be attribution-only in Shopify (any customer discount would break the $39.99 floor). Historical record follows. **(Was locked — ADR-004.)** Architecture A: HubSpot stores the contact and emails the code; Shopify owns one shared code (`WELCOME10`/`LITSABER`), "$10 off, one use per customer." Offer locked at **$10**. Two independent suppression layers: client cookie stops the popup (`COOKIE_SEEN` 72h on dismiss, `COOKIE_SUBSCRIBED` 365d on subscribe); Shopify "one per customer" stops code reuse. Frontend promo box (Figma `3770:1315`) is wired via `cartDiscountCodesUpdate` and ships as a pre-launch bundle with the backend, on Phase 5 instrumentation. Design the error state before building (absent in Figma).
 - **TSA-compliant device** but cannabis carts are not — FAQ handles this honestly.
 - **Wholesale MOQ is 5 units** (locked). Free display case at 80+ units. 4-tier wholesale pricing: Initiate, Knight, Archon, Legend.
 
@@ -239,7 +240,7 @@ This is the most complex feature in the build. The governing rule: **build all U
 **Variant → behavior mapping (locked):**
 - **Silver** = in stock → add-to-cart flow (opens `<CartDrawer />`). Silver is the only physical SKU available now.
 - **Gold** = coming soon → does NOT add to cart; opens the **waitlist modal** (same form as the "Gold Edition" Editions box).
-- **Quantity** = the dimension that varies. The PDP selector exposes Single / Two Pack / More (with stepper for 3–5), each mapping to a quantity that adds to the cart as `qty × Silver`. Tier pricing applies. See "Phase 2 decisions" → "Bundle SKU strategy" for the full mechanism.
+- **Quantity** = the dimension that varies. The PDP shows two offers, Single and Two Pack ("Most popular"), plus a plain 1–5 quantity stepper; each adds `qty × Silver` to the cart at $39.99 a unit. See "Phase 2 decisions" → "Bundle SKU strategy".
 
 **Editions row — three boxes, three actions (CONFIRMED 2026-05-23 — all three open as described, no longer open questions):**
 - Box 1 "OG Silver / SHOP NOW" → navigates to the Shop page (`/shop/litsaber-og`). No modal.
@@ -315,35 +316,31 @@ If any of these aren't true, the work isn't done — say so and propose what's l
 
 ## Phase 2 decisions (locked)
 
-- **Bundle SKU strategy (FINAL 2026-05-27, supersedes 2026-05-23 entry):** The Two Pack is **quantity 2 of the single Litsaber OG Silver SKU**, priced via a quantity discount tier system. There is no separate Shopify variant, no "Two Pack" logical line in the cart, and no physical two-pack package. The PDP exposes a curated selector (Single / Two Pack / More-with-stepper) that maps each option to a quantity (1 / 2 / 3–5) and adds `qty × Silver` to the cart.
+- **Offer and pricing model (FINAL 2026-10-05, ADR-009, supersedes the 2026-05-27 tier ladder):** One Silver SKU at **$39.99 a unit (MAP)**. No tiers, no bundle discount. The PDP shows exactly two merchandised offers plus a plain quantity stepper (1–5):
 
-  **Tier prices** (defined in `lib/cart/pricing.ts`):
   ```
-  qty 1 -> $49.99   ($49.99/unit)               (no discount)
-  qty 2 -> $89.99   ($45.00/unit)   save $9.99  (10% off)
-  qty 3 -> $119.99  ($40.00/unit)   save $29.98 (20% off)
-  qty 4 -> $149.99  ($37.50/unit)   save $49.97 (25% off)
-  qty 5 -> $179.99  ($36.00/unit)   save $69.96 (28% off)
+  Single    ~~$49.99~~ MSRP  $39.99   + $5.99 shipping   "Add a second and shipping's free."
+  Two Pack  ~~$99.98~~ MSRP  $79.98   Free shipping      badge: "Most popular"
+  3–5       N × $39.99, free shipping (stepper only, no merchandised card)
   ```
 
-  Each tier's per-unit drop creates a real incentive to move up; $179.99 at the cap is the marketable "save $70" anchor. $36/unit floor stays above wholesale pricing to protect channel separation.
-
-  These are the totals `lib/cart/pricing.ts` currently produces at the $49.99 base, and they mirror Shopify's automatic discounts, which are configured as FIXED AMOUNTS. **Shopify is the source of truth for charged amounts.** If the Shopify discount amounts change, update `TIER_DISCOUNTS` so these four totals still match, or the PDP will quote a price checkout does not honor. The earlier ladder ($59.99 / $99.99 / $134.99 / $169.99 / $199.99) is retired along with the $59.99 MSRP.
+  Prices come from `lib/cart/pricing.ts` + `lib/cart/offers.ts`, driven by the live Shopify variant price and floor-guarded at $39.99. **Shopify is the source of truth for charged amounts**: the Silver variant is $39.99 with compare-at $49.99, and the four tier automatic discounts are deactivated. If Shopify ever returns a cart line below the floor, the storefront shows the floor and fires `price_floor_violation`.
 
   **Cart cap:** 5 units per Silver line. At cap, PDP surfaces a "Need more? See wholesale →" link to `/wholesale`.
 
-  **Cart UI:** lines display real quantities ("Litsaber Silver × 2") with tier total. **No quantity stepper in drawer or cart page** — PDP owns quantity selection; customers remove and re-add to change quantity. The store's `updateQty` action remains in the store interface for Phase 4 / programmatic edge cases, but is not exposed as a UI control.
+  **Cart UI:** lines display real quantities ("Litsaber Silver × 2") with the line total and the MSRP anchor. No "Save $X" lines. **No quantity stepper in drawer or cart page** — PDP owns quantity selection. The free-shipping meter ("Add a second and shipping's free") is the one cart-side quantity nudge.
 
-  **No mix-and-match UI for now.** Revisited when Gold ships; until then, a customer wanting a Silver + Gold mix would use two add-to-cart actions (Gold is currently waitlist-only, so this is moot until launch).
+  **No mix-and-match UI for now.** Revisited when Gold ships.
 
-  **Shopify mechanism (Phase 4):** an automatic discount per quantity threshold. **Native Bundles is OFF the table** — it doesn't expose variant IDs through the Storefront API, which a headless cart needs. Component layer does not change during the Phase 4 swap — only the store's action bodies. The pricing constant in `lib/cart/pricing.ts` becomes a client-side fallback once Shopify discounts are live; Shopify is the source of truth for prices at checkout.
+  **Native Bundles is OFF the table** — it doesn't expose variant IDs through the Storefront API, which a headless cart needs.
 
   **Decision history** — reversed twice during build:
   1. Dedicated $99.99 Two Pack variant → reversed because it would split inventory for a single physical good.
   2. Single SKU with the Two Pack modeled as one logical cart line at $99.99 → reversed because the model had no clean answer for quantities of 3, 4, or 5.
-  3. Quantity discount on a single SKU (this entry) — the cart holds real quantities, marketing names live on the PDP where they belong, and the model scales linearly to any future tier.
+  3. Quantity discount on a single SKU, $49.99 base, tiers to $179.99 for 5 → retired 2026-10-05: tiers pushed the unit price as low as $36 and read as a discount product.
+  4. Flat $39.99 MAP on every unit, MSRP anchor, free shipping on 2+ (this entry, ADR-009).
 
-- **PDP long-form copy:** Approved for rewrite. Current Figma copy ("Ignite your night... world's first... glow-up accessory") violates BRAND.md and must be replaced with copy matching the established voice. Rewrite happens during Phase 2 scaffold; flag for review before commit.
+- **PDP long-form copy:** Rewritten 2026-10-05 (ADR-009, pending Matt's copy review). Originally: approved for rewrite. Current Figma copy ("Ignite your night... world's first... glow-up accessory") violates BRAND.md and must be replaced with copy matching the established voice. Rewrite happens during Phase 2 scaffold; flag for review before commit.
 - **Age gate behavior (locked):**
   - First-visit cookie, **30-day duration** (industry standard for vape)
   - **Hard wall** — site is blocked until "I AM 21+" is clicked

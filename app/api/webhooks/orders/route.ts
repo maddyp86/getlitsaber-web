@@ -4,6 +4,7 @@
 import { createHash, createHmac, timingSafeEqual } from "crypto";
 import { PostHog } from "posthog-node";
 import { insertOrder } from "@/supabase/client";
+import { offerForQty } from "@/lib/cart/offers";
 
 export const dynamic = "force-dynamic";
 
@@ -150,13 +151,17 @@ export async function POST(req: Request): Promise<Response> {
   const shippingAmount =
     parseFloat(order.total_shipping_price_set?.shop_money?.amount ?? "") ||
     (order.shipping_lines ?? []).reduce((sum, l) => sum + (parseFloat(l.price) || 0), 0);
-  // Arm label, frozen onto the cart client-side. Same read path as channel_type.
+  // Shipping stamp the delivery Function read ("surcharge" on every cart since
+  // the A/B ended 2026-10-05). Kept on the event and in Supabase as a record
+  // of which shipping rule the order was charged under.
   const shippingVariant =
     order.note_attributes?.find((a) => a.name === "_shipping_variant")?.value?.trim() || "unknown";
-  // Only a real arm counts. "unknown" (cart predates the stamp) and "unresolved"
-  // (flags had not loaded) are both non-answers and must not be filed as control.
   const assignedArm =
     shippingVariant === "control" || shippingVariant === "surcharge" ? shippingVariant : null;
+
+  // Which PDP offer the order corresponds to. Derived from units, the same rule
+  // the storefront's product_offer_selected event uses, so the two always agree.
+  const offerSelected = offerForQty(itemCount);
 
   // Contribution per order — the shipping-surcharge experiment's true success
   // metric, baked onto the event so PostHog can test it natively (metrics can
@@ -257,16 +262,7 @@ export async function POST(req: Request): Promise<Response> {
           shipping_amount: shippingAmount,
           shipping_variant: shippingVariant,
           contribution: contribution,
-          // Stamp the arm the shopper actually checked out under. The exposure
-          // event is captured client-side under whichever distinct_id was
-          // current at the time, so a purchase that arrives from the server has
-          // no arm of its own to be grouped by. Carrying it on the event makes
-          // the result analysable directly from the purchase, independent of how
-          // the exposure was recorded. Omitted entirely when the arm is unknown,
-          // so an unbucketed order is absent rather than miscounted.
-          ...(assignedArm
-            ? { "$feature/single-unit-shipping-surcharge": assignedArm }
-            : {}),
+          offer_selected: offerSelected,
           utm_source: utmSource,
           utm_medium: utmMedium,
           utm_campaign: utmCampaign,

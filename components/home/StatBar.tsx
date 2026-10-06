@@ -2,7 +2,7 @@ const STATS = [
   { value: "2M+", label: "TikTok Views" },
   { value: "1K+", label: "Units Shipped" },
   { label: "Ships in 24hrs" },
-  { label: "30-Day Guarantee" },
+  { label: "6-Month Warranty" },
   { label: "Family Owned" },
 ] as const;
 

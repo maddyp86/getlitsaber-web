@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getTierPrice } from "@/lib/cart/pricing";
+import { quoteOffer } from "@/lib/cart/offers";
+import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { useAddToCart } from "@/lib/cart/useAddToCart";
 import { useIsCartOpen, useActiveModal, useIsAgeGateVisible } from "@/lib/ui/store";
 import { track, EVENTS, type AddSource } from "@/lib/analytics/events";
@@ -74,7 +75,7 @@ export default function StickyBuyBar({
   }, []);
 
   const hidden = ctaVisible || cartOpen || modalOpen || ageGateUp;
-  const price = getTierPrice(qty, basePrice);
+  const quote = quoteOffer(qty, basePrice);
 
   const product = (
     <>
@@ -91,7 +92,12 @@ export default function StickyBuyBar({
         <span className="font-label text-eyebrow text-text-secondary tracking-widest uppercase truncate">
           Litsaber OG · Silver{qty > 1 ? ` × ${qty}` : ""}
         </span>
-        <span className="font-label font-bold text-[18px] text-text-primary">${price.toFixed(2)}</span>
+        <MsrpPrice
+          price={quote.price}
+          msrp={quote.msrp}
+          msrpClassName="font-label text-[11px] text-text-muted"
+          priceClassName="font-label font-bold text-[18px] text-text-primary"
+        />
       </div>
     </>
   );

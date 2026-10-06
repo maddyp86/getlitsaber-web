@@ -18,6 +18,8 @@ import { track, EVENTS } from "@/lib/analytics/events";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 import { identifyByEmail } from "@/lib/analytics/identify";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
+import { getMsrpLinePrice } from "@/lib/cart/pricing";
+import MsrpPrice from "@/components/primitives/MsrpPrice";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
 // Silver (LTS-OG-SLV) Shopify variant GID — the only physical SKU. The unlock
@@ -245,11 +247,6 @@ export default function CartDrawer() {
                         >
                           {line.variantTitle} × {line.qty}
                         </p>
-                        {line.qty > 1 && (
-                          <p className="font-label text-text-muted mt-1" style={{ fontSize: "11px" }}>
-                            Buy {line.qty} Litsabers, Save ${Math.round(line.price * line.qty - line.lineTotal)}
-                          </p>
-                        )}
                       </div>
 
                       <div className="flex items-center justify-between mt-3">
@@ -258,7 +255,7 @@ export default function CartDrawer() {
                           className="font-label font-bold text-accent-cyan"
                           style={{ fontSize: "16px" }}
                         >
-                          ${line.lineTotal.toFixed(2)}
+                          <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} showLabel={false} msrpClassName="font-normal text-text-muted text-[0.85em]" />
                         </span>
                         {/* Remove */}
                         <button

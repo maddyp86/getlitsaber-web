@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
-import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.content";
-import type { BundleId } from "./productdisplay.content";
-import { getTierPrice } from "@/lib/cart/pricing";
+import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, FREE_SHIPPING_LABEL } from "./productdisplay.content";
+import { quoteOffer } from "@/lib/cart/offers";
+import { formatDisplayShipping } from "@/lib/shipping";
+import MsrpPrice from "@/components/primitives/MsrpPrice";
+import BuiltToLast from "./BuiltToLast";
 import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
@@ -23,8 +25,7 @@ interface ProductDisplayProps {
 export default function ProductDisplay({ variantId, available, surface, basePrice }: ProductDisplayProps) {
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
-  const [activeBundle, setActiveBundle] = useState<BundleId>("single");
-  const [moreQty, setMoreQty] = useState(3);
+  const [selectedQty, setSelectedQty] = useState(1);
 
   const productViewedFired = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -59,10 +60,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
     return () => observer.disconnect();
   }, [surface]);
 
-  const selectedQty =
-    activeBundle === "single" ? 1 : activeBundle === "twopack" ? 2 : moreQty;
-
-  const displayPrice = `$${getTierPrice(selectedQty, basePrice).toFixed(2)}`;
+  const quote = quoteOffer(selectedQty, basePrice);
 
   return (
     <div ref={rootRef} className="w-full flex flex-col lg:flex-row items-start justify-center gap-6 lg:gap-[50px]">
@@ -93,13 +91,25 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             <p className="font-body text-[18px] text-text-secondary">
               {PRODUCT_SUBTITLE}
             </p>
-            <p
-              className="font-label font-bold text-h3 text-text-primary"
-              style={{ textShadow: "0 0 10px #EC5793" }}
-            >
-              {displayPrice}
+            <p className="flex flex-col gap-1" data-testid="pdp-price">
+              <MsrpPrice
+                price={quote.price}
+                msrp={quote.msrp}
+                msrpClassName="font-label text-[16px] text-text-muted"
+                priceClassName="font-label font-bold text-h3 text-text-primary [text-shadow:0_0_10px_theme(colors.cta.DEFAULT)]"
+              />
+              {/* Shipping is shown up front so it is never a surprise at checkout. */}
+              <span
+                className={`font-label text-[14px] ${quote.shipping === 0 ? "text-accent-cyan" : "text-text-secondary"}`}
+              >
+                {quote.shipping === 0
+                  ? FREE_SHIPPING_LABEL
+                  : `+ ${formatDisplayShipping(quote.shipping)} shipping · free on 2+`}
+              </span>
             </p>
           </div>
+
+          <BuiltToLast />
 
           {/* Spec pills — 2 rows × 3, rectangular (no border radius). The cyan
               border reads as interactive, and session review showed people
@@ -134,11 +144,8 @@ export default function ProductDisplay({ variantId, available, surface, basePric
           ) : (
             <div className="w-full">
               <BundleAndCTA
-                activeBundle={activeBundle}
-                onBundleChange={setActiveBundle}
-                moreQty={moreQty}
-                onMoreQtyChange={setMoreQty}
-                selectedQty={selectedQty}
+                qty={selectedQty}
+                onQtyChange={setSelectedQty}
                 variantId={variantId}
                 available={available}
                 surface={surface}

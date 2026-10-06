@@ -20,7 +20,8 @@ import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
 import { SHIPPING_ATTRIBUTE_VALUE } from "@/lib/shipping";
 import { getChannelAttribution } from "@/lib/analytics/channel";
-import { getTierPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { getLinePrice, clampTotalToFloor, isBelowFloor, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { track, EVENTS } from "@/lib/analytics/events";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
 import type { ShopifyCart, ShopifyCartResponse, AttributeInput } from "@/lib/shopify/types";
@@ -154,17 +155,51 @@ const CART_QUERY = `
 // ---------------------------------------------------------------------------
 
 // Hard-coded for the single Silver SKU. Revisit when multi-product.
+// Line totals are Shopify's, with one guard: the storefront never displays a
+// unit price below the $39.99 floor. A sub-floor total means a Shopify
+// discount or variant price is misconfigured, so it is shown at the floor and
+// reported (price_floor_violation) for someone to fix in Shopify.
 function transformShopifyCart(cart: ShopifyCart): CartLine[] {
-  return cart.lines.edges.map(({ node }) => ({
-    id: node.id,
-    variantId: node.merchandise.id,
-    qty: node.quantity,
-    title: "Litsaber OG — Silver",
-    variantTitle: "Silver",
-    price: BASE_UNIT_PRICE,
-    lineTotal: parseFloat(node.cost.totalAmount.amount),
-    image: mediaUrl("product/litsaber-packaging-1.jpg"),
-  }));
+  return cart.lines.edges.map(({ node }) => {
+    const shopifyTotal = parseFloat(node.cost.totalAmount.amount);
+    if (isBelowFloor(shopifyTotal, node.quantity)) {
+      console.error("[cart] Shopify line total below the price floor:", node.quantity, shopifyTotal);
+      track(EVENTS.price_floor_violation, {
+        quantity: node.quantity,
+        line_total: shopifyTotal,
+        source: "shopify_cart",
+      });
+    }
+    return {
+      id: node.id,
+      variantId: node.merchandise.id,
+      qty: node.quantity,
+      title: "Litsaber OG — Silver",
+      variantTitle: "Silver",
+      price: BASE_UNIT_PRICE,
+      lineTotal: clampTotalToFloor(shopifyTotal, node.quantity),
+      image: mediaUrl("product/litsaber-packaging-1.jpg"),
+    };
+  });
+}
+
+// cartAttributesUpdate takes the cart's whole attribute set, so a refresh
+// built only from the current session would drop a visitor id stamped earlier
+// (whenever posthog-js has not loaded yet) and overwrite first-touch channel
+// with this session's. Keep what the cart already has; fresh values only fill
+// gaps. The shipping stamp is the exception and always takes the current value.
+export function mergeCartAttributes(
+  existing: ReadonlyArray<{ key: string; value: string | null }>,
+  fresh: AttributeInput[]
+): AttributeInput[] {
+  const merged = new Map<string, string>();
+  for (const { key, value } of existing) {
+    if (value) merged.set(key, value);
+  }
+  for (const { key, value } of fresh) {
+    if (key === "_shipping_variant" || !merged.has(key)) merged.set(key, value);
+  }
+  return Array.from(merged, ([key, value]) => ({ key, value }));
 }
 
 function shopifyEnvPresent(): boolean {
@@ -240,21 +275,21 @@ export const useCartStore = create<CartStore>()(
         const prevItems = get().items;
         const prevCapReached = get().capReached;
 
-        // Optimistic update — lineTotal seeded from local tier table; overwritten on Shopify response.
+        // Optimistic update — lineTotal seeded from local pricing; overwritten on Shopify response.
         set((state) => {
           const existing = state.items.find((i) => i.variantId === line.variantId);
           if (existing) {
             return {
               items: state.items.map((i) =>
                 i.variantId === line.variantId
-                  ? { ...i, qty: resultQty, lineTotal: getTierPrice(resultQty) }
+                  ? { ...i, qty: resultQty, lineTotal: getLinePrice(resultQty, line.price) }
                   : i
               ),
               capReached: clamped,
             };
           }
           return {
-            items: [...state.items, { ...line, qty: resultQty, lineTotal: getTierPrice(resultQty), id: crypto.randomUUID() }],
+            items: [...state.items, { ...line, qty: resultQty, lineTotal: getLinePrice(resultQty, line.price), id: crypto.randomUUID() }],
             capReached: clamped,
           };
         });
@@ -389,10 +424,10 @@ export const useCartStore = create<CartStore>()(
         const { cartId, items } = get();
         const originalQty = items.find((i) => i.id === lineId)?.qty ?? clampedQty;
 
-        // Optimistic update — lineTotal reseeded from local tier table; overwritten on Shopify response.
+        // Optimistic update — lineTotal reseeded from local pricing; overwritten on Shopify response.
         set((state) => ({
           items: state.items.map((i) =>
-            i.id === lineId ? { ...i, qty: clampedQty, lineTotal: getTierPrice(clampedQty) } : i
+            i.id === lineId ? { ...i, qty: clampedQty, lineTotal: getLinePrice(clampedQty, i.price) } : i
           ),
         }));
 
@@ -460,6 +495,8 @@ export const useCartStore = create<CartStore>()(
           // Carts created during the shipping A/B may carry "control" (or no
           // stamp), which the delivery Function ships free. Re-stamp them so
           // checkout matches the shipping the UI now shows for every cart.
+          // The stamp itself must stay: the shipping-surcharge-gate Function
+          // only charges the $5.99 single-unit rate when it reads "surcharge".
           const needsShippingRestamp =
             cart.attributes?.find((a) => a.key === "_shipping_variant")?.value !==
             SHIPPING_ATTRIBUTE_VALUE;
@@ -472,8 +509,8 @@ export const useCartStore = create<CartStore>()(
           // session's rather than first touch, which is still strictly better
           // than the "unknown" those orders carry today.
           if (!get().attributesStamped || needsShippingRestamp) {
-            const attributes = buildCartAttributes();
-            const hasVisitorId = attributes.some((a) => a.key === "posthog_distinct_id");
+            const attributes = mergeCartAttributes(cart.attributes ?? [], buildCartAttributes());
+            const hasVisitorId = attributes.some((a) => a.key === "posthog_distinct_id" && a.value);
             if (hasVisitorId || needsShippingRestamp) {
               await shopifyFetch<ShopifyCartResponse>(CART_ATTRIBUTES_UPDATE, {
                 cartId,

@@ -2,26 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BUNDLE_OPTIONS, TRUST_LINE } from "./productdisplay.content";
-import type { BundleId } from "./productdisplay.content";
-import { getTierPrice, getTierSavings, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import {
+  OFFERS,
+  TRUST_LINE,
+  QUANTITY_LABEL,
+  FREE_SHIPPING_LABEL,
+} from "./productdisplay.content";
+import { getLinePrice, getDisplayUnitPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { quoteOffer, offerForQty } from "@/lib/cart/offers";
+import { formatDisplayShipping } from "@/lib/shipping";
 import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useAddToCart, ADD_FAILED_MESSAGE } from "@/lib/cart/useAddToCart";
 import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS } from "@/lib/analytics/events";
 import WaitlistForm from "@/components/forms/WaitlistForm";
+import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { mediaUrl } from "@/lib/media";
 
-const MORE_MIN = 3;
-const MORE_MAX = MAX_QTY;
-
 interface BundleAndCTAProps {
-  activeBundle: BundleId;
-  onBundleChange: (id: BundleId) => void;
-  moreQty: number;
-  onMoreQtyChange: (qty: number) => void;
-  selectedQty: number;
+  qty: number;
+  onQtyChange: (qty: number) => void;
   variantId: string;
   available: boolean;
   surface: "homepage_buy" | "pdp";
@@ -31,6 +32,7 @@ interface BundleAndCTAProps {
 function RadioIndicator({ checked }: { checked: boolean }) {
   return (
     <div
+      aria-hidden="true"
       className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border-2 transition-colors ${
         checked
           ? "border-accent-cyan bg-surface-card-deep"
@@ -42,18 +44,9 @@ function RadioIndicator({ checked }: { checked: boolean }) {
   );
 }
 
-function optionQty(id: BundleId, moreQty: number): number {
-  if (id === "single") return 1;
-  if (id === "twopack") return 2;
-  return moreQty;
-}
-
 export default function BundleAndCTA({
-  activeBundle,
-  onBundleChange,
-  moreQty,
-  onMoreQtyChange,
-  selectedQty,
+  qty,
+  onQtyChange,
   variantId,
   available,
   surface,
@@ -64,14 +57,19 @@ export default function BundleAndCTA({
   const { addToast } = useToastActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
 
-  // Two or more ship free (single units pay $5.99), so those tiles carry a
-  // FREE SHIPPING badge.
-
-  const moreTierPrice = getTierPrice(moreQty, basePrice);
-  const moreSavingsDisplay = getTierSavings(moreQty, basePrice).toFixed(2);
+  function selectQty(next: number) {
+    if (next === qty) return;
+    onQtyChange(next);
+    track(EVENTS.product_offer_selected, {
+      offer: offerForQty(next),
+      quantity: next,
+      line_price: getLinePrice(next, basePrice),
+      surface,
+    });
+  }
 
   function handleAddToCart() {
-    addToCart(selectedQty);
+    addToCart(qty);
   }
 
   async function handleBuyNow() {
@@ -79,17 +77,17 @@ export default function BundleAndCTA({
     try {
       const result = await addItem({
         variantId,
-        qty: selectedQty,
+        qty,
         title: "Litsaber OG — Silver",
         variantTitle: "Silver",
-        price: basePrice ?? BASE_UNIT_PRICE,
+        price: getDisplayUnitPrice(basePrice ?? BASE_UNIT_PRICE),
         image: mediaUrl("product/litsaber-packaging-1.jpg"),
       });
       if (result.status === "failed") {
         addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
         track(EVENTS.cart_add_failed, {
           variant: "silver",
-          quantity: selectedQty,
+          quantity: qty,
           source: "buy_now",
           reason: result.reason,
         });
@@ -101,8 +99,9 @@ export default function BundleAndCTA({
       const freshItemCount = freshState.items.reduce((acc, i) => acc + i.qty, 0);
       track(EVENTS.buy_now_clicked, {
         variant: "silver",
-        quantity: selectedQty,
-        tier_price: getTierPrice(selectedQty, basePrice),
+        quantity: qty,
+        tier_price: getLinePrice(qty, basePrice),
+        offer: offerForQty(qty),
       });
       track(EVENTS.checkout_started, {
         cart_value: freshCartValue,
@@ -121,43 +120,32 @@ export default function BundleAndCTA({
     }
   }
 
+  const customQuote = quoteOffer(qty, basePrice);
+
   return (
     <div className="flex flex-col gap-4">
       {available && (
         <>
-          <p className="font-body font-medium text-[14px] text-text-secondary uppercase">
+          <p id="offer-label" className="font-body font-medium text-[14px] text-text-secondary uppercase">
             SELECT QUANTITY
           </p>
 
-          {/* Option rows */}
-          <div className="flex flex-col gap-3">
-            {BUNDLE_OPTIONS.map((option) => {
-              const isChecked = option.id === activeBundle;
-              const q = optionQty(option.id, moreQty);
-
-              const displayPrice =
-                option.id === "more"
-                  ? `$${moreTierPrice.toFixed(2)}`
-                  : `$${getTierPrice(q, basePrice).toFixed(2)}`;
-
-              const saveLabel =
-                option.id === "more"
-                  ? `SAVE $${moreSavingsDisplay}`
-                  : q > 1
-                  ? `SAVE $${getTierSavings(q, basePrice).toFixed(2)}`
-                  : undefined;
+          {/* Offer cards. A card is checked when the stepper quantity matches it,
+              so stepping to 3+ leaves both unchecked rather than lying. */}
+          <div role="radiogroup" aria-labelledby="offer-label" className="flex flex-col gap-3">
+            {OFFERS.map((offer) => {
+              const isChecked = qty === offer.qty;
+              const quote = quoteOffer(offer.qty, basePrice);
 
               return (
-                <div key={option.id} className="flex flex-col">
+                <div key={offer.qty} className="flex flex-col gap-1.5" data-testid={`offer-${quote.id}`}>
                   <button
                     type="button"
-                    onClick={() => onBundleChange(option.id)}
-                    className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors touch-manipulation active:opacity-90 w-full ${
+                    role="radio"
+                    aria-checked={isChecked}
+                    onClick={() => selectQty(offer.qty)}
+                    className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors touch-manipulation active:opacity-90 w-full rounded-selector ${
                       isChecked ? "border-accent-cyan" : "border-border-inactive"
-                    } ${
-                      option.id === "more" && isChecked
-                        ? "rounded-t-selector rounded-t-btn border-b-0"
-                        : "rounded-selector rounded-btn"
                     }`}
                   >
                     <RadioIndicator checked={isChecked} />
@@ -165,108 +153,87 @@ export default function BundleAndCTA({
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-label font-bold text-[16px] text-text-primary leading-tight">
-                          {option.title}
+                          {offer.title}
                         </span>
-                        {saveLabel && (
-                          <span
-                            className="font-label text-accent-magenta"
-                            style={{
-                              fontSize: "10.5px",
-                              letterSpacing: "0.5px",
-                              background: "rgba(236, 87, 147, 0.12)",
-                              borderRadius: "5px",
-                              padding: "3px 8px",
-                            }}
-                          >
-                            {saveLabel}
-                          </span>
-                        )}
-                        {q >= 2 && (
-                          <span
-                            className="font-label text-accent-cyan"
-                            style={{
-                              fontSize: "10.5px",
-                              letterSpacing: "0.5px",
-                              background: "rgba(0, 229, 255, 0.12)",
-                              borderRadius: "5px",
-                              padding: "3px 8px",
-                            }}
-                          >
-                            FREE SHIPPING
+                        {offer.badge && (
+                          <span className="font-label text-[10.5px] tracking-[0.5px] uppercase text-accent-cyan bg-surface-tint-cyan rounded-sm px-2 py-[3px]">
+                            {offer.badge}
                           </span>
                         )}
                       </div>
-                  {/* {option.descriptor && (
-                        <p className="font-body text-[12px] text-text-secondary leading-snug">
-                          {option.descriptor}
-                        </p>
-                      )} */}
-                    </div>
-
-                    <span className="font-body font-bold text-[16px] text-text-primary flex-shrink-0 text-right">
-                      {displayPrice}
-                    </span>
-                  </button>
-
-                  {/* Inline stepper — visible only when "more" is active */}
-                  {option.id === "more" && isChecked && (
-                    <div
-                      className="bg-surface-card-deep border border-accent-cyan border-t-0 rounded-b-selector rounded-b-btn px-4 py-3 flex items-center gap-4"
-                    >
-                      <span className="font-label text-[12px] text-text-muted uppercase tracking-wider">
-                        Quantity
-                      </span>
-                      <div
-                        className="flex items-center"
-                        style={{
-                          border: "1px solid rgba(240, 240, 245, 0.20)",
-                          borderRadius: "4px",
-                          overflow: "hidden",
-                        }}
+                      <span
+                        className={`font-label text-[12px] ${
+                          quote.shipping === 0 ? "text-accent-cyan" : "text-text-muted"
+                        }`}
                       >
-                        <button
-                          type="button"
-                          onClick={() => onMoreQtyChange(Math.max(MORE_MIN, moreQty - 1))}
-                          disabled={moreQty <= MORE_MIN}
-                          aria-label="Decrease quantity"
-                          className="w-9 h-9 flex items-center justify-center font-label text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
-                          style={{ fontSize: "20px", lineHeight: 1 }}
-                        >
-                          −
-                        </button>
-                        <span
-                          className="w-9 h-9 flex items-center justify-center font-label font-bold text-text-primary"
-                          style={{
-                            fontSize: "16px",
-                            borderLeft: "1px solid rgba(240, 240, 245, 0.15)",
-                            borderRight: "1px solid rgba(240, 240, 245, 0.15)",
-                          }}
-                        >
-                          {moreQty}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => onMoreQtyChange(Math.min(MORE_MAX, moreQty + 1))}
-                          disabled={moreQty >= MORE_MAX}
-                          aria-label="Increase quantity"
-                          className="w-9 h-9 flex items-center justify-center font-label text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
-                          style={{ fontSize: "20px", lineHeight: 1 }}
-                        >
-                          +
-                        </button>
-                      </div>
-                      <span className="font-label text-[12px] text-text-muted">
-                        Save ${moreSavingsDisplay}
+                        {quote.shipping === 0
+                          ? FREE_SHIPPING_LABEL
+                          : `+ ${formatDisplayShipping(quote.shipping)} shipping`}
                       </span>
                     </div>
+
+                    <MsrpPrice
+                      price={quote.price}
+                      msrp={quote.msrp}
+                      className="flex-shrink-0 justify-end text-right"
+                      msrpClassName="font-label text-[12px] text-text-muted"
+                      priceClassName="font-body font-bold text-[16px] text-text-primary"
+                    />
+                  </button>
+                  {offer.note && (
+                    <p className="font-label text-[12px] text-text-secondary pl-1">{offer.note}</p>
                   )}
                 </div>
               );
             })}
           </div>
 
+          {/* Plain quantity stepper: any quantity up to the cap. 2+ ships free. */}
+          <div className="flex items-center gap-4 flex-wrap">
+            <span id="qty-label" className="font-label text-[12px] text-text-muted uppercase tracking-wider">
+              {QUANTITY_LABEL}
+            </span>
+            <div
+              role="group"
+              aria-labelledby="qty-label"
+              className="flex items-center border border-border-default rounded-sm overflow-hidden"
+            >
+              <button
+                type="button"
+                onClick={() => selectQty(Math.max(1, qty - 1))}
+                disabled={qty <= 1}
+                aria-label="Decrease quantity"
+                className="w-9 h-9 flex items-center justify-center font-label text-[20px] leading-none text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                −
+              </button>
+              <span
+                aria-live="polite"
+                data-testid="qty-value"
+                className="w-9 h-9 flex items-center justify-center font-label font-bold text-[16px] text-text-primary border-x border-border-default"
+              >
+                {qty}
+              </span>
+              <button
+                type="button"
+                onClick={() => selectQty(Math.min(MAX_QTY, qty + 1))}
+                disabled={qty >= MAX_QTY}
+                aria-label="Increase quantity"
+                className="w-9 h-9 flex items-center justify-center font-label text-[20px] leading-none text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                +
+              </button>
+            </div>
+            {qty > 2 && (
+              <span className="font-label text-[12px] text-accent-cyan" data-testid="custom-qty-shipping">
+                {FREE_SHIPPING_LABEL}
+                <span className="sr-only">{` on ${customQuote.qty} units`}</span>
+              </span>
+            )}
+          </div>
+
           {/* Wholesale nudge at qty cap */}
-          {selectedQty >= MAX_QTY && (
+          {qty >= MAX_QTY && (
             <p className="font-label text-[12px] text-text-muted">
               Need more?{" "}
               <Link
