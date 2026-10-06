@@ -91,13 +91,30 @@ Goal: product page, cart, checkout handoff, policies, FAQ, About, and emails all
 Goal: images, gallery navigation, and video respond the first time someone tries them, on desktop and mobile.
 
 - [ ] **[OWNER]** Before code changes: I will watch the five most active product-page replays from the last 30 days in PostHog and note exactly what people clicked. Recordings expire after 30 days, so this happens first. Add my notes here: ____
-- [ ] Inventory every element in the product gallery and media area: images, thumbnails, arrows, swatches, video, play controls. For each, record whether it is meant to be interactive and whether it works.
-- [ ] Make image zoom or lightbox work on click and tap.
-- [ ] Make gallery navigation work by arrows, thumbnails, and swipe on mobile.
-- [ ] Make the video play in place on the first tap, with a visible loading state and an error fallback.
-- [ ] Remove play, zoom, or hover styling from anything that is not actually interactive, so it does not invite clicks.
-- [ ] Repair existing controls where possible. Do not replace the gallery library unless the current one cannot be fixed; explain why first.
-- [ ] Test on a fresh load, on a throttled (slow CPU and network) profile, and at 375px, 768px, and 1440px widths.
+- [x] Inventory every element in the product gallery and media area: images, thumbnails, arrows, swatches, video, play controls. For each, record whether it is meant to be interactive and whether it works.
+- [x] Make image zoom or lightbox work on click and tap.
+- [x] Make gallery navigation work by arrows, thumbnails, and swipe on mobile.
+- [x] Make the video play in place on the first tap, with a visible loading state and an error fallback.
+- [x] Remove play, zoom, or hover styling from anything that is not actually interactive, so it does not invite clicks.
+- [x] Repair existing controls where possible. Do not replace the gallery library unless the current one cannot be fixed; explain why first.
+- [x] Test on a fresh load, on a throttled (slow CPU and network) profile, and at 375px, 768px, and 1440px widths.
+
+*Findings and results 2026-10-06 (branch `fix/product-media`). No replay notes were added, so PostHog dead and rage clicks stood in: 18 dead clicks on the main video (all but one before the Oct 5 autoplay fix, #65) and rage clicks on the Next arrow.*
+
+| Element | Meant to be interactive | Before | Now |
+|---|---|---|---|
+| Main photo | Yes (zoom) | Lightbox opened; tapping the photo inside did nothing under a zoom-out cursor | Lightbox; tap zooms 2.5x at that point, move to pan, tap again to zoom out |
+| Lightbox | Yes | Escape and backdrop only; no navigation; focus not managed | Prev/next buttons, arrow keys and swipe between photos; focus moves in, stays in, returns |
+| Prev/next arrows | Yes | Worked, but the next photo loaded only on tap, blanking the viewer (repeated taps) | Neighbours preloaded after the photo on screen; spinner if still loading after 250ms; visible on keyboard focus on desktop |
+| Swipe on the photo | Yes (mobile) | Not implemented | Left/right swipe; vertical scroll untouched; off while a clip plays (seek bar) |
+| Thumbnails | Yes | Worked; strip did not follow the active slide | Strip follows; tiles load only when visible (they are full-size originals) |
+| Video thumbnails (play icon) | Yes | Play icon only selected the clip; a second tap played it | First tap selects and plays in place |
+| Main video play overlay | Yes | Worked, with loading state | Same; plus error fallback "Video didn't load. Tap to retry" |
+| Spec pills, style swatches | Yes | Pills open Tech Specs; swatches select a style | Unchanged (honest styling) |
+
+*Tested on the preview at 375, 768 and 1440px, fresh load, normal and throttled (4x CPU, ~1.6Mbps, 150ms): every control acknowledged the first tap; lightbox opens in under 15ms; a video thumbnail shows "Loading" at once and frames play in 8 to 51ms once buffered; a blocked clip shows the retry message; no horizontal overflow, no page errors. Throttled, Next draws the next photo in 2.0 to 2.8s (image 1 previously did not draw within 15s).*
+*Found and fixed during testing: tapping the zoomed photo crashed and unmounted the whole page (a React event read inside a state updater); a gallery error boundary now keeps the buy controls alive if the gallery ever fails. The first slide's preload wrapped to the last photo, a 14MB file.*
+- **[OWNER]** *Image weight: `images.unoptimized: true` (since June 23) serves original files; the 24 photos total 28MB, six close-ups are 1.7 to 13.8MB (litsaber-button-2.jpg is 13.8MB). Decide: turn image optimization back on, or recompress those six and add small thumbnail files.*
 
 **Done when:** every intended media interaction works on the first attempt in repeated desktop and mobile testing, including slow-device conditions.
 
