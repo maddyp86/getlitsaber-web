@@ -72,7 +72,7 @@ export const COMPARISON = {
     { label: "Addressable LEDs", litsaber: "41", typical: "1 ring" },
     { label: "Selectable colors", litsaber: "10", typical: "1" },
     { label: "Interactive modes", litsaber: "3", typical: "On/off" },
-    { label: "Build", litsaber: "Aluminum + steel", typical: "Plastic" },
+    { label: "Build", litsaber: "Aluminum + brass", typical: "Plastic" },
     { label: "Battery", litsaber: "800 mAh", typical: "Often unlisted" },
     { label: "Warranty", litsaber: "Included", typical: "Varies" },
   ],

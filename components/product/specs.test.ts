@@ -11,7 +11,7 @@ describe("spec pills", () => {
       "10 SELECTABLE COLORS",
       "3 INTERACTIVE MODES",
       "800 MAH BATTERY",
-      "ALUMINUM + STEEL BUILD",
+      "ALUMINUM + BRASS BUILD",
       "WARRANTY INCLUDED",
     ]);
   });
