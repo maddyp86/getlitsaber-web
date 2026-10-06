@@ -70,14 +70,16 @@ Goal: product page, cart, checkout handoff, policies, FAQ, About, and emails all
   - Homepage: replace any "ships in 24 hours" claim with "Ships in 2 business days."
   - Remove "up to 5 days during launches or sales" and any other dispatch window that conflicts with the above.
 - [x] Colors: change every reference to 12 colors to 10 (product page, The Tech, FAQ, meta descriptions, alt text).
-- [ ] Compatibility: replace "If it's 510, it works" and any absolute compatibility claims with the verified statement already in the specs or FAQ (about 95–99% of 510 carts, with diameter and contact caveats). **[OWNER]** confirms the statement.
-  - Implemented with `TODO(owner)` at `COMPATIBILITY_STATEMENT` in `components/product/specs.content.ts`, awaiting confirmation: "Engineered for 95 to 99% compatibility with standard 510-thread carts from 10.5mm to 14.5mm in diameter. Some deeper-pin carts hit cleanest backed off a quarter to half turn."
+- [x] Compatibility: replace "If it's 510, it works" and any absolute compatibility claims with the verified statement already in the specs or FAQ (about 95–99% of 510 carts, with diameter and contact caveats). **[OWNER]** confirms the statement.
+  - `COMPATIBILITY_STATEMENT` in `components/product/specs.content.ts`, confirmed by owner 2026-10-06: "Engineered for 95 to 99% compatibility with standard 510-thread carts from 10.5mm to 14.5mm in diameter. Some deeper-pin carts hit cleanest backed off a quarter to half turn."
 - [x] About page: replace the past Gold launch date with "Coming soon."
 - [x] Warranty: wherever warranty is mentioned on product, FAQ, and cart surfaces, describe it as a 6-month limited warranty against manufacturing defects, with replacement (not refund), linking to /policies/warranty.
 - [x] Add a test or script that checks the product page, cart, and policy pages for the old strings ("Free 14-day returns," "free shipping on all US orders," "12 colors," "$45.99," "$44.99," "$89.99") and fails if any reappear.
   - `components/storefront-promises.test.ts` (source, runs in `pnpm test`) and `pnpm check-promises <url>` (rendered pages). Patterns in `lib/copy/retiredClaims.ts`.
 
 **Done when:** a scripted walkthrough of both offers from product page to checkout handoff finds zero mismatches in price, shipping, returns, dispatch, colors, or compatibility.
+
+*Verified 2026-10-06 on preview `get-litsaber-mvu88bi6c` (commit 8ffdb90): `pnpm check-promises` clean on 9 pages; Single and Two Pack each reached Shopify checkout via Add to Cart and via Buy Now with the right units and subtotal ($39.99 x1, $79.98 x2). Shipping in checkout needs an address, so it is verified in Phase 4.*
 
 **Deploy date:** ____
 
@@ -237,7 +239,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 
 - [x] True dispatch window and arrival estimate (Phase 1): ships within 2 business days, USPS Ground Advantage, 2–5 business days transit
 - [x] Return-policy wording for the regular-price clarification (Phase 1): 14-day returns on unopened devices; wording in Phase 1
-- [ ] Verified compatibility statement (Phase 1)
+- [x] Verified compatibility statement (Phase 1)
 - [x] Confirm warranty term (Phase 1): 6-month limited warranty, replacement only
 - [ ] Watch the five most active product-page replays before they expire (Phase 2)
 - [ ] Live test orders, Single and Two Pack, then refund (Phase 4)
