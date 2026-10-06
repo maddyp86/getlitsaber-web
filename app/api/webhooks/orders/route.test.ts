@@ -84,13 +84,22 @@ describe("purchase event", () => {
     });
   });
 
-  it("never sends names, email, address or phone to PostHog", async () => {
-    await deliver(order({ shipping_address: { address1: "1 Main St", phone: "555-0100" } }));
-    expect(identifies).toHaveLength(0);
-    const sent = JSON.stringify(captures);
-    for (const pii of ["shopper@example.com", "Sam", "Shopper", "1 Main St", "555-0100"]) {
+  it("sets the order email on the buyer's person, and nothing else personal", async () => {
+    await deliver(order({ email: " Shopper@Example.com ", shipping_address: { address1: "1 Main St", phone: "555-0100" } }));
+    expect(identifies).toEqual([
+      { distinctId: "019f0000-aaaa-7bbb-8ccc-000000000001", properties: { email: "shopper@example.com" } },
+    ]);
+    // The event itself carries no personal data, and names, address and phone never go.
+    const sent = JSON.stringify(captures) + JSON.stringify(identifies);
+    expect(JSON.stringify(captures)).not.toContain("shopper@example.com");
+    for (const pii of ["Sam", "Shopper\"", "1 Main St", "555-0100"]) {
       expect(sent).not.toContain(pii);
     }
+  });
+
+  it("does not identify a purchase that has no visitor id", async () => {
+    await deliver(order({ note_attributes: [] }));
+    expect(identifies).toHaveLength(0);
   });
 
   it("a redelivered webhook does not count the order twice", async () => {

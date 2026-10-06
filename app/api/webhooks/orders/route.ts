@@ -126,9 +126,16 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   // The purchase must land on the person who browsed: the visitor id from the
-  // cart is the same anonymous id their storefront events use. No identify()
-  // and no email: personal data never goes to PostHog.
+  // cart is the same anonymous id their storefront events use.
   const visitorLinked = !!stitchedId && !stitchedId.includes("@");
+
+  // Owner decision 2026-10-06 (overrides the roadmap's no-email rule for this
+  // one path): the paid order's email is set on the buyer's PostHog person, so
+  // the person is recognisable and a repeat buyer's devices merge. Only as a
+  // person property via identify(), never as an event property, and never from
+  // the storefront itself. Names, addresses and phones still never go.
+  const orderEmail = (order.email || "").trim().toLowerCase();
+  const canIdentify = visitorLinked && orderEmail.includes("@");
 
   // Internal or test order: Shopify test mode, a cart stamped by an internal
   // browser (lib/cart/store.ts), or a customer tagged "internal" or "test" in
@@ -260,6 +267,9 @@ export async function POST(req: Request): Promise<Response> {
   if (posthogToken && !alreadyCaptured && isPaid) {
     const posthog = new PostHog(posthogToken, { host: posthogHost });
     try {
+      if (canIdentify) {
+        posthog.identify({ distinctId: stitchedId as string, properties: { email: orderEmail } });
+      }
       posthog.capture({
         distinctId,
         event: "purchase",
