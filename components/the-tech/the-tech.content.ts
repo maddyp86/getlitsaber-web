@@ -49,7 +49,7 @@ export const BREATH_HEADLINE = "Your breath controls the light.";
 export const BREATH_BODY_BLOCKS = [
   "**Most 510 batteries give you smoke. Litsaber gives you a light show that you make.** The airflow sensor and the LED array are wired as one system,  when you pull, the lights respond in real time. Pull harder, the response intensifies. Stop pulling, the animation settles. ",
   "This isn't a fixed pattern on a timer. It's the device **responding to your breath**, the same input that creates the cloud creates the light. Same draw, two outputs, one moment.",
-  "**In Litsaber Mode,** the response curves with you. The lights start dim and intensify the longer you hold the pull, dim, brighter, brighter, until the device peaks in a rainbow strobe that cycles through all twelve colors. Every hit is a build. The longest pulls earn the biggest payoff.",
+  "**In Litsaber Mode,** the response curves with you. The lights start dim and intensify the longer you hold the pull, dim, brighter, brighter, until the device peaks in a rainbow strobe that cycles through all ten colors. Every hit is a build. The longest pulls earn the biggest payoff.",
   "It's also how the device tells you what's happening. Pre-heat shows a different animation than a hit. The LED color tracks your voltage setting. **The whole device speaks back to you as you use it.**",
 ];
 
@@ -111,14 +111,14 @@ export const FIT_EYEBROW = "WORKS WITH WHAT YOU ALREADY BUY";
 export const FIT_HEADLINE_LINE1 = "Universal";
 export const FIT_HEADLINE_ACCENT = "Fit.";
 export const FIT_BODY = [
-  "510 thread, 10.5mm to 14.5mm diameter. Half-gram, full-gram, two-gram. **Roughly ninety-five percent of carts on the market screw into the Litsaber** including distillate, rosin, live resin, cured resin, liquid diamonds, hybrids.",
+  "510 thread, 10.5mm to 14.5mm diameter. Half-gram, full-gram, two-gram. **95 to 99% of standard 510 carts screw into the Litsaber** including distillate, rosin, live resin, cured resin, liquid diamonds, hybrids.",
   "Whatever you're already buying, the device is built to accept it. No proprietary pods. No locked ecosystem. The cart you're holding right now probably fits.",
   "The connection sits behind the aluminum and brass top  protected, threaded, made to take repeat insertions without wearing down."
 ];
 
 // ─── Section 7 — CTA ─────────────────────────────────────────────────────────
 export const CTA_HEADLINE = "Ready to see it in person?";
-export const CTA_SUBHEADLINE = "The OG Silver ships in 24 hours from Los Angeles. Backed by a 6-month limited warranty.";
+export const CTA_SUBHEADLINE = "The OG Silver ships within 2 business days from Los Angeles. Backed by a 6-month limited warranty.";
 export const CTA_PRIMARY_LABEL = "GET YOURS";
 export const CTA_PRIMARY_HREF = "/shop/litsaber-og";
 export const CTA_SECONDARY_LABEL = "VIEW WHOLESALE";

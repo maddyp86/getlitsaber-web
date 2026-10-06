@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function CardBadge({ label }: { label: string }) {
   return (
     <span
@@ -25,7 +27,10 @@ export function TrustBadges() {
         <CardBadge label="DISC" />
       </div>
       <p className="font-label text-text-muted text-center" style={{ fontSize: "10px" }}>
-        Authorize.net · Free 14-day returns
+        Authorize.net ·{" "}
+        <Link href="/policies/shipping-returns" className="underline underline-offset-2 hover:text-text-secondary">
+          14-day returns on unopened devices.
+        </Link>
       </p>
     </div>
   );

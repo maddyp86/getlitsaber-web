@@ -47,7 +47,7 @@ export default function Footer() {
               />
             </Link>
             <p className="font-body text-body-sm sm:text-body lg:text-[18px] text-text-secondary leading-relaxed mb-lg">
-              An interactive glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.
+              An interactive 510 battery built for festivals, nightlife, and the moments worth being lit for.
             </p>
 
             <SocialIconRow />

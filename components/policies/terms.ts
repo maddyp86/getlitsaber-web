@@ -221,7 +221,7 @@ export const S08_PARA2: Para = [
   { t: "link", v: "Warranty Policy", href: "/policies/warranty" },
   {
     t: "txt",
-    v: ". We may request photo or video evidence before issuing a replacement, repair, or store credit as outlined in the applicable policy.",
+    v: ". We may request photo or video evidence before issuing a replacement as outlined in the applicable policy.",
   },
 ];
 

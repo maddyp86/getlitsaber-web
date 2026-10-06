@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { EYEBROW, HEADLINE, FAQ_ITEMS, FaqItem } from "./commonquestions.content";
 
@@ -58,6 +59,14 @@ function FaqCard({ item, index, visible }: { item: FaqItem; index: number; visib
         style={{ fontSize: "16px", lineHeight: "normal", color: "#CCC" }}
       >
         {item.answer}
+        {item.link && (
+          <>
+            {" "}
+            <Link href={item.link.href} className="text-accent-cyan underline underline-offset-4">
+              {item.link.label}
+            </Link>
+          </>
+        )}
       </p>
     </motion.div>
   );

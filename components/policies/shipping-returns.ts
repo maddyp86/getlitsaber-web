@@ -16,25 +16,24 @@ export const QUICK_SUMMARY: Para = [
   { t: "b", v: "Quick summary:" },
   {
     t: "txt",
-    v: " we ship Monday to Friday from our warehouse in California, typically within 1 business day of order placement. Returns are accepted for unopened, unused products within 14 days of delivery. You cover return shipping for change-of-mind returns; we cover it when an item arrives damaged, defective, or incorrect. Defective devices are also covered under our 6-month limited warranty.",
+    v: " We ship Monday through Friday from our warehouse in California, within 2 business days of your order. US orders ship via USPS Ground Advantage and typically arrive 2–5 business days after shipment. Returns are accepted for unopened, unused products within 14 days of delivery. You cover return shipping for change-of-mind returns; we cover it when an item arrives damaged, defective, or incorrect. Defective devices are also covered under our 6-month limited warranty.",
   },
 ];
 
 // ─── Section 01: Shipping ─────────────────────────────────────────────────────
 
 export const S01_PARA1: Para = [
-  { t: "txt", v: "Due to high order volume, please allow up to " },
-  { t: "b", v: "5 business days" },
+  { t: "txt", v: "Orders ship within " },
+  { t: "b", v: "2 business days" },
   {
     t: "txt",
-    v: " for order processing. We offer USPS shipping on all US orders. We ship Monday through Friday from our warehouse, typically within 1 business day of order placement.",
+    v: ", Monday through Friday, excluding US holidays. We ship all US orders via USPS Ground Advantage. Delivery typically takes ",
   },
-];
-
-export const S01_PARA2: Para = [
-  { t: "txt", v: "Please allow up to " },
-  { t: "b", v: "7 business days" },
-  { t: "txt", v: " for delivery after shipment." },
+  { t: "b", v: "2–5 business days" },
+  {
+    t: "txt",
+    v: " after shipment. Delivery times are estimates and are not guaranteed once your order is with the carrier.",
+  },
 ];
 
 export const S01_PARA3: Para = [
@@ -127,6 +126,13 @@ export const S05_PARA1: Para = [
   { t: "txt", v: " will be processed upon inquiry. Contact " },
   { t: "email", v: "order@getlitsaber.com" },
   { t: "txt", v: " with your order number." },
+];
+
+export const S05_PARA2: Para = [
+  {
+    t: "txt",
+    v: "Our regular price is shown alongside the manufacturer's suggested retail price (MSRP). Purchases at our regular price are not sale purchases and are eligible for returns under the terms above.",
+  },
 ];
 
 // ─── Section 06: Defective Products ──────────────────────────────────────────
