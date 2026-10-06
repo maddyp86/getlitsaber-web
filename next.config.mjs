@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true,
+    // Optimization back on (owner decision 2026-10-06). It was off from June
+    // 23, so phones downloaded original files: the 24 PDP photos are 28MB,
+    // one close-up alone 13.8MB, and 60px thumbnails pulled full originals.
+    // Blob filenames are immutable (a changed asset gets a new name, see
+    // CLAUDE.md), so resized results can be cached for a year.
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",

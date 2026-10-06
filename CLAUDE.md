@@ -106,6 +106,11 @@ overwrite — that allows the one-year cache headers with no invalidation proble
 **Rules:**
 - Render photos via `next/image` with explicit `width`/`height` (or `fill` with
   a sized container) — no layout shift. `next/image` is used in 36+ files.
+- **Image optimization is ON** (re-enabled 2026-10-06; it was off from June 23
+  and phones were downloading 2 to 14MB originals). Give every `fill` image an
+  accurate `sizes`, since it now decides the width Vercel resizes to. Resized
+  results are cached for a year (`minimumCacheTTL`), which relies on Blob
+  filenames never being overwritten.
 - **`next.config.mjs` `images.remotePatterns` MUST whitelist any remote media
   host.** `next/image` hard-throws on an un-whitelisted hostname. The Blob host
   (`0ku6zb3bovdlowuq.public.blob.vercel-storage.com`) is already whitelisted; a
