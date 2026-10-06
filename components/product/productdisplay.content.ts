@@ -93,13 +93,15 @@ export interface GalleryImage {
 }
 
 export const GALLERY_IMAGES: GalleryImage[] = [
-    { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-2.jpg", alt: "Litsaber OG packaging detail" },
+  // Lead with the device lit up: the packaging shots that used to open the
+  // gallery never showed that it glows, which is the whole point.
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-multi-handheld.jpg", alt: "Litsaber held in hand, lit in a rainbow of colors" },
+  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-2.jpg", alt: "Litsaber OG packaging detail" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-packaging-1.jpg", alt: "Litsaber OG packaging" },
   { type: "video", src: videoUrl("pdp/unbox-pdp.mp4"), alt: "Litsaber unboxing" },
   { type: "video", src: videoUrl("pdp/litsaber-pdp.mp4"), alt: "Litsaber in action" },
   { type: "video", src: videoUrl("pdp/glowstick-pdp.mp4"), alt: "Litsaber glowstick mode" },
   { type: "video", src: videoUrl("pdp/lightshow-pdp.mp4"), alt: "Litsaber light show" },
-  { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-multi-handheld.jpg", alt: "Multiple Litsabers handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-hand-turqoise.jpg", alt: "Litsaber in turquoise handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-rwb-handheld.jpg", alt: "Litsaber in red, white and blue handheld" },
   { src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/product/litsaber-yellow-handheld.jpg", alt: "Litsaber in yellow handheld" },
