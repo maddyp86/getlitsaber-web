@@ -82,6 +82,13 @@ Development), local `.env.local`, and Bolt's own env panel (Bolt's preview
 sandbox cannot read Vercel's vars — this is why media renders blank in Bolt's
 preview if the var is missing there).
 
+**Blob write auth is OIDC, not a token (2026-10-06).** `BLOB_READ_WRITE_TOKEN`
+is retired. Never pass `token` to `@vercel/blob` calls or reintroduce the env
+var. On Vercel the SDK (^2.8.1) authenticates via OIDC + `BLOB_STORE_ID`
+automatically; local upload scripts use `VERCEL_OIDC_TOKEN` from
+`vercel env pull` (see README "Vercel Blob auth"). The storefront itself never
+writes to Blob.
+
 **Blob pathname convention (mirrors the old folder structure as prefixes):**
 ```
 images/home/      images/product/   images/venues/    images/reviews/
