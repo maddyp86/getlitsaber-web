@@ -12,8 +12,8 @@ import {
 } from "@/lib/cart/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
+import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
-import { identifyByEmail } from "@/lib/analytics/identify";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import { getMsrpLinePrice } from "@/lib/cart/pricing";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
@@ -227,14 +227,7 @@ export default function CartPageBody() {
                   disabled={!checkoutUrl}
                   onClick={() => {
                     if (checkoutUrl) {
-                      const storedEmail = sessionStorage.getItem("litsaber_email");
-                      if (storedEmail) identifyByEmail(storedEmail);
-                      track(EVENTS.checkout_started, {
-                        cart_value: subtotal,
-                        item_count: itemCount,
-                        has_promo_code: false,
-                        source: "cart_page",
-                      });
+                      trackCheckoutHandoff("cart_page", subtotal, itemCount);
                       window.location.href = appendDiscountToCheckoutUrl(checkoutUrl);
                     }
                   }}
@@ -457,14 +450,7 @@ export default function CartPageBody() {
                     disabled={!checkoutUrl}
                     onClick={() => {
                     if (checkoutUrl) {
-                      const storedEmail = sessionStorage.getItem("litsaber_email");
-                      if (storedEmail) identifyByEmail(storedEmail);
-                      track(EVENTS.checkout_started, {
-                        cart_value: subtotal,
-                        item_count: itemCount,
-                        has_promo_code: false,
-                        source: "cart_page",
-                      });
+                      trackCheckoutHandoff("cart_page", subtotal, itemCount);
                       window.location.href = appendDiscountToCheckoutUrl(checkoutUrl);
                     }
                   }}

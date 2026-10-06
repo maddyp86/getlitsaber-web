@@ -25,6 +25,10 @@ interface ShopifyOrder {
   name: string;
   created_at?: string;
   email: string | null;
+  /** "paid" for a captured sale. Litsaber's Authorize.net checkout captures at purchase. */
+  financial_status?: string | null;
+  /** True for Shopify test-mode orders (Bogus gateway or a test card). */
+  test?: boolean;
   currency: string;
   total_price: string;
   total_discounts: string;
@@ -34,7 +38,7 @@ interface ShopifyOrder {
   line_items: ShopifyLineItem[];
   discount_codes: ShopifyDiscountCode[];
   note_attributes?: Array<{ name: string; value: string }>;
-  customer?: { first_name: string | null; last_name: string | null } | null;
+  customer?: { first_name: string | null; last_name: string | null; tags?: string | null } | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -121,12 +125,28 @@ export async function POST(req: Request): Promise<Response> {
     console.warn("[webhook/orders] no posthog_distinct_id on order, using fallback", orderId);
   }
 
-  const email = (order.email || "").trim().toLowerCase();
-  const canIdentify =
-    !!stitchedId &&
-    !stitchedId.startsWith("order_") &&
-    !stitchedId.includes("@") &&
-    !!email;
+  // The purchase must land on the person who browsed: the visitor id from the
+  // cart is the same anonymous id their storefront events use. No identify()
+  // and no email: personal data never goes to PostHog.
+  const visitorLinked = !!stitchedId && !stitchedId.includes("@");
+
+  // Internal or test order: Shopify test mode, a cart stamped by an internal
+  // browser (lib/cart/store.ts), or a customer tagged "internal" or "test" in
+  // Shopify. Marked on the event and on the person so PostHog's internal and
+  // test filter removes it, instead of relying on one email or order id.
+  const customerTags = (order.customer?.tags ?? "")
+    .split(",")
+    .map((t) => t.trim().toLowerCase());
+  const isInternalOrder =
+    order.test === true ||
+    order.note_attributes?.find((a) => a.name === "_internal")?.value === "true" ||
+    customerTags.includes("internal") ||
+    customerTags.includes("test");
+
+  // One purchase per PAID order. Checkout captures payment at purchase (a
+  // SALE transaction), so orders/create normally arrives paid; anything else
+  // (a pending draft or manual order) is mirrored to Supabase but not counted.
+  const isPaid = order.financial_status === "paid";
 
   const deviceType =
     order.note_attributes?.find((a) => a.name === "device_type")?.value?.trim() || "unknown";
@@ -233,13 +253,13 @@ export async function POST(req: Request): Promise<Response> {
   if (alreadyCaptured) {
     console.info("[webhook/orders] duplicate delivery, skipping PostHog capture", orderId);
   }
+  if (!isPaid) {
+    console.info("[webhook/orders] order not paid, skipping purchase event", orderId, order.financial_status);
+  }
 
-  if (posthogToken && !alreadyCaptured) {
+  if (posthogToken && !alreadyCaptured && isPaid) {
     const posthog = new PostHog(posthogToken, { host: posthogHost });
     try {
-      if (canIdentify) {
-        posthog.identify({ distinctId: stitchedId, properties: { email } });
-      }
       posthog.capture({
         distinctId,
         event: "purchase",
@@ -267,6 +287,14 @@ export async function POST(req: Request): Promise<Response> {
           utm_medium: utmMedium,
           utm_campaign: utmCampaign,
           referrer: referrer,
+          visitor_linked: visitorLinked,
+          is_test_order: order.test === true,
+          is_internal: isInternalOrder,
+          // Sets the person's internal flag (the property PostHog's internal
+          // and test filter reads) only for internal orders.
+          ...(isInternalOrder && visitorLinked ? { $set: { $internal_or_test_user: true } } : {}),
+          // A purchase with no visitor id must not create a phantom person.
+          ...(visitorLinked ? {} : { $process_person_profile: false }),
         },
       });
       // Flush before the serverless function freezes — unflushed events are lost

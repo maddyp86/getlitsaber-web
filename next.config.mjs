@@ -21,6 +21,23 @@ const nextConfig = {
     return [
       { source: "/product/:slug*", destination: "/shop/litsaber-og", permanent: true },
       { source: "/products/:slug*", destination: "/shop/litsaber-og", permanent: true },
+      // Short links for printed QR codes, one consistent UTM set per printed
+      // item. Temporary (307) so a destination can change without reprinting.
+      {
+        source: "/qr/box",
+        destination: "/activate?utm_source=packaging&utm_medium=qr&utm_campaign=activation",
+        permanent: false,
+      },
+      {
+        source: "/qr/insert",
+        destination: "/activate?utm_source=insert&utm_medium=qr&utm_campaign=activation",
+        permanent: false,
+      },
+      {
+        source: "/qr/rebate",
+        destination: "/show-it-off?utm_source=insert&utm_medium=qr&utm_campaign=show_it_off",
+        permanent: false,
+      },
     ];
   },
 };

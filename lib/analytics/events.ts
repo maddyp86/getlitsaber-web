@@ -46,11 +46,17 @@ type FunnelEvents = {
     tier_price: number;
     offer: OfferId;
   };
+  // The checkout handoff (lib/analytics/checkout.ts). `route` is "buy_now" or
+  // "cart"; `source` keeps the finer drawer / cart_page split.
   checkout_started: {
-    cart_value: number;
-    item_count: number;
-    has_promo_code: boolean;
+    route: "buy_now" | "cart";
     source: "drawer" | "cart_page" | "buy_now";
+    offer_selected: OfferId;
+    item_count: number;
+    cart_value: number;
+    /** Estimated shipping for these units: 5.99 for one, 0 for two or more. */
+    shipping_amount: number;
+    has_promo_code: boolean;
   };
   cart_remove_item: {
     variant: "silver";
@@ -78,13 +84,10 @@ type FunnelEvents = {
     source: string;
   };
   rebate_form_started: Record<string, never>;
+  // Never names, email or the post link (personal data stays in HubSpot).
   rebate_form_submitted: {
-    first_name: string;
-    last_name: string;
-    email: string;
     order_number: string;
     platform: string;
-    post_url: string;
     source: string;
   };
   rebate_submit_error: {
@@ -92,7 +95,7 @@ type FunnelEvents = {
     source: string;
   };
   device_activated: {
-    activation_source: "packaging_qr" | "direct";
+    activation_source: "packaging_qr" | "insert_qr" | "direct";
     is_first_activation: boolean;
   };
 };

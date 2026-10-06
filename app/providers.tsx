@@ -3,6 +3,13 @@
 import { useEffect } from "react";
 import posthog from "posthog-js";
 import type { CaptureResult } from "posthog-js";
+import {
+  applyAttributionRules,
+  INTERNAL_HOSTNAME,
+  readTouch,
+  rememberLandingTouch,
+  setInternalBrowser,
+} from "@/lib/analytics/attribution";
 
 declare global {
   interface Window {
@@ -111,6 +118,17 @@ function filterThirdPartyNoise(
   return dropInAppBrowserBridgeErrors(afterScriptErrors);
 }
 
+/**
+ * Every outgoing event: drop third-party noise, strip personal data from URLs,
+ * treat a return from our own checkout as a return rather than a new referral,
+ * and mark owner visits (lib/analytics/attribution.ts).
+ */
+function beforeSend(event: CaptureResult | null): CaptureResult | null {
+  const kept = filterThirdPartyNoise(event);
+  if (!kept) return null;
+  return applyAttributionRules(kept, window.location.pathname, readTouch());
+}
+
 export default function PostHogProvider({
   children,
 }: {
@@ -126,6 +144,10 @@ export default function PostHogProvider({
     const token = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
     if (typeof window === "undefined" || !token) return;
 
+    // Before init, so the first pageview of an external landing already has
+    // a stored touch to carry through a later return from checkout.
+    rememberLandingTouch();
+
     posthog.init(token, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
       ui_host: "https://us.posthog.com",
@@ -136,8 +158,13 @@ export default function PostHogProvider({
         capture_console_errors: false,
       },
       capture_dead_clicks: true,
-      internal_or_test_user_hostname: /^(localhost|127\.0\.0\.1|.*\.vercel\.app)$/,
-      before_send: filterThirdPartyNoise,
+      // Pageviews on the first load and on every client-side route change.
+      // posthog-js only fires when the pathname changes, starting from the
+      // landing path, so Next's own replaceState on load is not a second view.
+      capture_pageview: "history_change",
+      capture_pageleave: "if_capture_pageview",
+      internal_or_test_user_hostname: INTERNAL_HOSTNAME,
+      before_send: beforeSend,
     });
 
     if (typeof window !== "undefined") {
@@ -146,8 +173,12 @@ export default function PostHogProvider({
       const internalParam = new URLSearchParams(window.location.search).get("internal");
       if (INTERNAL_FLAG_TOKEN && internalParam === INTERNAL_FLAG_TOKEN) {
         posthog.setInternalOrTestUser();
+        // Remembered so this browser's carts, and so its orders, are marked
+        // internal too (lib/cart/store.ts stamps _internal on the cart).
+        setInternalBrowser(true);
       } else if (internalParam === "off") {
         posthog.setPersonProperties({ $internal_or_test_user: false });
+        setInternalBrowser(false);
       }
     }
   }, []);

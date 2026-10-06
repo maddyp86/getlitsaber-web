@@ -5,6 +5,8 @@
 
 "use client";
 
+import { isInternalReferrer, readTouch, scrubUrl } from "./attribution";
+
 export interface ChannelAttribution {
   channel_type: string;
   utm_source: string;
@@ -56,10 +58,25 @@ function deriveChannel(referrer: string, utmSource: string, utmMedium: string): 
 
 export function getChannelAttribution(): ChannelAttribution {
   const params = new URLSearchParams(window.location.search);
-  const utmSource = params.get("utm_source") ?? "";
-  const utmMedium = params.get("utm_medium") ?? "";
-  const utmCampaign = params.get("utm_campaign") ?? "";
-  const referrer = document.referrer;
+  let utmSource = params.get("utm_source") ?? "";
+  let utmMedium = params.get("utm_medium") ?? "";
+  let utmCampaign = params.get("utm_campaign") ?? "";
+  let referrer = scrubUrl(document.referrer);
+
+  // No source on this page view (a return from our checkout, or in-site
+  // navigation): carry the original external touch instead of reading the
+  // return as a new referral or as direct traffic.
+  if (!utmSource && !utmMedium && !utmCampaign && (!referrer || isInternalReferrer(referrer))) {
+    const touch = readTouch();
+    if (touch) {
+      utmSource = touch.utm_source;
+      utmMedium = touch.utm_medium;
+      utmCampaign = touch.utm_campaign;
+      referrer = touch.referrer;
+    } else if (isInternalReferrer(referrer)) {
+      referrer = "";
+    }
+  }
 
   return {
     channel_type: deriveChannel(referrer, utmSource, utmMedium),

@@ -6,7 +6,6 @@ import TurnstileWidget, {
   type TurnstileHandle,
 } from "@/components/security/TurnstileWidget";
 import { EVENTS, track } from "@/lib/analytics/events";
-import { identifyByEmail } from "@/lib/analytics/identify";
 import { FORM_CARD_TITLE, PLATFORM_OPTIONS } from "./rebate.content";
 
 const SOURCE = "rebate-page";
@@ -165,14 +164,10 @@ export default function RebateForm() {
       });
       const data = (await res.json()) as { ok: boolean; error?: string };
       if (data.ok) {
-        identifyByEmail(fields.email);
+        // No names, email or post link: personal data stays in HubSpot.
         track(EVENTS.rebate_form_submitted, {
-          first_name: fields.firstname,
-          last_name: fields.lastname,
-          email: fields.email,
           order_number: fields.orderNumber,
           platform: fields.platform,
-          post_url: fields.postUrl,
           source: SOURCE,
         });
         addToast({
