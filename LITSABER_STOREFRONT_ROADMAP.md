@@ -118,7 +118,7 @@ Goal: images, gallery navigation, and video respond the first time someone tries
 
 **Done when:** every intended media interaction works on the first attempt in repeated desktop and mobile testing, including slow-device conditions.
 
-**Deploy date:** ____
+**Deploy date:** 10/6/2026 (gallery #82; image optimization re-enabled #84, same day)
 
 ---
 
@@ -191,7 +191,8 @@ Run alongside Phases 1–5 so the next review is usable.
   - *Owner decision 2026-10-06: exception for email. The orders webhook sets the paid order's email on the buyer's PostHog person (person property only, never on events or from the storefront). Names, addresses, phones and payment details still never go.*
 - [x] Treat getlitsaber.com and checkout.getlitsaber.com as one site for attribution, so returns from checkout are not counted as new referrals and the original source carries through.
 - [x] Tag the packaging QR code and activation insert links with consistent UTMs, and add an `is_owner_visit` marker for activation pages.
-- [ ] Mark internal and test traffic with the internal-user property, including test checkouts, instead of relying on one email and one order ID.
+- [x] Mark internal and test traffic with the internal-user property, including test checkouts, instead of relying on one email and one order ID.
+  - *2026-10-06: PostHog's internal/test filter now also excludes events with `is_internal` = true (test-mode orders, carts from `?internal=` browsers, Shopify customers tagged internal or test). The old email and order-id rules stay only so past data stays filtered.*
 - [x] Find out why the 90-day window had 6 people with a purchase event against 3 paid Shopify orders, and report the cause.
 
 *Findings and results 2026-10-06 (branch `fix/measurement`):*
