@@ -1716,6 +1716,14 @@ Three weekly agent reports (W38–W40) all read "product views, zero adds" and b
 
 ---
 
+### Spec pills relabelled; aluminum + steel build (2026-10-06)
+
+Matt set the six pill labels: 41 ADDRESSABLE LEDS · 10 SELECTABLE COLORS · 3 INTERACTIVE MODES / 800 MAH BATTERY · ALUMINUM + STEEL BUILD · WARRANTY INCLUDED. Comparison table rows follow ("Addressable LEDs", "Selectable colors", "Interactive modes", Build "Aluminum + steel"); Tech Specs and the PDP meta description now say aluminum and steel body/build. Copy that says "aluminum and brass at the connection" describes the 510 connector and was left alone; the lines about the "top" and "brass internals" were flagged to Matt rather than guessed. "NeoPixel" is now a banned word in `storefront-copy.test.ts` (it immediately caught a code comment that named it).
+
+**Layout catch.** The longer labels broke the hero at a true 375px: the mobile hero laid three pills per row, and a pill's floor is its longest word ("ADDRESSABLE" ~130px with padding), so the row ran from -25px to 400px and widened the page to 420px. The `mobile` viewport preset hid it (it reports 420 wide); a custom 375×812 exposed it. Mobile hero is now 2 columns (3 from `sm`), desktop hero a 3×2 grid (one row of six gave 142px pills, labels need up to 242px). Measured at 375 / 768 / 1024 / 1440: no overflow, one line at 1024+ on both the hero and PDP.
+
+---
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

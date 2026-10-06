@@ -34,6 +34,7 @@ const BANNED: Array<[string, RegExp]> = [
   ["cart battery", /\bcart(ridge)? battery\b/i],
   ["fire emoji", /\uD83D\uDD25/],
   ["lightsaber", /\blight ?sabers?\b/i],
+  ["NeoPixel", /\bneo ?pixels?\b/i],
   ["saber effect", /\bsaber effect\b/i],
   ["jedi", /\bjedi\b/i],
   ["sci-fi weapon", /sci-fi weapon/i],

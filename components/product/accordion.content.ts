@@ -46,7 +46,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "Built for the night.",
-          text: "800mAh cell. Full charge in under 75 minutes. USB-C, any cable. Aluminum body, brass internals.",
+          text: "800mAh cell. Full charge in under 75 minutes. USB-C, any cable. Aluminum and steel body, brass internals.",
         },
       ],
     },
@@ -108,7 +108,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           bullets: [
             "21.3 × 20.3 × 147mm",
             "56.5g (device) / 120g (with packaging)",
-            "Aluminum body, brass internals, polycarbonate diffuser",
+            "Aluminum and steel body, brass internals, polycarbonate diffuser",
             "Dual-mode activation: auto-draw + button",
           ],
         },

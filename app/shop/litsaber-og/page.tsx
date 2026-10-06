@@ -7,7 +7,7 @@ import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
 {/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
 
 const PDP_DESCRIPTION =
-  "Litsaber OG, the interactive 510 battery. 41 LEDs, 10 colors, 3 modes, 800 mAh, aluminum and brass build, 6-month warranty. $39.99, MSRP $49.99. Free shipping on 2+.";
+  "Litsaber OG, the interactive 510 battery. 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery, aluminum and steel build, 6-month warranty. $39.99, MSRP $49.99. Free shipping on 2+.";
 
 export const metadata: Metadata = {
   title: "Litsaber OG — The Interactive 510 Battery",
