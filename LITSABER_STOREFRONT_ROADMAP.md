@@ -236,7 +236,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 ## Phase 8 · Build next: lead with the device lit (Ploy priority 8)
 
 - [ ] **[OWNER]** supplies the lit-device hero image and a short demonstration clip (under 15 seconds, muted autoplay-friendly).
-- [ ] Make the first gallery item the device lit, and the second a short in-place demonstration. Keep packaging and detail shots after them.
+- [x] Make the first gallery item the device lit, and the second a short in-place demonstration. Keep packaging and detail shots after them.
 - [ ] Reduce gallery height on mobile so the offer selector and purchase buttons are reachable sooner, without hiding them.
 - [ ] Apply the same order on desktop.
 - [ ] Point the homepage "See It in Motion" button to the product demonstration rather than lifestyle storytelling, or confirm with me first if you think it should stay.
