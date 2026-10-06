@@ -1,3 +1,4 @@
+import { COMPATIBILITY_STATEMENT } from "@/components/product/specs.content";
 import { mediaUrl } from "@/lib/media";
 
 export const EYEBROW = "UNDER THE HOOD";
@@ -21,7 +22,7 @@ export interface FeatureCard {
 export const FEATURE_CARDS: FeatureCard[] = [
   {
     title: "UNIVERSAL 510 THREADING",
-    body: "Fits any standard cart from 10.5mm to 14.5mm which is either 0.5g, 1g or 2gm carts. Works with up to 95% of carts on the market giving you greater coverage for the products you consume.",
+    body: `${COMPATIBILITY_STATEMENT} Half-gram, full-gram, and 2g carts all fit.`,
     accent: "cyan",
   },
   {

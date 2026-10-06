@@ -25,6 +25,14 @@ function renderAnswer(parts: FaqAnswerPart[]) {
               style={{ fontSize: answerFontSize }}
             >
               {part.text}
+              {part.link && (
+                <>
+                  {" "}
+                  <Link href={part.link.href} className="text-accent-cyan hover:underline underline-offset-4">
+                    {part.link.label}
+                  </Link>
+                </>
+              )}
             </p>
           );
         }

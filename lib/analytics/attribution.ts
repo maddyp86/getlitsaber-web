@@ -213,7 +213,11 @@ interface EventLike {
  * referral from our own checkout as a return (carrying the stored original
  * source), and mark owner visits.
  */
-export function applyAttributionRules<T extends EventLike>(event: T, pathname: string, touch: Touch | null): T {
+export function applyAttributionRules<T extends EventLike>(
+  event: T,
+  pathname: string,
+  touch: Touch | null
+): T & { properties: Props } {
   const props = (event.properties ??= {});
   scrubUrlProps(props);
   scrubUrlProps(event.$set);
@@ -239,5 +243,5 @@ export function applyAttributionRules<T extends EventLike>(event: T, pathname: s
   }
 
   if (isOwnerVisit(pathname)) props.is_owner_visit = true;
-  return event;
+  return event as T & { properties: Props };
 }

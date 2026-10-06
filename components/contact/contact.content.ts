@@ -71,7 +71,7 @@ export const FAQ_SUBHEAD =
   "Answers to the questions we hear most. If you don't see yours, send us a message.";
 
 export type FaqAnswerPart =
-  | { type: "paragraph"; text: string }
+  | { type: "paragraph"; text: string; link?: { label: string; href: string } }
   | { type: "ordered-list"; items: string[] };
 
 export interface FaqItem {
@@ -247,7 +247,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Every vape battery has a max draw duration. A safety floor that pauses the heater after a sustained pull. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all twelve colors. The longer you hold the pull, the more the lights build, until the device peaks in Blinker Mode.",
+            text: "Every vape battery has a max draw duration. A safety floor that pauses the heater after a sustained pull. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer you hold the pull, the more the lights build, until the device peaks in Blinker Mode.",
           },
           {
             type: "paragraph",
@@ -362,6 +362,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           {
             type: "paragraph",
             text: "We back every Litsaber. Unopened devices can be returned within 14 days of delivery for a refund. If your device arrives defective or fails through normal use, our 6-month limited warranty has you covered with a replacement.",
+            link: { label: "Read the shipping and returns policy.", href: "/policies/shipping-returns" },
           },
           {
             type: "paragraph",
@@ -374,11 +375,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "We ship in 24 hours from Los Angeles. Once your order is in the carrier's hands, standard shipping times apply (typically 2 to 5 business days within the continental US).",
-          },
-          {
-            type: "paragraph",
-            text: "You'll receive a tracking number by email once the package leaves our warehouse.",
+            text: "Orders ship within 2 business days. Once shipped, delivery typically takes 2–5 business days within the US via USPS Ground Advantage. You'll get tracking by email when your order ships.",
           },
         ],
       },
@@ -400,7 +397,8 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "Yes. Every Litsaber is backed by a 6-month limited warranty against manufacturing defects. We stand behind the hardware. If something fails through normal use, we replace it.",
+            text: "Yes. Every Litsaber is backed by a 6-month limited warranty against manufacturing defects. We stand behind the hardware. If something fails through normal use, we replace it. The warranty covers replacement, not refunds.",
+            link: { label: "Read the warranty policy.", href: "/policies/warranty" },
           },
         ],
       },

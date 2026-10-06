@@ -9,7 +9,6 @@ import { POLICIES_EFFECTIVE_DATE } from "@/components/policies/shared";
 import {
   QUICK_SUMMARY,
   S01_PARA1,
-  S01_PARA2,
   S01_PARA3,
   S01_PARA4,
   S02_PARA1,
@@ -22,6 +21,7 @@ import {
   S04_PARA1,
   S04_PARA2,
   S05_PARA1,
+  S05_PARA2,
   S06_PARA1,
   S07_PARA1,
   S07_PARA2,
@@ -54,7 +54,6 @@ export default function ShippingReturnsPage() {
         {/* 01 — Shipping */}
         <PolicySection number="01" title="Shipping">
           <p className={P}>{renderPara(S01_PARA1)}</p>
-          <p className={P}>{renderPara(S01_PARA2)}</p>
           <p className={P}>{renderPara(S01_PARA3)}</p>
           <p className={P}>{renderPara(S01_PARA4)}</p>
         </PolicySection>
@@ -92,6 +91,7 @@ export default function ShippingReturnsPage() {
         {/* 05 — Sale Items */}
         <PolicySection number="05" title="Sale Items">
           <p className={P}>{renderPara(S05_PARA1)}</p>
+          <p className={P}>{renderPara(S05_PARA2)}</p>
         </PolicySection>
 
         {/* 06 — Defective Products */}

@@ -111,6 +111,18 @@
   body.scroll-locked {
     overflow: hidden;
   }
+
+  /* Age gate (lib/ageGate.ts): shown unless <html data-age-ok>, which the head
+     script sets before first paint for verified visitors. Fail-closed. */
+  #age-gate {
+    display: flex;
+  }
+  html[data-age-ok] #age-gate {
+    display: none;
+  }
+  html[data-age-gate]:not([data-age-ok]) body {
+    overflow: hidden;
+  }
 }
 
 /* ─── Charging bar animation ─────────────────────────────────────────────────

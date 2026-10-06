@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import JudgemeScripts from "@/components/reviews/JudgemeScripts";
 import { headers } from "next/headers";
+import { AGE_GATE_HEAD_SCRIPT } from "@/lib/ageGate";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     apple: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon-white.png",
   },
   description:
-    "A glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.",
+    "An interactive 510 battery built for festivals, nightlife, and the moments worth being lit for.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://getlitsaber.com"
   ),
@@ -44,6 +45,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // The age gate head script sets data-age-ok on <html> before hydration.
+      suppressHydrationWarning
       className={[
         stellar.variable,
         monoton.variable,
@@ -52,6 +55,10 @@ export default function RootLayout({
         spaceMono.variable,
       ].join(" ")}
     >
+      <head>
+        {/* Hides the age gate before first paint for verified visitors (lib/ageGate.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: AGE_GATE_HEAD_SCRIPT }} />
+      </head>
       <body className="font-body bg-background-primary text-text-primary antialiased">
         <JudgemeScripts />
         <PostHogProvider>
