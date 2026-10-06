@@ -46,7 +46,7 @@ Earlier work (repricing, offer tiers, copy, spec pills) may be fully or partly d
 - [x] Hero subhead and product showcase headline match the approved copy, if that change was shipped. (Shipped in #71.)
 - [x] List anything from the earlier prompts that is not live yet. Do not redo shipped work. (Everything from #71 to #77 is live; production was on e5946f0 at verification, 2026-10-06.)
 
-**Deploy date:** ____
+**Deploy date:** 10/6/2026
 
 ---
 
@@ -82,7 +82,7 @@ Goal: product page, cart, checkout handoff, policies, FAQ, About, and emails all
 
 *Verified 2026-10-06 on preview `get-litsaber-mvu88bi6c` (commit 8ffdb90): `pnpm check-promises` clean on 9 pages; Single and Two Pack each reached Shopify checkout via Add to Cart and via Buy Now with the right units and subtotal ($39.99 x1, $79.98 x2). Shipping in checkout needs an address, so it is verified in Phase 4.*
 
-**Deploy date:** ____
+**Deploy date:** 10/6/2026
 
 ---
 
@@ -157,7 +157,7 @@ Goal: "I AM 21+" acknowledges a valid tap or keypress immediately. 12 real visit
 
 **Done when:** a first tap or keypress is acknowledged every time in repeated testing on desktop and mobile, with no change to the gate's requirement.
 
-**Deploy date:** ____
+**Deploy date:** 10/6/2026
 
 ---
 
@@ -190,7 +190,7 @@ Run alongside Phases 1–5 so the next review is usable.
 
 **Done when:** a controlled test journey produces one correct event per action and one purchase event per paid order, and owner, shopper, and internal traffic can be separated.
 
-**Deploy date:** ____
+**Deploy date:** 10/6/2026
 
 ---
 
@@ -259,9 +259,9 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 - [x] Return-policy wording for the regular-price clarification (Phase 1): 14-day returns on unopened devices; wording in Phase 1
 - [x] Verified compatibility statement (Phase 1)
 - [x] Confirm warranty term (Phase 1): 6-month limited warranty, replacement only
-- [ ] Watch the five most active product-page replays before they expire (Phase 2)
+- [x] Watch the five most active product-page replays before they expire (Phase 2)
 - [ ] Live test orders, Single and Two Pack, then refund (Phase 4)
-- [ ] Confirm box contents (Phase 7)
+- [x] Confirm box contents (Phase 7)
 - [ ] Confirm review provenance (Phase 7)
 - [ ] Supply lit-device image and demonstration clip (Phase 8)
 - [ ] Confirm whether the 3 modes respond to use; if not, change the pill to "3 LIGHT MODES"
