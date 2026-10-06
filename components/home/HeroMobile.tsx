@@ -96,8 +96,6 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               hover:-translate-y-px hover:shadow-glow-cta-hover active:opacity-80
             "
           >
-            {/* ~230px of text room here; "GET YOURS · $49.99 $39.99" needs ~280px,
-                so mobile shows the sell price only. The PDP carries the MSRP anchor. */}
             {`${CTA_PRIMARY.label} · ${formatPrice(CTA_PRIMARY.price)}`}
           </Link>
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import MsrpPrice from "@/components/primitives/MsrpPrice";
+import { formatPrice } from "@/lib/cart/pricing";
 import { motion, useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
@@ -164,16 +164,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             onClick={() => track(EVENTS.cta_clicked, { cta: "hero_get_yours" })}
             className="flex items-center justify-center px-[20px] py-[20px] rounded-sm w-[329px] bg-cta text-text-primary font-bold font-label text-label tracking-widest uppercase shadow-glow-cta transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-glow-cta-hover active:opacity-80"
           >
-            <span className="inline-flex items-baseline gap-2 whitespace-nowrap">
-              {CTA_PRIMARY.label} ·
-              <MsrpPrice
-                price={CTA_PRIMARY.price}
-                msrp={CTA_PRIMARY.msrp}
-                showLabel={false}
-                className="!flex-nowrap"
-                msrpClassName="font-normal opacity-70"
-              />
-            </span>
+            {`${CTA_PRIMARY.label} · ${formatPrice(CTA_PRIMARY.price)}`}
           </Link>
 
           {/* Secondary CTA: grey border, white-tint bg, white text */}

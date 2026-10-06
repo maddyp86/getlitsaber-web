@@ -6,7 +6,6 @@ import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, FREE_SHIPPING_LABEL } from
 import { quoteOffer } from "@/lib/cart/offers";
 import { formatDisplayShipping } from "@/lib/shipping";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
-import BuiltToLast from "./BuiltToLast";
 import GalleryBlock from "./GalleryBlock";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
@@ -95,7 +94,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
               <MsrpPrice
                 price={quote.price}
                 msrp={quote.msrp}
-                msrpClassName="font-label text-[16px] text-text-muted"
+                msrpClassName="font-label text-[20px] text-text-muted"
                 priceClassName="font-label font-bold text-h3 text-text-primary [text-shadow:0_0_10px_theme(colors.cta.DEFAULT)]"
               />
               {/* Shipping is shown up front so it is never a surprise at checkout. */}
@@ -108,8 +107,6 @@ export default function ProductDisplay({ variantId, available, surface, basePric
               </span>
             </p>
           </div>
-
-          <BuiltToLast />
 
           {/* Spec pills — 2 rows × 3, rectangular (no border radius). The cyan
               border reads as interactive, and session review showed people

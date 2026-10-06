@@ -255,7 +255,7 @@ export default function CartDrawer() {
                           className="font-label font-bold text-accent-cyan"
                           style={{ fontSize: "16px" }}
                         >
-                          <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} showLabel={false} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+                          <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
                         </span>
                         {/* Remove */}
                         <button

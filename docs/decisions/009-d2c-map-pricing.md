@@ -25,7 +25,6 @@ is not a sale. **$49.99 is MSRP** and appears only struck through and labeled
 |---|---|---|---|
 | Single | $49.99 | $39.99 | + $5.99 (shown on the PDP) |
 | Two Pack ("Most popular") | $99.98 | $79.98 | Free |
-| 3 to 5 (stepper only) | N × $49.99 | N × $39.99 | Free |
 
 The 2-pack's only perk over two singles is free shipping. The 3-, 4- and
 5-unit merchandised options are gone.
@@ -52,6 +51,18 @@ steps the quantity. `purchase` carries `offer_selected`
 (`single` | `two_pack` | `custom_qty`), derived from item count by the same rule
 (`lib/cart/offers.ts`). The retired `$feature/single-unit-shipping-surcharge`
 property is no longer written.
+
+## Amendment (2026-10-05, after review on the preview)
+
+- Price order is now sell price first, then the struck-through MSRP, with no
+  visible "MSRP" label (screen readers still hear "MSRP $49.99").
+- The quantity stepper is gone. The two offers are the whole choice; the cart
+  still caps at 5 units across repeat adds.
+- "Add a second and shipping's free." is removed from the PDP (the cart's
+  free-shipping meter keeps it).
+- The "Built to last" block is removed as redundant with the accordion tabs.
+  The PDP still links the warranty policy from the comparison table.
+- Hero and nav CTAs show "GET YOURS · $39.99" only.
 
 ## Consequences
 

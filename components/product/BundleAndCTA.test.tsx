@@ -39,30 +39,32 @@ beforeEach(() => trackMock.mockClear());
 afterEach(cleanup);
 
 describe("offer rendering", () => {
-  it("renders the single with the $49.99 MSRP anchor, $39.99 and $5.99 shipping", () => {
+  it("renders the single at $39.99 followed by the struck $49.99 MSRP, plus $5.99 shipping", () => {
     render(<Harness basePrice={39.99} />);
     const single = within(screen.getByTestId("offer-single"));
-    expect(single.getByTestId("msrp").textContent).toBe("$49.99");
-    expect(single.getByTestId("msrp").tagName).toBe("S");
-    expect(single.getByText("MSRP")).toBeTruthy();
-    expect(single.getByTestId("price").textContent).toBe("$39.99");
+    const price = single.getByTestId("price");
+    const msrp = single.getByTestId("msrp");
+    expect(price.textContent).toBe("$39.99");
+    expect(msrp.textContent).toBe("$49.99");
+    expect(msrp.tagName).toBe("S");
+    // Sell price comes first, the struck anchor after it.
+    expect(price.compareDocumentPosition(msrp) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(single.getByText("+ $5.99 shipping")).toBeTruthy();
-    expect(single.getByText("Add a second and shipping's free.")).toBeTruthy();
   });
 
-  it("renders the 2-pack as Most popular with the $99.98 MSRP anchor, $79.98 and free shipping", () => {
+  it("renders the 2-pack as Most popular at $79.98 with the struck $99.98 MSRP and free shipping", () => {
     render(<Harness basePrice={39.99} />);
     const pack = within(screen.getByTestId("offer-two_pack"));
     expect(pack.getByText("Most popular")).toBeTruthy();
     expect(pack.getByTestId("msrp").textContent).toBe("$99.98");
-    expect(pack.getByText("MSRP")).toBeTruthy();
     expect(pack.getByTestId("price").textContent).toBe("$79.98");
     expect(pack.getByText("Free shipping")).toBeTruthy();
   });
 
-  it("shows exactly two merchandised offers and no save, percent-off or sale badges", () => {
+  it("shows exactly two offers, no stepper, and no save, percent-off or sale badges", () => {
     const { container } = render(<Harness basePrice={39.99} />);
     expect(screen.getAllByRole("radio")).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: /increase quantity/i })).toBeNull();
     const text = container.textContent ?? "";
     expect(text).not.toMatch(/save/i);
     expect(text).not.toMatch(/%/);
@@ -88,24 +90,6 @@ describe("offer selection", () => {
       offer: "two_pack",
       quantity: 2,
       line_price: 79.98,
-      surface: "pdp",
-    });
-  });
-
-  it("lets the plain stepper reach a custom quantity that ships free", () => {
-    render(<Harness basePrice={39.99} />);
-    const plus = screen.getByRole("button", { name: "Increase quantity" });
-    fireEvent.click(plus);
-    fireEvent.click(plus);
-    expect(screen.getByTestId("qty-value").textContent).toBe("3");
-    for (const radio of screen.getAllByRole("radio")) {
-      expect(radio.getAttribute("aria-checked")).toBe("false");
-    }
-    expect(screen.getByTestId("custom-qty-shipping").textContent).toContain("Free shipping");
-    expect(trackMock).toHaveBeenLastCalledWith("product_offer_selected", {
-      offer: "custom_qty",
-      quantity: 3,
-      line_price: 119.97,
       surface: "pdp",
     });
   });

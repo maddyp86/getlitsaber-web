@@ -203,7 +203,7 @@ Full version in `BRAND.md`. The non-negotiables:
 - **No em-dashes in body copy.** Use periods, semicolons, or restructure.
 - **No exclamation marks.** Ever.
 - **No superlatives** ("premium," "revolutionary," "best-in-class," "amazing," "world's first," "ignite," "glow up").
-- **Sell price is $39.99 (MAP), MSRP is $49.99 (ADR-009, locked 2026-10-05).** $39.99 is the permanent price, not a sale. $49.99 appears only struck through and labeled "MSRP" (never "Was", "Sale" or "Save"). No sale badges, percentage-off badges, countdowns or urgency copy. **No displayed unit price may ever be below $39.99**; N units are always at least N × $39.99 (enforced in `lib/cart/pricing.ts`, tested). D2C only: wholesale pricing and B2B MSRP references are separate and unchanged. If you see other prices anywhere in the codebase, flag them — don't silently change.
+- **Sell price is $39.99 (MAP), MSRP is $49.99 (ADR-009, locked 2026-10-05).** $39.99 is the permanent price, not a sale. $49.99 appears only struck through, after the sell price, with no label (never "Was", "Sale" or "Save"; Matt dropped the visible "MSRP" label 2026-10-05). CTAs show $39.99 only. No sale badges, percentage-off badges, countdowns or urgency copy. **No displayed unit price may ever be below $39.99**; N units are always at least N × $39.99 (enforced in `lib/cart/pricing.ts`, tested). D2C only: wholesale pricing and B2B MSRP references are separate and unchanged. If you see other prices anywhere in the codebase, flag them — don't silently change.
 - **D2C copy bans (ADR-009):** never "premium," "sale," "deal," "affordable," "cheap," "pen," or "cart battery" in storefront copy, no 🔥, and no Star Wars or lightsaber references or imagery cues. `components/storefront-copy.test.ts` guards the main content files.
 - **Lead with the moment, not the spec.** "The headliner" before "800 mAh."
 - **"X, not Y" is a recurring rhetorical move.** Use it when defining the product against alternatives.
@@ -240,7 +240,7 @@ This is the most complex feature in the build. The governing rule: **build all U
 **Variant → behavior mapping (locked):**
 - **Silver** = in stock → add-to-cart flow (opens `<CartDrawer />`). Silver is the only physical SKU available now.
 - **Gold** = coming soon → does NOT add to cart; opens the **waitlist modal** (same form as the "Gold Edition" Editions box).
-- **Quantity** = the dimension that varies. The PDP shows two offers, Single and Two Pack ("Most popular"), plus a plain 1–5 quantity stepper; each adds `qty × Silver` to the cart at $39.99 a unit. See "Phase 2 decisions" → "Bundle SKU strategy".
+- **Quantity** = the dimension that varies. The PDP shows two offers, Single and Two Pack ("Most popular"), and they are the whole quantity choice (no stepper); each adds `qty × Silver` to the cart at $39.99 a unit. See "Phase 2 decisions" → "Bundle SKU strategy".
 
 **Editions row — three boxes, three actions (CONFIRMED 2026-05-23 — all three open as described, no longer open questions):**
 - Box 1 "OG Silver / SHOP NOW" → navigates to the Shop page (`/shop/litsaber-og`). No modal.
@@ -316,13 +316,14 @@ If any of these aren't true, the work isn't done — say so and propose what's l
 
 ## Phase 2 decisions (locked)
 
-- **Offer and pricing model (FINAL 2026-10-05, ADR-009, supersedes the 2026-05-27 tier ladder):** One Silver SKU at **$39.99 a unit (MAP)**. No tiers, no bundle discount. The PDP shows exactly two merchandised offers plus a plain quantity stepper (1–5):
+- **Offer and pricing model (FINAL 2026-10-05, ADR-009, supersedes the 2026-05-27 tier ladder):** One Silver SKU at **$39.99 a unit (MAP)**. No tiers, no bundle discount. The PDP shows exactly two offers and no quantity stepper (a shopper wanting more adds again; the cart caps at 5):
 
   ```
-  Single    ~~$49.99~~ MSRP  $39.99   + $5.99 shipping   "Add a second and shipping's free."
-  Two Pack  ~~$99.98~~ MSRP  $79.98   Free shipping      badge: "Most popular"
-  3–5       N × $39.99, free shipping (stepper only, no merchandised card)
+  Single    $39.99 ~~$49.99~~   + $5.99 shipping
+  Two Pack  $79.98 ~~$99.98~~   Free shipping      badge: "Most popular"
   ```
+
+  No "Built to last" block on the PDP (Matt cut it 2026-10-05 as redundant with the accordion tabs).
 
   Prices come from `lib/cart/pricing.ts` + `lib/cart/offers.ts`, driven by the live Shopify variant price and floor-guarded at $39.99. **Shopify is the source of truth for charged amounts**: the Silver variant is $39.99 with compare-at $49.99, and the four tier automatic discounts are deactivated. If Shopify ever returns a cart line below the floor, the storefront shows the floor and fires `price_floor_violation`.
 
