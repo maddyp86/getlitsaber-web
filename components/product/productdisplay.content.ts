@@ -33,7 +33,7 @@ export const STYLE_OPTIONS: StyleOption[] = [
 ];
 
 // ─── Offers ──────────────────────────────────────────────────────────────────
-// Two merchandised offers plus a plain quantity stepper (ADR-009). Prices are
+// Two offers, and they are the whole quantity choice (ADR-009). Prices are
 // computed from the live unit price in lib/cart/offers.ts; only copy lives here.
 // No savings or percentage badges: the 2-pack's only perk is free shipping.
 
@@ -41,15 +41,12 @@ export interface OfferCopy {
   qty: 1 | 2;
   title: string;
   badge?: string;
-  /** Shown under the card. */
-  note?: string;
 }
 
 export const OFFERS: OfferCopy[] = [
   {
     qty: 1,
     title: "Single",
-    note: "Add a second and shipping's free.",
   },
   {
     qty: 2,
@@ -58,27 +55,11 @@ export const OFFERS: OfferCopy[] = [
   },
 ];
 
-export const QUANTITY_LABEL = "Quantity";
 export const MSRP_LABEL = "MSRP";
 export const FREE_SHIPPING_LABEL = "Free shipping";
 
 export const TRUST_LINE =
   "SHIPS IN 24 HOURS · FREE US SHIPPING ON 2+ · 6-MONTH WARRANTY";
-
-// ─── Built to last ───────────────────────────────────────────────────────────
-// Three lines max. Materials per the Tech Specs accordion; warranty terms per
-// /policies/warranty (6-month limited warranty against defects in materials
-// and workmanship under normal use).
-
-export const BUILT_TO_LAST = {
-  heading: "Built to last",
-  lines: [
-    "Aluminum and brass build.",
-    "Full-body illumination: 41 LEDs, 10 colors, 3 modes.",
-  ],
-  warranty: "6-month limited warranty against defects.",
-  warrantyLink: { label: "Read the warranty", href: "/policies/warranty" },
-} as const;
 
 // ─── Comparison table ────────────────────────────────────────────────────────
 // Against "a typical light-up 510 battery". Never name a competitor here.

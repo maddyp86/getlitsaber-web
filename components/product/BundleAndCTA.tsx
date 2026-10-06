@@ -1,14 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import {
-  OFFERS,
-  TRUST_LINE,
-  QUANTITY_LABEL,
-  FREE_SHIPPING_LABEL,
-} from "./productdisplay.content";
-import { getLinePrice, getDisplayUnitPrice, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { OFFERS, TRUST_LINE, FREE_SHIPPING_LABEL } from "./productdisplay.content";
+import { getLinePrice, getDisplayUnitPrice, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { quoteOffer, offerForQty } from "@/lib/cart/offers";
 import { formatDisplayShipping } from "@/lib/shipping";
 import { useCartActions, useCartStore } from "@/lib/cart/store";
@@ -120,8 +114,6 @@ export default function BundleAndCTA({
     }
   }
 
-  const customQuote = quoteOffer(qty, basePrice);
-
   return (
     <div className="flex flex-col gap-4">
       {available && (
@@ -130,15 +122,14 @@ export default function BundleAndCTA({
             SELECT QUANTITY
           </p>
 
-          {/* Offer cards. A card is checked when the stepper quantity matches it,
-              so stepping to 3+ leaves both unchecked rather than lying. */}
+          {/* The two offers are the whole quantity choice: 1 or 2. */}
           <div role="radiogroup" aria-labelledby="offer-label" className="flex flex-col gap-3">
             {OFFERS.map((offer) => {
               const isChecked = qty === offer.qty;
               const quote = quoteOffer(offer.qty, basePrice);
 
               return (
-                <div key={offer.qty} className="flex flex-col gap-1.5" data-testid={`offer-${quote.id}`}>
+                <div key={offer.qty} data-testid={`offer-${quote.id}`}>
                   <button
                     type="button"
                     role="radio"
@@ -180,70 +171,11 @@ export default function BundleAndCTA({
                       priceClassName="font-body font-bold text-[16px] text-text-primary"
                     />
                   </button>
-                  {offer.note && (
-                    <p className="font-label text-[12px] text-text-secondary pl-1">{offer.note}</p>
-                  )}
                 </div>
               );
             })}
           </div>
 
-          {/* Plain quantity stepper: any quantity up to the cap. 2+ ships free. */}
-          <div className="flex items-center gap-4 flex-wrap">
-            <span id="qty-label" className="font-label text-[12px] text-text-muted uppercase tracking-wider">
-              {QUANTITY_LABEL}
-            </span>
-            <div
-              role="group"
-              aria-labelledby="qty-label"
-              className="flex items-center border border-border-default rounded-sm overflow-hidden"
-            >
-              <button
-                type="button"
-                onClick={() => selectQty(Math.max(1, qty - 1))}
-                disabled={qty <= 1}
-                aria-label="Decrease quantity"
-                className="w-9 h-9 flex items-center justify-center font-label text-[20px] leading-none text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                −
-              </button>
-              <span
-                aria-live="polite"
-                data-testid="qty-value"
-                className="w-9 h-9 flex items-center justify-center font-label font-bold text-[16px] text-text-primary border-x border-border-default"
-              >
-                {qty}
-              </span>
-              <button
-                type="button"
-                onClick={() => selectQty(Math.min(MAX_QTY, qty + 1))}
-                disabled={qty >= MAX_QTY}
-                aria-label="Increase quantity"
-                className="w-9 h-9 flex items-center justify-center font-label text-[20px] leading-none text-text-muted hover:text-text-primary transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                +
-              </button>
-            </div>
-            {qty > 2 && (
-              <span className="font-label text-[12px] text-accent-cyan" data-testid="custom-qty-shipping">
-                {FREE_SHIPPING_LABEL}
-                <span className="sr-only">{` on ${customQuote.qty} units`}</span>
-              </span>
-            )}
-          </div>
-
-          {/* Wholesale nudge at qty cap */}
-          {qty >= MAX_QTY && (
-            <p className="font-label text-[12px] text-text-muted">
-              Need more?{" "}
-              <Link
-                href="/wholesale"
-                className="text-text-secondary underline hover:text-accent-cyan transition-colors duration-150"
-              >
-                See wholesale →
-              </Link>
-            </p>
-          )}
         </>
       )}
 

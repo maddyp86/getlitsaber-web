@@ -1,5 +1,5 @@
 import { mediaUrl, videoUrl } from "@/lib/media";
-import { BASE_UNIT_PRICE, MSRP_UNIT_PRICE } from "@/lib/cart/pricing";
+import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 
 export const HERO_VIDEO_SRC = videoUrl("home/litsaber-hero.mp4");
 export const HERO_POSTER_SRC = mediaUrl("home/litsaber-hero-image.png");
@@ -17,11 +17,10 @@ export const HEADLINE_MOBILE = {
 export const SUBHEADLINE =
   "An interactive 510 battery engineered for festivals, nightlife, and the moments worth showing off. Built to last long after the lights come up.";
 
-/** Rendered as "GET YOURS · ~~$49.99~~ $39.99" (MSRP struck through). */
+/** Rendered as "GET YOURS · $39.99". The MSRP anchor lives on the PDP. */
 export const CTA_PRIMARY = {
   label: "GET YOURS",
   price: BASE_UNIT_PRICE,
-  msrp: MSRP_UNIT_PRICE,
   href: "/shop/litsaber-og",
 };
 

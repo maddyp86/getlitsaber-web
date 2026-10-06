@@ -152,7 +152,7 @@ export default function CartPageBody() {
                             className="font-label font-bold"
                             style={{ fontSize: "14px", color: "#00E5FF" }}
                           >
-                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} showLabel={false} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
                           </span>
                           <button
                             onClick={() => {
@@ -353,7 +353,7 @@ export default function CartPageBody() {
                             className="font-label font-bold text-text-primary text-left"
                             style={{ fontSize: "15px", width: "100px" }}
                           >
-                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} showLabel={false} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
                           </span>
 
                           {/* Remove column */}
