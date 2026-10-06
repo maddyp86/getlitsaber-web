@@ -171,6 +171,7 @@ Run alongside Phases 1–5 so the next review is usable.
 - [x] Record a checkout handoff event for both routes with `route` ("buy_now" or "cart"), `offer_selected` ("single" | "two_pack" | "custom_qty"), `item_count`, and estimated `shipping_amount`.
 - [x] Fire exactly one `purchase` event per paid Shopify order, deduplicated by order ID, linked to the same PostHog person who browsed the storefront. Include `order_id`, `subtotal`, `shipping_amount`, `item_count`, and `offer_selected`.
 - [x] Never send customer names, emails, addresses, phone numbers, or payment details to PostHog.
+  - *Owner decision 2026-10-06: exception for email. The orders webhook sets the paid order's email on the buyer's PostHog person (person property only, never on events or from the storefront). Names, addresses, phones and payment details still never go.*
 - [x] Treat getlitsaber.com and checkout.getlitsaber.com as one site for attribution, so returns from checkout are not counted as new referrals and the original source carries through.
 - [x] Tag the packaging QR code and activation insert links with consistent UTMs, and add an `is_owner_visit` marker for activation pages.
 - [ ] Mark internal and test traffic with the internal-user property, including test checkouts, instead of relying on one email and one order ID.
