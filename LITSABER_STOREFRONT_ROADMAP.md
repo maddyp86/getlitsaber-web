@@ -144,11 +144,16 @@ Goal: confirm both routes (Buy Now and cart) reach a correct checkout, and fix a
 
 Goal: "I AM 21+" acknowledges a valid tap or keypress immediately. 12 real visitors had a click on it flagged as unresponsive.
 
-- [ ] Check whether the button is clickable before its script is ready, and whether a first tap can be lost on mobile.
-- [ ] Give immediate visual feedback on tap or press.
-- [ ] Confirm keyboard confirmation and focus work.
-- [ ] Prevent duplicate handling of the same confirmation.
-- [ ] Keep the same age requirement, explicit confirmation, and persistence behavior.
+- [x] Check whether the button is clickable before its script is ready, and whether a first tap can be lost on mobile.
+- [x] Give immediate visual feedback on tap or press.
+- [x] Confirm keyboard confirmation and focus work.
+- [x] Prevent duplicate handling of the same confirmation.
+- [x] Keep the same age requirement, explicit confirmation, and persistence behavior.
+
+*Findings and results 2026-10-06 (branch `fix/age-gate-first-tap`):*
+- *Cause: the gate mounted after React hydrated, so on a throttled phone it appeared ~5.7 s after load, ~3.3 s after the page painted, leaving the site visible and tappable without it. The 17 PostHog `$dead_click`s on "I AM 21+" (90 days, 16 non-internal) were each followed by that visitor's `age_gate_confirmed` within ~0.5 s: the tap worked, but the dialog was removed in the same task, so PostHog saw no change after the click.*
+- *Fix: gate server-rendered and shown by default (fail-closed); a head script hides it before paint for verified visitors; an inline handler confirms from first paint with an immediate pressed state, ignores repeat taps, and closes on the next frame; Exit is a plain link; Tab stays in the gate.*
+- *Throttled mobile (4x CPU, slow 3G-class network), 5 fresh visits, median (max): gate visible at 5,673 (5,686) ms → 1,450 (1,797) ms, now before first paint; tap input delay 110 (145) → 65 (104) ms; tap to gate closed 156 (201) → 88 (145) ms. All 10 visits confirmed on the first tap. Desktop worst tap 336 → 56 ms.*
 
 **Done when:** a first tap or keypress is acknowledged every time in repeated testing on desktop and mobile, with no change to the gate's requirement.
 
