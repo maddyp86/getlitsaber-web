@@ -155,16 +155,27 @@ Goal: "I AM 21+" acknowledges a valid tap or keypress immediately. 12 real visit
 
 Run alongside Phases 1–5 so the next review is usable.
 
-- [ ] Capture page views on in-site navigation (route changes), without double-counting the initial load.
-- [ ] Separate product-page exposure from homepage product-module exposure, for example with a `surface` property on `product_viewed` ("product_page" or "homepage_module").
-- [ ] Record `cart_add_to_cart` only on successful additions.
-- [ ] Record a checkout handoff event for both routes with `route` ("buy_now" or "cart"), `offer_selected` ("single" | "two_pack" | "custom_qty"), `item_count`, and estimated `shipping_amount`.
-- [ ] Fire exactly one `purchase` event per paid Shopify order, deduplicated by order ID, linked to the same PostHog person who browsed the storefront. Include `order_id`, `subtotal`, `shipping_amount`, `item_count`, and `offer_selected`.
-- [ ] Never send customer names, emails, addresses, phone numbers, or payment details to PostHog.
-- [ ] Treat getlitsaber.com and checkout.getlitsaber.com as one site for attribution, so returns from checkout are not counted as new referrals and the original source carries through.
-- [ ] Tag the packaging QR code and activation insert links with consistent UTMs, and add an `is_owner_visit` marker for activation pages.
+- [x] Capture page views on in-site navigation (route changes), without double-counting the initial load.
+- [x] Separate product-page exposure from homepage product-module exposure, for example with a `surface` property on `product_viewed` ("product_page" or "homepage_module").
+- [x] Record `cart_add_to_cart` only on successful additions.
+- [x] Record a checkout handoff event for both routes with `route` ("buy_now" or "cart"), `offer_selected` ("single" | "two_pack" | "custom_qty"), `item_count`, and estimated `shipping_amount`.
+- [x] Fire exactly one `purchase` event per paid Shopify order, deduplicated by order ID, linked to the same PostHog person who browsed the storefront. Include `order_id`, `subtotal`, `shipping_amount`, `item_count`, and `offer_selected`.
+- [x] Never send customer names, emails, addresses, phone numbers, or payment details to PostHog.
+- [x] Treat getlitsaber.com and checkout.getlitsaber.com as one site for attribution, so returns from checkout are not counted as new referrals and the original source carries through.
+- [x] Tag the packaging QR code and activation insert links with consistent UTMs, and add an `is_owner_visit` marker for activation pages.
 - [ ] Mark internal and test traffic with the internal-user property, including test checkouts, instead of relying on one email and one order ID.
-- [ ] Find out why the 90-day window had 6 people with a purchase event against 3 paid Shopify orders, and report the cause.
+- [x] Find out why the 90-day window had 6 people with a purchase event against 3 paid Shopify orders, and report the cause.
+
+*Findings and results 2026-10-06 (branch `fix/measurement`):*
+- *Pageviews: 27 of 43 sessions (63%) that reached the PDP in the last 30 days had no PDP pageview; client-side navigation was not captured. Now `capture_pageview: "history_change"`; fires only when the path changes, so the first load is not counted twice.*
+- *`product_viewed` already carried `surface` (`pdp` / `homepage_buy`, live since before this phase); values kept so the weekly agent's boards keep working.*
+- *`cart_add_to_cart` already fired only after Shopify confirmed the add; verified, no change.*
+- *`checkout_started` is the handoff event on all three buttons, with `route` (`buy_now` / `cart`), `offer_selected`, `item_count`, `shipping_amount`.*
+- *Purchase: once per paid order (`financial_status: paid`; checkout captures at purchase), deduped by order id, on the browsing visitor's anonymous id. Test-mode orders, carts from internal browsers (`_internal` cart attribute) and Shopify customers tagged `internal` or `test` are marked `is_internal` and set `$internal_or_test_user`.*
+- *Personal data: the storefront and both webhooks sent email to PostHog (`identify` with email; email on `rebate_refund_granted`; names, email and post link on `rebate_form_submitted`). All removed; PII query parameters are stripped from every URL property.*
+- *6 purchase-event people vs 3 paid orders: the 3 real buyers (#1037, #1040, #1041) plus test orders placed through the live checkout and later deleted in Shopify (deleting an order never retracts its event). #1035, #1038 and #1039 had no visitor id on the cart, so each fallback `order_<id>` id became its own person; #1030 to #1032 came from an owner test browser that was never flagged internal (#1033 to #1034 were flagged). That is 7 non-internal people in a strict 90-day window, or 6 if the window starts after the morning of July 14. #1040 was also counted 3 times before the August idempotency fix (events, not people).*
+- *Controlled test journey on the preview (PostHog project "Litsaber - Test", which previews report to): one event per action, return from checkout carried the original source, owner visit marked, no email in any event.*
+- **[OWNER]** *Approve the PostHog internal/test filter change (see summary). Printed QR codes: 38 people reached a bare `/activate` with no UTMs; confirm which printed item carries it. Use `/qr/box`, `/qr/insert`, `/qr/rebate` for future print runs.*
 
 **Done when:** a controlled test journey produces one correct event per action and one purchase event per paid order, and owner, shopper, and internal traffic can be separated.
 
