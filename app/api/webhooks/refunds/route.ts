@@ -98,12 +98,12 @@ export async function POST(req: Request): Promise<Response> {
   const orderId = String(refund.order_id);
   const matchedBy = noteHasRebate ? "note" : "amount";
 
-  // Recover the stitched distinct_id + email/order number from the mirrored order.
+  // Recover the stitched distinct_id and order number from the mirrored order.
+  // No email: personal data never goes to PostHog.
   const order = await getOrderByShopifyId(orderId);
   const stitchedId = order?.distinct_id?.trim();
   const canStitch = !!stitchedId && !stitchedId.startsWith("order_") && !stitchedId.includes("@");
   const distinctId = canStitch ? (stitchedId as string) : "order_" + orderId;
-  const email = (order?.email || "").trim().toLowerCase();
   const currency = refund.transactions?.[0]?.currency || order?.currency || "USD";
 
   const posthogToken = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
@@ -112,9 +112,6 @@ export async function POST(req: Request): Promise<Response> {
   if (posthogToken) {
     const posthog = new PostHog(posthogToken, { host: posthogHost });
     try {
-      if (canStitch && email) {
-        posthog.identify({ distinctId, properties: { email } });
-      }
       posthog.capture({
         distinctId,
         event: "rebate_refund_granted",
@@ -124,7 +121,6 @@ export async function POST(req: Request): Promise<Response> {
           refund_amount: amount,
           currency,
           matched_by: matchedBy,
-          email: email || null,
           source: "rebate-page",
         },
       });

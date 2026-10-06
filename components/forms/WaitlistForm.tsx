@@ -119,7 +119,6 @@ export default function WaitlistForm({
 
       if (data.ok) {
         setState("idle");
-        sessionStorage.setItem("litsaber_email", email.trim().toLowerCase());
         onSuccess?.(email.trim().toLowerCase());
       } else {
         const msg = data.error ?? "Something went wrong. Please try again.";

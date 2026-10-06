@@ -20,6 +20,7 @@ import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
 import { SHIPPING_ATTRIBUTE_VALUE } from "@/lib/shipping";
 import { getChannelAttribution } from "@/lib/analytics/channel";
+import { isInternalBrowser } from "@/lib/analytics/attribution";
 import { getLinePrice, clampTotalToFloor, isBelowFloor, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { mediaUrl } from "@/lib/media";
@@ -231,6 +232,12 @@ function buildCartAttributes(): AttributeInput[] {
   attributes.push({ key: "utm_medium", value: channel.utm_medium });
   attributes.push({ key: "utm_campaign", value: channel.utm_campaign });
   attributes.push({ key: "referrer", value: channel.referrer });
+
+  // Internal or test browser (preview/dev host, or ?internal=<token>). The
+  // orders webhook marks the purchase and its person internal.
+  if (isInternalBrowser(window.location.hostname)) {
+    attributes.push({ key: "_internal", value: "true" });
+  }
 
   // Shipping stamp. Underscore-prefixed so it is suppressed from the checkout
   // UI while visible to the Function and the Order API. The delivery Function

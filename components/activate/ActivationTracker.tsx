@@ -1,34 +1,29 @@
 "use client";
 
 import { useEffect } from "react";
-import { track, EVENTS } from "@/lib/analytics/events";
+import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
+import { activationSource } from "@/lib/analytics/attribution";
 
 const ACTIVATED_FLAG = "litsaber_activated";
 
-// Invisible client component — fires device_activated on first /activate page visit only.
-// Uses a timeout to ensure PostHog is initialized.
-// localStorage guard survives navigation.
+// Invisible client component: fires device_activated on the first /activate
+// visit in this browser. trackWhenReady queues the event until PostHog has
+// initialized (it used to fire on a 500ms timer with track(), which silently
+// dropped the event whenever PostHog was slower, while still setting the flag).
+// Every event in an owner session also carries is_owner_visit (set in
+// lib/analytics/attribution.ts), so owner traffic separates from shoppers.
 export default function ActivationTracker() {
   useEffect(() => {
-    // If already activated (flag is set), don't fire again
-    if (localStorage.getItem(ACTIVATED_FLAG) !== null) {
-      return;
-    }
-
-    // Fire after delay to ensure PostHog is ready
-    const timer = setTimeout(() => {
-      const utmSource = new URLSearchParams(window.location.search).get("utm_source");
-      const activation_source = utmSource === "packaging" ? "packaging_qr" : "direct";
-
-      track(EVENTS.device_activated, {
-        activation_source,
-        is_first_activation: true,
-      });
-
+    try {
+      if (localStorage.getItem(ACTIVATED_FLAG) !== null) return;
       localStorage.setItem(ACTIVATED_FLAG, "1");
-    }, 500); // 500ms to ensure PostHog init on cold loads
-
-    return () => clearTimeout(timer);
+    } catch {
+      // storage unavailable: still record this activation
+    }
+    trackWhenReady(EVENTS.device_activated, {
+      activation_source: activationSource(window.location.search),
+      is_first_activation: true,
+    });
   }, []);
 
   return null;

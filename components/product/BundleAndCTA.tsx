@@ -10,6 +10,7 @@ import { useCartActions, useCartStore } from "@/lib/cart/store";
 import { useAddToCart, ADD_FAILED_MESSAGE } from "@/lib/cart/useAddToCart";
 import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS } from "@/lib/analytics/events";
+import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
@@ -98,12 +99,7 @@ export default function BundleAndCTA({
         tier_price: getLinePrice(qty, basePrice),
         offer: offerForQty(qty),
       });
-      track(EVENTS.checkout_started, {
-        cart_value: freshCartValue,
-        item_count: freshItemCount,
-        has_promo_code: false,
-        source: "buy_now",
-      });
+      trackCheckoutHandoff("buy_now", freshCartValue, freshItemCount);
       const url = freshState.checkoutUrl;
       if (url) {
         window.location.href = url;
