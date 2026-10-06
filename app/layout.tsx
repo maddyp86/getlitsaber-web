@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     apple: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/global/litsaber-icon-white.png",
   },
   description:
-    "A glowstick that hits 510 carts. Built for festivals, nightlife, and the moments worth being lit for.",
+    "An interactive 510 battery built for festivals, nightlife, and the moments worth being lit for.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://getlitsaber.com"
   ),

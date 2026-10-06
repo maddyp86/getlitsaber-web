@@ -12,3 +12,10 @@ export const SPEC_PILLS = [
   "ALUMINUM + BRASS BUILD",
   "WARRANTY INCLUDED",
 ] as const;
+
+// Compatibility statement, wording supplied by Matt 2026-10-06. It replaces the
+// absolute "works with any 510" style claims (see lib/copy/retiredClaims.ts).
+// The full caveats (10.5 to 14.5mm, backing off deeper-pin carts) stay in the
+// PDP Tech Specs and the contact FAQ.
+export const COMPATIBILITY_STATEMENT =
+  "Compatible with live resin, rosin, distillate and liquid diamonds. Has a 4.0mm pin depth, tuned for 95 to 99% cart compatibility. If it's 510, it likely works.";

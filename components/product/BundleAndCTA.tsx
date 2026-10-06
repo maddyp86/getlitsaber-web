@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import Link from "next/link";
 import { OFFERS, TRUST_LINE, FREE_SHIPPING_LABEL } from "./productdisplay.content";
 import { getLinePrice, getDisplayUnitPrice, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { quoteOffer, offerForQty } from "@/lib/cart/offers";
@@ -204,7 +205,18 @@ export default function BundleAndCTA({
 
             {/* Trust line */}
             <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
-              {TRUST_LINE}
+              {TRUST_LINE.map((item, i) => (
+                <Fragment key={item.label}>
+                  {i > 0 && " · "}
+                  {item.href ? (
+                    <Link href={item.href} className="underline underline-offset-2 hover:text-text-secondary">
+                      {item.label}
+                    </Link>
+                  ) : (
+                    item.label
+                  )}
+                </Fragment>
+              ))}
             </p>
           </>
         ) : (

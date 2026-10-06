@@ -193,14 +193,14 @@ export const DOPEX_CARD_HREF = "https://www.dopex.com";
 export const NOW_EYEBROW = "/ 05 — WHERE WE ARE NOW";
 export const NOW_HEADLINE = "Iterating in public.";
 export const NOW_BODY =
-  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition launches this summer 2026**. We're at festivals, events, the cannabis party bus circuit through summer. We're doing collabs with SoCal dispensaries. We're at trade shows in full costume because that's the energy of this brand and we own it.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
+  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition is coming soon**. We're at festivals, events, the cannabis party bus circuit through summer. We're doing collabs with SoCal dispensaries. We're at trade shows in full costume because that's the energy of this brand and we own it.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
 export const NOW_WILD_EYEBROW = "OUT IN THE WILD";
 
 // ─── Section 7 — Closing CTA ─────────────────────────────────────────────────
 export const CLOSING_HEADLINE_PART1 = "MADE IN LOS ANGELES,";
 export const CLOSING_HEADLINE_ACCENT = "BY PEOPLE WHO SHOW UP.";
 export const CLOSING_BODY =
-  "Litsaber ships from Los Angeles, backed by a 6-month limited warranty and same-day fulfillment. We're a small company that makes one product. We'd love for you to have it.";
+  "Litsaber ships from Los Angeles, backed by a 6-month limited warranty. Orders ship within 2 business days. We're a small company that makes one product. We'd love for you to have it.";
 export const CLOSING_CTA_PRIMARY = "GET YOURS";
 export const CLOSING_CTA_PRIMARY_HREF = "/shop/litsaber-og";
 export const CLOSING_CTA_SECONDARY = "GET IN TOUCH";

@@ -9,7 +9,7 @@ export type { Para };
 export const QUICK_SUMMARY: Para = [
   {
     t: "txt",
-    v: "Every Litsaber is covered by a 6-month limited warranty against manufacturing defects under normal use. If your device has a defect, contact us and we'll repair or replace it at no cost.",
+    v: "Every Litsaber is covered by a 6-month limited warranty against manufacturing defects under normal use. If your device has a defect, contact us and we'll replace it at no cost.",
   },
 ];
 
