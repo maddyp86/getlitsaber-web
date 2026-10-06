@@ -6,6 +6,7 @@ import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.co
 import { quoteOffer } from "@/lib/cart/offers";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import GalleryBlock from "./GalleryBlock";
+import GalleryErrorBoundary from "./GalleryErrorBoundary";
 import StyleSelector from "./StyleSelector";
 import BundleAndCTA from "./BundleAndCTA";
 import WaitlistCard from "./WaitlistCard";
@@ -71,7 +72,9 @@ export default function ProductDisplay({ variantId, available, surface, basePric
         className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[110px]"
         style={{ gap: "20px" }}
       >
-        <GalleryBlock activeThumb={activeThumb} onThumbClick={setActiveThumb} />
+        <GalleryErrorBoundary>
+          <GalleryBlock activeThumb={activeThumb} onThumbClick={setActiveThumb} />
+        </GalleryErrorBoundary>
       </div>
 
       {/* Right: product info */}
