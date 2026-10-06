@@ -1,3 +1,6 @@
+import { COMPATIBILITY_STATEMENT } from "./specs.content";
+import { SINGLE_UNIT_SHIPPING, formatDisplayShipping } from "@/lib/shipping";
+
 export interface AccordionBullet {
   lead: string;
   text: string;
@@ -38,7 +41,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
         },
         {
           lead: "Cart-agnostic.",
-          text: "4.0mm pin depth, tuned for 95 to 99% cart compatibility. Live resin, rosin, distillate, liquid diamonds. If it's 510, it works.",
+          text: `${COMPATIBILITY_STATEMENT} Live resin, rosin, distillate, liquid diamonds.`,
         },
         {
           lead: "Three modes.",
@@ -61,7 +64,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           label: "LIGHTING",
           bullets: [
             "41 individually-addressable LEDs",
-            "12 color options including white and rainbow modes",
+            "10 color options including white and rainbow",
             "3 lighting modes: Glowstick, Litsaber, Stealth",
             "Breath-responsive intensity (in Litsaber Mode)",
           ],
@@ -162,16 +165,12 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
       type: "prose",
       blocks: [
         {
-          lead: "Free USPS shipping on all US orders.",
+          lead: `${formatDisplayShipping(SINGLE_UNIT_SHIPPING)} shipping on one unit. Free on two or more.`,
           text: "Ships from California, Monday through Friday.",
         },
         {
-          lead: "Orders ship within 1 to 2 business days.",
-          text: "Allow up to 5 business days during launches or sales.",
-        },
-        {
-          lead: "Arrives in 5 to 7 business days.",
-          text: "Tracking email sent when your order leaves the warehouse. Allow 1 to 2 days for the carrier to update tracking.",
+          lead: "Orders ship within 2 business days.",
+          text: "Once shipped, delivery typically takes 2–5 business days within the US via USPS Ground Advantage. You'll get tracking by email when your order ships.",
         },
         {
           text: "Tracking link is in your shipping confirmation email and your account at getlitsaber.com under Order History.",
@@ -190,8 +189,8 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
       type: "prose",
       blocks: [
         {
-          lead: "6-month limited warranty against defects.",
-          text: "From the date of purchase. We cover manufacturing defects, LED failures, charging issues, and anything that fails because we built it wrong.",
+          lead: "6-month limited warranty against manufacturing defects.",
+          text: 'From the date of purchase. We cover manufacturing defects, LED failures, charging issues, and anything that fails because we built it wrong. A defective device is replaced, not refunded. Read the full <a href="/policies/warranty" class="underline">warranty policy</a>.',
         },
         {
           lead: "How to claim:",

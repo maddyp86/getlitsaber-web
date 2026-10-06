@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "migrate-media": "tsx scripts/migrate-media.ts",
+    "check-promises": "tsx scripts/check-promises.ts",
     "test": "vitest run"
   },
   "dependencies": {

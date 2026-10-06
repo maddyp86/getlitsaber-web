@@ -1,3 +1,5 @@
+import { COMPATIBILITY_STATEMENT } from "@/components/product/specs.content";
+
 export const EYEBROW = "BEFORE YOUR BUY";
 export const HEADLINE = "COMMON QUESTIONS";
 
@@ -5,6 +7,8 @@ export interface FaqItem {
   number: string;
   question: string;
   answer: string;
+  /** Optional link rendered after the answer. */
+  link?: { label: string; href: string };
 }
 
 export const FAQ_ITEMS: FaqItem[] = [
@@ -18,7 +22,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 02",
     question: "Will it work with my carts?",
     answer:
-      "Yes. Universal 510 thread fits any standard cart from 10.5mm to 14.5mm optimized for distillate, live resin, rosin, cured resin carts. Three-voltage tuning (2.4V, 2.8V, 3.2V) lets you match the voltage to your oil.",
+      `Most likely. ${COMPATIBILITY_STATEMENT} Three-voltage tuning (2.4V, 2.8V, 3.2V) lets you match the voltage to your oil.`,
   },
   {
     number: "/ 03",
@@ -36,12 +40,13 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 05",
     question: "What if it breaks or stops working?",
     answer:
-      "6-month limited warranty. The aluminum and brass top section handles the connection, while the polycarbonate body and reinforced foam diffuser absorb impact, designed to take a drop. If a manufacturing defect shows up within six months, we repair or replace it.",
+      "6-month limited warranty. The aluminum and brass top section handles the connection, while the polycarbonate body and reinforced foam diffuser absorb impact, designed to take a drop. If a manufacturing defect shows up within six months, we replace it. The warranty covers replacement, not refunds.",
+    link: { label: "Read the warranty policy.", href: "/policies/warranty" },
   },
   {
     number: "/ 06",
     question: "Can I travel with it?",
     answer:
-      "The device itself is TSA-compliant.  Lithium battery rated for carry-on (not checked baggage). Cannabis carts are subject to your local laws. We ship anywhere in the US in 24 hours; check your state's rules before flying.",
+      "The device itself is TSA-compliant.  Lithium battery rated for carry-on (not checked baggage). Cannabis carts are subject to your local laws. Check your state's rules before flying. Orders ship within 2 business days anywhere in the US.",
   },
 ];

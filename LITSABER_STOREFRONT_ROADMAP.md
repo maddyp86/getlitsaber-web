@@ -21,13 +21,13 @@ This file is the working checklist for storefront changes. Work top to bottom. C
 
 ## Fixed decisions (do not change or re-recommend)
 
-- Single: $39.99, shown against a struck-through $49.99 labeled MSRP, plus $5.99 shipping. This is the regular price, not a sale.
-- Two Pack: $79.98, shown against a struck-through $99.98 labeled MSRP, free shipping.
+- Single: $39.99, shown against a struck-through $49.99 (MSRP; no visible label, owner decision 2026-10-05, reconfirmed 2026-10-06), plus $5.99 shipping. This is the regular price, not a sale.
+- Two Pack: $79.98, shown against a struck-through $99.98 (MSRP, no visible label), free shipping.
 - No 3-, 4-, or 5-unit offer tiers.
 - The $5 promo code and promo popup are removed. No replacement discount, popup, or email-capture offer.
 - Keep the cart and Add to Cart as they are. Buy Now and the cart are both valid routes to checkout.
 - The product has **10 colors**. Any reference to 12 is wrong.
-- Spec pills: 41 ADDRESSABLE LEDS · 10 SELECTABLE COLORS · 3 INTERACTIVE MODES · 800 MAH BATTERY · ALUMINUM + STEEL BUILD · WARRANTY INCLUDED. Never use "NeoPixel."
+- Spec pills: 41 ADDRESSABLE LEDS · 10 SELECTABLE COLORS · 3 INTERACTIVE MODES · 800 MAH BATTERY · ALUMINUM + BRASS BUILD · WARRANTY INCLUDED. Never use "NeoPixel." (Corrected 2026-10-06: the device has no steel; materials are aluminum, brass, plastic and silicone.)
 - Positioning is durable, high-quality hardware, not a disposable battery. No unsupported claims (waterproof, indestructible, lifetime, etc.). Do not use "premium," "sale," "deal," "cheap," "affordable," "pen," or "cart battery" in customer copy.
 - Keep the 21+ age gate. Fix its responsiveness only; never remove, hide, auto-confirm, or weaken it.
 - No A/B tests. Traffic is too low. Ship changes and judge them directionally.
@@ -39,12 +39,12 @@ This file is the working checklist for storefront changes. Work top to bottom. C
 
 Earlier work (repricing, offer tiers, copy, spec pills) may be fully or partly deployed. Confirm before building on it.
 
-- [ ] Product page shows Single $39.99 (MSRP $49.99 struck through) + $5.99 shipping, and Two Pack $79.98 (MSRP $99.98 struck through) with free shipping.
-- [ ] No 3-, 4-, or 5-unit tiers anywhere, including structured data and emails.
-- [ ] $5 code, promo popup, and any banner offer are gone from code and templates. Report any discount codes still referenced so I can deactivate them in Shopify.
-- [ ] Spec pills match the fixed list above, and the old "ALUMINUM + BRASS BUILD" text is gone. References to the 510 connector material may stay as written; flag any that conflict with the body being aluminum and steel.
-- [ ] Hero subhead and product showcase headline match the approved copy, if that change was shipped.
-- [ ] List anything from the earlier prompts that is not live yet. Do not redo shipped work.
+- [x] Product page shows Single $39.99 (MSRP $49.99 struck through) + $5.99 shipping, and Two Pack $79.98 (MSRP $99.98 struck through) with free shipping.
+- [x] No 3-, 4-, or 5-unit tiers anywhere, including structured data and emails. (Code and structured data verified. HubSpot emails are disabled or sent manually; Shopify notifications render order data, not hardcoded prices.)
+- [x] $5 code, promo popup, and any banner offer are gone from code and templates. Report any discount codes still referenced so I can deactivate them in Shopify. (Only active Shopify code: LITFAM10, a deliberate exception. The /show-it-off $5 post-purchase rebate stays, owner decision 2026-10-06.)
+- [x] Spec pills match the fixed list above, and the build pill reads ALUMINUM + BRASS BUILD (corrected 2026-10-06; the earlier "steel" wording was wrong).
+- [x] Hero subhead and product showcase headline match the approved copy, if that change was shipped. (Shipped in #71.)
+- [x] List anything from the earlier prompts that is not live yet. Do not redo shipped work. (Everything from #71 to #77 is live; production was on e5946f0 at verification, 2026-10-06.)
 
 **Deploy date:** ____
 
@@ -54,26 +54,28 @@ Earlier work (repricing, offer tiers, copy, spec pills) may be fully or partly d
 
 Goal: product page, cart, checkout handoff, policies, FAQ, About, and emails all say the same thing.
 
-- [ ] Shipping accordion: remove "free shipping on all US orders." Replace with the real rule: $5.99 on one unit, free on two or more.
-- [ ] Cart and cart drawer: replace "Free 14-day returns" with "14-day returns on unopened devices." linking to /policies/shipping-returns.
-- [ ] Shipping & Returns policy (/policies/shipping-returns), confirmed by owner. Make these edits and leave the rest of the policy unchanged:
+- [x] Shipping accordion: remove "free shipping on all US orders." Replace with the real rule: $5.99 on one unit, free on two or more.
+- [x] Cart and cart drawer: replace "Free 14-day returns" with "14-day returns on unopened devices." linking to /policies/shipping-returns.
+- [x] Shipping & Returns policy (/policies/shipping-returns), confirmed by owner. Make these edits and leave the rest of the policy unchanged:
   - Quick summary: replace with "We ship Monday through Friday from our warehouse in California, within 2 business days of your order. US orders ship via USPS Ground Advantage and typically arrive 2–5 business days after shipment. Returns are accepted for unopened, unused products within 14 days of delivery. You cover return shipping for change-of-mind returns; we cover it when an item arrives damaged, defective, or incorrect. Defective devices are also covered under our 6-month limited warranty."
   - Section 01 Shipping, first two paragraphs: replace "Due to high order volume, please allow up to 5 business days for order processing..." and "Please allow up to 7 business days for delivery after shipment." with: "Orders ship within 2 business days, Monday through Friday, excluding US holidays. We ship all US orders via USPS Ground Advantage. Delivery typically takes 2–5 business days after shipment. Delivery times are estimates and are not guaranteed once your order is with the carrier." Keep the tracking, rerouting, and carrier paragraphs that follow.
   - Section 05 Sale Items: keep the existing text and add at the end: "Our regular price is shown alongside the manufacturer's suggested retail price (MSRP). Purchases at our regular price are not sale purchases and are eligible for returns under the terms above."
-- [ ] Warranty policy (/policies/warranty): the intro says "we'll repair or replace it," but section 01 offers replacement only. Change the intro to: "If your device has a defect, contact us and we'll replace it at no cost." Six-month term confirmed by owner; leave the rest unchanged.
-- [ ] Site footer tagline currently reads "An interactive glowstick that hits 510 carts." Replace with: "An interactive 510 battery built for festivals, nightlife, and the moments worth being lit for." (Glowstick framing conflicts with the durable-hardware positioning.)
-- [ ] Dispatch and arrival: list every existing claim (24-hour dispatch, same-day fulfillment, 1–2 business days, up to 5 during launches, 5–7 or 2–5 days in transit) with file and line, then replace each with the confirmed wording below. Confirmed by owner: orders ship within 2 business days via USPS Ground Advantage; transit is typically 2–5 business days within the US.
+- [x] Warranty policy (/policies/warranty): the intro says "we'll repair or replace it," but section 01 offers replacement only. Change the intro to: "If your device has a defect, contact us and we'll replace it at no cost." Six-month term confirmed by owner; leave the rest unchanged.
+- [x] Site footer tagline currently reads "An interactive glowstick that hits 510 carts." Replace with: "An interactive 510 battery built for festivals, nightlife, and the moments worth being lit for." (Glowstick framing conflicts with the durable-hardware positioning.)
+- [x] Dispatch and arrival: list every existing claim (24-hour dispatch, same-day fulfillment, 1–2 business days, up to 5 during launches, 5–7 or 2–5 days in transit) with file and line, then replace each with the confirmed wording below. Confirmed by owner: orders ship within 2 business days via USPS Ground Advantage; transit is typically 2–5 business days within the US.
   - Product page, near the price: "Ships within 2 business days."
   - Shipping accordion and FAQ: "Orders ship within 2 business days. Once shipped, delivery typically takes 2–5 business days within the US via USPS Ground Advantage. You'll get tracking by email when your order ships."
   - Shipping policy: "We ship orders within 2 business days of purchase, excluding weekends and US holidays. We ship US orders with USPS Ground Advantage, and transit typically takes 2–5 business days after shipment. Delivery times are estimates and are not guaranteed once the order is with the carrier."
   - About page: replace "same-day fulfillment" with "Orders ship within 2 business days."
   - Homepage: replace any "ships in 24 hours" claim with "Ships in 2 business days."
   - Remove "up to 5 days during launches or sales" and any other dispatch window that conflicts with the above.
-- [ ] Colors: change every reference to 12 colors to 10 (product page, The Tech, FAQ, meta descriptions, alt text).
+- [x] Colors: change every reference to 12 colors to 10 (product page, The Tech, FAQ, meta descriptions, alt text).
 - [ ] Compatibility: replace "If it's 510, it works" and any absolute compatibility claims with the verified statement already in the specs or FAQ (about 95–99% of 510 carts, with diameter and contact caveats). **[OWNER]** confirms the statement.
-- [ ] About page: replace the past Gold launch date with "Coming soon."
-- [ ] Warranty: wherever warranty is mentioned on product, FAQ, and cart surfaces, describe it as a 6-month limited warranty against manufacturing defects, with replacement (not refund), linking to /policies/warranty.
-- [ ] Add a test or script that checks the product page, cart, and policy pages for the old strings ("Free 14-day returns," "free shipping on all US orders," "12 colors," "$45.99," "$44.99," "$89.99") and fails if any reappear.
+  - Implemented with `TODO(owner)` at `COMPATIBILITY_STATEMENT` in `components/product/specs.content.ts`, awaiting confirmation: "Engineered for 95 to 99% compatibility with standard 510-thread carts from 10.5mm to 14.5mm in diameter. Some deeper-pin carts hit cleanest backed off a quarter to half turn."
+- [x] About page: replace the past Gold launch date with "Coming soon."
+- [x] Warranty: wherever warranty is mentioned on product, FAQ, and cart surfaces, describe it as a 6-month limited warranty against manufacturing defects, with replacement (not refund), linking to /policies/warranty.
+- [x] Add a test or script that checks the product page, cart, and policy pages for the old strings ("Free 14-day returns," "free shipping on all US orders," "12 colors," "$45.99," "$44.99," "$89.99") and fails if any reappear.
+  - `components/storefront-promises.test.ts` (source, runs in `pnpm test`) and `pnpm check-promises <url>` (rendered pages). Patterns in `lib/copy/retiredClaims.ts`.
 
 **Done when:** a scripted walkthrough of both offers from product page to checkout handoff finds zero mismatches in price, shipping, returns, dispatch, colors, or compatibility.
 
@@ -181,7 +183,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
   - What's in the box **[OWNER]** confirms contents
   - Shipping for the selected offer and the dispatch and arrival estimate from Phase 1
   - Returns summary and warranty, each linking to its policy
-  - Build facts (aluminum and steel build, 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery)
+  - Build facts (aluminum and brass build, 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery)
   - A link to the review summary
 - [ ] Use supported facts only. No superlatives or unsupported durability claims.
 - [ ] **[OWNER]** confirms the reviews shown are from real buyers. If any are not, they come down before the review link goes in.

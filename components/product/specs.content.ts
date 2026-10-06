@@ -12,3 +12,10 @@ export const SPEC_PILLS = [
   "ALUMINUM + BRASS BUILD",
   "WARRANTY INCLUDED",
 ] as const;
+
+// TODO(owner): confirm this compatibility statement. It is the verified claim
+// from the contact FAQ ("What carts work with Litsaber?") and the PDP Tech
+// Specs (4.0mm pin, 10.5 to 14.5mm, 95 to 99%), shortened. It replaces the
+// absolute "works with any 510" style claims (see lib/copy/retiredClaims.ts).
+export const COMPATIBILITY_STATEMENT =
+  "Engineered for 95 to 99% compatibility with standard 510-thread carts from 10.5mm to 14.5mm in diameter. Some deeper-pin carts hit cleanest backed off a quarter to half turn.";

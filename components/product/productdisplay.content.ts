@@ -19,7 +19,7 @@ export const STYLE_OPTIONS: StyleOption[] = [
   {
     id: "silver",
     label: "SILVER",
-    status: "In Stock. Ships in 24 hrs",
+    status: "In Stock. Ships within 2 business days.",
     swatchSrc: mediaUrl("product/litsaber-silver.svg"),
     swatchAlt: "Silver Litsaber",
   },
@@ -58,8 +58,12 @@ export const OFFERS: OfferCopy[] = [
 export const MSRP_LABEL = "MSRP";
 export const FREE_SHIPPING_LABEL = "Free shipping";
 
-export const TRUST_LINE =
-  "SHIPS IN 24 HOURS · FREE US SHIPPING ON 2+ · 6-MONTH WARRANTY";
+/** Rendered under the CTAs, joined with " · ". An href makes that item a link. */
+export const TRUST_LINE: ReadonlyArray<{ label: string; href?: string }> = [
+  { label: "SHIPS WITHIN 2 BUSINESS DAYS" },
+  { label: "FREE US SHIPPING ON 2+" },
+  { label: "6-MONTH LIMITED WARRANTY", href: "/policies/warranty" },
+];
 
 // ─── Comparison table ────────────────────────────────────────────────────────
 // Against "a typical light-up 510 battery". Never name a competitor here.

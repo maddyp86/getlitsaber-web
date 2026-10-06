@@ -42,7 +42,7 @@ export const EDITIONS: Edition[] = [
     hoverGlowRgb: "0, 229, 255",
     title: "OG SILVER",
     editionLine: "EDITION 01  |  5,000 UNITS",
-    descriptorLine: "SHIPS IN 24HRS",
+    descriptorLine: "SHIPS IN 2 BUSINESS DAYS",
     descriptorAccent: false,
     actionLabel: "SHOP NOW",
     ctaColor: "#00E5FF",
