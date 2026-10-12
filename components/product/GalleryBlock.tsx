@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Poin
 import { createPortal, flushSync } from "react-dom";
 import { GALLERY_IMAGES } from "./productdisplay.content";
 import { useSwipe } from "@/lib/useSwipe";
+import { dragOrigin, DRAG_SLOP_PX, type ZoomOrigin } from "@/lib/zoomPan";
 
 interface GalleryBlockProps {
   activeThumb: number;
@@ -17,6 +18,10 @@ type VideoState = "idle" | "loading" | "playing" | "error";
 // so a preloaded image is a cache hit when it becomes active.
 const VIEWER_SIZES = "(min-width: 600px) 50vw, 100vw";
 const LIGHTBOX_ZOOM = 2.5;
+// The lightbox is at most 1000px wide. 150vw leaves headroom for the 2.5x
+// zoom without asking a 3x phone for the 3840w file (200vw did): 1920w is a
+// quarter of the pixels to decode, which phones do while the lightbox opens.
+const LIGHTBOX_SIZES = "(min-width: 1000px) 1000px, 150vw";
 
 const ARROW_CLASS =
   "absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 text-white opacity-100 pointer-events-auto lg:opacity-0 lg:pointer-events-none lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto lg:focus-visible:opacity-100 lg:focus-visible:pointer-events-auto transition-opacity hover:bg-black/70 z-10 touch-manipulation";
@@ -217,16 +222,59 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     };
   }
 
+  // Panning while zoomed. Mouse: the view follows the cursor. Touch: the
+  // photo is dragged 1:1 under the finger. (Following the finger's absolute
+  // position, as before, snapped the view to wherever a finger landed and
+  // moved the photo against the drag.) Touch moves write transform-origin
+  // straight to the zoom layer and commit to state on lift, so a drag does
+  // not re-render the gallery on every move.
+  const zoomLayerRef = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ id: number; x: number; y: number; start: ZoomOrigin; now: ZoomOrigin; moved: boolean } | null>(null);
+  const dragged = useRef(false);
+
   function toggleDetail(e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation();
+    // Lifting a finger after a drag is not a tap: stay zoomed.
+    if (dragged.current) {
+      dragged.current = false;
+      return;
+    }
     // Read the point now: React clears e.currentTarget once the handler
     // returns, so it must not be read inside a deferred state updater.
     setDetail(detail ? null : originFrom(e));
   }
 
+  function startPan(e: ReactPointerEvent<HTMLDivElement>) {
+    dragged.current = false;
+    if (!detail || e.pointerType === "mouse") return;
+    drag.current = { id: e.pointerId, x: e.clientX, y: e.clientY, start: detail, now: detail, moved: false };
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  }
+
   function panDetail(e: ReactPointerEvent<HTMLDivElement>) {
     if (!detail) return;
-    setDetail(originFrom(e));
+    if (e.pointerType === "mouse") {
+      setDetail(originFrom(e));
+      return;
+    }
+    const d = drag.current;
+    if (!d || d.id !== e.pointerId) return;
+    const dx = e.clientX - d.x;
+    const dy = e.clientY - d.y;
+    if (!d.moved && Math.hypot(dx, dy) < DRAG_SLOP_PX) return;
+    d.moved = true;
+    const r = e.currentTarget.getBoundingClientRect();
+    d.now = dragOrigin(d.start, dx, dy, r.width, r.height, LIGHTBOX_ZOOM);
+    if (zoomLayerRef.current) zoomLayerRef.current.style.transformOrigin = `${d.now.x}% ${d.now.y}%`;
+  }
+
+  function endPan(e: ReactPointerEvent<HTMLDivElement>) {
+    const d = drag.current;
+    if (!d || d.id !== e.pointerId) return;
+    drag.current = null;
+    if (!d.moved) return;
+    dragged.current = true;
+    setDetail(d.now);
   }
 
   // Only true neighbours: never wrap from the first slide to the last (the
@@ -419,7 +467,10 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           aria-modal="true"
           aria-label={`Zoomed image: ${active.alt}`}
           onClick={closeZoom}
-          className="fixed inset-0 z-age-gate flex items-center justify-center bg-black/[0.97] backdrop-blur-md p-4 cursor-zoom-out"
+          // Solid black instead of 97% black + backdrop-blur: it looks the
+          // same (the blur hid the page behind), but a full-screen backdrop
+          // filter is costly to paint on iOS Safari.
+          className="fixed inset-0 z-age-gate flex items-center justify-center bg-black p-4 cursor-zoom-out"
           style={{ touchAction: detail ? "none" : "pan-y" }}
           {...lightboxSwipe}
         >
@@ -473,9 +524,13 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           <div
             className={`relative w-full h-full max-w-[1000px] max-h-[85vh] overflow-hidden ${detail ? "cursor-zoom-out" : "cursor-zoom-in"}`}
             onClick={toggleDetail}
+            onPointerDown={startPan}
             onPointerMove={panDetail}
+            onPointerUp={endPan}
+            onPointerCancel={endPan}
           >
             <div
+              ref={zoomLayerRef}
               className="absolute inset-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
               style={
                 {
@@ -490,7 +545,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
                 alt={active.alt}
                 fill
                 className="object-contain"
-                sizes="(min-width: 1000px) 2000px, 200vw"
+                sizes={LIGHTBOX_SIZES}
               />
             </div>
           </div>
