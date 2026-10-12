@@ -40,15 +40,50 @@ export function isAgeGateExempt(pathname: string): boolean {
   return AGE_GATE_EXEMPT_PATHS.includes(pathname);
 }
 
+/**
+ * document.cookie, or "" where reading it throws (sandboxed or embedded
+ * views). An uncaught throw here crashed the whole site.
+ */
+export function readCookie(): string {
+  try {
+    return document.cookie;
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Whether the gate stays down: the 30-day cookie, an exempt owner page, or an
+ * explicit confirmation on this page (`confirmedAt`). The last one matters
+ * when the browser blocks cookies: without it, a confirm made before
+ * hydration was undone by the controller, which found no cookie and showed
+ * the gate again, and the visitor was locked out. A new page load still asks
+ * again when there is no cookie (fail-closed).
+ */
+export function isAgeVerified({
+  cookie,
+  pathname,
+  confirmedAt,
+}: {
+  cookie: string;
+  pathname: string;
+  confirmedAt?: number;
+}): boolean {
+  return hasAgeCookie(cookie) || isAgeGateExempt(pathname) || Boolean(confirmedAt);
+}
+
 const j = JSON.stringify;
 
 export const AGE_GATE_HEAD_SCRIPT = `(function(){try{var d=document.documentElement;if(new RegExp("(?:^|; )"+${j(AGE_GATE_COOKIE_NAME)}+"=true(?:;|$)").test(document.cookie)||${j(AGE_GATE_EXEMPT_PATHS)}.indexOf(location.pathname)>-1)d.setAttribute(${j(AGE_OK_ATTR)},"")}catch(e){}})();`;
 
 /**
- * Confirm runs once (window.__ageGate.confirmedAt guards duplicates), sets the
- * cookie, shows the pressed state at once, and hides the gate on the next
- * frame. Hiding after the click finishes dispatching also lets analytics see
- * the gate close as a response to the click.
+ * Confirm records window.__ageGate.confirmedAt, sets the cookie (best effort:
+ * a browser that blocks or throws on cookies must not stop the gate closing),
+ * shows the pressed state at once, and hides the gate on the next frame.
+ * Taps while it is closing are ignored, and the confirmed event fires once.
+ * If the gate is showing again after a confirmation, a tap closes it again
+ * rather than being dropped as a duplicate. Hiding after the click finishes
+ * dispatching also lets analytics see the gate close as a response to it.
  */
 export function ageGateBodyScript(): string {
   const maxAge = AGE_GATE_COOKIE_MAX_AGE_DAYS * 24 * 60 * 60;
@@ -62,13 +97,16 @@ b.addEventListener("pointerdown",press);
 b.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" ")press()});
 b.addEventListener("click",function(){
   var s=window.__ageGate||(window.__ageGate={});
-  if(s.confirmedAt)return;
-  s.confirmedAt=Date.now();
-  document.cookie=${j(AGE_GATE_COOKIE_NAME)}+"=true; max-age=${maxAge}; path=/; SameSite=Lax";
+  if(s.closing||!isOpen())return;
+  var first=!s.confirmedAt;
+  if(first)s.confirmedAt=Date.now();
+  s.closing=true;
+  try{document.cookie=${j(AGE_GATE_COOKIE_NAME)}+"=true; max-age=${maxAge}; path=/; SameSite=Lax"}catch(e){}
   press();b.setAttribute("aria-disabled","true");
   requestAnimationFrame(function(){
+    s.closing=false;
     d.setAttribute(${j(AGE_OK_ATTR)},"");g.setAttribute("aria-hidden","true");
-    window.dispatchEvent(new Event(${j(AGE_CONFIRMED_EVENT)}));
+    if(first)window.dispatchEvent(new Event(${j(AGE_CONFIRMED_EVENT)}));
   });
 });
 document.addEventListener("keydown",function(e){

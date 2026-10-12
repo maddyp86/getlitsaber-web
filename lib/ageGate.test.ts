@@ -5,9 +5,25 @@ import {
   ageGateBodyScript,
   hasAgeCookie,
   isAgeGateExempt,
+  isAgeVerified,
+  readCookie,
 } from "./ageGate";
 
 const run = (code: string) => new Function(code)();
+
+/** Make document.cookie throw, as it does in sandboxed or embedded views. */
+function makeCookiesThrow() {
+  Object.defineProperty(document, "cookie", {
+    configurable: true,
+    get() {
+      throw new DOMException("cookies disabled", "SecurityError");
+    },
+    set() {
+      throw new DOMException("cookies disabled", "SecurityError");
+    },
+  });
+}
+const restoreCookies = () => delete (document as { cookie?: string }).cookie;
 
 function clearCookie() {
   document.cookie = "litsaber_age_verified=; max-age=0; path=/";
@@ -45,6 +61,26 @@ describe("age gate helpers", () => {
     expect(hasAgeCookie("a=1; litsaber_age_verified=true")).toBe(true);
     expect(hasAgeCookie("litsaber_age_verified=false")).toBe(false);
     expect(hasAgeCookie("xlitsaber_age_verified=true")).toBe(false);
+  });
+
+  it("counts a confirmation on this page even without a cookie", () => {
+    expect(isAgeVerified({ cookie: "", pathname: "/", confirmedAt: 1 })).toBe(true);
+    expect(isAgeVerified({ cookie: "litsaber_age_verified=true", pathname: "/" })).toBe(true);
+    expect(isAgeVerified({ cookie: "", pathname: "/activate" })).toBe(true);
+  });
+
+  it("stays fail-closed with no cookie, no exemption and no confirmation", () => {
+    expect(isAgeVerified({ cookie: "", pathname: "/" })).toBe(false);
+    expect(isAgeVerified({ cookie: "litsaber_age_verified=false", pathname: "/shop/litsaber-og" })).toBe(false);
+  });
+
+  it("reads an unreadable cookie as empty instead of throwing", () => {
+    makeCookiesThrow();
+    try {
+      expect(readCookie()).toBe("");
+    } finally {
+      restoreCookies();
+    }
   });
 
   it("exempts only the owner pages", () => {
@@ -99,6 +135,38 @@ describe("inline confirm", () => {
     confirm.click();
     confirm.click();
     await new Promise((r) => setTimeout(r, 5));
+    expect(onConfirmed).toHaveBeenCalledTimes(1);
+    window.removeEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+  });
+
+  it("still closes when the browser throws on cookies", async () => {
+    const { gate, confirm } = mountGate();
+    const onConfirmed = vi.fn();
+    window.addEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    makeCookiesThrow();
+    try {
+      confirm.click();
+      await new Promise((r) => setTimeout(r, 5));
+      expect(document.documentElement.hasAttribute("data-age-ok")).toBe(true);
+      expect(gate.getAttribute("aria-hidden")).toBe("true");
+      expect(onConfirmed).toHaveBeenCalledTimes(1);
+    } finally {
+      restoreCookies();
+      window.removeEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    }
+  });
+
+  it("closes again if the gate is shown after a confirmation, without a second event", async () => {
+    const { confirm } = mountGate();
+    const onConfirmed = vi.fn();
+    window.addEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    confirm.click();
+    await new Promise((r) => setTimeout(r, 5));
+    // Something shows the gate again (the old lockout: no cookie found).
+    document.documentElement.removeAttribute("data-age-ok");
+    confirm.click();
+    await new Promise((r) => setTimeout(r, 5));
+    expect(document.documentElement.hasAttribute("data-age-ok")).toBe(true);
     expect(onConfirmed).toHaveBeenCalledTimes(1);
     window.removeEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
   });

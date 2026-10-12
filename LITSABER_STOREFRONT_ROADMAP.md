@@ -198,6 +198,8 @@ Goal: "I AM 21+" acknowledges a valid tap or keypress immediately. 12 real visit
 
 **Done when:** a first tap or keypress is acknowledged every time in repeated testing on desktop and mobile, with no change to the gate's requirement.
 
+*Follow-up 2026-10-12 (branch `fix/age-gate-blocked-cookies`): found through the homepage INP data. Since the October 6 change, 10 of 11 sessions that clicked "I AM 21+" got through on the first click; one (Windows Chrome, from chatgpt.com, Oct 7) clicked it 234 times over 90 minutes, reloaded ~15 times and never got in. Reproduced: with cookies blocked, a confirm before hydration closed the gate, then the controller found no cookie and showed it again, and the inline handler dropped every later tap as a duplicate. Separately, where reading cookies throws (sandboxed or embedded views), the controller crashed the whole site. Fix: a confirmation on this page counts even if the cookie could not be saved; cookie reads and writes cannot throw; a tap on a gate that is showing again closes it, still with one confirmed event. Requirement unchanged: explicit tap, fail-closed, a new page load asks again when there is no cookie, 30-day cookie when cookies work.*
+
 **Deploy date:** 10/6/2026
 
 ---
