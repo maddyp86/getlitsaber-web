@@ -126,12 +126,30 @@ Goal: images, gallery navigation, and video respond the first time someone tries
 
 Goal: the product page reacts promptly to clicks and taps. Field data showed p75 INP of 752 ms on desktop and 326 ms on mobile (small samples).
 
-- [ ] Profile the slow interactions (gallery, swatches, offer selection, quantity, Add to Cart, Buy Now) using performance traces. For each, separate input delay, handler processing, and rendering time.
-- [ ] Identify long main-thread tasks, hydration timing, gallery initialization, and third-party scripts (analytics, reviews widget, replay recorder, age gate).
+- [x] Profile the slow interactions (gallery, swatches, offer selection, quantity, Add to Cart, Buy Now) using performance traces. For each, separate input delay, handler processing, and rendering time.
+- [x] Identify long main-thread tasks, hydration timing, gallery initialization, and third-party scripts (analytics, reviews widget, replay recorder, age gate).
 - [ ] Defer or lazy-load anything not needed for the first purchase decision. Keep offer selection, Add to Cart, and Buy Now ready as early as possible.
 - [ ] Fix the measured bottleneck. Do not do a cosmetic redesign as a performance fix.
 - [ ] Keep layout stable (CLS is currently near zero; do not regress it).
 - [ ] Report before and after trace timings for each control.
+
+*Findings 2026-10-11 (branch `perf/pdp-inp`):*
+- *The 752 / 326 ms field numbers predate the October 6 fixes (#82 gallery, #84 image optimization). Before then: desktop p75 240 ms (37 samples), mobile 326 ms (16). Since: desktop 3 samples, all under 70 ms; mobile 4 samples, two slow, both iPhones in the gallery: 1,096 ms on Safari (1,064 ms of it handler processing, target already removed from the page) and 272 ms on Chrome iOS opening the lightbox (249 ms input delay, the main thread busy before the tap).*
+- *PostHog INP attribution (element, input delay, processing, presentation) is already on: posthog-js 1.438 enables it by default. Nothing to change.*
+- *Lab, local production build, real taps through Chrome DevTools Protocol, 5 fresh loads each. Median ms, phone at 4x CPU and ~1.6 Mbps / desktop at 2x CPU:*
+
+| Control | Phone | Desktop |
+|---|---|---|
+| Add to Cart | 104 | 48 |
+| Gallery arrow, thumbnails | 32 to 56 | 16 to 48 |
+| Lightbox open, zoom, next, close | 24 to 56 | 16 to 40 |
+| Styles, offers, spec pills, accordion | 24 to 48 | 16 to 24 |
+| Buy Now | 56 | 16 |
+| Tap during load (hydration) | 32 | 32 |
+
+- *About one fresh load in five had a single 250 to 420 ms tap, each time while a photo size was being fetched and decoded for the first time; not reproducible on demand. Long-frame attribution shows no first-party script hot spot, so nothing was deferred or split.*
+- *Change (iPhone hypothesis, not proven in the lab): the lightbox backdrop is solid black instead of 97% black + full-screen `backdrop-blur` (same look; the blur is costly to paint in Safari), and the lightbox requests 1920w instead of 3840w on a 3x phone (14.7 → 3.7 megapixels to decode per photo, ~104 → 36 KB), 2048w instead of 3840w on retina desktop. After: Add to Cart 80 ms, everything else 24 to 56 ms on the phone profile.*
+- *To judge: field p75 INP and the slow samples' `interactionTarget`, 2 to 3 weeks after deploy.*
 
 **Done when:** reproduced interactions respond promptly in traces, with a target of p75 INP at or below 200 ms on both devices in field data over the following weeks. Report sample counts with any field numbers.
 

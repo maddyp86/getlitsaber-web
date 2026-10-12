@@ -17,6 +17,10 @@ type VideoState = "idle" | "loading" | "playing" | "error";
 // so a preloaded image is a cache hit when it becomes active.
 const VIEWER_SIZES = "(min-width: 600px) 50vw, 100vw";
 const LIGHTBOX_ZOOM = 2.5;
+// The lightbox is at most 1000px wide. 150vw leaves headroom for the 2.5x
+// zoom without asking a 3x phone for the 3840w file (200vw did): 1920w is a
+// quarter of the pixels to decode, which phones do while the lightbox opens.
+const LIGHTBOX_SIZES = "(min-width: 1000px) 1000px, 150vw";
 
 const ARROW_CLASS =
   "absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 text-white opacity-100 pointer-events-auto lg:opacity-0 lg:pointer-events-none lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto lg:focus-visible:opacity-100 lg:focus-visible:pointer-events-auto transition-opacity hover:bg-black/70 z-10 touch-manipulation";
@@ -419,7 +423,10 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           aria-modal="true"
           aria-label={`Zoomed image: ${active.alt}`}
           onClick={closeZoom}
-          className="fixed inset-0 z-age-gate flex items-center justify-center bg-black/[0.97] backdrop-blur-md p-4 cursor-zoom-out"
+          // Solid black instead of 97% black + backdrop-blur: it looks the
+          // same (the blur hid the page behind), but a full-screen backdrop
+          // filter is costly to paint on iOS Safari.
+          className="fixed inset-0 z-age-gate flex items-center justify-center bg-black p-4 cursor-zoom-out"
           style={{ touchAction: detail ? "none" : "pan-y" }}
           {...lightboxSwipe}
         >
@@ -490,7 +497,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
                 alt={active.alt}
                 fill
                 className="object-contain"
-                sizes="(min-width: 1000px) 2000px, 200vw"
+                sizes={LIGHTBOX_SIZES}
               />
             </div>
           </div>
