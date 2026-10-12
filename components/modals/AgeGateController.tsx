@@ -4,16 +4,11 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useAgeGateActions } from "@/lib/ui/store";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
-import {
-  AGE_CONFIRMED_EVENT,
-  AGE_OK_ATTR,
-  hasAgeCookie,
-  isAgeGateExempt,
-} from "@/lib/ageGate";
+import { AGE_CONFIRMED_EVENT, AGE_OK_ATTR, isAgeVerified, readCookie } from "@/lib/ageGate";
 
 declare global {
   interface Window {
-    __ageGate?: { confirmedAt?: number; tracked?: boolean };
+    __ageGate?: { confirmedAt?: number; closing?: boolean; tracked?: boolean };
   }
 }
 
@@ -44,7 +39,11 @@ export default function AgeGateController() {
   useEffect(() => {
     const html = document.documentElement;
     const gate = document.getElementById("age-gate");
-    const ok = hasAgeCookie(document.cookie) || isAgeGateExempt(pathname);
+    const ok = isAgeVerified({
+      cookie: readCookie(),
+      pathname,
+      confirmedAt: window.__ageGate?.confirmedAt,
+    });
     if (ok) {
       html.setAttribute(AGE_OK_ATTR, "");
     } else if (gate) {
