@@ -15,7 +15,9 @@ import { useEffect, useRef, useState } from "react";
 const ENABLED =
   process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" || process.env.NODE_ENV === "development";
 const STORAGE_KEY = "litsaber_perf_overlay";
-const MAX_ROWS = 12;
+// The panel shows the latest rows; copy includes every tap since load.
+const SHOWN_ROWS = 12;
+const KEPT_ROWS = 200;
 
 // interactionId is not in this TypeScript version's DOM lib.
 type EventTimingEntry = PerformanceEventTiming & { interactionId?: number };
@@ -89,7 +91,7 @@ export default function InteractionTimings() {
           changed = true;
         }
       }
-      if (changed) setRows(Array.from(byInteraction.values()).sort((a, b) => b.id - a.id).slice(0, MAX_ROWS));
+      if (changed) setRows(Array.from(byInteraction.values()).sort((a, b) => b.id - a.id).slice(0, KEPT_ROWS));
     });
     try {
       observer.observe({ type: "event", durationThreshold: 16, buffered: true } as PerformanceObserverInit);
@@ -107,7 +109,7 @@ export default function InteractionTimings() {
   const copy = async () => {
     const text = [
       navigator.userAgent,
-      location.pathname,
+      `${location.pathname} · ${rows.length} taps, newest first`,
       ...rows.map((r) => `${r.total}ms  delay ${r.delay}  proc ${r.processing}  pres ${r.presentation}  ${r.name}  ${r.target}`),
     ].join("\n");
     try {
@@ -136,7 +138,7 @@ export default function InteractionTimings() {
       {rows.length === 0 ? (
         <p className="text-white/60">Tap something. Taps under 16 ms are not listed.</p>
       ) : (
-        rows.map((r) => (
+        rows.slice(0, SHOWN_ROWS).map((r) => (
           <p key={r.id} className={r.total >= 200 ? "text-cta" : ""}>
             <b>{r.total}</b> = {r.delay} + {r.processing} + {r.presentation} · {r.target}
           </p>
