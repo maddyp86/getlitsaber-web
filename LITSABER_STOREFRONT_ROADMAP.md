@@ -1,6 +1,6 @@
 # Litsaber storefront roadmap
 
-Version 1 · October 6, 2026
+Version 1 · October 6, 2026 (last updated October 11, 2026)
 Source: Ploy buyer journey and conversion audit (updated October 6, 2026) and the 90-day traffic and conversion analysis (v2).
 
 This file is the working checklist for storefront changes. Work top to bottom. Check items off as they ship, and record the production deploy date next to each phase.
@@ -114,7 +114,7 @@ Goal: images, gallery navigation, and video respond the first time someone tries
 
 *Tested on the preview at 375, 768 and 1440px, fresh load, normal and throttled (4x CPU, ~1.6Mbps, 150ms): every control acknowledged the first tap; lightbox opens in under 15ms; a video thumbnail shows "Loading" at once and frames play in 8 to 51ms once buffered; a blocked clip shows the retry message; no horizontal overflow, no page errors. Throttled, Next draws the next photo in 2.0 to 2.8s (image 1 previously did not draw within 15s).*
 *Found and fixed during testing: tapping the zoomed photo crashed and unmounted the whole page (a React event read inside a state updater); a gallery error boundary now keeps the buy controls alive if the gallery ever fails. The first slide's preload wrapped to the last photo, a 14MB file.*
-- **[OWNER]** *Image weight: `images.unoptimized: true` (since June 23) serves original files; the 24 photos total 28MB, six close-ups are 1.7 to 13.8MB (litsaber-button-2.jpg is 13.8MB). Decide: turn image optimization back on, or recompress those six and add small thumbnail files.*
+- *Image weight (resolved 2026-10-06, #84): `images.unoptimized: true` (since June 23) served original files; the 24 photos totalled 28MB, six close-ups 1.7 to 13.8MB. Owner chose to turn image optimization back on, so Vercel now resizes each photo to its rendered width.*
 
 **Done when:** every intended media interaction works on the first attempt in repeated desktop and mobile testing, including slow-device conditions.
 
