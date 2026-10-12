@@ -8,6 +8,7 @@ import GoldWaitlistModal from "@/components/modals/GoldWaitlistModal";
 import FutureDropsModal from "@/components/modals/FutureDropsModal";
 import CartHydrator from "@/components/layout/CartHydrator";
 import ToastContainer from "@/components/layout/ToastContainer";
+import InteractionTimings from "@/components/debug/InteractionTimings";
 
 export default function SiteChrome({
   children,
@@ -33,6 +34,7 @@ export default function SiteChrome({
       <FutureDropsModal />
       <CartHydrator />
       <ToastContainer />
+      <InteractionTimings />
     </>
   );
 }
