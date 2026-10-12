@@ -1,6 +1,6 @@
 # Litsaber storefront roadmap
 
-Version 1 · October 6, 2026 (last updated October 11, 2026)
+Version 1 · October 6, 2026 (last updated October 12, 2026)
 Source: Ploy buyer journey and conversion audit (updated October 6, 2026) and the 90-day traffic and conversion analysis (v2).
 
 This file is the working checklist for storefront changes. Work top to bottom. Check items off as they ship, and record the production deploy date next to each phase.
@@ -128,10 +128,13 @@ Goal: the product page reacts promptly to clicks and taps. Field data showed p75
 
 - [x] Profile the slow interactions (gallery, swatches, offer selection, quantity, Add to Cart, Buy Now) using performance traces. For each, separate input delay, handler processing, and rendering time.
 - [x] Identify long main-thread tasks, hydration timing, gallery initialization, and third-party scripts (analytics, reviews widget, replay recorder, age gate).
-- [ ] Defer or lazy-load anything not needed for the first purchase decision. Keep offer selection, Add to Cart, and Buy Now ready as early as possible.
-- [ ] Fix the measured bottleneck. Do not do a cosmetic redesign as a performance fix.
-- [ ] Keep layout stable (CLS is currently near zero; do not regress it).
-- [ ] Report before and after trace timings for each control.
+- [x] Defer or lazy-load anything not needed for the first purchase decision. Keep offer selection, Add to Cart, and Buy Now ready as early as possible.
+  - *Evaluated 2026-10-11: nothing needed deferring. A tap on an offer during page load responds in 32 ms on the throttled phone profile, and long-frame traces show no first-party or third-party script hot spot to move.*
+- [x] Fix the measured bottleneck. Do not do a cosmetic redesign as a performance fix.
+  - *#87: lighter lightbox (solid backdrop, no full-screen blur; a quarter of the pixels to decode on phones), and zoomed panning drags 1:1 under the finger without re-rendering the gallery on every move.*
+- [x] Keep layout stable (CLS is currently near zero; do not regress it).
+  - *#87 changes only the fixed-position lightbox overlay, which cannot shift page layout. Field CLS to be confirmed with the INP check.*
+- [x] Report before and after trace timings for each control. (Table below; after #87 on the phone profile: Add to Cart 104 → 80 ms, every other control 24 to 56 ms.)
 
 *Findings 2026-10-11 (branch `perf/pdp-inp`):*
 - *The 752 / 326 ms field numbers predate the October 6 fixes (#82 gallery, #84 image optimization). Before then: desktop p75 240 ms (37 samples), mobile 326 ms (16). Since: desktop 3 samples, all under 70 ms; mobile 4 samples, two slow, both iPhones in the gallery: 1,096 ms on Safari (1,064 ms of it handler processing, target already removed from the page) and 272 ms on Chrome iOS opening the lightbox (249 ms input delay, the main thread busy before the tap).*
@@ -149,11 +152,14 @@ Goal: the product page reacts promptly to clicks and taps. Field data showed p75
 
 - *About one fresh load in five had a single 250 to 420 ms tap, each time while a photo size was being fetched and decoded for the first time; not reproducible on demand. Long-frame attribution shows no first-party script hot spot, so nothing was deferred or split.*
 - *Change (iPhone hypothesis, not proven in the lab): the lightbox backdrop is solid black instead of 97% black + full-screen `backdrop-blur` (same look; the blur is costly to paint in Safari), and the lightbox requests 1920w instead of 3840w on a 3x phone (14.7 → 3.7 megapixels to decode per photo, ~104 → 36 KB), 2048w instead of 3840w on retina desktop. After: Add to Cart 80 ms, everything else 24 to 56 ms on the phone profile.*
-- *To judge: field p75 INP and the slow samples' `interactionTarget`, 2 to 3 weeks after deploy.*
+- *Owner confirmed 2026-10-12 the 1,096 ms Safari sample was not internal (it arrived from a ChatGPT link), so it is a real shopper.*
+- *Real iPhone, 2026-10-12 (iOS 18.7, Safari 27, preview with the #87 changes, tap timing readout from #88): worst tap 112 ms (starting the unboxing video: 57 ms processing, 55 ms presentation); closing the lightbox 40 ms; lightbox, arrows and thumbnails 32 to 48 ms. The 1,096 ms tap did not reproduce. The first taps of the run (age gate, first arrows, first lightbox open) were cut by a 12-row limit, since fixed; a fresh-load run is still to do.*
+- *Tap timing readout (#88): open any Vercel preview URL with `?perf=1` to see each tap's input delay, processing and presentation on a real phone; `copy` exports the log. Never renders in production.*
+- *Still open: field p75 INP at or below 200 ms on desktop and mobile, with sample counts and the slow samples' `interactionTarget`, 2 to 3 weeks after deploy (first check around 2026-10-26).*
 
 **Done when:** reproduced interactions respond promptly in traces, with a target of p75 INP at or below 200 ms on both devices in field data over the following weeks. Report sample counts with any field numbers.
 
-**Deploy date:** ____
+**Deploy date:** 10/11/2026 (#87; field check pending, so the phase stays open)
 
 ---
 
