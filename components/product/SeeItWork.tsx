@@ -6,21 +6,34 @@ import { MODES } from "@/components/home/ThreeModes/modes.content";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { SEE_IT_WORK_HEADING } from "./productdisplay.content";
 
+/** play() is a promise in current browsers and undefined in some older ones. */
+function tryPlay(v: HTMLVideoElement) {
+  const p = v.play();
+  if (p) p.catch(() => {});
+}
+
 /** "LITSABER MODE" → "Litsaber in litsaber mode", for the poster alt text. */
 function posterAlt(title: string): string {
   return `Litsaber in ${title.toLowerCase()}`;
 }
 
 /**
- * One mode clip: a muted loop in a fixed 9:16 box. The poster renders at once;
- * the video mounts only when the box is near the viewport, and pauses when it
- * leaves, so three clips never compete with the gallery or buy controls.
+ * One mode clip: a muted loop in a fixed 9:16 box, over its still poster.
+ *
+ * Loading: the video starts buffering about one screen before the row
+ * arrives (on a phone connection, mounting it only when visible meant it
+ * never started playing before the shopper scrolled past). Playing: only
+ * while at least a third of the box is on screen, so clips never decode
+ * side by side. The video stays invisible until it is actually playing,
+ * then fades in over the poster, so there is no blank or jumping frame.
  * Reduced-motion visitors keep the still poster.
  */
 function ModeClip({ video, poster, title }: { video: string; poster: string; title: string }) {
   const boxRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [near, setNear] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const inView = useRef(false);
+  const [load, setLoad] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -31,43 +44,72 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  // Start buffering about one screen ahead.
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
-      setNear(true);
+      setLoad(true);
       return;
     }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setNear(true);
-          videoRef.current?.play().catch(() => {});
-        } else {
-          videoRef.current?.pause();
+          setLoad(true);
+          io.disconnect();
         }
       },
-      { rootMargin: "200px 0px" }
+      { rootMargin: "100% 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
+  // Play only while a third of the box is on screen.
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        inView.current = entry.isIntersecting;
+        const v = videoRef.current;
+        if (!v) return;
+        if (entry.isIntersecting) tryPlay(v);
+        else v.pause();
+      },
+      { threshold: 0.33 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // React sets `muted` only as a property; iOS Safari also wants the
+  // attribute before it will play a video inline without a tap.
+  const attachVideo = (v: HTMLVideoElement | null) => {
+    videoRef.current = v;
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    v.setAttribute("muted", "");
+    if (inView.current) tryPlay(v);
+  };
+
   return (
     <div ref={boxRef} className="relative w-full aspect-[9/16] overflow-hidden rounded-card bg-black">
       <Image src={poster} alt={posterAlt(title)} fill sizes="(min-width: 768px) 300px, 240px" className="object-cover" />
-      {near && !reducedMotion && (
+      {load && !reducedMotion && (
         <video
-          ref={videoRef}
+          ref={attachVideo}
           src={video}
-          poster={poster}
-          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
+          onPlaying={() => setPlaying(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 motion-reduce:transition-none ${
+            playing ? "opacity-100" : "opacity-0"
+          }`}
         />
       )}
     </div>
