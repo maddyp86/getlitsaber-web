@@ -12,6 +12,8 @@ type FunnelEvents = {
   age_gate_confirmed: Record<string, never>;
   homepage_engaged: { trigger: "scroll" | "dwell" | "cta_click" };
   product_viewed: { surface: "pdp" | "homepage_buy" };
+  // The PDP "Three modes" section (mode clips) came into view, once per page.
+  pdp_modes_viewed: Record<string, never>;
   // Fires when the shopper picks an offer card or steps the quantity on the
   // product page. `offer` is derived from quantity (lib/cart/offers.ts), the
   // same rule the orders webhook uses for `offer_selected` on purchase.
@@ -118,6 +120,7 @@ export const EVENTS = {
   age_gate_confirmed: "age_gate_confirmed",
   homepage_engaged: "homepage_engaged",
   product_viewed: "product_viewed",
+  pdp_modes_viewed: "pdp_modes_viewed",
   product_offer_selected: "product_offer_selected",
   cta_clicked: "cta_clicked",
   cart_add_failed: "cart_add_failed",

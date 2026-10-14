@@ -136,6 +136,28 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   }, [primaryReady]);
   const thumbLoads = (i: number) => primaryReady && (seenThumbs.has(i) || i === activeThumb);
 
+  // Video tiles fetch a few hundred KB each for their preview frame. Once the
+  // gallery is off screen those downloads only compete with what the shopper
+  // is looking at (on a phone connection they kept the PDP mode clips from
+  // ever starting), so tile video loads stop while the strip is off screen and
+  // resume when it comes back. Removing src alone does not cancel a media
+  // fetch; load() with no source does.
+  const [stripOnScreen, setStripOnScreen] = useState(true);
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => setStripOnScreen(entry.isIntersecting), { rootMargin: "200px 0px" });
+    io.observe(strip);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (stripOnScreen) return;
+    stripRef.current?.querySelectorAll<HTMLVideoElement>("video").forEach((v) => {
+      if (!v.getAttribute("src")) v.load();
+    });
+  }, [stripOnScreen]);
+  const tileVideoLoads = (i: number) => stripOnScreen && thumbLoads(i);
+
   // Keep the active thumbnail in view when the slide changes by arrow or swipe.
   const firstRender = useRef(true);
   useEffect(() => {
@@ -432,8 +454,9 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
             {img.type === "video" ? (
               <>
                 <video
-                  // Preview frame only after the photo on screen has loaded.
-                  src={thumbLoads(i) ? `${img.src}#t=0.1` : undefined}
+                  // Preview frame only after the photo on screen has loaded,
+                  // and only while the strip is on screen.
+                  src={tileVideoLoads(i) ? `${img.src}#t=0.1` : undefined}
                   poster={img.poster}
                   muted
                   playsInline
