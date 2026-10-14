@@ -20,13 +20,13 @@ describe("PDP Three modes", () => {
     ]);
     expect(section.getByAltText("Litsaber in glowstick mode")).toBeTruthy();
     // jsdom has no IntersectionObserver here, so every row counts as near.
-    // Clips still load one at a time: the next waits until the one above has
-    // buffered. Each is muted, looping, inline and hidden from assistive tech.
+    // Clips still load one at a time: the next waits until the one above can
+    // play. Each is muted, looping, inline and hidden from assistive tech.
     const videos = () => document.querySelectorAll("video");
     expect(videos()).toHaveLength(1);
-    fireEvent.canPlayThrough(videos()[0]);
+    fireEvent.canPlay(videos()[0]);
     expect(videos()).toHaveLength(2);
-    fireEvent.canPlayThrough(videos()[1]);
+    fireEvent.canPlay(videos()[1]);
     expect(videos()).toHaveLength(3);
     videos().forEach((v) => {
       expect(v.muted).toBe(true);
