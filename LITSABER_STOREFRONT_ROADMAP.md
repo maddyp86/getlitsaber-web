@@ -1,6 +1,6 @@
 # Litsaber storefront roadmap
 
-Version 1 · October 6, 2026 (last updated October 13, 2026)
+Version 1 · October 6, 2026 (last updated October 14, 2026)
 Source: Ploy buyer journey and conversion audit (updated October 6, 2026) and the 90-day traffic and conversion analysis (v2).
 
 This file is the working checklist for storefront changes. Work top to bottom. Check items off as they ship, and record the production deploy date next to each phase.
@@ -262,7 +262,8 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
   - Build facts (aluminum and brass build, 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery)
   - A link to the review summary
 - [x] Use supported facts only. No superlatives or unsupported durability claims.
-- [ ] **[OWNER]** confirms the reviews shown are from real buyers. If any are not, they come down before the review link goes in.
+- [x] **[OWNER]** confirms the reviews shown are from real buyers. If any are not, they come down before the review link goes in.
+  - *Answered 2026-10-13: not yet from verified buyers. The reviews section is hidden (#93, `lib/reviews.ts`) and no review link was added.*
 - [x] Keep it short enough that the Add to Cart and Buy Now buttons stay near the top on mobile.
 
 *2026-10-13: a five-row block under the buy buttons shipped in #92, then was replaced at the owner's call because four rows repeated the dropdowns directly below (fit is in Product Features and Tech Specs; shipping, returns and warranty each have a tab; the selected offer's shipping is already on the offer card and the estimated total). The only new fact, the box contents, is now its own dropdown, "What's in the Box", after Tech Specs: Litsaber OG, quick start guide, QR code to the activation page; no charging cable, any USB-C cable works (owner: no cable by design). The one-line trust strip is back under the buttons, so Add to Cart and Buy Now stay where they were on mobile. Every fact is one tap from the buy area. No review link: reviews are hidden until they come from verified buyers (#93).*
@@ -287,7 +288,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 
 **Done when:** the first thing a shopper sees is the device lit, the demo plays in place, and purchase controls are reachable sooner on mobile.
 
-**Deploy date:** ____
+**Deploy date:** 10/13/2026 (#95)
 
 ---
 
@@ -295,7 +296,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 
 - [ ] In the cart and cart drawer, let shoppers switch between Single and Two Pack (or adjust quantity), keeping Remove.
 - [ ] Keep price, shipping, and checkout quantity in sync after every change.
-- [ ] Label totals as estimated before tax.
+- [x] Label totals as estimated before tax. (Done in Phase 4, #90: drawer and cart page read "Estimated total · before tax".)
 - [ ] Do not recreate 3-, 4-, or 5-unit tiers.
 
 **Done when:** switching offers shows the right units, price, and shipping, and the same values reach checkout.
@@ -312,7 +313,15 @@ Goal: shoppers see each mode working on the product page, not only read about it
 - [x] Nothing moves near the buy buttons (Add to Cart 1,288px at 375px, 815px at 1440px, unchanged).
 - [x] Clips load only when the section nears the viewport and pause off screen; reduced-motion visitors see the still poster.
 - [x] `pdp_modes_viewed` fires once when the section is seen, so reviews can show how many product-page visitors reach it.
-- [ ] **[OWNER]** Optional: a ~10s trim of the Glowstick clip (currently 34.6s, 6.2MB; the other two are 12.7s and 7.4s).
+- [x] **[OWNER]** Optional: a ~10s trim of the Glowstick clip (currently 34.6s, 6.2MB; the other two are 12.7s and 7.4s).
+  - *Owner chose a lighter full-length version over the trim (2026-10-14): `home/glowstick_mode_v2_full.mp4`, re-encoded to 540×960 at ~0.6 Mbps, HDR tags kept, no audio, 2.63MB (SSIM 0.985 against the original).*
+
+*Loading fixes 2026-10-14 (owner reported a stall; reproduced on a ~1.6 Mbps throttled profile, where no clip started before the shopper scrolled past):*
+- *`home/litsaber_mode.mp4` carried an embedded cover image (an mjpeg attached-picture stream); Chrome never reached its first frame on a slow connection. Replaced by `home/litsaber_mode_v2.mp4`, the same video remuxed without it (no re-encode). Also fixes the homepage modes section.*
+- *Gallery video tiles stop downloading while the gallery is off screen (they were pulling ~800KB of preview data while the shopper was at the modes).*
+- *Mode clips buffer about a screen ahead, load one at a time (the next once the one above can play), play only while on screen, and fade in over the poster once playing.*
+- *Glowstick re-encoded lighter (above).*
+- *Other site clips checked; none has the cover-image problem. Separate finding: the `/activate` video is 74MB, well over the 15MB video rule.*
 
 **Done when:** the section plays on phone and desktop without slowing the buy controls, and the next weekly review reports how many product-page visitors reached it.
 
@@ -340,7 +349,7 @@ Goal: shoppers see each mode working on the product page, not only read about it
 - [x] Watch the five most active product-page replays before they expire (Phase 2)
 - [x] Live test orders, Single and Two Pack, then refund (Phase 4): run in Shopify test mode, #1042 and #1043
 - [x] Confirm box contents (Phase 7)
-- [ ] Confirm review provenance (Phase 7)
+- [x] Confirm review provenance (Phase 7): not yet from verified buyers; reviews hidden (#93)
 - [x] Supply lit-device image and demonstration clip (Phase 8)
 - [ ] Confirm whether the 3 modes respond to use; if not, change the pill to "3 LIGHT MODES"
 - [ ] Explain the July 13 activation spike and missing orders #1038 and #1039, for the next analysis

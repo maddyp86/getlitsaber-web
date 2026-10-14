@@ -21,7 +21,7 @@ export const MODES: Mode[] = [
     titleColor: "muted",
     body: "Turn up the party and turn your vape into a glowstick. Use the Litsaber and give someone a light show or even find things in the dark.",
     image: mediaUrl("home/glowstick_mode_poster.jpg"),
-    video: videoUrl("home/glowstick_mode.mp4"),
+    video: videoUrl("home/glowstick_mode_v2_full.mp4"),
   },
   {
     title: "STEALTH MODE",
