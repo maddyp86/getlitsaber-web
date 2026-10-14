@@ -127,6 +127,18 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
     },
   },
   {
+    // Box contents confirmed by the owner 2026-10-13. No cable by design.
+    id: "in-the-box",
+    title: "What's in the Box",
+    body: {
+      type: "prose",
+      blocks: [
+        { bullets: ["Litsaber OG", "Quick start guide", "QR code to the activation page"] },
+        { lead: "No charging cable.", text: "Any USB-C cable works, so use one you already have." },
+      ],
+    },
+  },
+  {
     id: "returns",
     title: "Returns & Refunds",
     body: {

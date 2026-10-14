@@ -13,7 +13,6 @@ import { track, EVENTS } from "@/lib/analytics/events";
 import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
-import DecisionBlock from "./DecisionBlock";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 
@@ -194,26 +193,21 @@ export default function BundleAndCTA({
             </button>
 
 
-            {/* PDP: the decision block (fit, contents, shipping, returns,
-                warranty). Homepage module keeps the one-line trust strip. */}
-            {surface === "pdp" ? (
-              <DecisionBlock qty={qty} />
-            ) : (
-              <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
-                {TRUST_LINE.map((item, i) => (
-                  <Fragment key={item.label}>
-                    {i > 0 && " · "}
-                    {item.href ? (
-                      <Link href={item.href} className="underline underline-offset-2 hover:text-text-secondary">
-                        {item.label}
-                      </Link>
-                    ) : (
-                      item.label
-                    )}
-                  </Fragment>
-                ))}
-              </p>
-            )}
+            {/* Trust line */}
+            <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
+              {TRUST_LINE.map((item, i) => (
+                <Fragment key={item.label}>
+                  {i > 0 && " · "}
+                  {item.href ? (
+                    <Link href={item.href} className="underline underline-offset-2 hover:text-text-secondary">
+                      {item.label}
+                    </Link>
+                  ) : (
+                    item.label
+                  )}
+                </Fragment>
+              ))}
+            </p>
           </>
         ) : (
           <WaitlistForm
