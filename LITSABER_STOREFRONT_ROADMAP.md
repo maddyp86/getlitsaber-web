@@ -1,6 +1,6 @@
 # Litsaber storefront roadmap
 
-Version 1 · October 6, 2026 (last updated October 12, 2026)
+Version 1 · October 6, 2026 (last updated October 13, 2026)
 Source: Ploy buyer journey and conversion audit (updated October 6, 2026) and the 90-day traffic and conversion analysis (v2).
 
 This file is the working checklist for storefront changes. Work top to bottom. Check items off as they ship, and record the production deploy date next to each phase.
@@ -167,13 +167,23 @@ Goal: the product page reacts promptly to clicks and taps. Field data showed p75
 
 Goal: confirm both routes (Buy Now and cart) reach a correct checkout, and fix anything broken. 8 people started checkout in the 90-day window and 3 orders were paid.
 
-- [ ] Map both checkout routes in code: Buy Now from the product page and checkout from the cart. Confirm each passes the correct offer, quantity, and line items to Shopify.
-- [ ] Confirm no old discount, old tier price, or extra unit can reach checkout from either route.
-- [ ] Show an accurate estimated total (product plus shipping, labeled "before tax") on the product page and in the cart before handoff.
-- [ ] Confirm returning from checkout to the storefront keeps the selected offer and cart state.
+- [x] Map both checkout routes in code: Buy Now from the product page and checkout from the cart. Confirm each passes the correct offer, quantity, and line items to Shopify.
+- [x] Confirm no old discount, old tier price, or extra unit can reach checkout from either route.
+- [x] Show an accurate estimated total (product plus shipping, labeled "before tax") on the product page and in the cart before handoff.
+- [x] Confirm returning from checkout to the storefront keeps the selected offer and cart state.
 - [ ] In a development store or Shopify test mode only: run Single and Two Pack through both routes, with guest checkout, a valid address, an invalid address, and a declined test card. Record each result.
 - [ ] **[OWNER]** I will run at least one real end-to-end order (Single and Two Pack) on the live site and refund it, then confirm shipping and tax show correctly.
-- [ ] Fix any reproduced failure. Do not change checkout platform or payment gateway.
+- [x] Fix any reproduced failure. Do not change checkout platform or payment gateway.
+
+*Findings 2026-10-13 (#90, branch `fix/checkout-phase4`):*
+- *Cart route (drawer and cart page): hands off exactly the cart's lines, with the `?discount=` affiliate code appended. No change.*
+- *Buy Now: **bug, reproduced on the live checkout page.** It added the selected offer to the shopper's persisted cart and checked out everything in it: one unit already in the cart + Single + Buy Now reached checkout as 2 units, $79.98 (5 in the cart would hand off 5). It also dropped the `?discount=` code. Owner decision: Buy Now checks out only the selection. It now builds a one-off Shopify cart with exactly the selected units (same attribution and shipping stamp), leaves the cart alone, and keeps the discount passthrough.*
+- *Shopify: Silver $39.99, compare-at $49.99; the only active discount is LITFAM10 (owner exception). No tier price or retired code can apply.*
+- *Totals: PDP shows "Est. total $45.98 before tax" (Single) / "$79.98" (Two Pack) under the offers; drawer and cart page say "Estimated total · before tax" next to "Estimated tax: at checkout".*
+- *Return from checkout: the PDP remembers the selected offer for the tab session; a page restored from the back/forward cache re-reads the cart from Shopify.*
+- *Verified on the #90 preview against the live Shopify checkout (no details entered): one unit in the cart, Buy Now Single → checkout 1 unit, $39.99; back → Single still selected, cart unchanged; Buy Now Two Pack → 2 units, $79.98; back and reload → Two Pack still selected. Cart route verified in Phase 1 ($39.99 x1, $79.98 x2).*
+- *Not done by Claude: the address and card cases. Checkout runs on the live payment gateway, so invalid address, declined card and shipping/tax checks are part of the owner's live test order below.*
+- *Observation for the owner: Shopify checkout pre-ticks "Email me with news and offers" (a Shopify checkout setting, not storefront code).*
 
 **Done when:** every tested route produces the correct units, price, shipping, and total, and failures are fixed or listed.
 
