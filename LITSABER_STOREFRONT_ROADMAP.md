@@ -171,8 +171,10 @@ Goal: confirm both routes (Buy Now and cart) reach a correct checkout, and fix a
 - [x] Confirm no old discount, old tier price, or extra unit can reach checkout from either route.
 - [x] Show an accurate estimated total (product plus shipping, labeled "before tax") on the product page and in the cart before handoff.
 - [x] Confirm returning from checkout to the storefront keeps the selected offer and cart state.
-- [ ] In a development store or Shopify test mode only: run Single and Two Pack through both routes, with guest checkout, a valid address, an invalid address, and a declined test card. Record each result.
-- [ ] **[OWNER]** I will run at least one real end-to-end order (Single and Two Pack) on the live site and refund it, then confirm shipping and tax show correctly.
+- [x] In a development store or Shopify test mode only: run Single and Two Pack through both routes, with guest checkout, a valid address, an invalid address, and a declined test card. Record each result.
+  - *Owner, Shopify test mode, 2026-10-13: #1042 Single via Add to Cart: 1 unit, $39.99 + $5.99 Standard (USPS Ground) + $4.10 tax = $50.08. #1043 Two Pack via Buy Now: 2 units, $79.98, Free Shipping (USPS Ground), $8.20 tax = $88.18. Both `test: true`, no discount, `_shipping_variant=surcharge`, correct `_fulfillment_sku`. PostHog: one `purchase` per order, both `is_internal`, both browsers' persons flagged internal; #1043's `checkout_started` has `route: buy_now`, 2 units. Invalid-address and declined-card cases not run.*
+- [x] **[OWNER]** I will run at least one real end-to-end order (Single and Two Pack) on the live site and refund it, then confirm shipping and tax show correctly.
+  - *Done in Shopify test mode on the live site (#1042, #1043 above), not with a real card (owner decision 2026-10-13). Units, shipping and tax confirmed; the real Authorize.net charge step was not exercised.*
 - [x] Fix any reproduced failure. Do not change checkout platform or payment gateway.
 
 *Findings 2026-10-13 (#90, branch `fix/checkout-phase4`):*
@@ -187,7 +189,7 @@ Goal: confirm both routes (Buy Now and cart) reach a correct checkout, and fix a
 
 **Done when:** every tested route produces the correct units, price, shipping, and total, and failures are fixed or listed.
 
-**Deploy date:** ____
+**Deploy date:** 10/13/2026 (#90)
 
 ---
 
@@ -314,7 +316,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 - [x] Verified compatibility statement (Phase 1)
 - [x] Confirm warranty term (Phase 1): 6-month limited warranty, replacement only
 - [x] Watch the five most active product-page replays before they expire (Phase 2)
-- [ ] Live test orders, Single and Two Pack, then refund (Phase 4)
+- [x] Live test orders, Single and Two Pack, then refund (Phase 4): run in Shopify test mode, #1042 and #1043
 - [x] Confirm box contents (Phase 7)
 - [ ] Confirm review provenance (Phase 7)
 - [ ] Supply lit-device image and demonstration clip (Phase 8)
