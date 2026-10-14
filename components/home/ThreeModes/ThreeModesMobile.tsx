@@ -72,7 +72,6 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
 
   return (
     <section
-      id="three-modes"
       className={`w-full bg-background-primary overflow-hidden${className ? ` ${className}` : ""}`}
       aria-label="Pick Your Energy — Three Modes"
     >
@@ -89,7 +88,7 @@ export default function ThreeModesMobile({ className }: ThreeModesMobileProps) {
           </span>
         </h2>
         <p className="font-body text-text-secondary mb-[32px]" style={{ fontSize: "16px" }}>
-          41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
+          41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit.
         </p>
       </div>
 

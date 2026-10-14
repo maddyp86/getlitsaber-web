@@ -275,11 +275,15 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 
 ## Phase 8 · Build next: lead with the device lit (Ploy priority 8)
 
-- [ ] **[OWNER]** supplies the lit-device hero image and a short demonstration clip (under 15 seconds, muted autoplay-friendly).
+- [x] **[OWNER]** supplies the lit-device hero image and a short demonstration clip (under 15 seconds, muted autoplay-friendly).
+  - *In the gallery (owner, 2026-10-13): lit rainbow handheld photo, and the 7.6s light-show clip (`pdp/lightshow-pdp.mp4`, 3MB).*
 - [x] Make the first gallery item the device lit, and the second a short in-place demonstration. Keep packaging and detail shots after them.
-- [ ] Reduce gallery height on mobile so the offer selector and purchase buttons are reachable sooner, without hiding them.
-- [ ] Apply the same order on desktop.
-- [ ] Point the homepage "See It in Motion" button to the product demonstration rather than lifestyle storytelling, or confirm with me first if you think it should stay.
+  - *2026-10-13: the light-show clip moved from slot 7 to slot 2; packaging and detail shots follow.*
+- [x] Reduce gallery height on mobile so the offer selector and purchase buttons are reachable sooner, without hiding them.
+  - *Main viewer 4:3 below 1024px (square on desktop). Add to Cart 1,371 → 1,288px at 375px, 1,366 → 1,280px at 390px; desktop unchanged. Tried the Silver/Gold cards side by side on mobile too: labels clipped, reverted.*
+- [x] Apply the same order on desktop. (One gallery list serves both.)
+- [x] Point the homepage "See It in Motion" button to the product demonstration rather than lifestyle storytelling, or confirm with me first if you think it should stay.
+  - *Owner chose the Three Modes section (2026-10-13). It is lazy-mounted, so its anchor now sits on the always-present wrapper; verified landing at 375 and 1440px, with and without scroll anchoring.*
 
 **Done when:** the first thing a shopper sees is the device lit, the demo plays in place, and purchase controls are reachable sooner on mobile.
 
@@ -321,7 +325,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 - [x] Live test orders, Single and Two Pack, then refund (Phase 4): run in Shopify test mode, #1042 and #1043
 - [x] Confirm box contents (Phase 7)
 - [ ] Confirm review provenance (Phase 7)
-- [ ] Supply lit-device image and demonstration clip (Phase 8)
+- [x] Supply lit-device image and demonstration clip (Phase 8)
 - [ ] Confirm whether the 3 modes respond to use; if not, change the pill to "3 LIGHT MODES"
 - [ ] Explain the July 13 activation spike and missing orders #1038 and #1039, for the next analysis
 

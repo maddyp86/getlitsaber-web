@@ -24,9 +24,11 @@ export const CTA_PRIMARY = {
   href: "/shop/litsaber-og",
 };
 
+// The modes section shows the device working (roadmap phase 8, owner
+// 2026-10-13). The anchor is on its LazyMount wrapper (app/page.tsx).
 export const CTA_SECONDARY = {
   label: "SEE IT IN MOTION",
-  href: "#be-seen",
+  href: "#three-modes",
 };
 
 export const TAGLINE = "Glowsticks die by sunrise. This doesn't. This is Litsaber.";

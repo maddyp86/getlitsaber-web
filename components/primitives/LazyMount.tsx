@@ -17,6 +17,11 @@ interface LazyMountProps {
   rootMargin?: string;
   /** If true, never unmount once shown (still defers initial mount). */
   keepMounted?: boolean;
+  /**
+   * Anchor id for the section. It sits on the wrapper, which is always in the
+   * DOM, so an in-page link (#id) works before the section has mounted.
+   */
+  id?: string;
 }
 
 /**
@@ -38,6 +43,7 @@ export default function LazyMount({
   minHeight = "100vh",
   rootMargin = "800px",
   keepMounted = false,
+  id,
 }: LazyMountProps) {
   const ref = useRef<HTMLDivElement>(null);
   const everShown = useRef(false);
@@ -92,6 +98,7 @@ export default function LazyMount({
   return (
     <div
       ref={ref}
+      id={id}
       style={
         show
           ? undefined
