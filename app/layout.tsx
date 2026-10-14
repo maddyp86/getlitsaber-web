@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import JudgemeScripts from "@/components/reviews/JudgemeScripts";
 import { headers } from "next/headers";
 import { AGE_GATE_HEAD_SCRIPT } from "@/lib/ageGate";
+import { REVIEWS_ENABLED } from "@/lib/reviews";
 
 export const metadata: Metadata = {
   title: {
@@ -60,7 +61,8 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: AGE_GATE_HEAD_SCRIPT }} />
       </head>
       <body className="font-body bg-background-primary text-text-primary antialiased">
-        <JudgemeScripts />
+        {/* Judge.me only loads while reviews are shown (lib/reviews.ts). */}
+        {REVIEWS_ENABLED && <JudgemeScripts />}
         <PostHogProvider>
           <SiteChrome suppressChrome={suppressChrome}>{children}</SiteChrome>
         </PostHogProvider>

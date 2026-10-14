@@ -4,6 +4,7 @@ import { BASE_UNIT_PRICE, MSRP_UNIT_PRICE, getDisplayUnitPrice } from "@/lib/car
 import ProductDisplay from "@/components/product/ProductDisplay";
 import ComparisonTable from "@/components/product/ComparisonTable";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
+import { REVIEWS_ENABLED } from "@/lib/reviews";
 {/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
 
 const PDP_DESCRIPTION =
@@ -81,6 +82,8 @@ export default async function PDPPage() {
         <ComparisonTable />
       </div>
 
+      {/* Hidden until reviews come from verified buyers (lib/reviews.ts). */}
+      {REVIEWS_ENABLED && (
       <section className="mx-auto w-full max-w-content px-content mt-24">
         <h2
           className="font-display text-h3 lg:text-h1 text-text-primary text-center"
@@ -97,6 +100,7 @@ export default async function PDPPage() {
         </div>
         <JudgemeReviewWidget productId={numericProductId} productTitle="Litsaber OG" />
       </section>
+      )}
     </div>
   );
 }
