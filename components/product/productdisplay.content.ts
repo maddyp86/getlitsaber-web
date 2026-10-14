@@ -59,6 +59,11 @@ export const MSRP_LABEL = "MSRP";
 export const FREE_SHIPPING_LABEL = "Free shipping";
 
 /** Rendered under the CTAs, joined with " · ". An href makes that item a link. */
+// Under the offers: product plus shipping for the selected offer. Tax is
+// added at checkout, so the line says so.
+export const ESTIMATED_TOTAL_LABEL = "Est. total";
+export const ESTIMATED_TOTAL_NOTE = "before tax";
+
 export const TRUST_LINE: ReadonlyArray<{ label: string; href?: string }> = [
   { label: "SHIPS WITHIN 2 BUSINESS DAYS" },
   { label: "FREE US SHIPPING ON 2+" },

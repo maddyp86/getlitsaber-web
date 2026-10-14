@@ -320,7 +320,10 @@ export default function CartDrawer() {
                 className="flex justify-between items-center pt-3"
                 style={{ borderTop: "1px solid rgba(240, 240, 245, 0.08)" }}
               >
-                <span className="font-label font-bold text-text-primary uppercase tracking-widest" style={{ fontSize: "14px" }}>TOTAL</span>
+                <span className="font-label font-bold text-text-primary uppercase tracking-widest" style={{ fontSize: "14px" }}>
+                  EST. TOTAL{" "}
+                  <span className="font-normal normal-case tracking-normal text-text-muted" style={{ fontSize: "12px" }}>before tax</span>
+                </span>
                 <span className="font-label font-bold text-text-primary" style={{ fontSize: "20px" }}>${displayTotal.toFixed(2)}</span>
               </div>
 

@@ -3,6 +3,7 @@
  *
  * This store is the single interface between the UI and the cart backend.
  *   addItem    → cartCreate (first item) + cartLinesAdd (subsequent)
+ *   buyNow     → cartCreate for a one-off cart; the persisted cart is untouched
  *   removeItem → cartLinesRemove
  *   updateQty  → cartLinesUpdate
  *   clear      → cartLinesRemove all lines; cartId nulled on success only
@@ -57,6 +58,11 @@ export type CartState = {
   attributesStamped: boolean;
 };
 
+/** Outcome of buyNow: a checkout for exactly the selected units, or why not. */
+export type BuyNowResult =
+  | { status: "ready"; checkoutUrl: string; qty: number; lineTotal: number }
+  | { status: "failed"; reason: string };
+
 /** Outcome of addItem, so callers can track and message honestly. */
 export type AddResult =
   | { status: "added" }
@@ -65,6 +71,7 @@ export type AddResult =
 
 type CartActions = {
   addItem(line: Omit<CartLine, "id" | "lineTotal">): Promise<AddResult>;
+  buyNow(variantId: string, qty: number): Promise<BuyNowResult>;
   removeItem(lineId: string): Promise<void>;
   updateQty(lineId: string, qty: number): Promise<void>;
   clear(): Promise<void>;
@@ -395,6 +402,39 @@ export const useCartStore = create<CartStore>()(
         }
       },
 
+      // Buy Now checks out exactly the selected offer. It builds its own
+      // one-off Shopify cart (same attribution and shipping stamp) and never
+      // touches the persisted cart: adding to that cart sent a shopper who
+      // picked Single, with one already in their cart, to checkout with two.
+      async buyNow(variantId, qty) {
+        const clampedQty = Math.min(Math.max(1, Math.round(qty)), MAX_QTY);
+        try {
+          const data = await shopifyFetch<ShopifyCartResponse>(CART_CREATE, {
+            lines: [
+              {
+                merchandiseId: variantId,
+                quantity: clampedQty,
+                attributes: [{ key: "_fulfillment_sku", value: fulfillmentSku(clampedQty) }],
+              },
+            ],
+            attributes: buildCartAttributes(),
+          });
+          const cart = data.cartCreate?.cart;
+          if (!cart?.checkoutUrl) throw new Error("cartCreate returned no checkout URL");
+          const lines = transformShopifyCart(cart);
+          return {
+            status: "ready",
+            checkoutUrl: cart.checkoutUrl,
+            qty: lines.reduce((acc, l) => acc + l.qty, 0),
+            lineTotal: lines.reduce((acc, l) => acc + l.lineTotal, 0),
+          };
+        } catch (err) {
+          console.error("[cart] buyNow failed:", err);
+          const reason = err instanceof Error ? err.message : String(err);
+          return { status: "failed", reason: reason.slice(0, 200) };
+        }
+      },
+
       async removeItem(lineId) {
         const { cartId, items } = get();
 
@@ -576,12 +616,13 @@ export function useCartLineTotal(lineId: string): number {
   });
 }
 
-export function useCartActions(): Pick<CartActions, "addItem" | "removeItem" | "updateQty" | "clear"> {
+export function useCartActions(): Pick<CartActions, "addItem" | "buyNow" | "removeItem" | "updateQty" | "clear"> {
   const addItem = useCartStore((s) => s.addItem);
+  const buyNow = useCartStore((s) => s.buyNow);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateQty = useCartStore((s) => s.updateQty);
   const clear = useCartStore((s) => s.clear);
-  return { addItem, removeItem, updateQty, clear };
+  return { addItem, buyNow, removeItem, updateQty, clear };
 }
 
 export function useCartHydrate(): () => Promise<void> {

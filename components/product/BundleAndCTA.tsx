@@ -2,11 +2,11 @@
 
 import { Fragment, useState } from "react";
 import Link from "next/link";
-import { OFFERS, TRUST_LINE, FREE_SHIPPING_LABEL } from "./productdisplay.content";
-import { getLinePrice, getDisplayUnitPrice, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { OFFERS, TRUST_LINE, FREE_SHIPPING_LABEL, ESTIMATED_TOTAL_LABEL, ESTIMATED_TOTAL_NOTE } from "./productdisplay.content";
+import { getLinePrice, formatPrice } from "@/lib/cart/pricing";
 import { quoteOffer, offerForQty } from "@/lib/cart/offers";
 import { formatDisplayShipping } from "@/lib/shipping";
-import { useCartActions, useCartStore } from "@/lib/cart/store";
+import { useCartActions } from "@/lib/cart/store";
 import { useAddToCart, ADD_FAILED_MESSAGE } from "@/lib/cart/useAddToCart";
 import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS } from "@/lib/analytics/events";
@@ -14,7 +14,7 @@ import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
-import { mediaUrl } from "@/lib/media";
+import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
 
 interface BundleAndCTAProps {
   qty: number;
@@ -48,7 +48,7 @@ export default function BundleAndCTA({
   surface,
   basePrice,
 }: BundleAndCTAProps) {
-  const { addItem } = useCartActions();
+  const { buyNow } = useCartActions();
   const addToCart = useAddToCart({ variantId, basePrice, source: surface });
   const { addToast } = useToastActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
@@ -68,17 +68,13 @@ export default function BundleAndCTA({
     addToCart(qty);
   }
 
+  // Buy Now checks out exactly the selected offer in its own cart, so units
+  // already in the shopper's cart never ride along, and an affiliate
+  // ?discount= code travels with it as it does from the cart.
   async function handleBuyNow() {
     setBuyNowLoading(true);
     try {
-      const result = await addItem({
-        variantId,
-        qty,
-        title: "Litsaber OG — Silver",
-        variantTitle: "Silver",
-        price: getDisplayUnitPrice(basePrice ?? BASE_UNIT_PRICE),
-        image: mediaUrl("product/litsaber-packaging-1.jpg"),
-      });
+      const result = await buyNow(variantId, qty);
       if (result.status === "failed") {
         addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
         track(EVENTS.cart_add_failed, {
@@ -89,27 +85,21 @@ export default function BundleAndCTA({
         });
         return;
       }
-      // Read post-mutation values directly from store — hook closures would be stale
-      const freshState = useCartStore.getState();
-      const freshCartValue = freshState.items.reduce((acc, i) => acc + i.lineTotal, 0);
-      const freshItemCount = freshState.items.reduce((acc, i) => acc + i.qty, 0);
       track(EVENTS.buy_now_clicked, {
         variant: "silver",
-        quantity: qty,
-        tier_price: getLinePrice(qty, basePrice),
-        offer: offerForQty(qty),
+        quantity: result.qty,
+        tier_price: getLinePrice(result.qty, basePrice),
+        offer: offerForQty(result.qty),
       });
-      trackCheckoutHandoff("buy_now", freshCartValue, freshItemCount);
-      const url = freshState.checkoutUrl;
-      if (url) {
-        window.location.href = url;
-      } else {
-        addToast({ variant: "error", message: ADD_FAILED_MESSAGE });
-      }
+      trackCheckoutHandoff("buy_now", result.lineTotal, result.qty);
+      window.location.href = appendDiscountToCheckoutUrl(result.checkoutUrl);
     } finally {
       setBuyNowLoading(false);
     }
   }
+
+  const selectedQuote = quoteOffer(qty, basePrice);
+  const estimatedTotal = selectedQuote.price + selectedQuote.shipping;
 
   return (
     <div className="flex flex-col gap-4">
@@ -173,6 +163,10 @@ export default function BundleAndCTA({
             })}
           </div>
 
+          <p data-testid="estimated-total" className="font-label text-[13px] text-text-secondary text-right">
+            {ESTIMATED_TOTAL_LABEL} <span className="font-bold text-text-primary">{formatPrice(estimatedTotal)}</span>{" "}
+            {ESTIMATED_TOTAL_NOTE}
+          </p>
         </>
       )}
 
