@@ -55,7 +55,7 @@ export default async function HomePage() {
           <LazyMount minHeight="300vh">
             <BeSeen />
           </LazyMount>
-          <LazyMount minHeight="1800px">
+          <LazyMount minHeight="1800px" id="three-modes">
             <ThreeModes />
           </LazyMount>
           <LazyMount minHeight="480px">

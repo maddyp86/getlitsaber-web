@@ -100,7 +100,6 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
 
   return (
     <section
-      id="three-modes"
       className={`w-full bg-black overflow-hidden${className ? ` ${className}` : ""}`}
       aria-label="Pick Your Energy — Three Modes"
     >
@@ -164,7 +163,7 @@ export default function ThreeModesDesktop({ className }: ThreeModesDesktopProps)
       className="font-body"
       style={{ flex: "1 0 0", fontSize: "25px", lineHeight: "normal", color: "#D3D3D3" }}
     >
-      41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit!
+      41 individually-addressable LEDs run the full length of the body. Glowstick at the festival. Flashlight in the tent. Signal flare in the crowd. Color-matched to your fit.
     </p>
           </div>
         </div>
