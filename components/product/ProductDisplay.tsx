@@ -13,6 +13,7 @@ import WaitlistCard from "./WaitlistCard";
 import StickyBuyBar from "./StickyBuyBar";
 import DescriptionSection from "./DescriptionSection";
 import ProductAccordion, { ACCORDION_OPEN_EVENT } from "./ProductAccordion";
+import SeeItWork from "./SeeItWork";
 
 const OFFER_STORAGE_KEY = "litsaber_offer_qty";
 
@@ -167,6 +168,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             </div>
           )}
           <DescriptionSection />
+          {surface === "pdp" && <SeeItWork />}
           <ProductAccordion />
         </div>
 

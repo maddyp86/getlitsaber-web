@@ -64,6 +64,9 @@ export const FREE_SHIPPING_LABEL = "Free shipping";
 export const ESTIMATED_TOTAL_LABEL = "Est. total";
 export const ESTIMATED_TOTAL_NOTE = "before tax";
 
+// PDP section showing each mode working (components/product/SeeItWork.tsx).
+export const SEE_IT_WORK_HEADING = "Three modes";
+
 export const TRUST_LINE: ReadonlyArray<{ label: string; href?: string }> = [
   { label: "SHIPS WITHIN 2 BUSINESS DAYS" },
   { label: "FREE US SHIPPING ON 2+" },

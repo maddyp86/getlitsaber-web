@@ -12,7 +12,7 @@ export const MODES: Mode[] = [
   {
     title: "LITSABER MODE",
     titleColor: "white",
-    body: "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath — pull, and the device responds in real time.",
+    body: "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath: pull, and the device responds in real time.",
     image: mediaUrl("home/litsaber_mode_poster.jpg"),
     video: videoUrl("home/litsaber_mode.mp4"),
   },
@@ -26,7 +26,7 @@ export const MODES: Mode[] = [
   {
     title: "STEALTH MODE",
     titleColor: "muted",
-    body: "When daylight comes give your eyes and battery a break. Turn off the lights to save power and vape discreetly throughout day.",
+    body: "When daylight comes give your eyes and battery a break. Turn off the lights to save power and vape discreetly throughout the day.",
     image: mediaUrl("home/stealth_mode_poster.jpg"),
     video: videoUrl("home/stealth_mode.mp4"),
   },
