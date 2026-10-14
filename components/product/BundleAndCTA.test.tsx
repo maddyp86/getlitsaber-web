@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useState } from "react";
 
 const trackMock = vi.fn();
@@ -8,9 +8,13 @@ vi.mock("@/lib/analytics/events", () => ({
   track: (...args: unknown[]) => trackMock(...args),
   EVENTS: new Proxy({}, { get: (_t, key) => key }),
 }));
+const buyNowMock = vi.fn();
+const appendDiscountMock = vi.fn((url: string) => url);
 vi.mock("@/lib/cart/store", () => ({
-  useCartActions: () => ({ addItem: vi.fn() }),
-  useCartStore: { getState: () => ({ items: [], checkoutUrl: null }) },
+  useCartActions: () => ({ buyNow: (...args: unknown[]) => buyNowMock(...args) }),
+}));
+vi.mock("@/lib/hooks/useDiscount", () => ({
+  appendDiscountToCheckoutUrl: (url: string) => appendDiscountMock(url),
 }));
 vi.mock("@/lib/cart/useAddToCart", () => ({
   useAddToCart: () => vi.fn(),
@@ -92,5 +96,26 @@ describe("offer selection", () => {
       line_price: 79.98,
       surface: "pdp",
     });
+  });
+});
+
+describe("estimated total", () => {
+  it("shows product plus shipping before tax for the selected offer", () => {
+    render(<Harness basePrice={39.99} />);
+    expect(screen.getByTestId("estimated-total").textContent).toBe("Est. total $45.98 before tax");
+    fireEvent.click(screen.getAllByRole("radio")[1]);
+    expect(screen.getByTestId("estimated-total").textContent).toBe("Est. total $79.98 before tax");
+  });
+});
+
+describe("Buy Now", () => {
+  it("checks out exactly the selected offer and keeps an affiliate code", async () => {
+    buyNowMock.mockResolvedValue({ status: "ready", checkoutUrl: "https://checkout.example/c/1", qty: 2, lineTotal: 79.98 });
+    render(<Harness basePrice={39.99} />);
+    fireEvent.click(screen.getAllByRole("radio")[1]);
+    fireEvent.click(screen.getByRole("button", { name: "BUY NOW" }));
+    await waitFor(() => expect(appendDiscountMock).toHaveBeenCalledWith("https://checkout.example/c/1"));
+    expect(buyNowMock).toHaveBeenCalledWith("gid://shopify/ProductVariant/1", 2);
+    expect(trackMock).toHaveBeenCalledWith("checkout_started", expect.objectContaining({ route: "buy_now", item_count: 2, cart_value: 79.98 }));
   });
 });

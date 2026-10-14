@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
-import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS } from "./productdisplay.content";
+import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, OFFERS } from "./productdisplay.content";
 import { quoteOffer } from "@/lib/cart/offers";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import GalleryBlock from "./GalleryBlock";
@@ -13,6 +13,8 @@ import WaitlistCard from "./WaitlistCard";
 import StickyBuyBar from "./StickyBuyBar";
 import DescriptionSection from "./DescriptionSection";
 import ProductAccordion, { ACCORDION_OPEN_EVENT } from "./ProductAccordion";
+
+const OFFER_STORAGE_KEY = "litsaber_offer_qty";
 
 interface ProductDisplayProps {
   variantId: string;
@@ -25,6 +27,25 @@ export default function ProductDisplay({ variantId, available, surface, basePric
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [selectedQty, setSelectedQty] = useState(1);
+
+  // The selected offer survives a trip to checkout and back (same tab), so a
+  // shopper who backs out of checkout sees the offer they picked.
+  useEffect(() => {
+    try {
+      const saved = Number(sessionStorage.getItem(OFFER_STORAGE_KEY));
+      if (OFFERS.some((o) => o.qty === saved)) setSelectedQty(saved);
+    } catch {
+      // Storage unavailable: start on the default offer.
+    }
+  }, []);
+  function selectQty(qty: number) {
+    setSelectedQty(qty);
+    try {
+      sessionStorage.setItem(OFFER_STORAGE_KEY, String(qty));
+    } catch {
+      // Storage unavailable: the selection still works for this page.
+    }
+  }
 
   const productViewedFired = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -137,7 +158,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             <div className="w-full">
               <BundleAndCTA
                 qty={selectedQty}
-                onQtyChange={setSelectedQty}
+                onQtyChange={selectQty}
                 variantId={variantId}
                 available={available}
                 surface={surface}

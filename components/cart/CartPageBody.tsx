@@ -198,7 +198,7 @@ export default function CartPageBody() {
                   <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                   <MobileSummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
                   <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
-                  <MobileSummaryRow label="Estimate Tax" value="CALCULATED AT CHECKOUT" muted noBorder />
+                  <MobileSummaryRow label="Estimated tax" value="CALCULATED AT CHECKOUT" muted noBorder />
                 </div>
 
                 {/* Total row */}
@@ -210,7 +210,8 @@ export default function CartPageBody() {
                     className="font-body font-bold text-text-primary"
                     style={{ fontSize: "20px" }}
                   >
-                    Total
+                    Estimated total{" "}
+                    <span className="font-normal text-text-muted" style={{ fontSize: "13px" }}>before tax</span>
                   </span>
                   <span
                     className="font-body font-bold text-text-primary"
@@ -434,7 +435,8 @@ export default function CartPageBody() {
                       className="font-body font-bold text-text-primary"
                       style={{ fontSize: "18px" }}
                     >
-                      Total
+                      Estimated total{" "}
+                      <span className="font-normal text-text-muted" style={{ fontSize: "13px" }}>before tax</span>
                     </span>
                     <span
                       className="font-body font-bold text-text-primary"
