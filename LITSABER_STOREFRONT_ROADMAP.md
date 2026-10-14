@@ -254,16 +254,18 @@ Run alongside Phases 1–5 so the next review is usable.
 
 Goal: a shopper can understand fit, contents, cost, delivery, returns, and warranty without leaving the buy area.
 
-- [ ] Add a compact block directly under the price and offer selector covering:
+- [x] Add a compact block directly under the price and offer selector covering:
   - Compatibility (the verified statement from Phase 1)
   - What's in the box **[OWNER]** confirms contents
   - Shipping for the selected offer and the dispatch and arrival estimate from Phase 1
   - Returns summary and warranty, each linking to its policy
   - Build facts (aluminum and brass build, 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery)
   - A link to the review summary
-- [ ] Use supported facts only. No superlatives or unsupported durability claims.
+- [x] Use supported facts only. No superlatives or unsupported durability claims.
 - [ ] **[OWNER]** confirms the reviews shown are from real buyers. If any are not, they come down before the review link goes in.
-- [ ] Keep it short enough that the Add to Cart and Buy Now buttons stay near the top on mobile.
+- [x] Keep it short enough that the Add to Cart and Buy Now buttons stay near the top on mobile.
+
+*Built 2026-10-13 (branch `feat/pdp-decision-block`). Placed directly under Add to Cart and Buy Now (owner decision), replacing the one-line trust strip on the PDP; the homepage buy module keeps the strip. Rows: Fits (the Phase 1 compatibility statement), In the box ("Litsaber OG, a quick start guide, and a QR code to the activation page.", owner 2026-10-13), Shipping for the selected offer ("$5.99 shipping. Free on 2+." / "Free shipping on 2+.") plus the Phase 1 dispatch and transit wording, Returns and Warranty with policy links. Build facts are the spec pills directly above, so they are not repeated. No review link: reviews are not yet from verified buyers. At 375px Add to Cart stays at the same position as before (1,371px from the top); the block is 410px tall below it (250px at 1440px); no horizontal overflow.*
 
 **Done when:** every fact in the block matches the policies and specs, and purchase buttons are not pushed further down on mobile.
 
