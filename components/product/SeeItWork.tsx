@@ -38,7 +38,7 @@ function ModeClip({
   video: string;
   poster: string;
   title: string;
-  /** Clips load in order: this one waits until the one above can play. */
+  /** Clips load in order: this one waits until the one above has buffered. */
   canLoad: boolean;
   onReady: () => void;
 }) {
@@ -97,8 +97,9 @@ function ModeClip({
     return () => io.disconnect();
   }, []);
 
-  // Let the next clip start once this one can play, or after 6s so a slow or
-  // failed clip never blocks the rest.
+  // Let the next clip start downloading once this one has buffered to the
+  // end (canplaythrough), so the clip on screen keeps the connection; or
+  // after 8s, so a slow or failed clip never blocks the rest.
   const released = useRef(false);
   const release = () => {
     if (released.current) return;
@@ -107,7 +108,7 @@ function ModeClip({
   };
   useEffect(() => {
     if (!load) return;
-    const t = setTimeout(release, 6000);
+    const t = setTimeout(release, 8000);
     return () => clearTimeout(t);
     // release is stable for this clip's lifetime
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,7 +142,7 @@ function ModeClip({
           playsInline
           preload="auto"
           aria-hidden="true"
-          onCanPlay={release}
+          onCanPlayThrough={release}
           onPlaying={() => setPlaying(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 motion-reduce:transition-none ${
             playing ? "opacity-100" : "opacity-0"
