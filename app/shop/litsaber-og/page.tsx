@@ -3,6 +3,7 @@ import { getProductByHandle } from "@/lib/shopify/queries";
 import { BASE_UNIT_PRICE, MSRP_UNIT_PRICE, getDisplayUnitPrice } from "@/lib/cart/pricing";
 import ProductDisplay from "@/components/product/ProductDisplay";
 import ComparisonTable from "@/components/product/ComparisonTable";
+import SeeItWork from "@/components/product/SeeItWork";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
 import { REVIEWS_ENABLED } from "@/lib/reviews";
 {/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
@@ -76,6 +77,11 @@ export default async function PDPPage() {
       {/* Divider aligned to content edge */}
       <div className="mx-auto w-full max-w-content px-content">
         <hr className="w-full border-t border-border-divider" />
+      </div>
+
+      {/* Each mode shown working, before the comparison table. */}
+      <div className="mx-auto w-full max-w-content px-content mt-24">
+        <SeeItWork />
       </div>
 
       <div className="mx-auto w-full max-w-content px-content mt-24">

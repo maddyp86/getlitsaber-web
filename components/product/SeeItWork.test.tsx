@@ -12,8 +12,8 @@ describe("PDP Three modes", () => {
     vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: () => {}, removeEventListener: () => {} }));
     render(<SeeItWork />);
     const section = within(screen.getByTestId("see-it-work"));
-    expect(section.getByRole("heading", { level: 3 }).textContent).toBe("Three modes");
-    expect(section.getAllByRole("heading", { level: 4 }).map((h) => h.textContent)).toEqual([
+    expect(section.getByRole("heading", { level: 2 }).textContent).toBe("Three modes");
+    expect(section.getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual([
       "LITSABER MODE",
       "GLOWSTICK MODE",
       "STEALTH MODE",
@@ -29,6 +29,19 @@ describe("PDP Three modes", () => {
       expect(v.hasAttribute("playsinline")).toBe(true);
       expect(v.getAttribute("aria-hidden")).toBe("true");
     });
+    vi.unstubAllGlobals();
+  });
+
+  it("alternates the clip side row by row on tablet and desktop", () => {
+    vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: () => {}, removeEventListener: () => {} }));
+    render(<SeeItWork />);
+    const rows = screen.getAllByTestId("mode-row");
+    // Row 1 and 3: copy then clip. Row 2: clip first (md:order-1).
+    expect(rows.map((r) => (r.lastElementChild?.className.includes("md:order-1") ? "clip-left" : "clip-right"))).toEqual([
+      "clip-right",
+      "clip-left",
+      "clip-right",
+    ]);
     vi.unstubAllGlobals();
   });
 

@@ -55,7 +55,7 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
 
   return (
     <div ref={boxRef} className="relative w-full aspect-[9/16] overflow-hidden rounded-card bg-black">
-      <Image src={poster} alt={posterAlt(title)} fill sizes="(min-width: 1024px) 200px, 40vw" className="object-cover" />
+      <Image src={poster} alt={posterAlt(title)} fill sizes="(min-width: 768px) 300px, 240px" className="object-cover" />
       {near && !reducedMotion && (
         <video
           ref={videoRef}
@@ -75,9 +75,10 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
 }
 
 /**
- * PDP "Three modes": each mode shown working, a muted loop beside its copy.
- * Same titles, copy and clips as the homepage modes section, in a lighter
- * layout for the product page (no interactive state).
+ * PDP "Three modes": a full-width section between the buy area and the
+ * comparison table. Each mode is a row of copy and its muted loop, the clip
+ * alternating sides on tablet and desktop (stacked on phones). Same titles,
+ * copy and clips as the homepage modes section, without its interactive state.
  */
 export default function SeeItWork() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -101,22 +102,36 @@ export default function SeeItWork() {
   }, []);
 
   return (
-    <section ref={sectionRef} aria-labelledby="see-it-work-heading" data-testid="see-it-work" className="flex flex-col gap-4">
-      <h3 id="see-it-work-heading" className="font-body text-[25px] font-bold text-text-primary leading-normal">
+    <section
+      ref={sectionRef}
+      aria-labelledby="see-it-work-heading"
+      data-testid="see-it-work"
+      className="flex flex-col items-center gap-12 lg:gap-20"
+    >
+      <h2
+        id="see-it-work-heading"
+        className="font-display text-text-primary text-center text-[clamp(32px,3.2vw,56px)] font-bold"
+      >
         {SEE_IT_WORK_HEADING}
-      </h3>
-      {MODES.map((mode) => (
-        <div
-          key={mode.title}
-          className="grid grid-cols-[1fr_40%] lg:grid-cols-[1fr_200px] gap-4 items-center border-t border-border-divider pt-4"
-        >
-          <div className="flex flex-col gap-2">
-            <h4 className="font-label font-bold text-[15px] uppercase tracking-wider text-accent-cyan">{mode.title}</h4>
-            <p className="font-body text-[15px] leading-relaxed text-text-secondary">{mode.body}</p>
+      </h2>
+      {MODES.map((mode, i) => {
+        const clipFirst = i % 2 === 1;
+        return (
+          <div
+            key={mode.title}
+            data-testid="mode-row"
+            className="w-full max-w-[960px] grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-12"
+          >
+            <div className={`flex flex-col gap-3 ${clipFirst ? "md:order-2" : ""}`}>
+              <h3 className="font-label font-bold text-[18px] uppercase tracking-wider text-accent-cyan">{mode.title}</h3>
+              <p className="font-body text-[16px] leading-relaxed text-text-secondary">{mode.body}</p>
+            </div>
+            <div className={`w-full max-w-[240px] md:max-w-[300px] mx-auto ${clipFirst ? "md:order-1" : ""}`}>
+              <ModeClip video={mode.video} poster={mode.image} title={mode.title} />
+            </div>
           </div>
-          <ModeClip video={mode.video} poster={mode.image} title={mode.title} />
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 }

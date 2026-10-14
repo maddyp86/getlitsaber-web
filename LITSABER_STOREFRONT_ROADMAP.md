@@ -308,7 +308,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 
 Goal: shoppers see each mode working on the product page, not only read about it. Prompted by a review of competitor product pages (Vessel, Smyle Labs Danksaber), which show the device working below the buy area.
 
-- [x] A "Three modes" section on the PDP, below the description and above the dropdowns, with each mode's title and copy beside a muted loop of that mode. Reuses the homepage modes content and clips.
+- [x] A full-width "Three modes" section on the PDP, between the buy area and the comparison table: one row per mode, title and copy beside a muted loop, the clip alternating sides row by row on tablet and desktop (stacked on phones). Reuses the homepage modes content and clips. (First placed inside the description column; moved full width at the owner's request, 2026-10-13.)
 - [x] Nothing moves near the buy buttons (Add to Cart 1,288px at 375px, 815px at 1440px, unchanged).
 - [x] Clips load only when the section nears the viewport and pause off screen; reduced-motion visitors see the still poster.
 - [x] `pdp_modes_viewed` fires once when the section is seen, so reviews can show how many product-page visitors reach it.
