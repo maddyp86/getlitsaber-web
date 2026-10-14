@@ -28,11 +28,25 @@ function posterAlt(title: string): string {
  * then fades in over the poster, so there is no blank or jumping frame.
  * Reduced-motion visitors keep the still poster.
  */
-function ModeClip({ video, poster, title }: { video: string; poster: string; title: string }) {
+function ModeClip({
+  video,
+  poster,
+  title,
+  canLoad,
+  onReady,
+}: {
+  video: string;
+  poster: string;
+  title: string;
+  /** Clips load in order: this one waits until the one above can play. */
+  canLoad: boolean;
+  onReady: () => void;
+}) {
   const boxRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const inView = useRef(false);
-  const [load, setLoad] = useState(false);
+  const [near, setNear] = useState(false);
+  const load = near && canLoad;
   const [playing, setPlaying] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -49,13 +63,13 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
     const el = boxRef.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
-      setLoad(true);
+      setNear(true);
       return;
     }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setLoad(true);
+          setNear(true);
           io.disconnect();
         }
       },
@@ -83,6 +97,27 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
     return () => io.disconnect();
   }, []);
 
+  // Let the next clip start once this one can play, or after 6s so a slow or
+  // failed clip never blocks the rest.
+  const released = useRef(false);
+  const release = () => {
+    if (released.current) return;
+    released.current = true;
+    onReady();
+  };
+  useEffect(() => {
+    if (!load) return;
+    const t = setTimeout(release, 6000);
+    return () => clearTimeout(t);
+    // release is stable for this clip's lifetime
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [load]);
+  useEffect(() => {
+    // Reduced motion: no clip loads here, so pass the turn straight on.
+    if (reducedMotion && canLoad) release();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion, canLoad]);
+
   // React sets `muted` only as a property; iOS Safari also wants the
   // attribute before it will play a video inline without a tap.
   const attachVideo = (v: HTMLVideoElement | null) => {
@@ -106,6 +141,7 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
           playsInline
           preload="auto"
           aria-hidden="true"
+          onCanPlay={release}
           onPlaying={() => setPlaying(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 motion-reduce:transition-none ${
             playing ? "opacity-100" : "opacity-0"
@@ -125,6 +161,8 @@ function ModeClip({ video, poster, title }: { video: string; poster: string; tit
 export default function SeeItWork() {
   const sectionRef = useRef<HTMLElement>(null);
   const viewed = useRef(false);
+  // Highest row allowed to load: one clip at a time, top to bottom.
+  const [loadUpTo, setLoadUpTo] = useState(0);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -169,7 +207,13 @@ export default function SeeItWork() {
               <p className="font-body text-[16px] leading-relaxed text-text-secondary">{mode.body}</p>
             </div>
             <div className={`w-full max-w-[240px] md:max-w-[300px] mx-auto ${clipFirst ? "md:order-1" : ""}`}>
-              <ModeClip video={mode.video} poster={mode.image} title={mode.title} />
+              <ModeClip
+                video={mode.video}
+                poster={mode.image}
+                title={mode.title}
+                canLoad={i <= loadUpTo}
+                onReady={() => setLoadUpTo((n) => Math.max(n, i + 1))}
+              />
             </div>
           </div>
         );

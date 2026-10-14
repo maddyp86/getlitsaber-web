@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 
 vi.mock("@/lib/analytics/events", () => ({ track: vi.fn(), EVENTS: new Proxy({}, { get: (_t, key) => key }) }));
 
@@ -19,12 +19,18 @@ describe("PDP Three modes", () => {
       "STEALTH MODE",
     ]);
     expect(section.getByAltText("Litsaber in glowstick mode")).toBeTruthy();
-    // jsdom has no IntersectionObserver here, so clips mount at once; each is
-    // muted, looping, inline and hidden from assistive tech.
-    const videos = document.querySelectorAll("video");
-    expect(videos).toHaveLength(3);
-    videos.forEach((v) => {
+    // jsdom has no IntersectionObserver here, so every row counts as near.
+    // Clips still load one at a time: the next waits until the one above can
+    // play. Each is muted, looping, inline and hidden from assistive tech.
+    const videos = () => document.querySelectorAll("video");
+    expect(videos()).toHaveLength(1);
+    fireEvent.canPlay(videos()[0]);
+    expect(videos()).toHaveLength(2);
+    fireEvent.canPlay(videos()[1]);
+    expect(videos()).toHaveLength(3);
+    videos().forEach((v) => {
       expect(v.muted).toBe(true);
+      expect(v.hasAttribute("muted")).toBe(true);
       expect(v.loop).toBe(true);
       expect(v.hasAttribute("playsinline")).toBe(true);
       expect(v.getAttribute("aria-hidden")).toBe("true");
