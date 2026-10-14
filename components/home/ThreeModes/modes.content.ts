@@ -14,7 +14,7 @@ export const MODES: Mode[] = [
     titleColor: "white",
     body: "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath: pull, and the device responds in real time.",
     image: mediaUrl("home/litsaber_mode_poster.jpg"),
-    video: videoUrl("home/litsaber_mode.mp4"),
+    video: videoUrl("home/litsaber_mode_v2.mp4"),
   },
   {
     title: "GLOWSTICK MODE",
@@ -37,7 +37,7 @@ export const PULL_BUILD = [
     label: "THE PULL",
     description:
       "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath. Pull, and the device responds in real time.",
-    video: videoUrl("home/litsaber_mode.mp4"),
+    video: videoUrl("home/litsaber_mode_v2.mp4"),
     image: mediaUrl("home/litsaber_mode_poster.jpg"),
   },
   {
