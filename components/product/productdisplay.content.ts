@@ -1,4 +1,5 @@
 import { mediaUrl, videoUrl } from "@/lib/media";
+import { COMPATIBILITY_STATEMENT } from "./specs.content";
 
 // mediaUrl still used for swatch SVGs below
 
@@ -63,6 +64,34 @@ export const FREE_SHIPPING_LABEL = "Free shipping";
 // added at checkout, so the line says so.
 export const ESTIMATED_TOTAL_LABEL = "Est. total";
 export const ESTIMATED_TOTAL_NOTE = "before tax";
+
+// ─── Decision block (roadmap phase 7) ───────────────────────────────────────
+// Under the PDP buy buttons: fit, contents, cost, delivery, returns and
+// warranty without leaving the buy area. Facts only, each matching the specs
+// or a policy page. Box contents confirmed by the owner 2026-10-13.
+export const DECISION_BLOCK = {
+  fits: { label: "Fits", text: COMPATIBILITY_STATEMENT },
+  box: {
+    label: "In the box",
+    text: "Litsaber OG, a quick start guide, and a QR code to the activation page.",
+  },
+  shipping: {
+    label: "Shipping",
+    single: "$5.99 shipping. Free on 2+.",
+    multi: "Free shipping on 2+.",
+    dispatch: "Ships within 2 business days, then 2–5 business days via USPS Ground Advantage.",
+  },
+  returns: {
+    label: "Returns",
+    text: "14-day returns on unopened devices.",
+    link: { label: "Returns policy", href: "/policies/shipping-returns" },
+  },
+  warranty: {
+    label: "Warranty",
+    text: "6-month limited warranty against manufacturing defects. A defective device is replaced at no cost.",
+    link: { label: "Warranty", href: "/policies/warranty" },
+  },
+} as const;
 
 export const TRUST_LINE: ReadonlyArray<{ label: string; href?: string }> = [
   { label: "SHIPS WITHIN 2 BUSINESS DAYS" },

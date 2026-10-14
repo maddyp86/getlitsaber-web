@@ -24,6 +24,7 @@ vi.mock("@/lib/toast/store", () => ({ useToastActions: () => ({ addToast: vi.fn(
 vi.mock("@/components/forms/WaitlistForm", () => ({ default: () => null }));
 
 import BundleAndCTA from "./BundleAndCTA";
+import { COMPATIBILITY_STATEMENT } from "./specs.content";
 
 function Harness({ basePrice }: { basePrice?: number }) {
   const [qty, setQty] = useState(1);
@@ -71,7 +72,9 @@ describe("offer rendering", () => {
     expect(screen.queryByRole("button", { name: /increase quantity/i })).toBeNull();
     const text = container.textContent ?? "";
     expect(text).not.toMatch(/save/i);
-    expect(text).not.toMatch(/%/);
+    // The approved compatibility line ("95 to 99% cart compatibility") is the
+    // only percentage allowed; any other % would be a discount badge.
+    expect(text.replace(COMPATIBILITY_STATEMENT, "")).not.toMatch(/%/);
     expect(text).not.toMatch(/\bsale\b/i);
     expect(text).not.toMatch(/\bwas\b/i);
   });
@@ -117,5 +120,21 @@ describe("Buy Now", () => {
     await waitFor(() => expect(appendDiscountMock).toHaveBeenCalledWith("https://checkout.example/c/1"));
     expect(buyNowMock).toHaveBeenCalledWith("gid://shopify/ProductVariant/1", 2);
     expect(trackMock).toHaveBeenCalledWith("checkout_started", expect.objectContaining({ route: "buy_now", item_count: 2, cart_value: 79.98 }));
+  });
+});
+
+describe("decision block", () => {
+  it("states fit, contents, shipping for the selected offer, returns and warranty, with policy links", () => {
+    render(<Harness basePrice={39.99} />);
+    const block = within(screen.getByTestId("decision-block"));
+    expect(block.getByText(/4\.0mm pin depth/)).toBeTruthy();
+    expect(block.getByText(/Litsaber OG, a quick start guide, and a QR code to the activation page\./)).toBeTruthy();
+    expect(block.getByText(/^\$5\.99 shipping\. Free on 2\+\. Ships within 2 business days/)).toBeTruthy();
+    fireEvent.click(screen.getAllByRole("radio")[1]);
+    expect(block.getByText(/^Free shipping on 2\+\. Ships within 2 business days/)).toBeTruthy();
+    expect(block.getByRole("link", { name: "Returns policy" }).getAttribute("href")).toBe("/policies/shipping-returns");
+    expect(block.getByRole("link", { name: "Warranty" }).getAttribute("href")).toBe("/policies/warranty");
+    // No review link until the reviews on the page are from real buyers.
+    expect(block.queryByText(/review/i)).toBeNull();
   });
 });
