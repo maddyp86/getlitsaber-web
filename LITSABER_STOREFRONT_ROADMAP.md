@@ -265,11 +265,11 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
 - [ ] **[OWNER]** confirms the reviews shown are from real buyers. If any are not, they come down before the review link goes in.
 - [x] Keep it short enough that the Add to Cart and Buy Now buttons stay near the top on mobile.
 
-*Built 2026-10-13 (branch `feat/pdp-decision-block`). Placed directly under Add to Cart and Buy Now (owner decision), replacing the one-line trust strip on the PDP; the homepage buy module keeps the strip. Rows: Fits (the Phase 1 compatibility statement), In the box ("Litsaber OG, a quick start guide, and a QR code to the activation page.", owner 2026-10-13), Shipping for the selected offer ("$5.99 shipping. Free on 2+." / "Free shipping on 2+.") plus the Phase 1 dispatch and transit wording, Returns and Warranty with policy links. Build facts are the spec pills directly above, so they are not repeated. No review link: reviews are not yet from verified buyers. At 375px Add to Cart stays at the same position as before (1,371px from the top); the block is 410px tall below it (250px at 1440px); no horizontal overflow.*
+*2026-10-13: a five-row block under the buy buttons shipped in #92, then was replaced at the owner's call because four rows repeated the dropdowns directly below (fit is in Product Features and Tech Specs; shipping, returns and warranty each have a tab; the selected offer's shipping is already on the offer card and the estimated total). The only new fact, the box contents, is now its own dropdown, "What's in the Box", after Tech Specs: Litsaber OG, quick start guide, QR code to the activation page; no charging cable, any USB-C cable works (owner: no cable by design). The one-line trust strip is back under the buttons, so Add to Cart and Buy Now stay where they were on mobile. Every fact is one tap from the buy area. No review link: reviews are hidden until they come from verified buyers (#93).*
 
 **Done when:** every fact in the block matches the policies and specs, and purchase buttons are not pushed further down on mobile.
 
-**Deploy date:** ____
+**Deploy date:** 10/13/2026 (#92; box contents moved to a dropdown in the follow-up)
 
 ---
 
