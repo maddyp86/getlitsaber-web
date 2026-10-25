@@ -14,8 +14,11 @@
 
 export const HUBSPOT_PROXY_ORIGIN = "https://244547358.sites-proxy.hscoscdn-na2.net";
 
-// The value HubSpot's "Verify reverse proxy connection" check asks for.
-export const HUBSPOT_PUBLIC_HOST = "getlitsaber.com";
+// Must be the exact domain connected in HubSpot (www included). HubSpot's
+// verify screen suggested the bare brand domain, and its /_hcms/status check
+// passes either way, but real pages 404 with "domain getlitsaber.com does not
+// exist" unless this matches the connected domain.
+export const HUBSPOT_PUBLIC_HOST = "www.getlitsaber.com";
 
 // Path prefixes served by HubSpot: the blog itself, HubSpot's status and
 // diagnostics endpoints (/_hcms), and the paths HubSpot uses for blog images,
