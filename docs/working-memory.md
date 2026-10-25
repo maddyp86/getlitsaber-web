@@ -1750,6 +1750,16 @@ The catch was the SDK. `@vercel/blob` 0.27.3 has no OIDC path; it reads `BLOB_RE
 
 ---
 
+### HubSpot blog at /blog through the middleware (2026-10-24)
+
+The blog for the AEO push is hosted in HubSpot but served at www.getlitsaber.com/blog (ADR-010). The first attempt nearly took the storefront down: HubSpot's standard "connect a domain" flow wanted to replace the www CNAME and apex A record (both Vercel) and warned it couldn't be undone. Matt stopped at that screen. The right path is HubSpot's reverse-proxy mode (CDN switch off), which only adds two verification records and leaves traffic on Vercel.
+
+**The matcher catch.** The existing middleware matcher skips anything ending in an image, CSS or JS extension, which would have left HubSpot's blog images and theme files 404ing on our domain while the HTML loaded fine. HubSpot paths get their own matcher entries, and the proxy branch runs before the maintenance-mode check.
+
+**Open:** the 21+ age gate is a storefront component, so it does not run on HubSpot pages. The blog template needs its own gate before the first post goes live.
+
+---
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**
