@@ -1,16 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { get } from "@vercel/edge-config";
+import { hubSpotProxyHeaders, hubSpotProxyUrl, isHubSpotPath } from "./lib/hubspotProxy";
 
 const BYPASS_COOKIE = "ls-preview";
 
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|maintenance|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|map|woff|woff2|ttf)$).*)",
+    // HubSpot-hosted paths, including their images, CSS and JS, which the
+    // pattern above skips by file extension.
+    "/blog/:path*",
+    "/_hcms/:path*",
+    "/hs/:path*",
+    "/hs-fs/:path*",
+    "/hubfs/:path*",
   ],
 };
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl;
+
+  // The blog is hosted by HubSpot and reverse-proxied here (see
+  // lib/hubspotProxy.ts). It is not affected by storefront maintenance mode.
+  if (isHubSpotPath(url.pathname)) {
+    return NextResponse.rewrite(hubSpotProxyUrl(url.pathname, url.search), {
+      request: { headers: hubSpotProxyHeaders(req.headers, req.ip) },
+    });
+  }
   const bypassToken = process.env.MAINTENANCE_BYPASS_TOKEN;
   const queryToken = url.searchParams.get("preview");
 
