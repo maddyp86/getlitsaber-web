@@ -282,7 +282,13 @@
     @apply border-l-2 border-accent-cyan pl-md text-text-primary;
   }
   .blog-prose img {
-    @apply h-auto max-w-full rounded-card;
+    @apply h-auto w-full max-w-full rounded-card bg-background-elevated;
+  }
+  .blog-prose figure {
+    @apply my-xl;
+  }
+  .blog-prose figcaption {
+    @apply mt-sm font-label text-eyebrow uppercase tracking-widest text-text-muted;
   }
   .blog-prose hr {
     @apply border-t border-border-divider my-xl;

@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.description,
       publishedTime: post.publishedAt ?? undefined,
       modifiedTime: post.updatedAt ?? undefined,
-      images: post.image ? [{ url: post.image, alt: post.imageAlt }] : undefined,
+      images: post.cardImage ? [{ url: post.cardImage, alt: post.cardImageAlt }] : undefined,
     },
   };
 }
@@ -61,7 +61,7 @@ export default async function BlogPostPage({ params }: Props) {
     mainEntityOfPage: url,
     datePublished: post.publishedAt ?? undefined,
     dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
-    image: post.image ?? undefined,
+    image: post.cardImage ?? undefined,
     author: { "@type": "Person", name: author },
     publisher: { "@type": "Organization", name: "Litsaber", url: BLOG_ORIGIN },
   };

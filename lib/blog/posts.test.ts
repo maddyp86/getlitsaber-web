@@ -3,6 +3,7 @@ import {
   BLOG_CONTENT_GROUP_ID,
   type HubSpotPost,
   cleanBody,
+  optimizeBodyImages,
   excerpt,
   formatPostDate,
   inThisBlog,
@@ -105,5 +106,28 @@ describe("formatting helpers", () => {
     const a = toBlogPost({ ...base, id: "a", publishDate: "2026-01-01T00:00:00Z" });
     const b = toBlogPost({ ...base, id: "b", publishDate: "2026-06-01T00:00:00Z" });
     expect(sortNewestFirst([a, b]).map((p) => p.id)).toEqual(["b", "a"]);
+  });
+});
+
+describe("images", () => {
+  const blob = "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/images/home/rave.jpg";
+  it("serves our Blob photos through the optimizer with a srcset", () => {
+    const out = optimizeBodyImages(`<img src="${blob}" alt="Rave" width="4000" style="x">`);
+    expect(out).toContain(`src="/_next/image?url=${encodeURIComponent(blob)}&w=1080&q=75"`);
+    expect(out).toContain("640w");
+    expect(out).toContain('loading="lazy"');
+    expect(out).toContain('alt="Rave"');
+    expect(out).not.toContain("4000");
+  });
+  it("leaves other hosts alone", () => {
+    const tag = '<img src="https://example.com/a.jpg" alt="a">';
+    expect(optimizeBodyImages(tag)).toBe(tag);
+  });
+  it("uses the first body image for cards when there is no featured image", () => {
+    const p = toBlogPost({ ...base, postBody: `<p>x</p><img src="${blob}" alt="Rave">` });
+    expect(p.image).toBeNull();
+    expect(p.cardImage).toBe(blob);
+    expect(p.cardImageAlt).toBe("Rave");
+    expect(toBlogPost({ ...base, featuredImage: "https://f.example/x.jpg" }).cardImage).toBe("https://f.example/x.jpg");
   });
 });
