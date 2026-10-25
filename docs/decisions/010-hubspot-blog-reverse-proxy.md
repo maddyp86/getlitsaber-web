@@ -18,7 +18,7 @@ sit on the main domain.
 
 `middleware.ts` rewrites `/blog`, `/_hcms`, `/hs`, `/hs-fs` and `/hubfs` to
 HubSpot's proxy origin (`244547358.sites-proxy.hscoscdn-na2.net`) with the
-headers HubSpot requires: `X-HS-Public-Host: getlitsaber.com`,
+headers HubSpot requires: `X-HS-Public-Host: www.getlitsaber.com` (the exact connected domain; the bare domain passes `/_hcms/status` but 404s real pages),
 `X-HubSpot-Trust-Forwarded-For: true` and `X-Forwarded-For`. Logic and tests
 live in `lib/hubspotProxy.ts`. All other paths are untouched.
 
