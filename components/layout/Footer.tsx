@@ -19,6 +19,7 @@ const BRAND_LINKS = [
   { label: "About", href: "/about" },
   { label: "The Tech", href: "/the-tech" },
   { label: "Activate", href: "/activate" },
+  { label: "Blog", href: "/blog" },
 ] as const;
 
 export default function Footer() {

@@ -1,10 +1,10 @@
 /**
- * Reverse proxy for the HubSpot-hosted blog.
+ * Reverse proxy for HubSpot system and file paths.
  *
- * The blog lives in HubSpot (portal 244547358) but is served from
- * www.getlitsaber.com/blog so it counts as our own domain for SEO and AI
- * search. The middleware forwards the paths below to HubSpot's proxy origin;
- * every other path stays on this Next.js app.
+ * Blog posts are authored in HubSpot (portal 244547358) and rendered by this
+ * app at /blog (ADR-011). HubSpot's own paths below are still forwarded so
+ * images and files referenced by post bodies, and HubSpot's domain checks,
+ * resolve on www.getlitsaber.com. Every other path stays on this app.
  *
  * HubSpot reverse-proxy requirements (Settings > Domains & URLs, CDN off):
  * - Forward to the origin CNAME shown in HubSpot's domain settings.
@@ -20,10 +20,11 @@ export const HUBSPOT_PROXY_ORIGIN = "https://244547358.sites-proxy.hscoscdn-na2.
 // exist" unless this matches the connected domain.
 export const HUBSPOT_PUBLIC_HOST = "www.getlitsaber.com";
 
-// Path prefixes served by HubSpot: the blog itself, HubSpot's status and
-// diagnostics endpoints (/_hcms), and the paths HubSpot uses for blog images,
-// files and form/tracking handlers.
-export const HUBSPOT_PATH_PREFIXES = ["/blog", "/_hcms", "/hs", "/hs-fs", "/hubfs"] as const;
+// Path prefixes served by HubSpot: its status and diagnostics endpoints
+// (/_hcms) and the paths it uses for files, images and form/tracking
+// handlers. /blog is NOT proxied: the site renders posts itself from the
+// HubSpot API inside the storefront layout (ADR-011).
+export const HUBSPOT_PATH_PREFIXES = ["/_hcms", "/hs", "/hs-fs", "/hubfs"] as const;
 
 /** True when the path belongs to HubSpot (exact prefix or prefix + "/"). */
 export function isHubSpotPath(pathname: string): boolean {
