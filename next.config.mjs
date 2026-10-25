@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "0ku6zb3bovdlowuq.public.blob.vercel-storage.com",
       },
+      // Blog featured images uploaded in HubSpot (ADR-011).
+      { protocol: "https", hostname: "**.hubspotusercontent-na2.net" },
+      { protocol: "https", hostname: "**.hubspotusercontent-na1.net" },
+      { protocol: "https", hostname: "**.hubspotusercontent00.net" },
     ],
   },
   // Legacy product URLs that still receive traffic: /product/litsaber is the

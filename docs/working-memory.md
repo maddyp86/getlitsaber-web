@@ -1756,7 +1756,7 @@ The blog for the AEO push is hosted in HubSpot but served at www.getlitsaber.com
 
 **The matcher catch.** The existing middleware matcher skips anything ending in an image, CSS or JS extension, which would have left HubSpot's blog images and theme files 404ing on our domain while the HTML loaded fine. HubSpot paths get their own matcher entries, and the proxy branch runs before the maintenance-mode check.
 
-**Open:** the 21+ age gate is a storefront component, so it does not run on HubSpot pages. The blog template needs its own gate before the first post goes live.
+**Superseded the same night (ADR-011).** The proxied pages rendered in HubSpot's default theme with no Navbar, Footer, cart or age gate. Rather than copy the header and footer into a HubSpot template (a dead second copy that drifts), the storefront now pulls posts from the HubSpot API and renders /blog inside the real layout, which also closed the age-gate gap for free. Two gotchas on the way: HubSpot's verify screen suggested `getlitsaber.com` for `X-HS-Public-Host`, which passes `/_hcms/status` but 404s every real page; it must be the connected `www.getlitsaber.com`. And HubSpot's post slugs include the blog path (`blog/my-post`), so the site strips it.
 
 ---
 

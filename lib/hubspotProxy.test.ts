@@ -7,11 +7,8 @@ import {
 } from "./hubspotProxy";
 
 describe("isHubSpotPath", () => {
-  it("matches the blog and HubSpot system paths", () => {
+  it("matches HubSpot system and file paths", () => {
     for (const p of [
-      "/blog",
-      "/blog/",
-      "/blog/cannabis-accessory-gifts-under-50",
       "/_hcms/status",
       "/hs-fs/hubfs/gift.png",
       "/hubfs/gift.png",
@@ -22,7 +19,7 @@ describe("isHubSpotPath", () => {
   });
 
   it("leaves storefront paths alone, including look-alike prefixes", () => {
-    for (const p of ["/", "/shop/litsaber-og", "/blogger", "/hsx", "/hubfsx", "/the-tech", "/api/blog"]) {
+    for (const p of ["/", "/blog", "/blog/some-post", "/shop/litsaber-og", "/hsx", "/hubfsx", "/the-tech"]) {
       expect(isHubSpotPath(p), p).toBe(false);
     }
   });
