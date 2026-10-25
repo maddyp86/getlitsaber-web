@@ -28,6 +28,7 @@ describe("postSlug", () => {
     expect(postSlug("blog/my-post")).toBe("my-post");
     expect(postSlug("/blog/my-post/")).toBe("my-post");
     expect(postSlug("my-post")).toBe("my-post");
+    expect(postSlug("innovape-concepts-blog/my-post")).toBe("my-post");
   });
 });
 

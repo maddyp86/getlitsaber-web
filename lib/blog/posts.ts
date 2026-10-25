@@ -46,9 +46,14 @@ export interface BlogPost {
   isDraft: boolean;
 }
 
-/** "blog/my-post" → "my-post". HubSpot slugs include the blog's own path. */
+/**
+ * "blog/my-post" → "my-post". HubSpot slugs include the blog's path at the
+ * time the post was created (a post made before the blog was renamed keeps
+ * e.g. "innovape-concepts-blog/my-post"), so only the last segment is used.
+ */
 export function postSlug(hubspotSlug: string): string {
-  return hubspotSlug.replace(/^\/+/, "").replace(/^blog\//, "").replace(/\/+$/, "");
+  const parts = hubspotSlug.split("/").filter(Boolean);
+  return parts[parts.length - 1] ?? "";
 }
 
 /** True for a published post whose publish date has arrived. */
