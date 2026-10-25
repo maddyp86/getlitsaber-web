@@ -62,6 +62,10 @@ describe("cleanBody", () => {
   it("drops blank paragraphs and HubSpot's read-more marker", () => {
     expect(cleanBody("<p>&nbsp;</p>\n<!--more-->\n<p>Hi</p><p> <br> </p>")).toBe("<p>Hi</p>");
   });
+  it("moves a photo that sits just above a heading to just below it", () => {
+    const out = cleanBody('<p>a</p><figure><img src="x.jpg" alt="x"></figure>\n<h2>Title</h2><p>b</p>');
+    expect(out).toBe('<p>a</p><h2>Title</h2>\n<figure><img src="x.jpg" alt="x"></figure><p>b</p>');
+  });
   it("neutralises javascript: links", () => {
     expect(cleanBody('<a href="javascript:alert(1)">x</a>')).toContain('href="#"');
   });

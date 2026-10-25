@@ -21,7 +21,7 @@ export default async function BlogIndexPage() {
   return (
     <>
       <BlogHero />
-      <section className="mx-auto w-full max-w-content px-content pb-section-y-mobile lg:pb-section-y">
+      <section className="mx-auto w-full max-w-content px-content pt-xl pb-section-y-mobile lg:pt-section-y-mobile lg:pb-section-y">
         {posts.length === 0 ? (
           <div className="mx-auto max-w-[600px] rounded-card border border-border-default bg-surface-card p-xl text-center">
             <p className="font-label text-eyebrow uppercase tracking-widest text-accent-cyan">First guides coming soon</p>
