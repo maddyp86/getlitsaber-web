@@ -243,6 +243,9 @@
   .blog-prose > * + * {
     @apply mt-md;
   }
+  .blog-prose > :first-child {
+    margin-top: 0;
+  }
   .blog-prose h2 {
     @apply font-subhead font-bold uppercase text-text-primary mt-xl mb-sm;
     font-size: clamp(18px, 2.2vw, 24px);

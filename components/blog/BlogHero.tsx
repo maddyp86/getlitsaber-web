@@ -6,7 +6,7 @@ export const BLOG_HERO = {
   headlineWhite: "LIGHT",
   headlineCyan: "NOTES",
   subline:
-    "Guides on 510 batteries, festivals and gifting, from the team that builds Litsaber. For adults 21+.",
+    "Guides on 510 batteries, festivals and gifting, from the team that builds Litsaber.",
 } as const;
 
 export default function BlogHero() {

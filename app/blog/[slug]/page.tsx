@@ -72,7 +72,7 @@ export default async function BlogPostPage({ params }: Props) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       )}
 
-      <header className="mx-auto w-full max-w-[860px] px-content pt-14 pb-8 lg:pt-20 lg:pb-10">
+      <header className="mx-auto w-full max-w-[1230px] px-content pt-14 pb-md lg:pt-20">
         <Link
           href="/blog"
           className="font-label text-eyebrow uppercase tracking-widest text-text-muted hover:text-accent-cyan"
@@ -103,19 +103,19 @@ export default async function BlogPostPage({ params }: Props) {
       </header>
 
       {post.image && (
-        <div className="mx-auto w-full max-w-[1100px] px-content">
+        <div className="mx-auto w-full max-w-[1230px] px-content pb-md">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-card bg-background-elevated">
-            <Image src={post.image} alt={post.imageAlt} fill priority sizes="(min-width: 1100px) 1100px, 100vw" className="object-cover" />
+            <Image src={post.image} alt={post.imageAlt} fill priority sizes="(min-width: 1230px) 1050px, 100vw" className="object-cover" />
           </div>
         </div>
       )}
 
       <div
-        className="blog-prose mx-auto w-full max-w-[860px] px-content py-xl"
+        className="blog-prose mx-auto w-full max-w-[1230px] px-content pt-sm pb-xl"
         dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
       />
 
-      <aside className="mx-auto w-full max-w-[860px] px-content pb-section-y-mobile lg:pb-section-y">
+      <aside className="mx-auto w-full max-w-[1230px] px-content pb-section-y-mobile lg:pb-section-y">
         <div className="flex flex-col items-start gap-md rounded-card border border-border-default bg-surface-card p-lg md:flex-row md:items-center md:justify-between">
           <div>
             <p className="font-label text-eyebrow uppercase tracking-widest text-accent-cyan">Litsaber OG</p>

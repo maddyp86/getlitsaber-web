@@ -104,13 +104,18 @@ export function excerpt(text: string, max = 160): string {
  */
 export function cleanBody(html: string): string {
   return html
+    // HubSpot's editor leaves blank paragraphs (<p>&nbsp;</p>) and its
+    // read-more marker behind; both render as empty gaps.
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<p[^>]*>(?:\s|&nbsp;|&#160;|<br\s*\/?>)*<\/p>/gi, "")
     .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
     .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
     .replace(/href\s*=\s*("|')\s*javascript:[^"']*\1/gi, 'href="#"')
     .replace(/<a\s+([^>]*href=("|')https?:\/\/(?!(?:www\.)?getlitsaber\.com)[^"']+\2[^>]*)>/gi, (match, attrs: string) =>
       /target=/i.test(attrs) ? match : `<a ${attrs} target="_blank" rel="noopener">`,
-    );
+    )
+    .trim();
 }
 
 /** Maps a HubSpot post to the render shape. */

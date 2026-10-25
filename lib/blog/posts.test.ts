@@ -58,6 +58,9 @@ describe("cleanBody", () => {
     const out = cleanBody('<p onclick="x()">a</p><script>alert(1)</script><iframe src="y"></iframe>');
     expect(out).toBe("<p>a</p>");
   });
+  it("drops blank paragraphs and HubSpot's read-more marker", () => {
+    expect(cleanBody("<p>&nbsp;</p>\n<!--more-->\n<p>Hi</p><p> <br> </p>")).toBe("<p>Hi</p>");
+  });
   it("neutralises javascript: links", () => {
     expect(cleanBody('<a href="javascript:alert(1)">x</a>')).toContain('href="#"');
   });
