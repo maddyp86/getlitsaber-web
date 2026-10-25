@@ -9,6 +9,49 @@ export const BLOG_CONTENT_GROUP_ID = "415916821203";
 /** Public origin for canonical URLs (www, the domain the site is served on). */
 export const BLOG_ORIGIN = "https://www.getlitsaber.com";
 
+/** Vercel Blob store that holds the site's own photography (ADR-007). */
+export const MEDIA_HOST = "0ku6zb3bovdlowuq.public.blob.vercel-storage.com";
+const OPTIMIZER_WIDTHS = [640, 1080, 1920] as const;
+
+function optimized(src: string, width: number): string {
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=75`;
+}
+
+/**
+ * Serves our own Blob photos in post bodies through the Next.js image
+ * optimizer (originals run to several MB), with a responsive srcset and lazy
+ * loading. Other image hosts are left alone.
+ */
+export function optimizeBodyImages(html: string): string {
+  return html.replace(/<img\b([^>]*)>/gi, (tag, attrs: string) => {
+    const m = attrs.match(/\ssrc\s*=\s*("|')([^"']+)\1/i);
+    if (!m) return tag;
+    const src = m[2];
+    let host = "";
+    try {
+      host = new URL(src).host;
+    } catch {
+      return tag;
+    }
+    if (host !== MEDIA_HOST) return tag;
+    const srcset = OPTIMIZER_WIDTHS.map((w) => `${optimized(src, w)} ${w}w`).join(", ");
+    const rest = attrs
+      .replace(/\s(src|srcset|sizes|loading|decoding|width|height|style)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+      .trim();
+    return `<img src="${optimized(src, 1080)}" srcset="${srcset}" sizes="(min-width: 1440px) 1260px, 100vw" loading="lazy" decoding="async"${rest ? ` ${rest}` : ""}>`;
+  });
+}
+
+/** First image URL in a body (original src), for cards and link previews. */
+export function firstImage(html: string): { src: string; alt: string } | null {
+  const tag = html.match(/<img\b[^>]*>/i)?.[0];
+  if (!tag) return null;
+  const src = tag.match(/\ssrc\s*=\s*("|')([^"']+)\1/i)?.[2];
+  if (!src || src.startsWith("/")) return null;
+  const alt = tag.match(/\salt\s*=\s*("|')(.*?)\1/i)?.[2] ?? "";
+  return { src, alt };
+}
+
 /** The subset of HubSpot's blog post object the site uses. */
 export interface HubSpotPost {
   id: string;
@@ -38,8 +81,12 @@ export interface BlogPost {
   description: string;
   bodyHtml: string;
   summaryHtml: string;
+  /** HubSpot featured image, shown above the post. */
   image: string | null;
   imageAlt: string;
+  /** Featured image, else the first image in the body. For cards and OG. */
+  cardImage: string | null;
+  cardImageAlt: string;
   publishedAt: string | null;
   updatedAt: string | null;
   authorId: string | null;
@@ -120,7 +167,9 @@ export function cleanBody(html: string): string {
 
 /** Maps a HubSpot post to the render shape. */
 export function toBlogPost(post: HubSpotPost): BlogPost {
-  const body = cleanBody(post.postBody ?? "");
+  const rawBody = cleanBody(post.postBody ?? "");
+  const inline = firstImage(rawBody);
+  const body = optimizeBodyImages(rawBody);
   const summary = cleanBody(post.postSummary ?? "");
   const description =
     post.metaDescription?.trim() || excerpt(stripHtml(summary || body), 160);
@@ -134,6 +183,8 @@ export function toBlogPost(post: HubSpotPost): BlogPost {
     summaryHtml: summary,
     image: post.featuredImage?.trim() || null,
     imageAlt: post.featuredImageAltText?.trim() || post.name,
+    cardImage: post.featuredImage?.trim() || inline?.src || null,
+    cardImageAlt: post.featuredImageAltText?.trim() || inline?.alt || post.name,
     publishedAt: post.publishDate ?? null,
     updatedAt: post.updated ?? null,
     authorId: post.blogAuthorId ? String(post.blogAuthorId) : null,
