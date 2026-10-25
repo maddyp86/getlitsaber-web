@@ -238,7 +238,8 @@
    element here, using the same tokens as PolicySection (ADR-011). */
 @layer components {
   .blog-prose {
-    @apply font-body text-body-sm text-text-secondary leading-relaxed lg:text-body;
+    /* flow-root contains floated figures so they never spill past the body. */
+    @apply flow-root font-body text-body-sm text-text-secondary leading-relaxed lg:text-body;
   }
   .blog-prose > * + * {
     @apply mt-md;
@@ -247,6 +248,7 @@
     margin-top: 0;
   }
   .blog-prose h2 {
+    clear: both;
     @apply font-subhead font-bold uppercase text-text-primary mt-xl mb-sm;
     font-size: clamp(18px, 2.2vw, 24px);
     line-height: 1.25;
@@ -270,7 +272,8 @@
   }
   .blog-prose ul,
   .blog-prose ol {
-    @apply space-y-xs pl-lg;
+    /* flow-root keeps list markers clear of a floated figure. */
+    @apply flow-root space-y-xs pl-lg;
   }
   .blog-prose ul {
     @apply list-disc marker:text-accent-cyan;
@@ -284,8 +287,10 @@
   .blog-prose img {
     @apply h-auto w-full max-w-full rounded-card bg-background-elevated;
   }
+  /* Phones: full width. Desktop: photos float right at 40% and the text
+     wraps on the left. A new h2 or a table always starts below the photo. */
   .blog-prose figure {
-    @apply my-xl;
+    @apply my-xl lg:float-right lg:clear-right lg:mb-md lg:ml-xl lg:mt-xs lg:w-2/5;
   }
   .blog-prose figcaption {
     @apply mt-sm font-label text-eyebrow uppercase tracking-widest text-text-muted;
@@ -296,6 +301,7 @@
   /* Phones: the table scrolls sideways inside the column. From md up it
      sizes to its content and sits centered; cell text stays left-aligned. */
   .blog-prose table {
+    clear: both;
     @apply block w-full overflow-x-auto border-collapse text-left text-body-sm md:table md:w-auto md:max-w-full md:mx-auto;
   }
   .blog-prose th,
