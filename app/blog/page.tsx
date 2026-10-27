@@ -5,7 +5,7 @@ import PostCard from "@/components/blog/PostCard";
 import { getPublishedPosts } from "@/lib/blog/hubspot";
 import { BLOG_ORIGIN } from "@/lib/blog/posts";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Blog: 510 Batteries, Festivals and Gift Guides",
