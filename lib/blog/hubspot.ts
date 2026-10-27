@@ -15,20 +15,24 @@ import {
  */
 
 const API = "https://api.hubapi.com/cms/v3/blogs";
-const REVALIDATE_SECONDS = 300;
+// Post list cache. Short, because a cached list is also what decides whether a
+// post URL exists (see getPost's fresh fallback).
+const REVALIDATE_SECONDS = 60;
 export const BLOG_CACHE_TAG = "hubspot-blog";
 
 function token(): string | null {
   return process.env.HUBSPOT_ACCESS_TOKEN?.trim() || null;
 }
 
-async function hubspotGet<T>(path: string): Promise<T | null> {
+async function hubspotGet<T>(path: string, fresh = false): Promise<T | null> {
   const key = token();
   if (!key) return null;
   try {
     const res = await fetch(`${API}${path}`, {
       headers: { Authorization: `Bearer ${key}` },
-      next: { revalidate: REVALIDATE_SECONDS, tags: [BLOG_CACHE_TAG] },
+      ...(fresh
+        ? { cache: "no-store" as const }
+        : { next: { revalidate: REVALIDATE_SECONDS, tags: [BLOG_CACHE_TAG] } }),
     });
     if (!res.ok) {
       console.error(`[blog] HubSpot ${path} returned ${res.status}`);
@@ -47,13 +51,13 @@ interface Page {
 }
 
 /** Every post in the /blog content group (live and drafts), max 500. */
-async function allPosts(): Promise<HubSpotPost[]> {
+async function allPosts(fresh = false): Promise<HubSpotPost[]> {
   const out: HubSpotPost[] = [];
   let after: string | undefined;
   for (let i = 0; i < 5; i++) {
     const qs = new URLSearchParams({ limit: "100", archived: "false" });
     if (after) qs.set("after", after);
-    const page = await hubspotGet<Page>(`/posts?${qs.toString()}`);
+    const page = await hubspotGet<Page>(`/posts?${qs.toString()}`, fresh);
     if (!page?.results) break;
     out.push(...page.results.filter(inThisBlog));
     after = page.paging?.next?.after;
@@ -68,14 +72,19 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
   return sortNewestFirst(posts.filter((p) => isLive(p)).map(toBlogPost));
 }
 
-/** One post by its /blog slug. Drafts are returned only when allowed. */
+/**
+ * One post by its /blog slug. Drafts are returned only when allowed.
+ * A miss in the cached list is re-checked against HubSpot uncached, so a post
+ * that was just published or renamed shows up immediately instead of 404ing
+ * until the cache expires. Real 404s cost one extra API call.
+ */
 export async function getPost(slug: string, includeDrafts: boolean): Promise<BlogPost | null> {
-  const posts = await allPosts();
-  const match = posts
-    .filter((p) => isLive(p) || (includeDrafts && isDraft(p)))
-    .map(toBlogPost)
-    .find((p) => p.slug === slug);
-  return match ?? null;
+  const find = (posts: HubSpotPost[]) =>
+    posts
+      .filter((p) => isLive(p) || (includeDrafts && isDraft(p)))
+      .map(toBlogPost)
+      .find((p) => p.slug === slug) ?? null;
+  return find(await allPosts()) ?? find(await allPosts(true));
 }
 
 /** Author display name for a post, or null. */
