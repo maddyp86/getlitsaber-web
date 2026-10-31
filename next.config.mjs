@@ -30,6 +30,13 @@ const nextConfig = {
     return [
       { source: "/product/:slug*", destination: "/shop/litsaber-og", permanent: true },
       { source: "/products/:slug*", destination: "/shop/litsaber-og", permanent: true },
+      // The old WordPress gift guide still draws search traffic; the post now
+      // lives on the HubSpot blog under the same slug.
+      {
+        source: "/innovape-concepts-blog/cannabis-accessory-gifts-under-50",
+        destination: "/blog/cannabis-accessory-gifts-under-50",
+        permanent: true,
+      },
       // Short links for printed QR codes, one consistent UTM set per printed
       // item. Temporary (307) so a destination can change without reprinting.
       {

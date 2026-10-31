@@ -1767,6 +1767,11 @@ The blog for the AEO push is hosted in HubSpot but served at www.getlitsaber.com
 
 **Superseded the same night (ADR-011).** The proxied pages rendered in HubSpot's default theme with no Navbar, Footer, cart or age gate. Rather than copy the header and footer into a HubSpot template (a dead second copy that drifts), the storefront now pulls posts from the HubSpot API and renders /blog inside the real layout, which also closed the age-gate gap for free. Two gotchas on the way: HubSpot's verify screen suggested `getlitsaber.com` for `X-HS-Public-Host`, which passes `/_hcms/status` but 404s every real page; it must be the connected `www.getlitsaber.com`. And HubSpot's post slugs include the blog path (`blog/my-post`), so the site strips it.
 
+
+### The "empty" full-screen viewer was a slow photo, not a broken one (2026-10-31)
+
+The W43 weekly report flagged sessions where shoppers opened the full-screen photo, saw nothing, and clicked at it before leaving. The agent proposed removing the viewer. It wasn't broken: the lightbox asks for a much larger copy of the photo (sized for 2.5x zoom), and on a phone connection that takes a couple of seconds, during which the overlay sat solid black with no spinner. The fix keeps the viewer and shows the gallery-size copy underneath, which is already cached because the gallery (or its neighbour preloads) asked for the same file with the same `sizes`, so it paints instantly and the sharp copy swaps in when it lands. Same week: the old WordPress gift-guide URL was 404ing, and the post had already moved to the HubSpot blog under the same slug, so it now redirects there instead of to the PDP the agent suggested.
+
 ---
 
 ## Open Questions (rolling)
