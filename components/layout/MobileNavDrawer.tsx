@@ -93,7 +93,7 @@ export default function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps)
               src={mediaUrl("global/litsaber-logo-white-cyan.png")}
               alt="Litsaber"
               width={140}
-              height={40}
+              height={27}
               style={{ width: "clamp(130px, 12vw, 200px)", height: "auto" }}
             />
           </Link>
