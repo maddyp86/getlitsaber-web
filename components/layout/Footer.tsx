@@ -144,38 +144,41 @@ function NavColumn({
 
 function SocialIconRow() {
   return (
-    <div className="flex items-center gap-sm" role="list" aria-label="Social media links">
-      <a
-        href="https://www.instagram.com/get.litsaber"
-        target="_blank"
-        rel="noopener noreferrer"
-        role="listitem"
-        aria-label="Litsaber on Instagram"
-        className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
-      >
-        <InstagramIcon />
-      </a>
-      <a
-        href="https://www.youtube.com/@getlitsaber"
-        target="_blank"
-        rel="noopener noreferrer"
-        role="listitem"
-        aria-label="Litsaber on YouTube"
-        className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
-      >
-        <YouTubeIcon />
-      </a>
-      <a
-        href="https://www.tiktok.com/@getlitsaber"
-        target="_blank"
-        rel="noopener noreferrer"
-        role="listitem"
-        aria-label="Litsaber on TikTok"
-        className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
-      >
-        <TikTokIcon />
-      </a>
-    </div>
+    <ul className="flex items-center gap-sm" aria-label="Social media links">
+      <li>
+        <a
+          href="https://www.instagram.com/get.litsaber"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Litsaber on Instagram"
+          className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
+        >
+          <InstagramIcon />
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.youtube.com/@getlitsaber"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Litsaber on YouTube"
+          className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
+        >
+          <YouTubeIcon />
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.tiktok.com/@getlitsaber"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Litsaber on TikTok"
+          className="flex items-center justify-center w-10 h-10 border border-surface-tint-white text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors duration-200"
+        >
+          <TikTokIcon />
+        </a>
+      </li>
+    </ul>
   );
 }
 

@@ -26,10 +26,12 @@ export default function ToastContainer() {
      * into the matching region based on variant — "polite" for success,
      * "assertive" for error — giving reliable announcements without needing
      * role/aria-live on the motion elements themselves.
+     *
+     * No aria-label here: on a plain div it is not a permitted attribute
+     * (Lighthouse flags it), and the live regions already do the announcing.
      */
     <div
       className="fixed top-6 inset-x-0 z-toast pointer-events-none flex flex-col items-center gap-2"
-      aria-label="Notifications"
     >
       {/* Success live region — polite */}
       <div aria-live="polite" aria-atomic="false" className="sr-only">
