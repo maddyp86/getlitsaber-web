@@ -182,6 +182,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   // ─── Lightbox ──────────────────────────────────────────────────────────────
   const [zoomed, setZoomed] = useState(false);
   const [detail, setDetail] = useState<Detail | null>(null);
+  const [lightboxLoadedSrc, setLightboxLoadedSrc] = useState<string | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -645,6 +646,27 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
                 } as CSSProperties
               }
             >
+              {/* The larger file takes a moment on a phone connection, and the
+                  lightbox used to sit black until it arrived (shoppers read it
+                  as an empty viewer and clicked at it). Until it loads, show
+                  the gallery-size copy, already cached from the viewer or its
+                  neighbour preloads, over a spinner for when even that is not. */}
+              {lightboxLoadedSrc !== active.src && (
+                <>
+                  <span className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                    <span className="w-8 h-8 rounded-full border-[3px] border-white/30 border-t-white animate-spin motion-reduce:animate-none" />
+                  </span>
+                  <Image
+                    key={`${active.src}-placeholder`}
+                    src={active.src}
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    className="object-contain"
+                    sizes={VIEWER_SIZES}
+                  />
+                </>
+              )}
               <Image
                 key={active.src}
                 src={active.src}
@@ -652,6 +674,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
                 fill
                 className="object-contain"
                 sizes={LIGHTBOX_SIZES}
+                onLoad={() => setLightboxLoadedSrc(active.src)}
               />
             </div>
           </div>
