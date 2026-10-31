@@ -1748,6 +1748,15 @@ The catch was the SDK. `@vercel/blob` 0.27.3 has no OIDC path; it reads `BLOB_RE
 
 **The subtle part is the fallback order.** 2.8.1 tries OIDC first (`VERCEL_OIDC_TOKEN` + `BLOB_STORE_ID`), but if the OIDC token is missing or expired it quietly falls back to `BLOB_READ_WRITE_TOKEN`. A stale `.env.local` would keep "working" on the old token until the day it is revoked, then fail with a generic "no credentials" error. The script now deletes any `BLOB_READ_WRITE_TOKEN` from its environment and checks the pulled JWT's `exp` before uploading, so an expired pull says "re-run `vercel env pull`" instead.
 
+
+### Pinch to zoom on the PDP gallery (2026-10-31)
+
+Shopper feedback: on a phone, pinching the gallery photo did nothing. You had to tap to open the lightbox, then tap again for a fixed 2.5x. The cause was one CSS line. The viewer carries `touch-action: pan-y` so one finger can still scroll the page while horizontal moves become our swipe, and `pan-y` silently excludes `pinch-zoom`. The browser was told not to pinch, and no code handled two fingers, so the gesture just vanished.
+
+Now a pinch on the gallery photo zooms it in place under the fingers. Let go above 1.15x and the lightbox opens already zoomed on that spot; let go near 1x and it springs back. Tap still opens the lightbox, and the lightbox itself now pinches anywhere up to 4x on top of its tap toggle.
+
+**The math stayed in the existing model.** The lightbox zooms with `transform-origin` + `scale`, and re-anchoring the origin mid-zoom normally makes the photo jump. Since a photo point p sits on screen at s·p + (1 - s)·O, solving for the origin that keeps the pinched point under the fingers' midpoint gives O = (mid - s·p) / (1 - s). That single formula zooms about the fingers and pans with them, from 1x or from an existing zoom, so no transform refactor was needed. The gallery-to-lightbox handoff maps the origin as a point on the photo (object-cover in the gallery, object-contain in the lightbox) and rescales so the photo looks about as large as it did under the fingers. The pinch also blocks the browser's own scroll and Safari's page zoom (non-passive `touchmove`, `gesturestart`), and a second finger cancels any swipe in progress, so a pinch never changes the slide.
+
 ---
 
 ## Open Questions (rolling)

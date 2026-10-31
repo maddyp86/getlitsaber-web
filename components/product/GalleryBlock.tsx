@@ -5,7 +5,8 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Poin
 import { createPortal, flushSync } from "react-dom";
 import { GALLERY_IMAGES } from "./productdisplay.content";
 import { useSwipe } from "@/lib/useSwipe";
-import { dragOrigin, DRAG_SLOP_PX, type ZoomOrigin } from "@/lib/zoomPan";
+import { usePinch, type PinchView } from "@/lib/usePinch";
+import { dragOrigin, DRAG_SLOP_PX, handoffView, PINCH_COMMIT_ZOOM, type ZoomOrigin } from "@/lib/zoomPan";
 
 interface GalleryBlockProps {
   activeThumb: number;
@@ -13,11 +14,15 @@ interface GalleryBlockProps {
 }
 
 type VideoState = "idle" | "loading" | "playing" | "error";
+/** Lightbox zoom: where it is fixed and how far in. Null means fit. */
+type Detail = ZoomOrigin & { scale: number };
 
 // Main viewer and its hidden neighbour preloads must request the same srcset,
 // so a preloaded image is a cache hit when it becomes active.
 const VIEWER_SIZES = "(min-width: 600px) 50vw, 100vw";
 const LIGHTBOX_ZOOM = 2.5;
+// A pinch in the lightbox released below this goes back to fit.
+const LIGHTBOX_FIT_BELOW = 1.05;
 // The lightbox is at most 1000px wide. 150vw leaves headroom for the 2.5x
 // zoom without asking a 3x phone for the 3840w file (200vw did): 1920w is a
 // quarter of the pixels to decode, which phones do while the lightbox opens.
@@ -176,7 +181,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
 
   // ─── Lightbox ──────────────────────────────────────────────────────────────
   const [zoomed, setZoomed] = useState(false);
-  const [detail, setDetail] = useState<{ x: number; y: number } | null>(null);
+  const [detail, setDetail] = useState<Detail | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -194,9 +199,9 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     [activeThumb, onThumbClick]
   );
 
-  function openZoom() {
+  function openZoom(initial: Detail | null = null) {
     openerRef.current = document.activeElement as HTMLElement | null;
-    setDetail(null);
+    setDetail(initial);
     setZoomed(true);
   }
 
@@ -263,12 +268,12 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     }
     // Read the point now: React clears e.currentTarget once the handler
     // returns, so it must not be read inside a deferred state updater.
-    setDetail(detail ? null : originFrom(e));
+    setDetail(detail ? null : { ...originFrom(e), scale: LIGHTBOX_ZOOM });
   }
 
   function startPan(e: ReactPointerEvent<HTMLDivElement>) {
     dragged.current = false;
-    if (!detail || e.pointerType === "mouse") return;
+    if (!detail || e.pointerType === "mouse" || lightboxPinch.isPinching()) return;
     drag.current = { id: e.pointerId, x: e.clientX, y: e.clientY, start: detail, now: detail, moved: false };
     e.currentTarget.setPointerCapture?.(e.pointerId);
   }
@@ -276,7 +281,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
   function panDetail(e: ReactPointerEvent<HTMLDivElement>) {
     if (!detail) return;
     if (e.pointerType === "mouse") {
-      setDetail(originFrom(e));
+      setDetail({ ...originFrom(e), scale: detail.scale });
       return;
     }
     const d = drag.current;
@@ -286,7 +291,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     if (!d.moved && Math.hypot(dx, dy) < DRAG_SLOP_PX) return;
     d.moved = true;
     const r = e.currentTarget.getBoundingClientRect();
-    d.now = dragOrigin(d.start, dx, dy, r.width, r.height, LIGHTBOX_ZOOM);
+    d.now = dragOrigin(d.start, dx, dy, r.width, r.height, detail.scale);
     if (zoomLayerRef.current) zoomLayerRef.current.style.transformOrigin = `${d.now.x}% ${d.now.y}%`;
   }
 
@@ -296,8 +301,63 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     drag.current = null;
     if (!d.moved) return;
     dragged.current = true;
-    setDetail(d.now);
+    setDetail((cur) => (cur ? { ...d.now, scale: cur.scale } : cur));
   }
+
+  // Pinch in the lightbox: continuous zoom about the fingers, on top of the
+  // tap toggle. Moves write to the zoom layer directly (no transition, so the
+  // photo tracks the fingers) and the result commits to state on lift.
+  function paintLayer(el: HTMLElement | null, view: PinchView | null, animate: boolean) {
+    if (!el) return;
+    el.style.transition = animate ? "" : "none";
+    el.style.transform = `scale(${view ? view.scale : 1})`;
+    el.style.transformOrigin = view ? `${view.origin.x}% ${view.origin.y}%` : "50% 50%";
+  }
+
+  const lightboxPinch = usePinch({
+    enabled: zoomed,
+    current: () => ({ scale: detail?.scale ?? 1, origin: detail ?? { x: 50, y: 50 } }),
+    onStart: () => {
+      drag.current = null;
+    },
+    onPinch: (v) => paintLayer(zoomLayerRef.current, v, false),
+    onEnd: (v) => {
+      const fit = v.scale < LIGHTBOX_FIT_BELOW;
+      // Paint the final view too: if state does not change (fit to fit),
+      // React would not undo the direct writes.
+      paintLayer(zoomLayerRef.current, fit ? null : v, true);
+      setDetail(fit ? null : { ...v.origin, scale: v.scale });
+    },
+  });
+
+  // Pinch on the gallery photo itself: it zooms in place under the fingers.
+  // Let go zoomed in and the lightbox opens at that zoom and spot; let go
+  // near 1x and it springs back.
+  const viewerZoomRef = useRef<HTMLDivElement>(null);
+  const viewerPinch = usePinch({
+    enabled: !activeIsVideo && !zoomed,
+    current: () => ({ scale: 1, origin: { x: 50, y: 50 } }),
+    onPinch: (v) => paintLayer(viewerZoomRef.current, v, false),
+    onEnd: (v) => {
+      const layer = viewerZoomRef.current;
+      if (v.scale < PINCH_COMMIT_ZOOM || !layer) {
+        paintLayer(layer, null, true);
+        return;
+      }
+      const img = layer.querySelector("img");
+      // The lightbox frame: max 1000px by 85vh inside a 16px padded overlay.
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const view = handoffView(
+        v,
+        { width: layer.clientWidth, height: layer.clientHeight },
+        { width: Math.min(1000, vw - 32), height: Math.min(vh * 0.85, vh - 32) },
+        { width: img?.naturalWidth ?? 0, height: img?.naturalHeight ?? 0 }
+      );
+      paintLayer(layer, null, false);
+      openZoom({ ...view.origin, scale: view.scale });
+    },
+  });
 
   // Only true neighbours: never wrap from the first slide to the last (the
   // last photos are the heaviest files), and nothing until the photo on
@@ -387,21 +447,28 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           </>
         ) : (
           <button
+            ref={viewerPinch.ref}
             type="button"
-            onClick={openZoom}
+            onClick={() => openZoom()}
             aria-label={`Zoom image: ${active.alt}`}
             className="absolute inset-0 w-full h-full cursor-zoom-in"
+            {...viewerPinch.handlers}
           >
-            <Image
-              key={active.src}
-              src={active.src}
-              alt={active.alt}
-              fill
-              className="object-cover"
-              sizes={VIEWER_SIZES}
-              priority
-              onLoad={() => setLoadedSrc(active.src)}
-            />
+            <div
+              ref={viewerZoomRef}
+              className="absolute inset-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
+            >
+              <Image
+                key={active.src}
+                src={active.src}
+                alt={active.alt}
+                fill
+                className="object-cover"
+                sizes={VIEWER_SIZES}
+                priority
+                onLoad={() => setLoadedSrc(active.src)}
+              />
+            </div>
             {imageLoading && slow && (
               <span className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
                 <span className="w-8 h-8 rounded-full border-[3px] border-white/30 border-t-white animate-spin motion-reduce:animate-none" />
@@ -479,7 +546,8 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     </div>
 
       {/* Lightbox: full-screen view of the active still image. Tap the image to
-          zoom in at that point (move to pan), tap again to zoom out; tap the
+          zoom in at that point (move to pan), tap again to zoom out, or pinch
+          to any zoom up to 4x; tap the
           backdrop or press Escape to close; arrows, keys or swipe move between
           photos. Portaled to <body> so it escapes the gallery's sticky and
           transformed ancestors, which would trap a fixed overlay. */}
@@ -546,18 +614,33 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
 
           <div
             className={`relative w-full h-full max-w-[1000px] max-h-[85vh] overflow-hidden ${detail ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+            ref={lightboxPinch.ref}
+            style={{ touchAction: "none" }}
             onClick={toggleDetail}
-            onPointerDown={startPan}
-            onPointerMove={panDetail}
-            onPointerUp={endPan}
-            onPointerCancel={endPan}
+            onClickCapture={lightboxPinch.handlers.onClickCapture}
+            onPointerDown={(e) => {
+              lightboxPinch.handlers.onPointerDown(e);
+              startPan(e);
+            }}
+            onPointerMove={(e) => {
+              lightboxPinch.handlers.onPointerMove(e);
+              if (!lightboxPinch.isPinching()) panDetail(e);
+            }}
+            onPointerUp={(e) => {
+              lightboxPinch.handlers.onPointerUp(e);
+              endPan(e);
+            }}
+            onPointerCancel={(e) => {
+              lightboxPinch.handlers.onPointerCancel(e);
+              endPan(e);
+            }}
           >
             <div
               ref={zoomLayerRef}
               className="absolute inset-0 transition-transform duration-200 ease-out motion-reduce:transition-none"
               style={
                 {
-                  transform: `scale(${detail ? LIGHTBOX_ZOOM : 1})`,
+                  transform: `scale(${detail ? detail.scale : 1})`,
                   transformOrigin: detail ? `${detail.x}% ${detail.y}%` : "50% 50%",
                 } as CSSProperties
               }
