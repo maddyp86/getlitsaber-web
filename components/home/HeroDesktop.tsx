@@ -8,6 +8,7 @@ import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
+import { useNearViewportAfterLoad } from "@/lib/useNearViewportAfterLoad";
 import { mediaUrl } from "@/lib/media";
 import { track, EVENTS } from "@/lib/analytics/events";
 import {
@@ -30,6 +31,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
   const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
+  const [setVideoZoneRef, videoReady] = useNearViewportAfterLoad();
 
   return (
     <section
@@ -59,19 +61,22 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
 
       {/* Device + starfield — begins at y=634, overlapping the lifestyle fade by ~66px */}
       <div
+        ref={setVideoZoneRef}
         className="absolute inset-x-0 z-0 overflow-hidden"
         style={{ top: "634px", height: "879px" }}
       >
-        {prefersReduced ? (
-          <Image
-            src={HERO_POSTER_SRC}
-            alt="Litsaber device floating against a starfield"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        ) : (
+        {/* The still frame, optimized, is the poster: it shows until the
+            video mounts (after page load, near the viewport) and stays the
+            whole time under reduced motion. */}
+        <Image
+          src={HERO_POSTER_SRC}
+          alt={prefersReduced ? "Litsaber device floating against a starfield" : ""}
+          aria-hidden={prefersReduced ? undefined : true}
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {!prefersReduced && videoReady && (
           <video
             ref={setVideoRef}
             autoPlay
@@ -79,7 +84,6 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
             loop
             playsInline
             preload="metadata"
-            poster={HERO_POSTER_SRC}
             aria-hidden={true}
             className="absolute inset-0 w-full h-full object-cover object-center"
           >
