@@ -282,6 +282,7 @@ Goal: a shopper can understand fit, contents, cost, delivery, returns, and warra
   - *2026-10-13: the light-show clip moved from slot 7 to slot 2; packaging and detail shots follow.*
 - [x] Reduce gallery height on mobile so the offer selector and purchase buttons are reachable sooner, without hiding them.
   - *Main viewer 4:3 below 1024px (square on desktop). Add to Cart 1,371 → 1,288px at 375px, 1,366 → 1,280px at 390px; desktop unchanged. Tried the Silver/Gold cards side by side on mobile too: labels clipped, reverted.*
+  - *Reverted to square on mobile 2026-10-31 (owner call): 4:3 cropped the tall product shots top and bottom. The sticky Add to Cart bar keeps the CTA in view, so the 85px no longer buys much.*
 - [x] Apply the same order on desktop. (One gallery list serves both.)
 - [x] Point the homepage "See It in Motion" button to the product demonstration rather than lifestyle storytelling, or confirm with me first if you think it should stay.
   - *Owner chose the Three Modes section (2026-10-13). It is lazy-mounted, so its anchor now sits on the always-present wrapper; verified landing at 375 and 1440px, with and without scroll anchoring.*

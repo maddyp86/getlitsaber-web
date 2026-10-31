@@ -375,7 +375,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           mounted. Rendering all 28 full-size images at once used to crash
           mobile Safari (OOM). */}
       <div
-        className="group relative w-full aspect-[4/3] lg:aspect-square rounded-card overflow-hidden bg-black"
+        className="group relative w-full aspect-square rounded-card overflow-hidden bg-black"
         style={{ touchAction: "pan-y" }}
         {...swipe}
       >
