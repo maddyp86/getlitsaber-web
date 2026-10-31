@@ -22,14 +22,23 @@ export function classifySwipe(dx: number, dy: number): "left" | "right" | null {
 export function useSwipe(onSwipe: (dir: "left" | "right") => void, enabled = true) {
   const start = useRef<{ x: number; y: number; id: number } | null>(null);
   const swiped = useRef(false);
+  // Fingers down. A second finger makes the gesture a pinch, never a swipe.
+  const touches = useRef(0);
 
   return {
     onPointerDown(e: PointerEvent) {
-      if (!enabled || e.pointerType !== "touch") return;
+      if (e.pointerType !== "touch") return;
+      touches.current += 1;
+      if (touches.current > 1) {
+        start.current = null;
+        return;
+      }
+      if (!enabled) return;
       start.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
       swiped.current = false;
     },
     onPointerUp(e: PointerEvent) {
+      if (e.pointerType === "touch") touches.current = Math.max(0, touches.current - 1);
       const s = start.current;
       start.current = null;
       if (!s || e.pointerId !== s.id) return;
@@ -39,7 +48,8 @@ export function useSwipe(onSwipe: (dir: "left" | "right") => void, enabled = tru
         onSwipe(dir);
       }
     },
-    onPointerCancel() {
+    onPointerCancel(e: PointerEvent) {
+      if (e.pointerType === "touch") touches.current = Math.max(0, touches.current - 1);
       start.current = null;
     },
     onClickCapture(e: MouseEvent) {
