@@ -154,7 +154,7 @@ export function cleanBody(html: string): string {
     // HubSpot's editor leaves blank paragraphs (<p>&nbsp;</p>) and its
     // read-more marker behind; both render as empty gaps.
     .replace(/<!--[\s\S]*?-->/g, "")
-    .replace(/<p[^>]*>(?:\s|&nbsp;|&#160;|<br\s*\/?>)*<\/p>/gi, "")
+    .replace(/<(p|h[1-6])\b[^>]*>(?:\s|&nbsp;|&#160;|<br\s*\/?>)*<\/\1>/gi, "")
     // A photo placed just above a heading would float beside nothing (the
     // heading clears it), so it moves to just below the heading instead.
     .replace(/(<figure\b[\s\S]*?<\/figure>)\s*(<h[23]\b[^>]*>[\s\S]*?<\/h[23]>)/gi, "$2\n$1")

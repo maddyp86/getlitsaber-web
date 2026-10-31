@@ -61,6 +61,7 @@ describe("cleanBody", () => {
   });
   it("drops blank paragraphs and HubSpot's read-more marker", () => {
     expect(cleanBody("<p>&nbsp;</p>\n<!--more-->\n<p>Hi</p><p> <br> </p>")).toBe("<p>Hi</p>");
+    expect(cleanBody("<table></table>\n<h2>&nbsp;</h2>\n<h2>Next</h2>")).toBe("<table></table>\n\n<h2>Next</h2>");
   });
   it("moves a photo that sits just above a heading to just below it", () => {
     const out = cleanBody('<p>a</p><figure><img src="x.jpg" alt="x"></figure>\n<h2>Title</h2><p>b</p>');
