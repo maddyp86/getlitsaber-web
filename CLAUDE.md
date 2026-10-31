@@ -115,8 +115,10 @@ overwrite — that allows the one-year cache headers with no invalidation proble
   host.** `next/image` hard-throws on an un-whitelisted hostname. The Blob host
   (`0ku6zb3bovdlowuq.public.blob.vercel-storage.com`) is already whitelisted; a
   new host must be added before use.
-- `ResponsiveImage` is a raw `<img>` inside `<picture>` (no AVIF/resize). It is
-  the EXCEPTION; the site is overwhelmingly `next/image`. Use `ResponsiveImage`
+- `ResponsiveImage` is a `<picture>` whose two sources go through the image
+  optimizer via `getImageProps` (AVIF/WebP, resized; it was a raw `<img>` on the
+  original Blob files until 2026-10-31). It is the EXCEPTION; the site is
+  overwhelmingly `next/image`. Pass `sizes` if it is not full-width. Use `ResponsiveImage`
   only for genuine paired mobile/desktop asset swaps (different files per
   breakpoint), passing `mediaUrl()` for both sources. Breakpoint switch defaults
   to `lg` (1024px); mobile asset below, desktop at/above. Paired-asset naming:
@@ -141,7 +143,14 @@ bitrate, so video is compressed BEFORE upload, never shipped raw:
 `autoPlay muted loop playsInline preload="metadata"` (all four required for
 mobile-Safari autoplay — dropping any one silently breaks it on some device),
 plus a `poster` fallback, `aria-hidden` when decorative, and a
-`prefers-reduced-motion` branch rendering the static poster instead. For sizing:
+`prefers-reduced-motion` branch rendering the static poster instead. A heavy
+video that is not the first thing on screen (the homepage hero clip) mounts
+only after page load and near the viewport (`useNearViewportAfterLoad`), over an
+optimized `next/image` of its still frame; that image IS the poster, so the
+`<video>` carries no `poster` attribute (which would fetch the raw file).
+`autoPlay` downloads the clip the moment the element exists, whatever `preload`
+says: on 2026-10-31 that put the mobile homepage LCP at 9.1s and made desktop
+download the 3.8MB hero clip twice. For sizing:
 a `<video>` with only a width balloons to its intrinsic height. Wrap it in a
 constrained-aspect box (`relative` + `aspect-*`) and give the video
 `absolute inset-0 w-full h-full object-cover`, so the box defines the height and

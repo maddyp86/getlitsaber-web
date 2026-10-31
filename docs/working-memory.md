@@ -1772,6 +1772,13 @@ The blog for the AEO push is hosted in HubSpot but served at www.getlitsaber.com
 
 The W43 weekly report flagged sessions where shoppers opened the full-screen photo, saw nothing, and clicked at it before leaving. The agent proposed removing the viewer. It wasn't broken: the lightbox asks for a much larger copy of the photo (sized for 2.5x zoom), and on a phone connection that takes a couple of seconds, during which the overlay sat solid black with no spinner. The fix keeps the viewer and shows the gallery-size copy underneath, which is already cached because the gallery (or its neighbour preloads) asked for the same file with the same `sizes`, so it paints instantly and the sharp copy swaps in when it lands. Same week: the old WordPress gift-guide URL was 404ing, and the post had already moved to the HubSpot blog under the same slug, so it now redirects there instead of to the PDP the agent suggested.
 
+
+### PageSpeed: the hero video that loaded before anyone saw it (2026-10-31)
+
+PageSpeed had the homepage at 70 on mobile with a 9.1s LCP, and a 10MB desktop page. Two causes, both invisible from the code alone. First, the hero video is `<video autoPlay preload="metadata">`, and `autoPlay` overrides `preload`: the 3.8MB clip downloaded the moment the element existed. On a phone it sits below the headline and buttons, yet it was competing for a slow-4G connection with the hero photo, the LCP element. Second, `ResponsiveMount` renders the mobile tree on first paint and swaps to the desktop tree after hydration (to avoid mounting both, the earlier iOS crash fix). Each tree has its own `<video>`, so desktop started the clip twice, which PageSpeed counted as 3.8MB twice.
+
+Fix: the clip now mounts only after the window `load` event and when it is near the viewport (`useNearViewportAfterLoad`), over an optimized `next/image` of its still frame. Waiting for `load` also outlasts the mobile-to-desktop swap, so one tree, one download. The hero and Be Seen photos went through `ResponsiveImage`, which pointed a `<picture>` at the original Blob JPGs; it now runs both sources through `getImageProps`, so they ship as AVIF/WebP at screen width (the 358KB phone hero and 767KB desktop hero were PageSpeed's top image savings). PostHog's survey bundle (36KB, no surveys run) is off.
+
 ---
 
 ## Open Questions (rolling)

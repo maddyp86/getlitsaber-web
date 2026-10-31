@@ -8,6 +8,7 @@ import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
 import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
+import { useNearViewportAfterLoad } from "@/lib/useNearViewportAfterLoad";
 import { mediaUrl } from "@/lib/media";
 import { track, EVENTS } from "@/lib/analytics/events";
 import {
@@ -30,6 +31,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
   const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
+  const [setVideoZoneRef, videoReady] = useNearViewportAfterLoad();
 
   return (
     <section
@@ -137,6 +139,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         </motion.p>
 
         <motion.div
+          ref={setVideoZoneRef}
           className="relative w-full"
           style={{ aspectRatio: "375/227" }}
           variants={variants}
@@ -144,14 +147,16 @@ export default function HeroMobile({ className }: HeroMobileProps) {
           animate="visible"
           custom={0.35}
         >
-          {prefersReduced ? (
-            <Image
-              src={HERO_POSTER_SRC}
-              alt="Litsaber device"
-              fill
-              className="object-contain object-center"
-            />
-          ) : (
+          {/* Optimized still frame under the video; see HeroDesktop. */}
+          <Image
+            src={HERO_POSTER_SRC}
+            alt={prefersReduced ? "Litsaber device" : ""}
+            aria-hidden={prefersReduced ? undefined : true}
+            fill
+            sizes="100vw"
+            className="object-contain object-center"
+          />
+          {!prefersReduced && videoReady && (
             <video
               ref={setVideoRef}
               autoPlay
@@ -159,7 +164,6 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               loop
               playsInline
               preload="metadata"
-              poster={HERO_POSTER_SRC}
               aria-hidden={true}
               className="absolute inset-0 w-full h-full object-contain object-center"
             >

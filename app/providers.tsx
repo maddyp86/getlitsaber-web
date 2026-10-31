@@ -158,6 +158,9 @@ export default function PostHogProvider({
         capture_console_errors: false,
       },
       capture_dead_clicks: true,
+      // No surveys run on this site; skip the 36KB survey bundle PageSpeed
+      // flagged as unused.
+      disable_surveys: true,
       // Pageviews on the first load and on every client-side route change.
       // posthog-js only fires when the pathname changes, starting from the
       // landing path, so Next's own replaceState on load is not a second view.
