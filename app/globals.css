@@ -299,10 +299,10 @@
     @apply border-t border-border-divider my-xl;
   }
   /* Phones: the table scrolls sideways inside the column. From md up it
-     sizes to its content and sits centered; cell text stays left-aligned. */
+     spans the full post column; cell text stays left-aligned. */
   .blog-prose table {
     clear: both;
-    @apply block w-full overflow-x-auto border-collapse text-left text-body-sm md:table md:w-auto md:max-w-full md:mx-auto;
+    @apply block w-full overflow-x-auto border-collapse text-left text-body-sm md:table md:w-full;
   }
   .blog-prose th,
   .blog-prose td {
