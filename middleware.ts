@@ -6,7 +6,9 @@ const BYPASS_COOKIE = "ls-preview";
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|maintenance|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|map|woff|woff2|ttf)$).*)",
+    // robots.txt and sitemap.xml skip maintenance mode, so crawlers never get
+    // the maintenance page in their place.
+    "/((?!api|_next/static|_next/image|maintenance|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|map|woff|woff2|ttf)$).*)",
     // HubSpot system and file paths, including images, CSS and JS, which the
     // pattern above skips by file extension.
     "/_hcms/:path*",

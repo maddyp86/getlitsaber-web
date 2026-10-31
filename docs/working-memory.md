@@ -1779,6 +1779,18 @@ PageSpeed had the homepage at 70 on mobile with a 9.1s LCP, and a 10MB desktop p
 
 Fix: the clip now mounts only after the window `load` event and when it is near the viewport (`useNearViewportAfterLoad`), over an optimized `next/image` of its still frame. Waiting for `load` also outlasts the mobile-to-desktop swap, so one tree, one download. The hero and Be Seen photos went through `ResponsiveImage`, which pointed a `<picture>` at the original Blob JPGs; it now runs both sources through `getImageProps`, so they ship as AVIF/WebP at screen width (the 358KB phone hero and 767KB desktop hero were PageSpeed's top image savings). PostHog's survey bundle (36KB, no surveys run) is off.
 
+### The sitemap that didn't exist (2026-10-31)
+
+The replatformed site had no sitemap and no robots.txt at all: `/sitemap.xml` 404'd, so Google only knew the new build through links and the old WordPress URLs. Now `app/sitemap.ts` and `app/robots.ts` build both from `lib/seo/sitemap.ts`. Decisions worth keeping:
+
+- **Every URL is www** (`https://www.getlitsaber.com`), the host the apex redirects to, matching the blog canonicals.
+- **No fake lastmod.** Static pages have no trustworthy edit date, and a lastmod that changes on every deploy teaches Google to ignore it, so they carry none. Policies use their effective date; blog posts use HubSpot's `updated`; `/blog` uses its newest post.
+- **Blog posts are live from HubSpot** (rebuilt hourly), so a new post is listed without a code change. Drafts, duplicate slugs and redirects (`/policies`, `/policies/shipping`, `/policies/refunds` all redirect to `/policies/shipping-returns`) stay out.
+- **A test walks `app/`** and fails when a page is neither in `STATIC_ROUTES` nor in `EXCLUDED_ROUTES` with a reason, so a new page can't silently miss the sitemap.
+- `/cart` is now `noindex` (it is per-visitor) instead of blocked in robots, since a robots block would stop Google from seeing the noindex. robots.txt blocks only `/api/` and the debug `/shopify-check`.
+- robots.txt and sitemap.xml skip maintenance mode in the middleware, so crawlers never get the maintenance page in their place.
+- No image entries: Next 14.2's sitemap API has no `images` field (it arrived in 15), and the product photos are already discoverable on-page.
+
 ---
 
 ## Open Questions (rolling)
