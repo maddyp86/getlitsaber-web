@@ -1779,6 +1779,16 @@ PageSpeed had the homepage at 70 on mobile with a 9.1s LCP, and a 10MB desktop p
 
 Fix: the clip now mounts only after the window `load` event and when it is near the viewport (`useNearViewportAfterLoad`), over an optimized `next/image` of its still frame. Waiting for `load` also outlasts the mobile-to-desktop swap, so one tree, one download. The hero and Be Seen photos went through `ResponsiveImage`, which pointed a `<picture>` at the original Blob JPGs; it now runs both sources through `getImageProps`, so they ship as AVIF/WebP at screen width (the 358KB phone hero and 767KB desktop hero were PageSpeed's top image savings). PostHog's survey bundle (36KB, no surveys run) is off.
 
+### PageSpeed round two: a hero that waited for React, and a JPEG cut at 512KB (2026-10-31)
+
+After the first pass, mobile scored 97 and desktop only 85, the reverse of what you'd expect. Desktop's LCP breakdown showed the hero photo waiting 1.1s to paint after it had downloaded. The cause was `ResponsiveMount` again: it server-renders the mobile hero and swaps in the desktop one after hydration, so on desktop the LCP element was a brand-new `<img>` that could only paint once React had run. The hero now server-renders both variants and CSS shows one. That's the only section where this is safe: the hidden copy's photo is the same `<picture>` URL, its lazy poster is never fetched under `display:none`, and its video never mounts because a hidden element never intersects.
+
+Also: posthog-js (105KB compressed, the largest script on every page) is now imported after first paint instead of at module load, with `lib/analytics/posthogClient.ts` handing the instance to `track()`. The footer logo lost `priority`, which had it competing with the hero at high priority. The PostHog host gets a preconnect. On phones the hero video waits until its zone is actually on screen (it started 60px below the fold, inside the old 200px margin).
+
+Dead end worth remembering: preloading the hero's two `<picture>` sources from `<head>` with `ReactDOM.preload({ media })`. The React build bundled with Next 14.2 silently drops `media`, so every screen would have fetched both files, and a hand-written `<link rel="preload">` is not hoisted into `<head>` there either.
+
+The "Be Seen" photo PageSpeed flagged (512KB, "use a modern format") was a different bug. `litsaber-festival.jpg` on Blob is exactly 524,288 bytes with no JPEG end marker. A Bolt commit in May (`5f473dc6`) truncated 19 images to power-of-two sizes, and this is the one that was never re-uploaded intact. Vercel's optimizer can't decode it, so it serves the raw file instead of WebP. The intact original is in git at `8c87e3e4`.
+
 ### The sitemap that didn't exist (2026-10-31)
 
 The replatformed site had no sitemap and no robots.txt at all: `/sitemap.xml` 404'd, so Google only knew the new build through links and the old WordPress URLs. Now `app/sitemap.ts` and `app/robots.ts` build both from `lib/seo/sitemap.ts`. Decisions worth keeping:

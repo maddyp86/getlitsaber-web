@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "posthog-js";
-import type { CaptureResult } from "posthog-js";
+import type { CaptureResult, PostHog } from "posthog-js";
 import {
   applyAttributionRules,
   INTERNAL_HOSTNAME,
@@ -10,10 +9,11 @@ import {
   rememberLandingTouch,
   setInternalBrowser,
 } from "@/lib/analytics/attribution";
+import { setPosthog } from "@/lib/analytics/posthogClient";
 
 declare global {
   interface Window {
-    posthog?: typeof posthog;
+    posthog?: PostHog;
   }
 }
 
@@ -148,42 +148,56 @@ export default function PostHogProvider({
     // a stored touch to carry through a later return from checkout.
     rememberLandingTouch();
 
-    posthog.init(token, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      ui_host: "https://us.posthog.com",
-      person_profiles: "identified_only",
-      capture_exceptions: {
-        capture_unhandled_errors: true,
-        capture_unhandled_rejections: true,
-        capture_console_errors: false,
-      },
-      capture_dead_clicks: true,
-      // No surveys run on this site; skip the 36KB survey bundle PageSpeed
-      // flagged as unused.
-      disable_surveys: true,
-      // Pageviews on the first load and on every client-side route change.
-      // posthog-js only fires when the pathname changes, starting from the
-      // landing path, so Next's own replaceState on load is not a second view.
-      capture_pageview: "history_change",
-      capture_pageleave: "if_capture_pageview",
-      internal_or_test_user_hostname: INTERNAL_HOSTNAME,
-      before_send: beforeSend,
-    });
+    // Imported here rather than at the top: the library is the largest
+    // script on the page, and loading it after first paint keeps it out of
+    // hydration (lib/analytics/posthogClient.ts).
+    let cancelled = false;
+    void import("posthog-js").then(({ default: posthog }) => {
+      if (cancelled) return;
+      posthog.init(token, {
+        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+        ui_host: "https://us.posthog.com",
+        person_profiles: "identified_only",
+        capture_exceptions: {
+          capture_unhandled_errors: true,
+          capture_unhandled_rejections: true,
+          capture_console_errors: false,
+        },
+        capture_dead_clicks: true,
+        // No surveys run on this site; skip the 36KB survey bundle PageSpeed
+        // flagged as unused.
+        disable_surveys: true,
+        // Pageviews on the first load and on every client-side route change.
+        // posthog-js only fires when the pathname changes, starting from the
+        // landing path, so Next's own replaceState on load is not a second view.
+        capture_pageview: "history_change",
+        capture_pageleave: "if_capture_pageview",
+        internal_or_test_user_hostname: INTERNAL_HOSTNAME,
+        before_send: beforeSend,
+      });
 
-    if (typeof window !== "undefined") {
-      window.posthog = posthog;
-      const INTERNAL_FLAG_TOKEN = process.env.NEXT_PUBLIC_INTERNAL_FLAG_TOKEN;
-      const internalParam = new URLSearchParams(window.location.search).get("internal");
-      if (INTERNAL_FLAG_TOKEN && internalParam === INTERNAL_FLAG_TOKEN) {
-        posthog.setInternalOrTestUser();
-        // Remembered so this browser's carts, and so its orders, are marked
-        // internal too (lib/cart/store.ts stamps _internal on the cart).
-        setInternalBrowser(true);
-      } else if (internalParam === "off") {
-        posthog.setPersonProperties({ $internal_or_test_user: false });
-        setInternalBrowser(false);
+      if (typeof window !== "undefined") {
+        window.posthog = posthog;
+        const INTERNAL_FLAG_TOKEN = process.env.NEXT_PUBLIC_INTERNAL_FLAG_TOKEN;
+        const internalParam = new URLSearchParams(window.location.search).get("internal");
+        if (INTERNAL_FLAG_TOKEN && internalParam === INTERNAL_FLAG_TOKEN) {
+          posthog.setInternalOrTestUser();
+          // Remembered so this browser's carts, and so its orders, are marked
+          // internal too (lib/cart/store.ts stamps _internal on the cart).
+          setInternalBrowser(true);
+        } else if (internalParam === "off") {
+          posthog.setPersonProperties({ $internal_or_test_user: false });
+          setInternalBrowser(false);
+        }
       }
-    }
+
+      // Last, so events queued by trackWhenReady() go out after the
+      // internal flag above is applied.
+      setPosthog(posthog);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return <>{children}</>;
