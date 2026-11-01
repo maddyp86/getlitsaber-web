@@ -1,6 +1,6 @@
 "use client";
 
-import posthog from "posthog-js";
+import { getPosthog } from "./posthogClient";
 
 // No identify(): personal data (email, names) never goes to PostHog. A buyer
 // stays on their anonymous device id, which the cart carries to the orders
@@ -16,7 +16,8 @@ import posthog from "posthog-js";
  */
 export function getCartAnalyticsId(): string | null {
   if (typeof window === "undefined") return null;
-  if (!posthog.__loaded) return null;
+  const posthog = getPosthog();
+  if (!posthog) return null;
 
   const deviceId = posthog.get_property("$device_id");
   if (typeof deviceId === "string" && deviceId.length > 0 && !deviceId.includes("@")) {

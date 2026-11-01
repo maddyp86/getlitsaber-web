@@ -59,6 +59,11 @@ export default function RootLayout({
       <head>
         {/* Hides the age gate before first paint for verified visitors (lib/ageGate.ts). */}
         <script dangerouslySetInnerHTML={{ __html: AGE_GATE_HEAD_SCRIPT }} />
+        {/* PostHog's config and recorder scripts load from this host early on
+            every page; PageSpeed listed it as the one preconnect worth adding. */}
+        {process.env.NEXT_PUBLIC_POSTHOG_HOST && (
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_POSTHOG_HOST} />
+        )}
       </head>
       <body className="font-body bg-background-primary text-text-primary antialiased">
         {/* Judge.me only loads while reviews are shown (lib/reviews.ts). */}

@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
  *
  * The homepage hero video (3.8MB) used to mount with the page. On a phone it
  * sits below the fold yet downloaded alongside the hero photo, which pushed
- * PageSpeed's mobile LCP to 9.1s. On desktop it downloaded twice, because
- * ResponsiveMount renders the mobile tree first and then swaps to the desktop
- * one, each with its own <video>. Waiting for the load event means the swap has
- * long happened, and the photo has painted, before any video byte is requested.
+ * PageSpeed's mobile LCP to 9.1s. Waiting for the load event means the photo
+ * has painted before any video byte is requested. An element under
+ * display:none never intersects, so the hero variant CSS hides for this screen
+ * size never fetches its video.
  *
  * Returns a callback ref for the element to watch, and the flag.
  */

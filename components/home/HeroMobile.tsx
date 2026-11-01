@@ -31,7 +31,10 @@ export default function HeroMobile({ className }: HeroMobileProps) {
   const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
-  const [setVideoZoneRef, videoReady] = useNearViewportAfterLoad();
+  // No margin: on a phone the video zone starts just below the fold (~60px at
+  // 375x812), so the default 200px margin fetched the 3.8MB clip on load for
+  // visitors who never scroll. It now waits for the zone to actually show.
+  const [setVideoZoneRef, videoReady] = useNearViewportAfterLoad("0px");
 
   return (
     <section
