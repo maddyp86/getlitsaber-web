@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/cart/pricing";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
-import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { useNearViewportAfterLoad } from "@/lib/useNearViewportAfterLoad";
 import { mediaUrl } from "@/lib/media";
@@ -28,7 +27,6 @@ interface HeroMobileProps {
 }
 
 export default function HeroMobile({ className }: HeroMobileProps) {
-  const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
   // No margin: on a phone the video zone starts just below the fold (~60px at
@@ -58,34 +56,23 @@ export default function HeroMobile({ className }: HeroMobileProps) {
 
       {/* Content group — navbar height + xl breathing room = ~140px, close to Figma 150px */}
       <div className="relative z-20 pt-navbar mt-20 flex flex-col items-center gap-[20px] w-full px-content">
-        <motion.h1
-          className="text-center w-full"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0}
-        >
+        <h1 className="text-center w-full">
           <span className="block font-display font-bold text-h2 text-text-primary leading-none tracking-tight drop-shadow-[0_0_100px_rgba(240,240,245,1)]">
             {HEADLINE_MOBILE.white}
           </span>
           <span className="block font-accent font-normal text-h2 text-accent-cyan leading-none drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
             {HEADLINE_MOBILE.cyan}
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          className="text-center font-body text-body text-text-secondary max-w-xl mb-6"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.1}
-        >
+        <p className="text-center font-body text-body text-text-secondary max-w-xl mb-6">
           {SUBHEADLINE}
-        </motion.p>
+        </p>
 
-        {/* CTAs render without the reveal animation on purpose: framer-motion
-            SSRs `initial="hidden"` as opacity 0, so on a slow phone the buy
-            button stayed invisible until hydration finished (~3s). */}
+        {/* The hero has no reveal animation on purpose: framer-motion SSRs
+            `initial="hidden"` as opacity 0, so the buy button, then the
+            headline and copy, stayed invisible until hydration finished. That
+            held back PageSpeed's Speed Index on mobile. */}
         <div className="flex flex-col gap-[20px] w-full">
           <Link
             href={CTA_PRIMARY.href}
@@ -122,10 +109,8 @@ export default function HeroMobile({ className }: HeroMobileProps) {
       </div>
 
       {/* Anchor zone — stacked flex column, black background, fixed dimensions per spec */}
-      <div
-        className="flex w-auto py-xl px-container-mobile flex-col justify-center items-center gap-[39px] flex-shrink-0 bg-black"
-      >
-        <motion.p
+      <div className="flex w-auto py-xl px-container-mobile flex-col justify-center items-center gap-[39px] flex-shrink-0 bg-black">
+        <p
           className="
             text-center
             font-subhead font-bold text-h4 uppercase leading-tight
@@ -133,22 +118,14 @@ export default function HeroMobile({ className }: HeroMobileProps) {
             drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]
           "
           style={{ minHeight: "150px" }}
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.3}
         >
           {TAGLINE}
-        </motion.p>
+        </p>
 
-        <motion.div
+        <div
           ref={setVideoZoneRef}
           className="relative w-full"
           style={{ aspectRatio: "375/227" }}
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.35}
         >
           {/* Optimized still frame under the video; see HeroDesktop. */}
           <Image
@@ -173,19 +150,13 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               <source src={HERO_VIDEO_SRC} type="video/mp4" />
             </video>
           )}
-        </motion.div>
+        </div>
 
         {/* Two columns on phones, three from sm up. Three-across at 375px could
             not fit the longer labels: each pill's floor is its longest word
             ("ADDRESSABLE", ~130px with padding), so the row overflowed and
             widened the page. Same order as the 2x3 desktop and PDP grids. */}
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.4}
-        >
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
           {SPEC_PILLS.map((label) => (
             <SpecPill
               key={label}
@@ -194,7 +165,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
               onClick={() => track(EVENTS.cta_clicked, { cta: "hero_spec_pill" })}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

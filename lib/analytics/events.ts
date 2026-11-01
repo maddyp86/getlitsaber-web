@@ -1,6 +1,6 @@
 "use client";
 
-import { getPosthog, whenPosthogReady } from "./posthogClient";
+import { whenPosthogReady } from "./posthogClient";
 import type { OfferId } from "@/lib/cart/offers";
 
 // ---------------------------------------------------------------------------
@@ -142,7 +142,8 @@ export const EVENTS = {
 // ---------------------------------------------------------------------------
 // track() — the single capture path
 // A wrong or missing payload property is a compile error.
-// No-ops silently if PostHog is not initialized.
+// Queued until PostHog has initialized: it now starts after the first paint,
+// so a click in the first second or so would otherwise be lost.
 // ---------------------------------------------------------------------------
 
 export function track<E extends keyof FunnelEvents>(
@@ -150,20 +151,17 @@ export function track<E extends keyof FunnelEvents>(
   properties: PayloadFor<E>
 ): void {
   if (typeof window === "undefined") return;
-  getPosthog()?.capture(event, properties as Record<string, unknown>);
+  whenPosthogReady((ph) => ph.capture(event, properties as Record<string, unknown>));
 }
 
 // ---------------------------------------------------------------------------
-// trackWhenReady() — for events that fire at or near mount, before PostHog
-// finishes its async init. If PostHog is already loaded, delegates to track()
-// immediately. If not, queues it until providers.tsx has initialized PostHog.
-// Use this instead of track() for any mount-time or early-lifecycle event.
+// trackWhenReady() — kept for existing call sites. track() queues the same
+// way now, so the two are identical.
 // ---------------------------------------------------------------------------
 
 export function trackWhenReady<E extends keyof FunnelEvents>(
   event: E,
   properties: PayloadFor<E>
 ): void {
-  if (typeof window === "undefined") return;
-  whenPosthogReady((ph) => ph.capture(event, properties as Record<string, unknown>));
+  track(event, properties);
 }
