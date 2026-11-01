@@ -26,5 +26,6 @@ export function setPosthog(ph: PostHog): void {
 /** Runs `cb` now if PostHog is ready, otherwise once it is. */
 export function whenPosthogReady(cb: (ph: PostHog) => void): void {
   if (client) cb(client);
-  else waiting.push(cb);
+  // Capped so a page without a PostHog token (local dev) cannot grow it forever.
+  else if (waiting.length < 200) waiting.push(cb);
 }

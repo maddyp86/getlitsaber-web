@@ -129,6 +129,52 @@ function beforeSend(event: CaptureResult | null): CaptureResult | null {
   return applyAttributionRules(kept, window.location.pathname, readTouch());
 }
 
+const INTERACTION_EVENTS = ["pointerdown", "keydown", "scroll"] as const;
+
+/**
+ * Runs `start` once the load event has fired and the browser has drawn a
+ * frame after it (two animation frames), then idles; or at the first
+ * interaction if that comes sooner, so a click is never left waiting on
+ * analytics. Animation frames only run when the page is rendering, so this
+ * never starts ahead of the first paint. Returns a cancel function.
+ */
+function whenPageSettled(start: () => void): () => void {
+  let done = false;
+  let idleId: number | undefined;
+  const run = () => {
+    if (done) return;
+    done = true;
+    cleanup();
+    start();
+  };
+  const afterLoad = () =>
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        idleId =
+          typeof window.requestIdleCallback === "function"
+            ? window.requestIdleCallback(run, { timeout: 2000 })
+            : window.setTimeout(run, 200);
+      })
+    );
+  function cleanup() {
+    window.removeEventListener("load", afterLoad);
+    INTERACTION_EVENTS.forEach((type) => window.removeEventListener(type, run, true));
+  }
+  INTERACTION_EVENTS.forEach((type) =>
+    window.addEventListener(type, run, { capture: true, passive: true, once: true })
+  );
+  if (document.readyState === "complete") afterLoad();
+  else window.addEventListener("load", afterLoad, { once: true });
+  return () => {
+    done = true;
+    cleanup();
+    if (idleId !== undefined) {
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
+      window.clearTimeout(idleId);
+    }
+  };
+}
+
 export default function PostHogProvider({
   children,
 }: {
@@ -148,11 +194,14 @@ export default function PostHogProvider({
     // a stored touch to carry through a later return from checkout.
     rememberLandingTouch();
 
-    // Imported here rather than at the top: the library is the largest
-    // script on the page, and loading it after first paint keeps it out of
-    // hydration (lib/analytics/posthogClient.ts).
+    // Imported here rather than at the top: the library (~107KB) and the
+    // session recorder it pulls in (~66KB) are the largest scripts on the
+    // page. They wait until the page has loaded and painted, or the visitor
+    // first interacts, whichever comes first. Loaded during the first paint,
+    // PageSpeed counted both against mobile LCP. Events fired before then
+    // are queued, not dropped (lib/analytics/posthogClient.ts).
     let cancelled = false;
-    void import("posthog-js").then(({ default: posthog }) => {
+    const cancelStart = whenPageSettled(() => void import("posthog-js").then(({ default: posthog }) => {
       if (cancelled) return;
       posthog.init(token, {
         api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
@@ -194,9 +243,10 @@ export default function PostHogProvider({
       // Last, so events queued by trackWhenReady() go out after the
       // internal flag above is applied.
       setPosthog(posthog);
-    });
+    }));
     return () => {
       cancelled = true;
+      cancelStart();
     };
   }, []);
 

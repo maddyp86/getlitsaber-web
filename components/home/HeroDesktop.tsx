@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/cart/pricing";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import SpecPill from "@/components/primitives/SpecPill";
 import ResponsiveImage from "@/components/primitives/ResponsiveImage";
-import { useRevealVariants } from "@/lib/useRevealVariants";
 import { usePlayWhenVisible } from "@/lib/usePlayWhenVisible";
 import { useNearViewportAfterLoad } from "@/lib/useNearViewportAfterLoad";
 import { mediaUrl } from "@/lib/media";
@@ -28,7 +27,6 @@ interface HeroDesktopProps {
 }
 
 export default function HeroDesktop({ className }: HeroDesktopProps) {
-  const variants = useRevealVariants();
   const prefersReduced = useReducedMotion();
   const setVideoRef = usePlayWhenVisible();
   const [setVideoZoneRef, videoReady] = useNearViewportAfterLoad();
@@ -96,26 +94,14 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
   className="absolute inset-x-0 top-0 bottom-0 mx-auto max-w-[1100px] z-10 flex flex-col justify-between items-center"
   style={{ padding: "100px" }}
 >
-          <motion.p
-            className="text-center w-full font-subhead font-bold text-[45px] uppercase text-text-primary drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]"
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            custom={0.3}
-          >
+          <p className="text-center w-full font-subhead font-bold text-[45px] uppercase text-text-primary drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
             {TAGLINE}
-          </motion.p>
+          </p>
 
           {/* Two rows of three, matching the PDP and mobile hero. A single row
               of six left ~142px per pill, and the longer labels (up to 242px,
               "ALUMINUM + BRASS BUILD") wrapped to two or three lines. */}
-          <motion.div
-            className="grid grid-cols-3 gap-sm w-full max-w-[900px] mx-auto"
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            custom={0.4}
-          >
+          <div className="grid grid-cols-3 gap-sm w-full max-w-[900px] mx-auto">
             {SPEC_PILLS.map((label) => (
               <SpecPill
                 key={label}
@@ -124,7 +110,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
                 onClick={() => track(EVENTS.cta_clicked, { cta: "hero_spec_pill" })}
               />
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -138,30 +124,18 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
           background: "radial-gradient(ellipse 80% 90% at 50% 40%, rgba(0,0,0,0.35) 0%, transparent 100%)",
         }}
       >
-        <motion.h1
-          className="text-center w-full leading-[120px] tracking-tight"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0}
-        >
+        <h1 className="text-center w-full leading-[120px] tracking-tight">
           <span className="block font-display font-bold text-display-lg text-text-primary drop-shadow-[0_0_100px_rgba(255,255,255,0.75)]">
             {HEADLINE_DESKTOP.white}
           </span>
           <span className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
             {HEADLINE_DESKTOP.cyan}
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          className="text-center w-full font-body text-subhead text-text-secondary mb-6"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          custom={0.1}
-        >
+        <p className="text-center w-full font-body text-subhead text-text-secondary mb-6">
           {SUBHEADLINE}
-        </motion.p>
+        </p>
 
         {/* CTAs skip the reveal animation so they are visible before hydration. */}
         <div className="flex flex-row gap-[50px] justify-center w-full">
