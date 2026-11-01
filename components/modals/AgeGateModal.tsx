@@ -21,7 +21,10 @@ export default function AgeGateModal() {
       aria-labelledby="age-gate-title"
       aria-describedby="age-gate-body"
       className="fixed inset-0 z-age-gate items-center justify-center lg:p-container-mobile"
-      style={{ backgroundColor: "rgba(5, 5, 16, 0.80)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+      // A darker scrim instead of 80% + a full-screen backdrop blur: the blur
+      // made the compositor re-filter the hero photo under the whole viewport
+      // before the first frame, the paint PageSpeed scores as mobile LCP.
+      style={{ backgroundColor: "rgba(5, 5, 16, 0.92)" }}
     >
       {/* Modal panel — full screen on mobile, card on desktop */}
       <div className="age-gate-panel relative w-full flex flex-col items-center justify-center text-center lg:rounded-card"
