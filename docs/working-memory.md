@@ -1779,6 +1779,28 @@ PageSpeed had the homepage at 70 on mobile with a 9.1s LCP, and a 10MB desktop p
 
 Fix: the clip now mounts only after the window `load` event and when it is near the viewport (`useNearViewportAfterLoad`), over an optimized `next/image` of its still frame. Waiting for `load` also outlasts the mobile-to-desktop swap, so one tree, one download. The hero and Be Seen photos went through `ResponsiveImage`, which pointed a `<picture>` at the original Blob JPGs; it now runs both sources through `getImageProps`, so they ship as AVIF/WebP at screen width (the 358KB phone hero and 767KB desktop hero were PageSpeed's top image savings). PostHog's survey bundle (36KB, no surveys run) is off.
 
+### PageSpeed round four: the frames come once a second (2026-11-01)
+
+After #112, PageSpeed mobile showed LCP 3.1s. Locally, two of three Lighthouse
+runs still paint nothing until about 2.5s, while the page has finished loading
+by 0.5 to 0.6s. The trace pins it down further than round three did. The page
+is laid out at 0.47s, and the renderer's main frame starts at 0.54s, ~1.47s and
+~2.49s: roughly one frame per second. Across all threads only ~300ms of work
+happens in the 1.9s gap. That is Chrome throttling the renderer's frame rate,
+not the page being slow.
+
+We tested the one page-side suspect that touches the compositor, the age
+gate's full-screen `backdrop-filter: blur(12px)` over the hero photo, by
+removing it on a preview build. It still stalled exactly like production (both
+paint at about 2.5s), so we put the blur back. Without it, the headline behind
+the gate also read through and competed with the gate text.
+
+The only change kept was removing the PostHog preconnect, now unused because
+PostHog starts after the page settles. Real-user mobile LCP p75 stays at about
+2.0s (PostHog `$web_vitals`). Lesson: when a lab trace shows idle threads and
+evenly spaced ~1s frames, stop changing page code. The cause is the lab
+browser's frame scheduling.
+
 ### PageSpeed round three: a blank screen with nothing running (2026-11-01)
 
 Mobile PageSpeed reported LCP 4.9s and Speed Index 4.9s, yet the hero photo had finished downloading by about 0.5s; the rest was "render delay." Local Lighthouse runs reproduced it about half the time. In those traces every request was done by 0.8s, the main thread sat idle, and the renderer's compositor kept asking for frames that never came, so the screen stayed white until about 2.5s. The build from before the last round showed the same thing, so did example.com once, and a local production build never did (6 of 6 runs). That points at the lab browser at least as much as at the page. Real users don't see it: PostHog's field data for the homepage over 14 days shows a mobile LCP of 2.0s at p75 (small sample).
