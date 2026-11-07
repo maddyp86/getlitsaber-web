@@ -1,5 +1,6 @@
 import AgeGateModal from "@/components/modals/AgeGateModal";
 import AgeGateController from "@/components/modals/AgeGateController";
+import HydrationErrorTracker from "@/components/analytics/HydrationErrorTracker";
 import CartDrawer from "@/components/layout/CartDrawer";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -25,6 +26,7 @@ export default function SiteChrome({
     <>
       <AgeGateModal />
       <AgeGateController />
+      <HydrationErrorTracker />
       <Navbar />
       <main>{children}</main>
       <EmailSignupBannerGuard />
