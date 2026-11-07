@@ -9,6 +9,7 @@
     "lint": "next lint",
     "migrate-media": "tsx scripts/migrate-media.ts",
     "check-promises": "tsx scripts/check-promises.ts",
+    "check-age-gate": "tsx scripts/check-age-gate.ts",
     "test": "vitest run"
   },
   "dependencies": {

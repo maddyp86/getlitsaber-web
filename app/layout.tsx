@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import JudgemeScripts from "@/components/reviews/JudgemeScripts";
 import { headers } from "next/headers";
 import { AGE_GATE_HEAD_SCRIPT } from "@/lib/ageGate";
+import { HYDRATION_ERROR_HEAD_SCRIPT } from "@/lib/analytics/hydration";
 import { REVIEWS_ENABLED } from "@/lib/reviews";
 
 export const metadata: Metadata = {
@@ -59,6 +60,9 @@ export default function RootLayout({
       <head>
         {/* Hides the age gate before first paint for verified visitors (lib/ageGate.ts). */}
         <script dangerouslySetInnerHTML={{ __html: AGE_GATE_HEAD_SCRIPT }} />
+        {/* Buffers React hydration errors, which fire before any effect runs
+            (lib/analytics/hydration.ts); HydrationErrorTracker reports them. */}
+        <script dangerouslySetInnerHTML={{ __html: HYDRATION_ERROR_HEAD_SCRIPT }} />
         {/* No preconnect to the PostHog host: PostHog now starts after the page
             settles (app/providers.tsx), so an early connection sat unused and
             PageSpeed flagged it. */}

@@ -4,6 +4,7 @@ import {
   AGE_GATE_HEAD_SCRIPT,
   ageGateBodyScript,
   hasAgeCookie,
+  installAgeGateDelegate,
   isAgeGateExempt,
   isAgeVerified,
   readCookie,
@@ -192,5 +193,75 @@ describe("inline confirm", () => {
   it("exit is a plain link to the safe destination", () => {
     const { exit } = mountGate();
     expect(exit.getAttribute("href")).toBe("https://www.google.com");
+  });
+});
+
+describe("delegated confirm (AgeGateController)", () => {
+  /**
+   * React's hydration fallback replaces the gate's button with a new node
+   * that has no inline handler, and never re-runs the inline script. Mimic
+   * it: cloneNode copies markup but not listeners.
+   */
+  function rebuildGateWithoutListeners() {
+    const gate = document.getElementById("age-gate")!;
+    gate.replaceWith(gate.cloneNode(true));
+    return document.querySelector<HTMLButtonElement>("[data-age-confirm]")!;
+  }
+
+  it("inline script is self-contained (no module references)", () => {
+    const script = ageGateBodyScript();
+    expect(script).not.toMatch(/\b(import|require|exports|module)\b/);
+    expect(script).not.toMatch(/__webpack|__turbopack|__esModule|_interop/);
+    expect(script).toContain("data-age-confirm");
+    expect(script).toContain("litsaber_age_verified=true");
+  });
+
+  it("still closes the gate after React re-creates the button", async () => {
+    mountGate();
+    const uninstall = installAgeGateDelegate();
+    const onConfirmed = vi.fn();
+    window.addEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    try {
+      const confirm = rebuildGateWithoutListeners();
+      confirm.click();
+      expect(confirm.hasAttribute("data-pressed")).toBe(true);
+      expect(document.cookie).toContain("litsaber_age_verified=true");
+      await new Promise((r) => setTimeout(r, 5));
+      expect(document.documentElement.hasAttribute("data-age-ok")).toBe(true);
+      expect(document.getElementById("age-gate")!.getAttribute("aria-hidden")).toBe("true");
+      expect(onConfirmed).toHaveBeenCalledTimes(1);
+    } finally {
+      uninstall();
+      window.removeEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    }
+  });
+
+  it("counts a tap once when both handlers are present", async () => {
+    const { confirm } = mountGate();
+    const uninstall = installAgeGateDelegate();
+    const onConfirmed = vi.fn();
+    window.addEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    try {
+      confirm.click();
+      await new Promise((r) => setTimeout(r, 5));
+      expect(document.documentElement.hasAttribute("data-age-ok")).toBe(true);
+      expect(onConfirmed).toHaveBeenCalledTimes(1);
+    } finally {
+      uninstall();
+      window.removeEventListener(AGE_CONFIRMED_EVENT, onConfirmed);
+    }
+  });
+
+  it("ignores clicks elsewhere and stops after uninstall", async () => {
+    mountGate();
+    const uninstall = installAgeGateDelegate();
+    const confirm = rebuildGateWithoutListeners();
+    document.body.click();
+    await new Promise((r) => setTimeout(r, 5));
+    expect(document.documentElement.hasAttribute("data-age-ok")).toBe(false);
+    uninstall();
+    confirm.click();
+    await new Promise((r) => setTimeout(r, 5));
+    expect(document.documentElement.hasAttribute("data-age-ok")).toBe(false);
   });
 });
