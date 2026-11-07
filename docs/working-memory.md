@@ -1829,6 +1829,10 @@ The replatformed site had no sitemap and no robots.txt at all: `/sitemap.xml` 40
 - robots.txt and sitemap.xml skip maintenance mode in the middleware, so crawlers never get the maintenance page in their place.
 - No image entries: Next 14.2's sitemap API has no `images` field (it arrived in 15), and the product photos are already discoverable on-page.
 
+### PostHog SDK bump: 1.438.21 to 1.447.3 (2026-11-07)
+
+PostHog's SDK Health page flagged the Web SDK as outdated: 1.438.21 had captured more than 20% of events in the last seven days, with 1.447.3 the latest release. The bump is routine but worth a note on how it is checked, since the site configures posthog-js unusually (deferred import after the page settles, `before_send` filters, `capture_pageview: "history_change"`, `internal_or_test_user_hostname`, `disable_surveys`). All of those are typed options, so `tsc --noEmit` is the real compatibility check: a renamed or removed option fails the build rather than silently doing nothing. posthog-node moved 5.57.1 to 5.63.1 in the same commit so the server-side webhook mirror stays on a current client. tsc, vitest (364 tests), lint and `next build` all pass. The version PostHog reports lags a deploy by however long old tabs stay open, so the dashboard keeps showing 1.438.21 for a while after this ships.
+
 ---
 
 ## Open Questions (rolling)
