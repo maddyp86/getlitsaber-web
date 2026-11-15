@@ -100,8 +100,22 @@ See `.env.example` for the full list. Grouped by service: Shopify, ReviewInfra, 
 - `NEXT_PUBLIC_POSTHOG_KEY`
 - `NEXT_PUBLIC_HUBSPOT_PORTAL_ID` + form IDs
 - `NEXT_PUBLIC_AGE_GATE_COOKIE_NAME` / `_MAX_AGE_DAYS` / `_EXIT_URL`
+- `NEXT_PUBLIC_META_PIXEL_ID` (optional; see below)
 
 Never commit `.env.local`. Production secrets live in Vercel's dashboard.
+
+### Meta Pixel
+
+`NEXT_PUBLIC_META_PIXEL_ID` is the pixel id from Meta Events Manager (the "Litsaber OG" pixel). When it is set, `components/analytics/MetaPixel.tsx` loads Meta's base code once, site-wide, after hydration, and `lib/metaPixel.ts` sends four standard events, each with a UUID `eventID` for Conversions API deduplication:
+
+| Event | When | Where |
+|-------|------|-------|
+| `PageView` | First load and every client-side route change, once each, sent with `trackSingle` (the library's own history-change PageView is turned off in the base code, and it drops repeated `track PageView` calls within a document) | `components/analytics/MetaPixelPageView.tsx` |
+| `ViewContent` | Product page view, at the live unit price | `components/product/ProductDisplay.tsx` |
+| `AddToCart` | Each confirmed add, valued from the Shopify line total | `lib/cart/useAddToCart.ts` |
+| `InitiateCheckout` | Every click through to Shopify checkout (drawer, cart page, Buy Now) | `lib/analytics/checkout.ts` |
+
+`content_ids` is the numeric Shopify variant id (`lib/metaPixel.ts`, `contentIdFor`). `Purchase` is never sent from the storefront: Shopify's Facebook & Instagram app sends it from checkout. The landing page's `utm_*` and `fbclid` parameters are remembered for 7 days and appended to the checkout URL (`lib/cart/checkoutHref.ts`) so attribution survives the domain change. Unset the variable and none of this loads; PostHog is independent of it.
 
 ---
 

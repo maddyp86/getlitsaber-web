@@ -1831,6 +1831,67 @@ The replatformed site had no sitemap and no robots.txt at all: `/sitemap.xml` 40
 
 ---
 
+### Meta Pixel for the ad launch (2026-11-15)
+
+Meta ads start Wednesday 2026-11-18, so the storefront got its own Meta Pixel
+("Litsaber OG", id in `NEXT_PUBLIC_META_PIXEL_ID`) alongside PostHog, which
+is untouched. Four standard events, four call sites, one helper module
+(`lib/metaPixel.ts`), every event carrying a UUID `eventID` so the same
+events can later be sent through the Conversions API and deduplicated.
+Purchase is deliberately not sent from the front end: Shopify's Facebook &
+Instagram app sends it from checkout.
+
+Three things worth remembering:
+
+- **PageView once per navigation, not twice on load.** Meta's snippet
+  normally fires PageView itself. Here the inline base code only runs
+  `fbq('init')`; a small client component keyed on `usePathname()` sends every
+  PageView, so the first load and each client-side route change fire exactly
+  once. The pathname key also means Next's own `replaceState` on load is not
+  a second view, the same trick PostHog's `history_change` relies on.
+- **The snippet runs after hydration, so early effects queue.** `next/script`
+  (afterInteractive) injects the base code in an effect, which can run after
+  the product page's own effects. Rather than depend on React's effect
+  order, ViewContent and the first PageView go through
+  `whenMetaPixelReady()`, flushed from the Script's `onReady`. Same shape as
+  `whenPosthogReady()`, for the same reason.
+- **AddToCart is valued from Shopify's answer, not the PDP's quote.** The
+  store's `addItem` now returns the units actually added (after the 5-unit
+  cap) and what they cost from the line total the mutation returned, so a
+  Black Friday price change in Shopify flows into the pixel with nothing to
+  edit here.
+
+- **Meta's library tracks SPA route changes itself, then drops yours.**
+  Verified over the Chrome DevTools Protocol: fbevents.js hooks `pushState`
+  and fires its own PageView on every client-side navigation (no `eid`), and
+  separately sends a `track PageView` only once per document, silently
+  dropping every later one. So a plain `fbq('track','PageView')` on route
+  change never reaches Meta. Two switches fix it: `fbq.disablePushState =
+  true` in the base code turns the automatic one off, and `trackSingle`
+  (which the library does not deduplicate) carries ours, with its eventID, on
+  every navigation. The capture that proved each step lives in the session
+  scratchpad (`capture.mjs`): headless Chrome driven over CDP, logging every
+  `facebook.com/tr` request body.
+- **Headless Chrome sends nothing.** fbevents.js checks `navigator.webdriver`
+  and `/HeadlessChrome/` in the user agent and then counts events without
+  sending them, which looked exactly like a broken integration until the
+  capture script set a normal user agent. The in-app browser pane hit the
+  same wall after its first event.
+- **React creates the noscript image.** With the `<img>` rendered as React
+  children inside `<noscript>`, hydration created a real image on the client
+  (a browser with JS parses noscript content as text, which React then
+  "repairs"), and that fetch is a second, untagged PageView. The fallback is
+  now a `dangerouslySetInnerHTML` string.
+
+Attribution across the domain hop: `utm_*` and `fbclid` from the landing URL
+are kept for 7 days (`lib/analytics/landingParams.ts`) and appended to every
+checkout URL next to the affiliate `?discount=` code, through one
+`buildCheckoutHref()` the drawer, cart page and Buy Now all use.
+
+Open: `content_ids` is the numeric Shopify variant id. If the Meta catalog
+synced by Shopify keys items as `shopify_US_<product>_<variant>`, change
+`contentIdFor()` in `lib/metaPixel.ts`; it is the one place.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

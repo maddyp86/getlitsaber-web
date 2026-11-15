@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, OFFERS } from "./productdisplay.content";
 import { quoteOffer } from "@/lib/cart/offers";
+import { getDisplayUnitPrice } from "@/lib/cart/pricing";
+import { viewContent, whenMetaPixelReady } from "@/lib/metaPixel";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import GalleryBlock from "./GalleryBlock";
 import GalleryErrorBoundary from "./GalleryErrorBoundary";
@@ -49,6 +51,18 @@ export default function ProductDisplay({ variantId, available, surface, basePric
 
   const productViewedFired = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  // Meta ViewContent: the product page only (the homepage buy section is the
+  // same component, but not a product page view), once per page load, at
+  // the live unit price. Queued until the pixel snippet has run.
+  const viewContentFired = useRef(false);
+  useEffect(() => {
+    if (surface !== "pdp" || !variantId || viewContentFired.current) return;
+    viewContentFired.current = true;
+    whenMetaPixelReady(() => {
+      viewContent({ variantId, value: getDisplayUnitPrice(basePrice) });
+    });
+  }, [surface, variantId, basePrice]);
 
   useEffect(() => {
     if (productViewedFired.current) return;

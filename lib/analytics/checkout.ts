@@ -3,6 +3,7 @@
 import { track, EVENTS } from "./events";
 import { offerForQty } from "@/lib/cart/offers";
 import { getDisplayShipping } from "@/lib/shipping";
+import { initiateCheckout, type CheckoutLine } from "@/lib/metaPixel";
 
 export type CheckoutSource = "drawer" | "cart_page" | "buy_now";
 
@@ -10,9 +11,15 @@ export type CheckoutSource = "drawer" | "cart_page" | "buy_now";
  * The checkout handoff: fired by every button that sends a shopper to Shopify
  * checkout. `route` separates Buy Now from the cart (drawer or cart page);
  * offer and shipping are derived from the units handed off, by the same rules
- * the PDP and the orders webhook use.
+ * the PDP and the orders webhook use. `lines` (variant and units) feed the
+ * Meta InitiateCheckout event sent at the same moment.
  */
-export function trackCheckoutHandoff(source: CheckoutSource, cartValue: number, itemCount: number): void {
+export function trackCheckoutHandoff(
+  source: CheckoutSource,
+  cartValue: number,
+  itemCount: number,
+  lines: CheckoutLine[] = []
+): void {
   track(EVENTS.checkout_started, {
     route: source === "buy_now" ? "buy_now" : "cart",
     source,
@@ -22,4 +29,5 @@ export function trackCheckoutHandoff(source: CheckoutSource, cartValue: number, 
     shipping_amount: getDisplayShipping(itemCount) ?? 0,
     has_promo_code: false,
   });
+  initiateCheckout({ lines, value: cartValue });
 }

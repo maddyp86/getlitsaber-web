@@ -7,6 +7,7 @@ import { useCartUIActions } from "@/lib/ui/store";
 import { useToastActions } from "@/lib/toast/store";
 import { track, EVENTS, type AddSource } from "@/lib/analytics/events";
 import { mediaUrl } from "@/lib/media";
+import { addToCart as metaAddToCart } from "@/lib/metaPixel";
 
 interface UseAddToCartOptions {
   variantId: string;
@@ -43,6 +44,9 @@ export function useAddToCart({ variantId, basePrice, source }: UseAddToCartOptio
     openCart();
     void done.then((result) => {
       if (result.status === "added") {
+        // Meta AddToCart: once per confirmed add (inside the action, never on
+        // render), valued at what the added units cost per Shopify.
+        metaAddToCart({ variantId, quantity: result.quantity, value: result.value });
         track(EVENTS.cart_add_to_cart, {
           variant: "silver",
           quantity: qty,
