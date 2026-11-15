@@ -40,6 +40,15 @@ const BANNED: Array<[string, RegExp]> = [
   ["sci-fi weapon", /sci-fi weapon/i],
   ["$5 off", /\$5 off/i],
   ["30-day guarantee", /30-day guarantee/i],
+  // Sector vocabulary removed 2026-11-15 for ad-platform review (Meta, TikTok).
+  // Compliance disclaimers may still say "cannabis"; marketing copy does not
+  // name concentrates, dispensaries, vapor or smoke.
+  ["dispensary", /\bdispensar(y|ies)\b/i],
+  ["THC", /\bTHC\b/],
+  ["concentrate names", /\b(rosin|live resin|cured resin|distillate|liquid diamonds|terpenes?)\b/i],
+  ["vape as a noun or verb", /\bvape[sd]?\b(?! ?-?related)/i],
+  // "smoke shops" is a retail channel and icons/cloud.png is a file, not copy.
+  ["vapor or clouds", /\b(vapor|vapour|clouds?(?!\.png)|smoke(?! ?shops?))\b/i],
 ];
 
 const read = (file: string) => readFileSync(join(ROOT, file), "utf8");

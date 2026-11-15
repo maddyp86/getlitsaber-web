@@ -34,6 +34,7 @@ export const CTA_SECONDARY = {
 export const TAGLINE = "Glowsticks die by sunrise. This doesn't. This is Litsaber.";
 
 /** Hero spec pills link to the engineering deep-dive they summarize. */
-export const SPEC_PILLS_HREF = "/the-tech";
+// The Tech page is hidden for now; the pills send shoppers to the product page.
+export const SPEC_PILLS_HREF = "/shop/litsaber-og";
 
 export { SPEC_PILLS } from "@/components/product/specs.content";

@@ -37,7 +37,7 @@ export const FEATURE_CARDS: FeatureCard[] = [
   },
   {
     title: "3-VOLTAGE SYSTEM",
-    body: "Comes with 3 standard optimized voltage settings from 2.4V, 2.8V, 3.2V. These are all tuned for either rosin, resin, and distillate. We even have pre-heat for thicker products.",
+    body: "Three voltage settings, 2.4V, 2.8V and 3.2V, so you can match the heat to whatever cart you're running. Pre-heat warms thicker formulas before the first pull.",
     accent: "magenta",
   },
   {

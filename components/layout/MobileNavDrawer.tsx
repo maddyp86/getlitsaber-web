@@ -14,11 +14,9 @@ interface MobileNavDrawerProps {
   onClose: () => void;
 }
 
+// Shop only, matching the desktop nav (2026-11-15). About is in the footer.
 const PRIMARY_NAV = [
-  { label: "Home", href: "/", hasSubmenu: false },
   { label: "Shop", href: SHOP_HREF, hasSubmenu: true },
-  { label: "The Tech", href: "/the-tech", hasSubmenu: true },
-  { label: "About", href: "/about", hasSubmenu: false },
 ] as const;
 
 const QUICK_LINKS = [

@@ -22,7 +22,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 02",
     question: "Will it work with my carts?",
     answer:
-      `${COMPATIBILITY_STATEMENT} Three-voltage tuning (2.4V, 2.8V, 3.2V) lets you match the voltage to your oil.`,
+      `${COMPATIBILITY_STATEMENT} Three-voltage tuning (2.4V, 2.8V, 3.2V) lets you match the heat to your cart.`,
   },
   {
     number: "/ 03",
@@ -47,6 +47,6 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 06",
     question: "Can I travel with it?",
     answer:
-      "The device itself is TSA-compliant.  Lithium battery rated for carry-on (not checked baggage). Cannabis carts are subject to your local laws. Check your state's rules before flying. Orders ship within 2 business days anywhere in the US.",
+      "The device itself is TSA-compliant. Lithium battery rated for carry-on (not checked baggage). What you put in it is subject to your local laws. Check your state's rules before flying. Orders ship within 2 business days anywhere in the US.",
   },
 ];

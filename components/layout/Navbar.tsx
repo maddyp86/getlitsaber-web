@@ -12,11 +12,11 @@ import { track, EVENTS } from "@/lib/analytics/events";
 const ACCOUNT_URL =
   process.env.NEXT_PUBLIC_ACCOUNT_URL ?? "https://shopify.com/65425866959/account";
 
+// Top navigation is Shop only (owner decision 2026-11-15, ahead of the ad
+// launch). About and the policy pages live in the footer; the Tech page is
+// hidden for now (next.config.mjs redirects /the-tech).
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
   { label: "Shop", href: "/shop/litsaber-og" },
-  { label: "The Tech", href: "/the-tech" },
-  { label: "About", href: "/about" },
 ] as const;
 
 export default function Navbar() {

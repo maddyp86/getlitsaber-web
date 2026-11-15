@@ -82,9 +82,9 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           label: "VOLTAGE",
           bullets: [
             "3 adjustable settings, color-coded",
-            "2.4V (green LED) for Rosin / Live resin",
-            "2.8V (blue LED) for Cured resin / Hybrid oils",
-            "3.2V (red LED) for Distillate / Liquid diamonds",
+            "2.4V (green LED), low heat for thinner formulas",
+            "2.8V (blue LED), medium heat for most carts",
+            "3.2V (red LED), high heat for thicker formulas",
           ],
         },
         {

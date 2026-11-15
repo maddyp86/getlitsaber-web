@@ -7,6 +7,8 @@ const TABS = [
   { label: "WARRANTY", href: "/policies/warranty" },
   { label: "TERMS OF SERVICE", href: "/policies/terms" },
   { label: "PRIVACY POLICY", href: "/policies/privacy" },
+  { label: "DISCLAIMER", href: "/policies/disclaimer" },
+  { label: "AGE POLICY", href: "/policies/age-policy" },
 ] as const;
 export default function PolicySubNav() {
   const pathname = usePathname();

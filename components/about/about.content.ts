@@ -60,16 +60,16 @@ export const EVENT_IMAGES = [
 export const HERO_HEADLINE_LINE1 = "FOR THE NIGHT YOU CAME TO";
 export const HERO_HEADLINE_ACCENT = "BE A PART OF.";
 export const HERO_BODY =
-  "A small family team in Los Angeles. Six years of engineering. One vape battery that actually gets noticed. Not for being first to the party. For being the reason people remembered they showed up.";
+  "A small family team in Los Angeles. Six years of engineering. One 510 battery that actually gets noticed. Not for being first to the party. For being the reason people remembered they showed up.";
 export const HERO_CTA = "LEARN MORE";
 
 // ─── Section 2 — Origin ──────────────────────────────────────────────────────
 export const ORIGIN_EYEBROW = "/ 01 — ORIGIN";
 export const ORIGIN_HEADLINE = "It started with a question.";
 export const ORIGIN_BODY_INTRO =
-  "In 2019, the two of us were hanging out one night. Brendan was a raver, deep in the lightshow community, and on this particular night he'd lost his vape. So he picked up his LED glowsticks and started waving them around. Improvised a lightshow with what was in his hand. Then he asked the question.";
+  "In 2019, the two of us were hanging out one night. Brendan was a raver, deep in the lightshow community, and on this particular night he'd lost his battery. So he picked up his LED glowsticks and started waving them around. Improvised a lightshow with what was in his hand. Then he asked the question.";
 export const ORIGIN_PULLQUOTE = "What if you could";
-export const ORIGIN_PULLQUOTE_ACCENT = "smoke a glowstick?";
+export const ORIGIN_PULLQUOTE_ACCENT = "light up a glowstick?";
 export const ORIGIN_PULLQUOTE_ATTRIBUTION = "Brendan Friedrich, 2020";
 export const ORIGIN_BODY_CLOSING =
   "We'd been thinking about hardware for a while. Matt had four years in consumer electronics, including a smart fashion accessory called Locket, and factory connections in China. We knew this was buildable. What we didn't know was how long it would take to get it right.";
@@ -161,7 +161,7 @@ export const PROTOTYPES: Prototype[] = [
   {
     version: "V5",
     title: "V5: Working LEDs",
-    blurb: "First time the lights came on with working vape functions.",
+    blurb: "First time the lights came on with working battery functions.",
     year: "2023",
     imageSrc: PROTOTYPE_2023_SRC,
     imageAlt: "Litsaber V5 prototype — 2023",
@@ -181,11 +181,11 @@ export const MFG_EYEBROW = "/ 04 — MANUFACTURING";
 export const MFG_HEADLINE_PART1 = "Designed in LA. Built by ";
 export const MFG_HEADLINE_ACCENT = "DOPEX";
 export const MFG_BODY =
-  "Litsaber is designed and engineered in LA and SF. The hardware is manufactured by **DOPEX**, a cannabis vaporization hardware provider based in Shenzhen, China. **DOPEX is one of the most established vape hardware manufacturers in the industry.** They build to spec, they ship on time, and they hold to the kind of quality control that lets us put our name on every unit that comes out.";
+  "Litsaber is designed and engineered in LA and SF. The hardware is manufactured by **DOPEX**, a 510 hardware manufacturer based in Shenzhen, China. **DOPEX is one of the most established 510 hardware manufacturers in the industry.** They build to spec, they ship on time, and they hold to the kind of quality control that lets us put our name on every unit that comes out.";
 export const DOPEX_CARD_EYEBROW = "— OUR MANUFACTURING PARTNER";
 export const DOPEX_CARD_NAME = "DOPEX";
 export const DOPEX_CARD_BODY =
-  "Cannabis vaporization hardware provider. Based in Shenzhen, China, with a US office in Walnut, CA.";
+  "510 hardware manufacturer. Based in Shenzhen, China, with a US office in Walnut, CA.";
 export const DOPEX_CARD_LINK = "www.dopex.com";
 export const DOPEX_CARD_HREF = "https://www.dopex.com";
 
@@ -193,7 +193,7 @@ export const DOPEX_CARD_HREF = "https://www.dopex.com";
 export const NOW_EYEBROW = "/ 05 — WHERE WE ARE NOW";
 export const NOW_HEADLINE = "Iterating in public.";
 export const NOW_BODY =
-  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition is coming soon**. We're at festivals, events, the cannabis party bus circuit through summer. We're doing collabs with SoCal dispensaries. We're at trade shows in full costume because that's the energy of this brand and we own it.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
+  "Litsaber is shipping. The OG Silver is in customers' hands. **Gold Edition is coming soon**. We're at festivals, events and the party bus circuit through summer. We're doing collabs with SoCal retailers. We're at trade shows in full costume because that's the energy of this brand and we own it.\n\nFuture drops are in development. Deeper lighting modes are on the roadmap. New colorways, new editions, new collaborations planned. The hardware platform we've been building for six years isn't done. It's just getting started.\n\nIt's still the two of us, as a small family team in LA, building something we wanted to exist.";
 export const NOW_WILD_EYEBROW = "OUT IN THE WILD";
 
 // ─── Section 7 — Closing CTA ─────────────────────────────────────────────────

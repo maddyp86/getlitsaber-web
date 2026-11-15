@@ -1894,6 +1894,50 @@ Open: `content_ids` is the numeric Shopify variant id. If the Meta catalog
 synced by Shopify keys items as `shopify_US_<product>_<variant>`, change
 `contentIdFor()` in `lib/metaPixel.ts`; it is the one place.
 
+### Copy sweep for ad review (2026-11-15)
+
+Meta and TikTok review the landing page as well as the ad, and the storefront
+named concentrates (rosin, live resin, distillate, liquid diamonds), dispensaries,
+vapor, clouds and smoke on most pages. A competitor running Meta ads to its main
+domain (Smyle Labs) uses none of those words: "510", "cart", "battery",
+"discreet". So the sweep replaced sector vocabulary with "510 battery", "cart",
+heat levels and "thinner / thicker formulas", and swapped vapor imagery in copy
+for breath and light ("Where light meets breath"). The three compliance
+disclaimers keep "cannabis" on purpose. `storefront-copy.test.ts` now guards the
+new vocabulary so it cannot drift back, with two exceptions it had to learn:
+"smoke shops" is a retail channel and `icons/cloud.png` is a filename.
+
+Two judgment calls flagged in the PR: the founder pull quote ("smoke a
+glowstick?" became "light up a glowstick?") and Matt's compatibility statement
+(concentrate names became "thin or thick"). A second domain for ad landing pages
+was considered and set aside: the competitor evidence says the page content is
+what gets reviewed, not the domain.
+
+### Nav to Shop only, Tech hidden, age gate down, two new policies (2026-11-15)
+
+Four owner decisions in one PR, all for the ad launch and the review that
+comes with it:
+
+- **Top nav is Shop only** (desktop and the mobile drawer). About moved to
+  the footer, where it already was; Home is the logo.
+- **The Tech page is hidden for now.** A temporary redirect in
+  `next.config.mjs` sends `/the-tech` to `/`, the hero spec pills and the
+  blog's empty state point at the product page instead, and the sitemap
+  lists it as excluded. The page's code stays so it can come back.
+- **The age gate is gone.** The hard-wall modal, its head script, the cookie
+  env vars, the UI-store state, the `age_gate_confirmed` event and the
+  Playwright check script are all removed. The 21+ rule now lives on the new
+  Age Policy page, in the Terms, and in the footer disclaimer, and a purchase
+  certifies age. PostHog funnels that started at `age_gate_confirmed` need a
+  new first step.
+- **Disclaimer and Age Policy pages** at `/policies/disclaimer` and
+  `/policies/age-policy`, linked from the footer and the policy sub-nav,
+  modeled on the coverage a competitor's pages have (as-is information,
+  adults only, FTC material-connection disclosure, reviews, struck-through
+  pricing, lithium battery handling, limitation of liability) but written in
+  our words and our numbers. The pricing section explains the $49.99 MSRP
+  anchor as a reference price, not a former price.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

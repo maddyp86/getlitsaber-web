@@ -26,13 +26,13 @@ export default async function BlogIndexPage() {
           <div className="mx-auto max-w-[600px] rounded-card border border-border-default bg-surface-card p-xl text-center">
             <p className="font-label text-eyebrow uppercase tracking-widest text-accent-cyan">First guides coming soon</p>
             <p className="mt-sm font-body text-body-sm text-text-secondary">
-              In the meantime, see how Litsaber is built.
+              In the meantime, see the device.
             </p>
             <Link
-              href="/the-tech"
+              href="/shop/litsaber-og"
               className="mt-md inline-block font-label text-eyebrow uppercase tracking-widest text-text-primary underline underline-offset-4 hover:text-accent-cyan"
             >
-              The tech →
+              Shop Litsaber →
             </Link>
           </div>
         ) : (

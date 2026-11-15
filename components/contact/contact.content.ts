@@ -100,7 +100,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
             type: "ordered-list",
             items: [
               "Back off a quarter to half turn. Our 510 connection is engineered for broad compatibility, with a center pin depth tested at a midpoint that works for most carts. Some carts (especially deeper-pin formats) hit cleanest when threaded back a quarter to half turn from fully tightened. Try this first.",
-              "Try a different voltage. 2.4V (green) for rosin and live resin. 2.8V (blue) for cured resin and hybrids. 3.2V (red) for distillate and liquid diamonds. Mismatched voltage is a common cause of weak hits.",
+              "Try a different voltage. 2.4V (green) for thinner formulas. 2.8V (blue) for most carts. 3.2V (red) for thicker formulas. Mismatched voltage is a common cause of weak hits.",
               "Check the cart and battery. Make sure the cart is properly seated. Make sure your battery is charged (press the button 4 times quickly to check).",
               "Try a different cart. If the issue persists with a different cart that's known to work, contact us. It may be a device issue.",
             ],
@@ -132,7 +132,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
             items: [
               "Store the device upright when not in use. Carts can leak when stored on their side or upside down.",
               "Don't overtighten. Over-tightening can crack cart seals.",
-              "Check the cart itself. Some carts leak straight from the dispensary due to manufacturing variability. Try a fresh cart.",
+              "Check the cart itself. Some carts leak straight out of the package due to manufacturing variability. Try a fresh cart.",
               "Avoid temperature extremes. Heat (a hot car) thins the oil and increases leaking.",
             ],
           },
@@ -247,7 +247,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Every vape battery has a max draw duration. A safety floor that pauses the heater after a sustained pull. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer you hold the pull, the more the lights build, until the device peaks in Blinker Mode.",
+            text: "Every 510 battery has a max draw duration. A safety floor that pauses the heater after a sustained pull. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer you hold the pull, the more the lights build, until the device peaks in Blinker Mode.",
           },
           {
             type: "paragraph",
@@ -277,7 +277,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Litsaber is sold as a 510-thread battery accessory. We don't produce, manufacture, or distribute cannabis or any oil. The device is not intended for use with nicotine, e-juice, or e-liquids. We strongly encourage sourcing carts from licensed dispensaries to ensure oil quality and lab testing.",
+            text: "Litsaber is sold as a 510-thread battery accessory. We don't produce, manufacture, or distribute cannabis or any oil. The device is not intended for use with nicotine, e-juice, or e-liquids. We strongly encourage sourcing carts from licensed, lab-tested retailers.",
           },
           {
             type: "paragraph",
@@ -319,8 +319,8 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
               "Aluminum and brass at the connection, polycarbonate and reinforced foam at the light. Drop-resistant build.",
               "800mAh cobalt cell with 1.48Wh energy capacity and 300+ recharge cycles.",
               "Custom-engineered 510 connection with 4.0mm center pin depth, tested for 95 to 99% cart compatibility.",
-              "Three-voltage system (2.4V / 2.8V / 3.2V) mapped to specific oil types.",
-              "Designed in Los Angeles, manufactured by Dopex, an established vaporization hardware partner.",
+              "Three-voltage system (2.4V / 2.8V / 3.2V) mapped to thinner and thicker formulas.",
+              "Designed in Los Angeles, manufactured by Dopex, an established 510 hardware partner.",
             ],
           },
           {
@@ -346,7 +346,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Different products for different moments. If you want to vape without anyone noticing, Danksaber is the right call. If you want the device to be the centerpiece of the night, that's Litsaber.",
+            text: "Different products for different moments. If you want to stay unnoticed, Danksaber is the right call. If you want the device to be the centerpiece of the night, that's Litsaber.",
           },
         ],
       },
@@ -413,7 +413,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "We work with dispensaries, smoke shops, and lifestyle retailers. Wholesale starts at 5 units with tiered pricing from $24/unit. Free display case at 80+ units.",
+            text: "We work with smoke shops, specialty retailers, and lifestyle stores. Wholesale starts at 5 units with tiered pricing from $24/unit. Free display case at 80+ units.",
           },
           {
             type: "paragraph",
