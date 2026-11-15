@@ -1927,7 +1927,8 @@ comes with it:
 - **The age gate is gone.** The hard-wall modal, its head script, the cookie
   env vars, the UI-store state, the `age_gate_confirmed` event and the
   Playwright check script are all removed. The 21+ rule now lives on the new
-  Age Policy page, in the Terms, and in the footer disclaimer, and a purchase
+  Age Policy page and in the Terms (the footer paragraph was removed the same
+  day, once the Disclaimer and Age Policy pages carried it), and a purchase
   certifies age. PostHog funnels that started at `age_gate_confirmed` need a
   new first step.
 - **Disclaimer and Age Policy pages** at `/policies/disclaimer` and
@@ -1937,6 +1938,34 @@ comes with it:
   pricing, lithium battery handling, limitation of liability) but written in
   our words and our numbers. The pricing section explains the $49.99 MSRP
   anchor as a reference price, not a former price.
+
+### FAQs rewritten around "aroma cartridges" (2026-11-15)
+
+The homepage Common Questions and the Contact FAQ still read like a cannabis
+accessory: "carts", "hits", "oil", "heater". A competitor running Meta ads
+frames the same product as an aromatherapy device and never uses those words:
+"aroma cartridges", "sessions", "temperature settings". Both FAQ sets, the
+shared compatibility statement, the PDP spec accordion and the homepage
+Under the Hood cards now use "aroma cartridge" or "cartridge" for the thing
+that screws on, "draw" for what the user does, and "heating element" for what
+the device does. The compliance line ("we do not distribute cannabis or any
+oil") is unchanged.
+
+The homepage set also grew from six questions to seven, borrowing two of the
+competitor's most useful ones: "How do I use it?" (the button sequence, pulled
+from the activation guide) and "What's in the box?" (from the PDP accordion,
+no cable by design), plus "Can I use it without the lights?" for Stealth
+Mode, which is the discretion question their shoppers ask.
+
+### Footer paragraph out, sticky buy bar clearance (2026-11-15)
+
+Two owner notes from a phone screenshot. The footer's compliance paragraph is
+gone: the Disclaimer and Age Policy pages now say it, and the paragraph was
+itself a cannabis signal on every page. And on the product page the mobile
+sticky buy bar sat over the copyright line and the policy links. The bar now
+toggles `has-sticky-buy` on `<body>` while it is showing, and the footer gets
+bottom padding under 1024px when that class is present, so the last line
+scrolls clear of the bar.
 
 ## Open Questions (rolling)
 

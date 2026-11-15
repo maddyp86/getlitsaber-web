@@ -89,56 +89,56 @@ export interface FaqCategory {
 export const FAQ_CATEGORIES: FaqCategory[] = [
   {
     index: "/01",
-    title: "CARTS & PERFORMANCE",
+    title: "CARTRIDGES & PERFORMANCE",
     items: [
       {
-        question: "My cart isn't hitting well. What can I try?",
+        question: "My cartridge isn't performing well. What can I try?",
         defaultOpen: true,
         answer: [
           { type: "paragraph", text: "Try these in order:" },
           {
             type: "ordered-list",
             items: [
-              "Back off a quarter to half turn. Our 510 connection is engineered for broad compatibility, with a center pin depth tested at a midpoint that works for most carts. Some carts (especially deeper-pin formats) hit cleanest when threaded back a quarter to half turn from fully tightened. Try this first.",
-              "Try a different voltage. 2.4V (green) for thinner formulas. 2.8V (blue) for most carts. 3.2V (red) for thicker formulas. Mismatched voltage is a common cause of weak hits.",
-              "Check the cart and battery. Make sure the cart is properly seated. Make sure your battery is charged (press the button 4 times quickly to check).",
-              "Try a different cart. If the issue persists with a different cart that's known to work, contact us. It may be a device issue.",
+              "Back off a quarter to half turn. Our 510 connection is engineered for broad compatibility, with a center pin depth tested at a midpoint that works for most aroma cartridges. Some cartridges (especially deeper-pin formats) perform best when threaded back a quarter to half turn from fully tightened. Try this first.",
+              "Try a different temperature. 2.4V (green) for thinner formulas. 2.8V (blue) for most cartridges. 3.2V (red) for thicker formulas. A mismatched setting is a common cause of weak performance.",
+              "Check the cartridge and the battery. Make sure the cartridge is properly seated and the battery is charged (press the button 4 times quickly to check).",
+              "Try a different cartridge. If the issue persists with a cartridge that's known to work, contact us. It may be a device issue.",
             ],
           },
         ],
       },
       {
-        question: "What carts work with Litsaber?",
+        question: "What aroma cartridges work with Litsaber?",
         answer: [
           {
             type: "paragraph",
-            text: "Litsaber's 510 connection is engineered for 95 to 99% cartridge compatibility across the major brands. We support standard 510-thread cartridges from 10.5mm to 14.5mm diameter. Half-gram, full-gram, and 2g carts all fit.",
+            text: "Litsaber takes standard 510-thread aroma cartridges, and the connection is engineered for 95 to 99% compatibility across the major brands. Cartridges from 10.5mm to 14.5mm in diameter fit, in half-gram, full-gram and 2g sizes.",
           },
           {
             type: "paragraph",
-            text: "Our center pin depth (4.0mm) is set at a tested midpoint that accommodates the full range of cart designs, from shallower-pin carts to deeper-pin formats. Because cart manufacturers vary in pin protrusion, some carts hit cleanest when threaded back a quarter to half turn from fully tightened. That's the inherent tradeoff of designing for broad compatibility rather than optimizing for one brand.",
+            text: "Our center pin depth (4.0mm) is set at a tested midpoint that accommodates the full range of cartridge designs, from shallower-pin to deeper-pin formats. Because cartridge manufacturers vary in pin protrusion, some perform best when threaded back a quarter to half turn from fully tightened. That's the inherent tradeoff of designing for broad compatibility rather than optimizing for one brand.",
           },
         ],
       },
       {
-        question: "My cart is leaking. Is that the device?",
+        question: "My cartridge is leaking. Is that the device?",
         answer: [
           {
             type: "paragraph",
-            text: "Leaking is almost always cart-related, not device-related. A few things to check:",
+            text: "Leaking is almost always the cartridge, not the device. A few things to check:",
           },
           {
             type: "ordered-list",
             items: [
-              "Store the device upright when not in use. Carts can leak when stored on their side or upside down.",
-              "Don't overtighten. Over-tightening can crack cart seals.",
-              "Check the cart itself. Some carts leak straight out of the package due to manufacturing variability. Try a fresh cart.",
-              "Avoid temperature extremes. Heat (a hot car) thins the oil and increases leaking.",
+              "Store the device upright when not in use. Cartridges can leak when stored on their side or upside down.",
+              "Don't overtighten. Over-tightening can crack cartridge seals.",
+              "Check the cartridge itself. Some leak straight out of the package due to manufacturing variability. Try a fresh one.",
+              "Avoid temperature extremes. Heat (a hot car) thins the contents and increases leaking.",
             ],
           },
           {
             type: "paragraph",
-            text: "If oil has leaked into the 510 connection, clean it with a dry cotton swab. Avoid liquid cleaners.",
+            text: "If anything has leaked into the 510 connection, clean it with a dry cotton swab. Avoid liquid cleaners.",
           },
         ],
       },
@@ -225,15 +225,15 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         ],
       },
       {
-        question: "My Litsaber isn't lighting up when I hit it.",
+        question: "My Litsaber isn't lighting up when I breathe in.",
         answer: [
           {
             type: "ordered-list",
             items: [
-              "Check if you're in Stealth Mode. Stealth Mode turns the LEDs off while keeping the heater active. Hold the button for 4 to 5 seconds to exit. The device will return to Glowstick Mode.",
+              "Check if you're in Stealth Mode. Stealth Mode turns the LEDs off while keeping the heating element active. Hold the button for 4 to 5 seconds to exit. The device will return to Glowstick Mode.",
               "Check the battery. Press the button 4 times quickly to see remaining charge.",
-              "Check the cart seating. A loose or improperly seated cart can prevent the airflow sensor from triggering. Try removing and reseating the cart, or back off a quarter turn.",
-              "Try a deeper pull. Auto-inhalation requires sufficient airflow through the device. A very light pull may not activate the heater.",
+              "Check the cartridge seating. A loose or improperly seated cartridge can prevent the airflow sensor from triggering. Try removing and reseating it, or back off a quarter turn.",
+              "Try a deeper breath. The breath sensor needs enough airflow through the device. A very light breath may not activate the heating element.",
             ],
           },
         ],
@@ -243,15 +243,15 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "No. That's an intentional feature called Blinker Mode, the signature payoff inside Litsaber Mode.",
+            text: "No. That's an intentional feature, the rainbow strobe finale inside Litsaber Mode.",
           },
           {
             type: "paragraph",
-            text: "Every 510 battery has a max draw duration. A safety floor that pauses the heater after a sustained pull. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer you hold the pull, the more the lights build, until the device peaks in Blinker Mode.",
+            text: "Every 510 battery has a cutoff on a sustained breath, a safety floor that pauses the heating element. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer the breath, the more the lights build, until the device peaks in the strobe.",
           },
           {
             type: "paragraph",
-            text: "To exit: stop pulling. The device resets automatically after a few seconds.",
+            text: "To exit: release the breath. The device resets automatically after a few seconds.",
           },
         ],
       },
@@ -269,15 +269,15 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
             type: "ordered-list",
             items: [
               "Overcharge and over-discharge protection on the battery",
-              "Short-circuit protection on the heater circuit",
+              "Short-circuit protection on the heating circuit",
               "Vibration and drop protection built into the body",
               "Auto shut-off after 300 seconds of inactivity in certain modes",
-              "Max-draw safety floor that pauses the heater on extended pulls (this is the Blinker Mode behavior)",
+              "Safety floor that pauses the heating element on a sustained breath (the rainbow strobe finale)",
             ],
           },
           {
             type: "paragraph",
-            text: "Litsaber is sold as a 510-thread battery accessory. We don't produce, manufacture, or distribute cannabis or any oil. The device is not intended for use with nicotine, e-juice, or e-liquids. We strongly encourage sourcing carts from licensed, lab-tested retailers.",
+            text: "Litsaber is sold as a 510-thread battery accessory. We don't produce, manufacture, or distribute cannabis or any oil. The device is not intended for use with nicotine, e-juice, or e-liquids. We strongly encourage sourcing aroma cartridges from licensed, lab-tested retailers.",
           },
           {
             type: "paragraph",
@@ -318,7 +318,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
               "41 individually-addressable LEDs beneath a polycarbonate diffuser. The whole device illuminates, not a tiny indicator.",
               "Aluminum and brass at the connection, polycarbonate and reinforced foam at the light. Drop-resistant build.",
               "800mAh cobalt cell with 1.48Wh energy capacity and 300+ recharge cycles.",
-              "Custom-engineered 510 connection with 4.0mm center pin depth, tested for 95 to 99% cart compatibility.",
+              "Custom-engineered 510 connection with 4.0mm center pin depth, tested for 95 to 99% cartridge compatibility.",
               "Three-voltage system (2.4V / 2.8V / 3.2V) mapped to thinner and thicker formulas.",
               "Designed in Los Angeles, manufactured by Dopex, an established 510 hardware partner.",
             ],
@@ -338,11 +338,11 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Danksaber is built around discretion. The cart hides inside the body of the device. Their priority is making the cart invisible.",
+            text: "Danksaber is built around discretion. The cartridge hides inside the body of the device. Their priority is making the cartridge invisible.",
           },
           {
             type: "paragraph",
-            text: "Litsaber is built around visibility. The cart sits exposed at the top, and the entire body of the device illuminates from a 41-LED array beneath a polycarbonate diffuser. The whole device glows, end to end. Our priority is making the device a piece of light to be seen with.",
+            text: "Litsaber is built around visibility. The cartridge sits exposed at the top, and the entire body of the device illuminates from a 41-LED array beneath a polycarbonate diffuser. The whole device glows, end to end. Our priority is making the device a piece of light to be seen with.",
           },
           {
             type: "paragraph",

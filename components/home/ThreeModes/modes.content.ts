@@ -12,7 +12,7 @@ export const MODES: Mode[] = [
   {
     title: "LITSABER MODE",
     titleColor: "white",
-    body: "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath: pull, and the device responds in real time.",
+    body: "Every breath triggers a unique light pattern in your chosen color. The lights are wired to you: breathe in, and the device responds in real time.",
     image: mediaUrl("home/litsaber_mode_poster.jpg"),
     video: videoUrl("home/litsaber_mode_v2.mp4"),
   },
@@ -34,16 +34,16 @@ export const MODES: Mode[] = [
 
 export const PULL_BUILD = [
   {
-    label: "THE PULL",
+    label: "THE BREATH",
     description:
-      "Each pull triggers a unique light pattern in your chosen color. The lights are wired to your breath. Pull, and the device responds in real time.",
+      "Every breath triggers a unique light pattern in your chosen color. The lights are wired to you. Breathe in, and the device responds in real time.",
     video: videoUrl("home/litsaber_mode_v2.mp4"),
     image: mediaUrl("home/litsaber_mode_poster.jpg"),
   },
   {
     label: "THE BUILD",
     description:
-      "Every device has a max draw. Litsaber turns the cutoff into a rainbow strobe — our signature performance moment hidden inside the safety floor.",
+      "Every 510 battery has a cutoff on a long breath. Litsaber turns that cutoff into a rainbow strobe, the signature moment hidden inside the safety floor.",
     video: videoUrl("home/litsaber-mode-build.mp4"),
     image: mediaUrl("home/litsaber_mode_build_poster.jpg"),
   },
