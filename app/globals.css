@@ -108,6 +108,15 @@
   }
 
   /* Prevent body scroll when drawer or modal is open */
+  /* The mobile sticky buy bar (components/product/StickyBuyBar.tsx) is fixed
+     to the bottom and lg:hidden. While it shows, the footer gets room beneath
+     its last line so the copyright and policy links stay reachable. */
+  @media (max-width: 1023px) {
+    body.has-sticky-buy footer {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
+    }
+  }
+
   body.scroll-locked {
     overflow: hidden;
   }

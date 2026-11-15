@@ -23,6 +23,9 @@ const BRAND_LINKS = [
 
 export default function Footer() {
   return (
+    // has-sticky-buy: the mobile buy bar (StickyBuyBar) adds this to <body>
+    // while it is showing, and globals.css pads the footer so the copyright
+    // and policy links are not hidden under the bar.
     <footer className="bg-background-primary"
       style={{ background: "linear-gradient(180deg, #150C2D 0%, #000 100%)" }}
       >
@@ -66,11 +69,8 @@ export default function Footer() {
 
         {/* Bottom section */}
         <div className="mt-section-y-mobile lg:mt-xl border-t border-surface-tint-white pt-lg space-y-lg">
-          {/* Compliance disclaimer */}
-          <p className="font-body text-[11px] sm:text-eyebrow text-text-muted leading-relaxed text-center">
-            Litsaber is sold as a 510-thread battery accessory. We do not produce, manufacture, or distribute cannabis. The device is not intended for use with nicotine, e-juice, or e-liquids. Not for sale to minors. Use responsibly and in accordance with local laws.
-          </p>
-
+          {/* The compliance statement that sat here moved to /policies/disclaimer
+              and /policies/age-policy (2026-11-15), linked below. */}
           {/* Payment badges */}
           <div className="flex items-center justify-center gap-sm flex-wrap">
             <MastercardBadge />

@@ -74,6 +74,12 @@ export default function StickyBuyBar({
   }, []);
 
   const hidden = ctaVisible || cartOpen || modalOpen;
+
+  // Tell the page the bar is showing so the footer can clear it (globals.css).
+  useEffect(() => {
+    document.body.classList.toggle("has-sticky-buy", !hidden);
+    return () => document.body.classList.remove("has-sticky-buy");
+  }, [hidden]);
   const quote = quoteOffer(qty, basePrice);
 
   const product = (
