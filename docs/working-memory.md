@@ -1913,6 +1913,31 @@ glowstick?" became "light up a glowstick?") and Matt's compatibility statement
 was considered and set aside: the competitor evidence says the page content is
 what gets reviewed, not the domain.
 
+### Nav to Shop only, Tech hidden, age gate down, two new policies (2026-11-15)
+
+Four owner decisions in one PR, all for the ad launch and the review that
+comes with it:
+
+- **Top nav is Shop only** (desktop and the mobile drawer). About moved to
+  the footer, where it already was; Home is the logo.
+- **The Tech page is hidden for now.** A temporary redirect in
+  `next.config.mjs` sends `/the-tech` to `/`, the hero spec pills and the
+  blog's empty state point at the product page instead, and the sitemap
+  lists it as excluded. The page's code stays so it can come back.
+- **The age gate is gone.** The hard-wall modal, its head script, the cookie
+  env vars, the UI-store state, the `age_gate_confirmed` event and the
+  Playwright check script are all removed. The 21+ rule now lives on the new
+  Age Policy page, in the Terms, and in the footer disclaimer, and a purchase
+  certifies age. PostHog funnels that started at `age_gate_confirmed` need a
+  new first step.
+- **Disclaimer and Age Policy pages** at `/policies/disclaimer` and
+  `/policies/age-policy`, linked from the footer and the policy sub-nav,
+  modeled on the coverage a competitor's pages have (as-is information,
+  adults only, FTC material-connection disclosure, reviews, struck-through
+  pricing, lithium battery handling, limitation of liability) but written in
+  our words and our numbers. The pricing section explains the $49.99 MSRP
+  anchor as a reference price, not a former price.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

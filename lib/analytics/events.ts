@@ -9,7 +9,6 @@ import type { OfferId } from "@/lib/cart/offers";
 // ---------------------------------------------------------------------------
 
 type FunnelEvents = {
-  age_gate_confirmed: Record<string, never>;
   // React threw the server HTML away and re-rendered on the client
   // (lib/analytics/hydration.ts). `code` is the React error number, or "dev".
   hydration_failed: { code: string; message: string };
@@ -120,7 +119,6 @@ export type PayloadFor<E extends keyof FunnelEvents> = FunnelEvents[E];
 
 // Locked event name constants — components reference EVENTS.x, never raw strings
 export const EVENTS = {
-  age_gate_confirmed: "age_gate_confirmed",
   hydration_failed: "hydration_failed",
   homepage_engaged: "homepage_engaged",
   product_viewed: "product_viewed",

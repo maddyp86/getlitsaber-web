@@ -6,7 +6,7 @@ import Link from "next/link";
 import { quoteOffer } from "@/lib/cart/offers";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { useAddToCart } from "@/lib/cart/useAddToCart";
-import { useIsCartOpen, useActiveModal, useIsAgeGateVisible } from "@/lib/ui/store";
+import { useIsCartOpen, useActiveModal } from "@/lib/ui/store";
 import { track, EVENTS, type AddSource } from "@/lib/analytics/events";
 import { mediaUrl } from "@/lib/media";
 
@@ -41,7 +41,6 @@ export default function StickyBuyBar({
   const [ctaVisible, setCtaVisible] = useState(true);
   const cartOpen = useIsCartOpen();
   const modalOpen = useActiveModal() !== null;
-  const ageGateUp = useIsAgeGateVisible();
   const addToCart = useAddToCart({ variantId, basePrice, source });
 
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function StickyBuyBar({
     };
   }, []);
 
-  const hidden = ctaVisible || cartOpen || modalOpen || ageGateUp;
+  const hidden = ctaVisible || cartOpen || modalOpen;
   const quote = quoteOffer(qty, basePrice);
 
   const product = (

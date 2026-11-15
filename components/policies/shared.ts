@@ -5,7 +5,7 @@ export const POLICIES_HERO = {
   headlineWhite: "THE",
   headlineCyan: "FINE PRINT",
   subline:
-    "Everything you need to know about ordering, returns, warranty, and how we handle your data. Plain language, no hidden surprises.",
+    "Everything you need to know about ordering, returns, warranty, who can buy, and how we handle your data. Plain language, no hidden surprises.",
   effectiveLabel: "EFFECTIVE: MAY 15, 2026",
 } as const;
 

@@ -8,7 +8,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import JudgemeScripts from "@/components/reviews/JudgemeScripts";
 import MetaPixel from "@/components/analytics/MetaPixel";
 import { headers } from "next/headers";
-import { AGE_GATE_HEAD_SCRIPT } from "@/lib/ageGate";
 import { HYDRATION_ERROR_HEAD_SCRIPT } from "@/lib/analytics/hydration";
 import { REVIEWS_ENABLED } from "@/lib/reviews";
 
@@ -48,7 +47,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      // The age gate head script sets data-age-ok on <html> before hydration.
+      // Browser extensions and third-party scripts can add attributes to
+      // <html> before hydration.
       suppressHydrationWarning
       className={[
         stellar.variable,
@@ -59,8 +59,6 @@ export default function RootLayout({
       ].join(" ")}
     >
       <head>
-        {/* Hides the age gate before first paint for verified visitors (lib/ageGate.ts). */}
-        <script dangerouslySetInnerHTML={{ __html: AGE_GATE_HEAD_SCRIPT }} />
         {/* Buffers React hydration errors, which fire before any effect runs
             (lib/analytics/hydration.ts); HydrationErrorTracker reports them. */}
         <script dangerouslySetInnerHTML={{ __html: HYDRATION_ERROR_HEAD_SCRIPT }} />

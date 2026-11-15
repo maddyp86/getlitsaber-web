@@ -52,15 +52,15 @@ See `docs/decisions/001-tool-stack-and-phasing.md` for the full rationale.
 |-------|------|
 | `/` | Homepage (12 sections, including its own buy section) |
 | `/shop/litsaber-og` | Product Detail Page |
-| `/the-tech` | Engineering deep-dive |
+| `/the-tech` | Engineering deep-dive (hidden for now, redirects to `/`) |
 | `/wholesale` | Wholesale program + HubSpot form |
 | `/about` | Founder story, team, manufacturing |
 | `/activate` | Post-purchase onboarding (QR-scanned from box) |
 | `/contact` | Contact options + Master FAQ |
-| `/policies/{refunds,warranty,shipping,terms,privacy}` | Policy pages |
+| `/policies/{shipping-returns,warranty,terms,privacy,disclaimer,age-policy}` | Policy pages |
 | `/cart` | Full cart page |
 
-Plus global: cart drawer, mobile nav drawer, age gate modal, floating promo popup.
+Plus global: cart drawer, mobile nav drawer. (The age gate was removed 2026-11-15; the 21+ rule lives on the Age Policy page and in checkout terms.)
 
 ---
 
@@ -93,13 +93,12 @@ Open `http://localhost:3000`.
 
 ## Environment variables
 
-See `.env.example` for the full list. Grouped by service: Shopify, ReviewInfra, PostHog, HubSpot, Supabase, site config, age gate, feature flags. Key required vars:
+See `.env.example` for the full list. Grouped by service: Shopify, ReviewInfra, PostHog, HubSpot, Supabase, site config, feature flags. Key required vars:
 
 - `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`, `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN`
 - `NEXT_PUBLIC_REVIEWINFRA_STORE_ID`
 - `NEXT_PUBLIC_POSTHOG_KEY`
 - `NEXT_PUBLIC_HUBSPOT_PORTAL_ID` + form IDs
-- `NEXT_PUBLIC_AGE_GATE_COOKIE_NAME` / `_MAX_AGE_DAYS` / `_EXIT_URL`
 - `NEXT_PUBLIC_META_PIXEL_ID` (optional; see below)
 
 Never commit `.env.local`. Production secrets live in Vercel's dashboard.

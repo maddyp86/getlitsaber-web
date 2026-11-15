@@ -28,6 +28,9 @@ const nextConfig = {
   // "back to store" link points at. Both 404'd on the new build.
   async redirects() {
     return [
+      // The Tech page is hidden for now (owner decision 2026-11-15, ad review).
+      // Temporary, so it can come back without a cached permanent redirect.
+      { source: "/the-tech", destination: "/", permanent: false },
       { source: "/product/:slug*", destination: "/shop/litsaber-og", permanent: true },
       { source: "/products/:slug*", destination: "/shop/litsaber-og", permanent: true },
       // The old WordPress gift guide still draws search traffic; the post now

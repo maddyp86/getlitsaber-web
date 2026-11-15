@@ -30,7 +30,6 @@ const policiesDate = isoDate(POLICIES_EFFECTIVE_DATE);
 export const STATIC_ROUTES: readonly StaticRoute[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/shop/litsaber-og", changeFrequency: "weekly", priority: 1 },
-  { path: "/the-tech", changeFrequency: "monthly", priority: 0.8 },
   { path: "/wholesale", changeFrequency: "monthly", priority: 0.7 },
   { path: "/about", changeFrequency: "monthly", priority: 0.6 },
   { path: "/activate", changeFrequency: "monthly", priority: 0.5 },
@@ -41,6 +40,8 @@ export const STATIC_ROUTES: readonly StaticRoute[] = [
   { path: "/policies/warranty", lastModified: policiesDate, changeFrequency: "yearly", priority: 0.3 },
   { path: "/policies/terms", lastModified: policiesDate, changeFrequency: "yearly", priority: 0.3 },
   { path: "/policies/privacy", lastModified: policiesDate, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/policies/disclaimer", lastModified: policiesDate, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/policies/age-policy", lastModified: policiesDate, changeFrequency: "yearly", priority: 0.3 },
 ];
 
 /**
@@ -55,6 +56,7 @@ export const EXCLUDED_ROUTES: Readonly<Record<string, string>> = {
   "/policies/shipping": "redirects to /policies/shipping-returns",
   "/policies/refunds": "redirects to /policies/shipping-returns",
   "/blog/[slug]": "listed per post from HubSpot",
+  "/the-tech": "hidden for now (2026-11-15), next.config.mjs redirects it to /",
 };
 
 /** Paths crawlers should not fetch at all. */

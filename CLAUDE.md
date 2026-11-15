@@ -236,11 +236,7 @@ Full version in `BRAND.md`. The non-negotiables:
 
 - **Stripe is prohibited** for this business (vape category). Payment is via Shopify's hosted checkout, which routes to Authorize.net behind the scenes.
 - **Cannabis brands can't sell DTC.** This site sells the device (a 510-thread battery accessory). It does not sell cartridges, oil, or any cannabis product. Compliance copy in the footer reflects this.
-- **21+ only.** Age gate is required and **compliance-critical**. It must:
-  - Sit at the top z-index level (above everything)
-  - Block site interaction until confirmed
-  - Set a cookie on confirmation to suppress re-prompts within session/period (final policy TBD)
-  - Provide an EXIT option that redirects to a safe external destination (e.g. `https://www.google.com`)
+- **21+ only, no age gate (owner decision 2026-11-15).** The hard-wall age gate was removed for the ad launch (a competitor running Meta ads has none). The 21+ rule is stated on `/policies/age-policy`, in the Terms, and in the footer disclaimer; purchasing certifies age. Do not reintroduce a gate without Matt's say-so.
 - **Shipping policy (locked 2026-10-05, ended the single-unit surcharge A/B):** a single unit pays $5.99 shipping; two or more ship free. The charge is enforced by the `shipping-surcharge-gate` Shopify Function, which reads the `_shipping_variant` cart attribute; the storefront stamps `surcharge` on every cart (`lib/shipping.ts`). Never claim free shipping without "on 2+" (the 2-pack card and a 2+ cart may say "Free shipping" on their own, since they already are 2+). Keep the `_shipping_variant=surcharge` stamp: without it the Function ships singles free.
 - **Quantity cap is 5 units per add-to-cart action** (Silver only; Gold-specific cap revisited at launch). There are no quantity discount tiers (retired 2026-10-05, ADR-009): every unit is $39.99, and the only multi-unit perk is free shipping on 2+.
 - **Promo / welcome discount — RETIRED 2026-10-05 (ADR-009).** The $5-off popup (`FloatingPromoPopup`) is deleted and the footer signup no longer offers a discount. No replacement discount. The `?discount=` passthrough stays for affiliate codes, which must be attribution-only in Shopify (any customer discount would break the $39.99 floor). Historical record follows. **(Was locked — ADR-004.)** Architecture A: HubSpot stores the contact and emails the code; Shopify owns one shared code (`WELCOME10`/`LITSABER`), "$10 off, one use per customer." Offer locked at **$10**. Two independent suppression layers: client cookie stops the popup (`COOKIE_SEEN` 72h on dismiss, `COOKIE_SUBSCRIBED` 365d on subscribe); Shopify "one per customer" stops code reuse. Frontend promo box (Figma `3770:1315`) is wired via `cartDiscountCodesUpdate` and ships as a pre-launch bundle with the backend, on Phase 5 instrumentation. Design the error state before building (absent in Figma).
@@ -315,7 +311,7 @@ The PDP reviews subsystem is powered by **Judge.me** (https://judge.me), our Sho
 | `/policies/privacy` | Privacy Policy |
 | `/cart` | Full cart page |
 
-Plus global: `<CartDrawer />`, `<MobileNavDrawer />`, `<AgeGateModal />`, `<FloatingPromoPopup />`.
+Plus global: `<CartDrawer />`, `<MobileNavDrawer />`. (`<AgeGateModal />` and `<FloatingPromoPopup />` are retired.) `/the-tech` is hidden for now (redirect to `/`); the top nav is Shop only, with About and the policies in the footer.
 
 ---
 
@@ -363,12 +359,7 @@ If any of these aren't true, the work isn't done — say so and propose what's l
   4. Flat $39.99 MAP on every unit, MSRP anchor, free shipping on 2+ (this entry, ADR-009).
 
 - **PDP long-form copy:** Rewritten 2026-10-05 (ADR-009, pending Matt's copy review). Originally: approved for rewrite. Current Figma copy ("Ignite your night... world's first... glow-up accessory") violates BRAND.md and must be replaced with copy matching the established voice. Rewrite happens during Phase 2 scaffold; flag for review before commit.
-- **Age gate behavior (locked):**
-  - First-visit cookie, **30-day duration** (industry standard for vape)
-  - **Hard wall** — site is blocked until "I AM 21+" is clicked
-  - "EXIT" link redirects to `https://www.google.com`
-  - Cookie name: `litsaber_age_verified=true`
-  - Re-prompt if cookie is missing, expired, or cleared
+- **Age gate:** removed 2026-11-15 (see Commerce constraints). History: 30-day cookie, hard wall, EXIT to google.com.
 
 ## When you're unsure
 
