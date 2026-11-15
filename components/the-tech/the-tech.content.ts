@@ -47,8 +47,8 @@ export const INHALE_BODY =
 export const BREATH_EYEBROW = "RESPONSIVE BY DESIGN";
 export const BREATH_HEADLINE = "Your breath controls the light.";
 export const BREATH_BODY_BLOCKS = [
-  "**Most 510 batteries give you smoke. Litsaber gives you a light show that you make.** The airflow sensor and the LED array are wired as one system,  when you pull, the lights respond in real time. Pull harder, the response intensifies. Stop pulling, the animation settles. ",
-  "This isn't a fixed pattern on a timer. It's the device **responding to your breath**, the same input that creates the cloud creates the light. Same draw, two outputs, one moment.",
+  "**Most 510 batteries do one thing. Litsaber gives you a light show that you make.** The airflow sensor and the LED array are wired as one system,  when you pull, the lights respond in real time. Pull harder, the response intensifies. Stop pulling, the animation settles. ",
+  "This isn't a fixed pattern on a timer. It's the device **responding to your breath**, the same breath that works the device creates the light. Same draw, two outputs, one moment.",
   "**In Litsaber Mode,** the response curves with you. The lights start dim and intensify the longer you hold the pull, dim, brighter, brighter, until the device peaks in a rainbow strobe that cycles through all ten colors. Every hit is a build. The longest pulls earn the biggest payoff.",
   "It's also how the device tells you what's happening. Pre-heat shows a different animation than a hit. The LED color tracks your voltage setting. **The whole device speaks back to you as you use it.**",
 ];
@@ -66,10 +66,10 @@ export const POWER_BODY = [
 // ─── Section 5 — Voltage ─────────────────────────────────────────────────────
 export const VOLTAGE_EYEBROW = "DIALED IN";
 export const VOLTAGE_HEADLINE_LINE1 = "Tuned for";
-export const VOLTAGE_HEADLINE_ACCENT = "the Oil";
+export const VOLTAGE_HEADLINE_ACCENT = "the Cart";
 export const VOLTAGE_BODY = [
   "Three voltage settings, mapped to what's actually in your cart.",
-  "**2.4V for rosin and live resin.** Lower power preserves terpenes and delivers smoother flavor. **2.8V for cured resin and hybrids.** Balanced vapor production and oil efficiency. **3.2V for distillate and liquid diamonds.** Dense clouds, stronger pull.",
+  "**2.4V for thinner formulas.** Lower power, smoother flavor. **2.8V, the balanced middle.** Even heat for most carts. **3.2V for thicker formulas.** More heat, stronger pull.",
   "Plus a pre-heat cycle for thicker products that need a moment to warm up. The setting you choose changes the experience and the LED color tells you exactly which voltage you're on.",
   ];
 
@@ -86,22 +86,22 @@ export const VOLTAGE_ROWS: VoltageRow[] = [
   {
     voltage: "2.4V",
     color: "#22c55e",
-    oilType1: "ROSIN",
-    oilType2: "LIVE ROSIN",
+    oilType1: "LOW HEAT",
+    oilType2: "THINNER FORMULAS",
     ledColor: "Green",
   },
   {
     voltage: "2.8V",
     color: "#3b82f6",
-     oilType1: "CURED RESIN",
-    oilType2: "HYBRIDS",
+    oilType1: "MEDIUM HEAT",
+    oilType2: "MOST CARTS",
     ledColor: "Blue",
   },
   {
     voltage: "3.2V",
     color: "#ef4444",
-    oilType1: "DISTILLATE",
-    oilType2: "LIQUID DIAMONDS",
+    oilType1: "HIGH HEAT",
+    oilType2: "THICKER FORMULAS",
     ledColor: "Red",
   },
 ];
@@ -111,7 +111,7 @@ export const FIT_EYEBROW = "WORKS WITH WHAT YOU ALREADY BUY";
 export const FIT_HEADLINE_LINE1 = "Universal";
 export const FIT_HEADLINE_ACCENT = "Fit.";
 export const FIT_BODY = [
-  "510 thread, 10.5mm to 14.5mm diameter. Half-gram, full-gram, two-gram. **95 to 99% of standard 510 carts screw into the Litsaber** including distillate, rosin, live resin, cured resin, liquid diamonds, hybrids.",
+  "510 thread, 10.5mm to 14.5mm diameter. Half-gram, full-gram, two-gram. **95 to 99% of standard 510 carts screw into the Litsaber,** thin or thick, across the major brands.",
   "Whatever you're already buying, the device is built to accept it. No proprietary pods. No locked ecosystem. The cart you're holding right now probably fits.",
   "The connection sits behind the aluminum and brass top  protected, threaded, made to take repeat insertions without wearing down."
 ];

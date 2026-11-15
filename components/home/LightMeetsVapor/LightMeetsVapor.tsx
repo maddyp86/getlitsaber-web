@@ -44,9 +44,9 @@ export default function LightMeetsVapor() {
   return (
     <section
       ref={sectionRef}
-      id="light-meets-vapor"
+      id="light-meets-breath"
       className="relative w-full overflow-hidden [aspect-ratio:375/600] lg:[aspect-ratio:8/5]"
-      aria-label="Where Light and Vapor Meet"
+      aria-label="Where Light Meets Breath"
     >
       {/* Parallax background image — scaled up so edges don't show during travel */}
       <motion.div
@@ -88,7 +88,7 @@ export default function LightMeetsVapor() {
                 animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
                 transition={{ duration: 0.8, ease: EASE }}
               >
-                WHERE LIGHT <br/> AND VAPOR MEET
+                WHERE LIGHT <br/> MEETS BREATH
               </motion.h2>
             </div>
             {/* Body copy */}
@@ -104,7 +104,7 @@ export default function LightMeetsVapor() {
               animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
             >
-              Clean hits. Lit clouds. The lights catch the exhale on its way out, turning every hit into something you can actually see an experience.
+              Every pull lights the room. The lights build with your breath, turning every draw into something you can actually see.
             </motion.p>
           </div>
         </div>

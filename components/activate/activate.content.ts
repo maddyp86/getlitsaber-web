@@ -164,19 +164,19 @@ export const ACTIVATE_MODES = {
 
 export const ACTIVATE_PREHEAT = {
   eyebrow: "PRE-HEAT",
-  title: "WARM THE OIL",
-  intro: "For thicker oils that need a moment to flow.",
+  title: "WARM IT UP",
+  intro: "For thicker formulas that need a moment to flow.",
   cardLabel: "Pre-heat cycle",
   cardBadge: "9 SECONDS",
-  bestFor: "Best for distillate, liquid diamonds, or any cart that pulls cold.",
+  bestFor: "Best for thicker formulas, or any cart that pulls cold.",
 points: [
   { text: "Press the button 2 times quickly to start the pre-heat cycle.", emphasis: true },
-  { text: "The device pre-heats for 9 seconds at low voltage, gentle enough not to scorch the oil.", emphasis: false },
+  { text: "The device pre-heats for 9 seconds at low voltage, gentle enough not to scorch anything.", emphasis: false },
   { text: "Pre-heat stops automatically when you inhale or when the 9 seconds complete.", emphasis: true },
 ],
   callout: {
     lead: "You don\u2019t always need this.",
-    body: "Pre-heat is most useful in cold weather, with high-viscosity oils, or with carts that haven\u2019t been used in a while.",
+    body: "Pre-heat is most useful in cold weather, with thicker formulas, or with carts that haven\u2019t been used in a while.",
   },
   media: {
     src: "https://0ku6zb3bovdlowuq.public.blob.vercel-storage.com/videos/activate/pre-heat-1.mp4" as string | null,
@@ -189,7 +189,7 @@ points: [
 
 export const ACTIVATE_VOLTAGE = {
   eyebrow: "VOLTAGE",
-  title: "TUNE FOR THE OIL",
+  title: "TUNE FOR THE CART",
   intro:
     "Three voltage settings. The LED color tells you which one you\u2019re on. Press the button 3 times quickly to cycle.",
   rows: [
@@ -197,22 +197,22 @@ export const ACTIVATE_VOLTAGE = {
       voltage: "2.4V",
       hex: "#22C55E",
       colorName: "GREEN",
-      oils: "Resin / Live Resin",
-      body: "Preserves terpenes. Smooth flavor. Cool burn.",
+      oils: "Thinner formulas",
+      body: "Low heat. Smooth flavor. Cool burn.",
     },
     {
       voltage: "2.8V",
       hex: "#3B82F6",
       colorName: "BLUE",
-      oils: "Cured Resin / Hybrid Oils",
-      body: "Balanced vapor and oil efficiency. Medium burn.",
+      oils: "Most carts",
+      body: "Even heat. Balanced pull. Medium burn.",
     },
     {
       voltage: "3.2V",
       hex: "#EF4444",
       colorName: "RED",
-      oils: "Distillate / Liquid Diamonds",
-      body: "Dense clouds. Stronger pull. Warm burn.",
+      oils: "Thicker formulas",
+      body: "High heat. Stronger pull. Warm burn.",
     },
   ],
   media: {

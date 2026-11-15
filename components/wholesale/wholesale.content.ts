@@ -32,7 +32,7 @@ export const HERO_HEADLINE_LINE1 = "THE 510 BATTERY";
 export const HERO_HEADLINE_LINE2 = "YOU'VE BEEN";
 export const HERO_HEADLINE_ACCENT = "LOOKING FOR.";
 export const HERO_BODY =
-  "Litsaber is an interactive LED vape battery built to stand out at festivals, behind the counter, and in customer hands. Give your customers something worth showing off.";
+  "Litsaber is an interactive LED 510 battery built to stand out at festivals, behind the counter, and in customer hands. Give your customers something worth showing off.";
 export const HERO_CTA_PRIMARY = "GET WHOLESALE PRICING";
 export const HERO_CTA_SECONDARY = "SEE THE NUMBERS";
 
@@ -49,7 +49,7 @@ export const SELLS_HEADLINE_PART1 = "It doesn't sit on shelves.";
 export const SELLS_HEADLINE_PART2 = "It sells itself.";
 export const SELLS_BODY = [
   "Litsaber is built to shine, spark curiosity, and start conversations. Where most 510 batteries prioritize discretion, Litsaber leans into culture — nightlife, sessions, festivals, conversation pieces.",
-  "**Customers don't just buy it. They show it off.** Every use is a micro-advertisement for your store. The pen lights up at the bar, in the smoke session, at the festival and the next person in line asks where they got it.",
+  "**Customers don't just buy it. They show it off.** Every use is a micro-advertisement for your store. The device lights up at the bar, in the session, at the festival and the next person in line asks where they got it.",
   "This isn't a commodity 510 battery competing on price. It's a category of one.",
 ];
 
@@ -61,7 +61,7 @@ export const SELL_THROUGH_CARDS = [
   {
     icon: "lifestyle" as const,
     title: "Lifestyle accessory positioning",
-    body: "People buy Litsaber for festivals, parties, raves, and gifts. The vape function is the secondary purchase driver. The lights are the primary one.",
+    body: "People buy Litsaber for festivals, parties, raves, and gifts. The battery function is the secondary purchase driver. The lights are the primary one.",
   },
   {
     icon: "engineered" as const,
@@ -71,7 +71,7 @@ export const SELL_THROUGH_CARDS = [
   {
     icon: "gift" as const,
     title: "Natural gift item",
-    body: "Premium packaging and standout design make it a natural impulse buy and gift purchase, driving sales beyond your core vape customer.",
+    body: "Premium packaging and standout design make it a natural impulse buy and gift purchase, driving sales beyond your core 510 customer.",
   },
   {
     icon: "repeat" as const,
@@ -86,7 +86,7 @@ export const DEMAND_HEADLINE_LINE1 = "Demand is";
 export const DEMAND_HEADLINE_ACCENT = "Already There.";
 export const DEMAND_BODY = [
   "**2M+ organic TikTok views and growing.** Customers walk into shops asking for it, you just need to have it in stock.",
-  "Litsaber ran activations with **Waferz**, one of California's top multi-location dispensary groups. **The Jack Herer Experience party-bus roadshow**is putting the device in front of thousands of qualified buyers across California.",
+  "Litsaber ran activations with **Waferz**, one of California's top multi-location retail groups. **A touring California party-bus roadshow** is putting the device in front of thousands of qualified buyers across the state.",
   "This isn't a brand betting on retail to create demand. The demand is here. You're meeting it on your shelves.",
 ];
 

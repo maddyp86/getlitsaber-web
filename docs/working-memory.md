@@ -1894,6 +1894,25 @@ Open: `content_ids` is the numeric Shopify variant id. If the Meta catalog
 synced by Shopify keys items as `shopify_US_<product>_<variant>`, change
 `contentIdFor()` in `lib/metaPixel.ts`; it is the one place.
 
+### Copy sweep for ad review (2026-11-15)
+
+Meta and TikTok review the landing page as well as the ad, and the storefront
+named concentrates (rosin, live resin, distillate, liquid diamonds), dispensaries,
+vapor, clouds and smoke on most pages. A competitor running Meta ads to its main
+domain (Smyle Labs) uses none of those words: "510", "cart", "battery",
+"discreet". So the sweep replaced sector vocabulary with "510 battery", "cart",
+heat levels and "thinner / thicker formulas", and swapped vapor imagery in copy
+for breath and light ("Where light meets breath"). The three compliance
+disclaimers keep "cannabis" on purpose. `storefront-copy.test.ts` now guards the
+new vocabulary so it cannot drift back, with two exceptions it had to learn:
+"smoke shops" is a retail channel and `icons/cloud.png` is a filename.
+
+Two judgment calls flagged in the PR: the founder pull quote ("smoke a
+glowstick?" became "light up a glowstick?") and Matt's compatibility statement
+(concentrate names became "thin or thick"). A second domain for ad landing pages
+was considered and set aside: the competitor evidence says the page content is
+what gets reviewed, not the domain.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

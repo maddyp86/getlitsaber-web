@@ -34,7 +34,7 @@ export default function VoltageSection() {
   return (
     <section
       className="relative isolate overflow-hidden w-full bg-[#0A0619]"
-      aria-label="Tuned for the oil"
+      aria-label="Tuned for the cart"
     >
       <div className="mx-auto w-full max-w-content px-content py-section-y-mobile lg:py-section-y">
 <div className="flex flex-col lg:flex-row-reverse lg:items-stretch lg:justify-between lg:gap-16">
