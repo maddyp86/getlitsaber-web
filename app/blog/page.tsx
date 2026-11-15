@@ -10,7 +10,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Blog: 510 Batteries, Festivals and Gift Guides",
   description:
-    "Guides from the team behind Litsaber, the interactive 510 battery: voltage settings, festival gear, gift ideas and honest comparisons. For adults 21+.",
+    "Guides from the team behind Litsaber, the interactive 510 battery: voltage settings, festival gear, gift ideas and honest comparisons. For adults 18+.",
   alternates: { canonical: `${BLOG_ORIGIN}/blog` },
   openGraph: { url: `${BLOG_ORIGIN}/blog`, type: "website" },
 };

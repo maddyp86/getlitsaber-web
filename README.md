@@ -60,7 +60,7 @@ See `docs/decisions/001-tool-stack-and-phasing.md` for the full rationale.
 | `/policies/{shipping-returns,warranty,terms,privacy,disclaimer,age-policy}` | Policy pages |
 | `/cart` | Full cart page |
 
-Plus global: cart drawer, mobile nav drawer. (The age gate was removed 2026-11-15; the 21+ rule lives on the Age Policy page and in checkout terms.)
+Plus global: cart drawer, mobile nav drawer. (The age gate was removed 2026-11-15; the age rule, 18+ or the local legal age, lives on the Age Policy page and in checkout terms.)
 
 ---
 

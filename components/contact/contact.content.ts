@@ -281,7 +281,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "21+ only. Use responsibly and in accordance with your local laws.",
+            text: "18+ only. Use responsibly and in accordance with your local laws.",
           },
         ],
       },

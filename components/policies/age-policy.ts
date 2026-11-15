@@ -3,21 +3,21 @@ import type { Para } from "./shipping-returns";
 export type { Para };
 
 // Age policy. Written 2026-11-15 when the hard-wall age gate came down for the
-// ad launch: the 21+ rule now lives here, in the Terms, and in the footer
-// disclaimer, and a purchase certifies age.
+// ad launch: the age rule (18+, or the local legal age if higher; owner
+// decision 2026-11-15) lives here and in the Terms, and a purchase certifies age.
 
 export const QUICK_SUMMARY: Para = [
   { t: "b", v: "Quick summary:" },
   {
     t: "txt",
-    v: " You must be 21 or older to buy or use a Litsaber, or older if the law where you live sets a higher age. By ordering, you certify that you meet that age. We do not sell to minors, we may ask for proof of age at any time, and an order from a minor is a breach of our terms and will be cancelled.",
+    v: " You must be 18 or older to buy or use a Litsaber, or older if the law where you live sets a higher age. By ordering, you certify that you meet that age. We do not sell to minors, we may ask for proof of age at any time, and an order from a minor is a breach of our terms and will be cancelled.",
   },
 ];
 
 export const S01_PARA1: Para = [
   {
     t: "txt",
-    v: "Litsaber products are sold only to adults. To buy from this website, or to use a Litsaber, you must be the greater of: 21 years of age, the age of majority where you live, or the minimum legal age in your jurisdiction to purchase or use a 510-thread battery device.",
+    v: "Litsaber products are sold only to adults. To buy from this website, or to use a Litsaber, you must be the greater of: 18 years of age, the age of majority where you live, or the minimum legal age in your jurisdiction to purchase or use a 510-thread battery device.",
   },
 ];
 
@@ -45,7 +45,7 @@ export const S02_PARA2: Para = [
 export const S03_PARA1: Para = [
   {
     t: "txt",
-    v: "Litsaber is a 510-thread battery accessory. It does not contain nicotine, tobacco, cannabis or any other substance, and it is not intended for use with nicotine or e-liquid. Even so, it is a product for adults, and we have chosen to sell it only to adults 21 and over everywhere we ship.",
+    v: "Litsaber is a 510-thread battery accessory. It does not contain nicotine, tobacco, cannabis or any other substance, and it is not intended for use with nicotine or e-liquid. Even so, it is a product for adults, and we have chosen to sell it only to adults 18 and over everywhere we ship.",
   },
 ];
 

@@ -40,7 +40,8 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           text: "41 individually addressable LEDs respond to your breath in real time. The longer the breath, the brighter it builds. Built to be the thing the stranger across the bar walks over to ask about.",
         },
         {
-          lead: "Cartridge-agnostic.",
+          // Plain words, the way the category talks about fit (2026-11-15).
+          lead: "Fits almost any 510 cartridge.",
           text: COMPATIBILITY_STATEMENT,
         },
         {
@@ -120,7 +121,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           bullets: [
             "Overcharge, over-discharge, short-circuit, vibration, and drop protection",
             "Auto-cutoff on a sustained breath, with a rainbow strobe finale",
-            "21+ only. Not for use with nicotine or e-liquid",
+            "18+ only. Not for use with nicotine or e-liquid",
           ],
         },
       ],
