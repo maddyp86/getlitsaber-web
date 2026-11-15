@@ -14,7 +14,7 @@ import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
-import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
+import { buildCheckoutHref } from "@/lib/cart/checkoutHref";
 
 interface BundleAndCTAProps {
   qty: number;
@@ -69,8 +69,8 @@ export default function BundleAndCTA({
   }
 
   // Buy Now checks out exactly the selected offer in its own cart, so units
-  // already in the shopper's cart never ride along, and an affiliate
-  // ?discount= code travels with it as it does from the cart.
+  // already in the shopper's cart never ride along, and the affiliate
+  // ?discount= code and landing utm_* / fbclid travel with it as from the cart.
   async function handleBuyNow() {
     setBuyNowLoading(true);
     try {
@@ -91,8 +91,8 @@ export default function BundleAndCTA({
         tier_price: getLinePrice(result.qty, basePrice),
         offer: offerForQty(result.qty),
       });
-      trackCheckoutHandoff("buy_now", result.lineTotal, result.qty);
-      window.location.href = appendDiscountToCheckoutUrl(result.checkoutUrl);
+      trackCheckoutHandoff("buy_now", result.lineTotal, result.qty, [{ variantId, quantity: result.qty }]);
+      window.location.href = buildCheckoutHref(result.checkoutUrl);
     } finally {
       setBuyNowLoading(false);
     }

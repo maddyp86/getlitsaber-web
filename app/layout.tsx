@@ -6,6 +6,7 @@ import PostHogProvider from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import JudgemeScripts from "@/components/reviews/JudgemeScripts";
+import MetaPixel from "@/components/analytics/MetaPixel";
 import { headers } from "next/headers";
 import { AGE_GATE_HEAD_SCRIPT } from "@/lib/ageGate";
 import { HYDRATION_ERROR_HEAD_SCRIPT } from "@/lib/analytics/hydration";
@@ -68,6 +69,8 @@ export default function RootLayout({
             PageSpeed flagged it. */}
       </head>
       <body className="font-body bg-background-primary text-text-primary antialiased">
+        {/* Meta Pixel: renders nothing unless NEXT_PUBLIC_META_PIXEL_ID is set. */}
+        <MetaPixel />
         {/* Judge.me only loads while reviews are shown (lib/reviews.ts). */}
         {REVIEWS_ENABLED && <JudgemeScripts />}
         <PostHogProvider>

@@ -16,7 +16,7 @@ import { useIsCartOpen, useCartUIActions } from "@/lib/ui/store";
 import { TrustBadges } from "@/components/cart/TrustBadges";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
-import { appendDiscountToCheckoutUrl } from "@/lib/hooks/useDiscount";
+import { buildCheckoutHref } from "@/lib/cart/checkoutHref";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
 import { getMsrpLinePrice } from "@/lib/cart/pricing";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
@@ -348,8 +348,8 @@ export default function CartDrawer() {
                 disabled={!checkoutUrl}
               onClick={() => {
                 if (checkoutUrl) {
-                  trackCheckoutHandoff("drawer", subtotal, itemCount);
-                  window.location.href = appendDiscountToCheckoutUrl(checkoutUrl);
+                  trackCheckoutHandoff("drawer", subtotal, itemCount, items.map((i) => ({ variantId: i.variantId, quantity: i.qty })));
+                  window.location.href = buildCheckoutHref(checkoutUrl);
                 }
               }}
                 className={`w-full py-4 font-label font-bold text-text-primary rounded-md transition-opacity active:opacity-80 ${!checkoutUrl ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 cursor-pointer"}`}

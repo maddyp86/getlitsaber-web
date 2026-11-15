@@ -22,7 +22,7 @@ import { getCartAnalyticsId } from "@/lib/analytics/identify";
 import { SHIPPING_ATTRIBUTE_VALUE } from "@/lib/shipping";
 import { getChannelAttribution } from "@/lib/analytics/channel";
 import { isInternalBrowser } from "@/lib/analytics/attribution";
-import { getLinePrice, clampTotalToFloor, isBelowFloor, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
+import { getLinePrice, getDisplayUnitPrice, clampTotalToFloor, isBelowFloor, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import { track, EVENTS } from "@/lib/analytics/events";
 import { mediaUrl } from "@/lib/media";
 import { shopifyFetch } from "@/lib/shopify/client";
@@ -65,7 +65,9 @@ export type BuyNowResult =
 
 /** Outcome of addItem, so callers can track and message honestly. */
 export type AddResult =
-  | { status: "added" }
+  // quantity: units this action actually added (after the cap); value: what
+  // those units cost, from the Shopify line total the mutation returned.
+  | { status: "added"; quantity: number; value: number }
   | { status: "capped" }
   | { status: "failed"; reason: string };
 
@@ -393,7 +395,9 @@ export const useCartStore = create<CartStore>()(
               await createCart();
             }
           }
-          return { status: "added" };
+          const added = get().items.find((i) => i.variantId === line.variantId);
+          const unitPrice = added && added.qty > 0 ? added.lineTotal / added.qty : getDisplayUnitPrice(line.price);
+          return { status: "added", quantity: effectiveAddQty, value: Math.round(unitPrice * effectiveAddQty * 100) / 100 };
         } catch (err) {
           console.error("[cart] addItem failed:", err);
           set({ items: prevItems, capReached: prevCapReached, pendingCartCreate: null });
