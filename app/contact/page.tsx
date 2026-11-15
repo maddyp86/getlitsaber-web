@@ -7,7 +7,7 @@ import ContactFaq from "@/components/contact/ContactFaq";
 export const metadata: Metadata = {
   title: "Contact Us | Litsaber",
   description:
-    "Reach us by email, phone, or message. Find answers to common questions about carts, battery, modes, orders, and wholesale.",
+    "Reach us by email, phone, or message. Find answers to common questions about aroma cartridges, battery, modes, orders, and wholesale.",
   openGraph: {
     title: "Contact Us | Litsaber",
     description:

@@ -22,7 +22,7 @@ export interface FeatureCard {
 export const FEATURE_CARDS: FeatureCard[] = [
   {
     title: "UNIVERSAL 510 THREADING",
-    body: `${COMPATIBILITY_STATEMENT} Half-gram, full-gram, and 2g carts all fit.`,
+    body: `${COMPATIBILITY_STATEMENT} Half-gram, full-gram and 2g cartridges all fit.`,
     accent: "cyan",
   },
   {
@@ -37,12 +37,12 @@ export const FEATURE_CARDS: FeatureCard[] = [
   },
   {
     title: "3-VOLTAGE SYSTEM",
-    body: "Three voltage settings, 2.4V, 2.8V and 3.2V, so you can match the heat to whatever cart you're running. Pre-heat warms thicker formulas before the first pull.",
+    body: "Three voltage settings, 2.4V, 2.8V and 3.2V, so you can match the heat to whatever cartridge you're running. Pre-heat warms thicker formulas before the first pull.",
     accent: "magenta",
   },
   {
     title: "DUAL ACTIVATION",
-    body: "Pull to hit with our auto-inhalation system then press our button to switch modes and cycle through color. No messy menus or complicated apps.",
+    body: "Draw to activate with our auto-inhalation system, then press the button to switch modes and cycle through color. No messy menus or complicated apps.",
     accent: "cyan",
   },
   {

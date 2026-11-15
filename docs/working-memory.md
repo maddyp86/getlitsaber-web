@@ -1938,6 +1938,24 @@ comes with it:
   our words and our numbers. The pricing section explains the $49.99 MSRP
   anchor as a reference price, not a former price.
 
+### FAQs rewritten around "aroma cartridges" (2026-11-15)
+
+The homepage Common Questions and the Contact FAQ still read like a cannabis
+accessory: "carts", "hits", "oil", "heater". A competitor running Meta ads
+frames the same product as an aromatherapy device and never uses those words:
+"aroma cartridges", "sessions", "temperature settings". Both FAQ sets, the
+shared compatibility statement, the PDP spec accordion and the homepage
+Under the Hood cards now use "aroma cartridge" or "cartridge" for the thing
+that screws on, "draw" for what the user does, and "heating element" for what
+the device does. The compliance line ("we do not distribute cannabis or any
+oil") is unchanged.
+
+The homepage set also grew from six questions to seven, borrowing two of the
+competitor's most useful ones: "How do I use it?" (the button sequence, pulled
+from the activation guide) and "What's in the box?" (from the PDP accordion,
+no cable by design), plus "Can I use it without the lights?" for Stealth
+Mode, which is the discretion question their shoppers ask.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

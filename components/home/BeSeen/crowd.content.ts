@@ -12,7 +12,7 @@ export const STAGES: Stage[] = [
   {
     eyebrow: "THE LIFESTYLE",
     headline: "BE SEEN ACROSS THE CROWD",
-    body: "Most batteries hide in your pocket. Litsaber is the thing the stranger across the bar walks over to ask about. The first thing your friend's friend notices. The conversation that starts before the cart does and keeps going long after.",
+    body: "Most batteries hide in your pocket. Litsaber is the thing the stranger across the bar walks over to ask about. The first thing your friend's friend notices. The conversation that starts before the session does and keeps going long after.",
     desktopImg: mediaUrl("home/litsaber-festival.jpg"),
     mobileImg: mediaUrl("home/litsaber-festival-mobile.jpg"),
   },

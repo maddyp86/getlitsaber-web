@@ -40,7 +40,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           text: "41 individually-addressable LEDs respond to your breath in real time. The longer you pull, the brighter it builds. Built to be the thing the stranger across the bar walks over to ask about.",
         },
         {
-          lead: "Cart-agnostic.",
+          lead: "Cartridge-agnostic.",
           text: COMPATIBILITY_STATEMENT,
         },
         {
@@ -83,17 +83,17 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           bullets: [
             "3 adjustable settings, color-coded",
             "2.4V (green LED), low heat for thinner formulas",
-            "2.8V (blue LED), medium heat for most carts",
+            "2.8V (blue LED), medium heat for most cartridges",
             "3.2V (red LED), high heat for thicker formulas",
           ],
         },
         {
-          label: "CART COMPATIBILITY",
+          label: "CARTRIDGE COMPATIBILITY",
           bullets: [
             "510-thread connection",
             "4.0mm center pin depth",
-            "Fits 10.5 to 14.5mm cart diameter",
-            "Fits 0.5g to 2g cart capacity",
+            "Fits 10.5 to 14.5mm cartridge diameter",
+            "Fits 0.5g to 2g cartridge capacity",
             "95 to 99% compatibility rate",
           ],
         },
