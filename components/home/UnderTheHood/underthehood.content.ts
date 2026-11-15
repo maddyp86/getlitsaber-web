@@ -37,12 +37,12 @@ export const FEATURE_CARDS: FeatureCard[] = [
   },
   {
     title: "3-VOLTAGE SYSTEM",
-    body: "Three voltage settings, 2.4V, 2.8V and 3.2V, so you can match the heat to whatever cartridge you're running. Pre-heat warms thicker formulas before the first pull.",
+    body: "Three voltage settings, 2.4V, 2.8V and 3.2V, so you can match the heat to whatever cartridge you're running. Pre-heat warms thicker formulas before the first breath.",
     accent: "magenta",
   },
   {
     title: "DUAL ACTIVATION",
-    body: "Draw to activate with our auto-inhalation system, then press the button to switch modes and cycle through color. No messy menus or complicated apps.",
+    body: "Breathe in to activate the sensor, then press the button to switch modes and cycle through color. No messy menus or complicated apps.",
     accent: "cyan",
   },
   {
@@ -54,7 +54,7 @@ export const FEATURE_CARDS: FeatureCard[] = [
 
 export const HERO_STATS = [
   { preLabel: "Up To", value: "4", label: "hours of\ncharge time" },
-  { preLabel: "Up To", value: "300", label: "draws per\nsession" },
+  { preLabel: "Up To", value: "300", label: "breaths per\nsession" },
 ];
 
 export interface SpecTile {

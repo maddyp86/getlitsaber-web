@@ -138,4 +138,4 @@ export const DESCRIPTION_HEADING = "The 510 battery people walk over to ask abou
 // TODO(copy review): rewrite pending approval. Replaces the Figma copy, which
 // used banned words and an off-brand weapon reference.
 export const DESCRIPTION_BODY =
-  "Designed for the night and built to outlast it. Litsaber is an interactive 510 battery with 41 LEDs that run the full length of the body and respond to every draw. Three modes, ten colors, and an 800 mAh cell that keeps the show going long after the set ends. Made for festivals, nightlife, concerts, and every moment worth showing off. A glowstick dies by sunrise. This doesn't.";
+  "Designed for the night and built to outlast it. Litsaber is an interactive 510 battery with 41 LEDs that run the full length of the body and respond to every breath. Three modes, ten colors, and an 800 mAh cell that keeps the show going long after the set ends. Made for festivals, nightlife, concerts, and every moment worth showing off. A glowstick dies by sunrise. This doesn't.";

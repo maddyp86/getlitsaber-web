@@ -92,15 +92,15 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
     title: "CARTRIDGES & PERFORMANCE",
     items: [
       {
-        question: "My cartridge isn't drawing well. What can I try?",
+        question: "My cartridge isn't performing well. What can I try?",
         defaultOpen: true,
         answer: [
           { type: "paragraph", text: "Try these in order:" },
           {
             type: "ordered-list",
             items: [
-              "Back off a quarter to half turn. Our 510 connection is engineered for broad compatibility, with a center pin depth tested at a midpoint that works for most aroma cartridges. Some cartridges (especially deeper-pin formats) draw best when threaded back a quarter to half turn from fully tightened. Try this first.",
-              "Try a different temperature. 2.4V (green) for thinner formulas. 2.8V (blue) for most cartridges. 3.2V (red) for thicker formulas. A mismatched setting is a common cause of a weak draw.",
+              "Back off a quarter to half turn. Our 510 connection is engineered for broad compatibility, with a center pin depth tested at a midpoint that works for most aroma cartridges. Some cartridges (especially deeper-pin formats) perform best when threaded back a quarter to half turn from fully tightened. Try this first.",
+              "Try a different temperature. 2.4V (green) for thinner formulas. 2.8V (blue) for most cartridges. 3.2V (red) for thicker formulas. A mismatched setting is a common cause of weak performance.",
               "Check the cartridge and the battery. Make sure the cartridge is properly seated and the battery is charged (press the button 4 times quickly to check).",
               "Try a different cartridge. If the issue persists with a cartridge that's known to work, contact us. It may be a device issue.",
             ],
@@ -116,7 +116,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
           },
           {
             type: "paragraph",
-            text: "Our center pin depth (4.0mm) is set at a tested midpoint that accommodates the full range of cartridge designs, from shallower-pin to deeper-pin formats. Because cartridge manufacturers vary in pin protrusion, some draw best when threaded back a quarter to half turn from fully tightened. That's the inherent tradeoff of designing for broad compatibility rather than optimizing for one brand.",
+            text: "Our center pin depth (4.0mm) is set at a tested midpoint that accommodates the full range of cartridge designs, from shallower-pin to deeper-pin formats. Because cartridge manufacturers vary in pin protrusion, some perform best when threaded back a quarter to half turn from fully tightened. That's the inherent tradeoff of designing for broad compatibility rather than optimizing for one brand.",
           },
         ],
       },
@@ -225,7 +225,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         ],
       },
       {
-        question: "My Litsaber isn't lighting up when I draw on it.",
+        question: "My Litsaber isn't lighting up when I breathe in.",
         answer: [
           {
             type: "ordered-list",
@@ -233,7 +233,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
               "Check if you're in Stealth Mode. Stealth Mode turns the LEDs off while keeping the heating element active. Hold the button for 4 to 5 seconds to exit. The device will return to Glowstick Mode.",
               "Check the battery. Press the button 4 times quickly to see remaining charge.",
               "Check the cartridge seating. A loose or improperly seated cartridge can prevent the airflow sensor from triggering. Try removing and reseating it, or back off a quarter turn.",
-              "Try a deeper draw. Auto-inhalation requires sufficient airflow through the device. A very light draw may not activate the heating element.",
+              "Try a deeper breath. The breath sensor needs enough airflow through the device. A very light breath may not activate the heating element.",
             ],
           },
         ],
@@ -243,15 +243,15 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         answer: [
           {
             type: "paragraph",
-            text: "No. That's an intentional feature called Blinker Mode, the signature payoff inside Litsaber Mode.",
+            text: "No. That's an intentional feature, the rainbow strobe finale inside Litsaber Mode.",
           },
           {
             type: "paragraph",
-            text: "Every 510 battery has a max draw duration. A safety floor that pauses the heating element after a sustained draw. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer you hold the pull, the more the lights build, until the device peaks in Blinker Mode.",
+            text: "Every 510 battery has a cutoff on a sustained breath, a safety floor that pauses the heating element. Most batteries just cut you off. Litsaber turns that moment into a rainbow strobe that cycles through all ten colors. The longer the breath, the more the lights build, until the device peaks in the strobe.",
           },
           {
             type: "paragraph",
-            text: "To exit: stop drawing. The device resets automatically after a few seconds.",
+            text: "To exit: release the breath. The device resets automatically after a few seconds.",
           },
         ],
       },
@@ -272,7 +272,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
               "Short-circuit protection on the heating circuit",
               "Vibration and drop protection built into the body",
               "Auto shut-off after 300 seconds of inactivity in certain modes",
-              "Max-draw safety floor that pauses the heating element on extended draws (this is the Blinker Mode behavior)",
+              "Safety floor that pauses the heating element on a sustained breath (the rainbow strobe finale)",
             ],
           },
           {

@@ -12,7 +12,7 @@ export interface FaqItem {
 }
 
 // Vocabulary (2026-11-15, ad review): "aroma cartridge" and "cartridge", never
-// "cart"; "draw" and "session", never "hit". The product is a 510 battery.
+// "cart"; "breath" and "session", never "hit", "pull" or "draw". The product is a 510 battery.
 export const FAQ_ITEMS: FaqItem[] = [
   {
     number: "/ 01",
@@ -30,7 +30,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     number: "/ 03",
     question: "How do I use it?",
     answer:
-      "Screw a standard 510-thread aroma cartridge onto the top, click the button 5 times to power on, and draw. The airflow sensor activates the device and the lights follow your breath. Click 3 times to cycle temperature, 2 times to pre-heat a thicker cartridge, and hold the button to switch between Litsaber, Glowstick and Stealth modes.",
+      "Screw a standard 510-thread aroma cartridge onto the top, click the button 5 times to power on, and breathe in. The breath sensor activates the device and the lights follow your breath. Click 3 times to cycle temperature, 2 times to pre-heat a thicker cartridge, and hold the button to switch between Litsaber, Glowstick and Stealth modes.",
     link: { label: "See the full setup guide.", href: "/activate" },
   },
   {

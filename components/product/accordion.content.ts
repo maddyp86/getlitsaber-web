@@ -37,7 +37,7 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
       items: [
         {
           lead: "Light-show first.",
-          text: "41 individually-addressable LEDs respond to your breath in real time. The longer you pull, the brighter it builds. Built to be the thing the stranger across the bar walks over to ask about.",
+          text: "41 individually addressable LEDs respond to your breath in real time. The longer the breath, the brighter it builds. Built to be the thing the stranger across the bar walks over to ask about.",
         },
         {
           lead: "Cartridge-agnostic.",
@@ -79,9 +79,9 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
           ],
         },
         {
-          label: "VOLTAGE",
+          label: "TEMPERATURE",
           bullets: [
-            "3 adjustable settings, color-coded",
+            "3 adjustable voltage settings, color-coded",
             "2.4V (green LED), low heat for thinner formulas",
             "2.8V (blue LED), medium heat for most cartridges",
             "3.2V (red LED), high heat for thicker formulas",
@@ -112,15 +112,15 @@ export const ACCORDION_ITEMS: AccordionItem[] = [
             "21.3 × 20.3 × 147mm",
             "56.5g (device) / 120g (with packaging)",
             "Materials: aluminum, brass, plastic and silicone, with a foam diffuser inside",
-            "Dual-mode activation: auto-draw + button",
+            "Dual activation: breath sensor + button",
           ],
         },
         {
           label: "SAFETY",
           bullets: [
             "Overcharge, over-discharge, short-circuit, vibration, and drop protection",
-            "Auto-cutoff at max draw (Blinker Mode)",
-            "21+ only — not for nicotine or e-juice",
+            "Auto-cutoff on a sustained breath, with a rainbow strobe finale",
+            "21+ only. Not for use with nicotine or e-liquid",
           ],
         },
       ],
