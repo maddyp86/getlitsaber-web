@@ -1,6 +1,6 @@
 import { COMPATIBILITY_STATEMENT } from "@/components/product/specs.content";
 
-export const EYEBROW = "BEFORE YOUR BUY";
+export const EYEBROW = "BEFORE YOU BUY";
 export const HEADLINE = "COMMON QUESTIONS";
 
 export interface FaqItem {
@@ -54,8 +54,14 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     number: "/ 07",
-    question: "What's in the box, and can I travel with it?",
+    question: "What's in the box?",
     answer:
-      "The Litsaber OG, a quick start guide and a QR code to the activation page. No charging cable, since any USB-C cable works. The device is TSA-compliant: a lithium battery rated for carry-on, not checked baggage. Aroma cartridges are subject to the laws where you are, so check before you fly. Orders ship within 2 business days anywhere in the US.",
+      "The Litsaber OG, a quick start guide and a QR code to the activation page. No charging cable, since any USB-C cable works and you already have one. Aroma cartridges are not included.",
+  },
+  {
+    number: "/ 08",
+    question: "Can I travel with it?",
+    answer:
+      "The device is TSA-compliant: a lithium battery rated for carry-on, not checked baggage. Aroma cartridges are subject to the laws where you are, so check before you fly. Orders ship within 2 business days anywhere in the US.",
   },
 ];
