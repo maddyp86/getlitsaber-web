@@ -41,12 +41,8 @@ export const RELATED_RESOURCES = [
     href: "/contact#faq",
     icon: "faq" as const,
   },
-  {
-    label: "Activate & Setup",
-    description: "Step-by-step setup guide for your new Litsaber.",
-    href: "/activate",
-    icon: "activate" as const,
-  },
+  // "Activate & Setup" was listed here until 2026-11-15. Owners reach the
+  // guide from the QR code in the box; it is no longer linked from the site.
 ] as const;
 
 export type RelatedResource = (typeof RELATED_RESOURCES)[number];

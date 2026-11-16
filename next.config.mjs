@@ -33,12 +33,24 @@ const nextConfig = {
       { source: "/the-tech", destination: "/", permanent: false },
       { source: "/product/:slug*", destination: "/shop/litsaber-og", permanent: true },
       { source: "/products/:slug*", destination: "/shop/litsaber-og", permanent: true },
-      // The old WordPress gift guide still draws search traffic; the post now
-      // lives on the HubSpot blog under the same slug.
+      // The old WordPress gift guide still draws search traffic. The HubSpot
+      // post it pointed at was unpublished 2026-11-15 (a cannabis accessory
+      // guide has no place on an ad-reviewed site), so both paths go to the
+      // blog index. Temporary, in case a replacement guide is written.
       {
         source: "/innovape-concepts-blog/cannabis-accessory-gifts-under-50",
-        destination: "/blog/cannabis-accessory-gifts-under-50",
-        permanent: true,
+        destination: "/blog",
+        permanent: false,
+      },
+      {
+        source: "/blog/innovape-concepts-blog/cannabis-accessory-gifts-under-50",
+        destination: "/blog",
+        permanent: false,
+      },
+      {
+        source: "/blog/cannabis-accessory-gifts-under-50",
+        destination: "/blog",
+        permanent: false,
       },
       // Short links for printed QR codes, one consistent UTM set per printed
       // item. Temporary (307) so a destination can change without reprinting.

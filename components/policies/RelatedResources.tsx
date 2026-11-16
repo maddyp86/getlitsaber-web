@@ -62,7 +62,7 @@ export default function RelatedResources() {
           NEED MORE HELP?
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-8">
           {RELATED_RESOURCES.map((resource) => {
             const Icon = ICONS[resource.icon];
             return (
