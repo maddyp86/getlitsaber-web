@@ -274,7 +274,7 @@ export const S06_PARA2: Para = [
 export const S07_PARA1: Para = [
   {
     t: "txt",
-    v: "By using this site, you represent that you are at least 21 years old (or the age of majority in your jurisdiction, whichever is higher). Our products are not intended for minors. We do not knowingly collect personal information from anyone under 18. If we learn we have collected personal information from a minor, we will delete it promptly.",
+    v: "By using this site, you represent that you are at least 18 years old (or the age of majority in your jurisdiction, whichever is higher). Our products are not intended for minors. We do not knowingly collect personal information from anyone under 18. If we learn we have collected personal information from a minor, we will delete it promptly.",
   },
 ];
 

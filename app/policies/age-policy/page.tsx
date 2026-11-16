@@ -21,7 +21,7 @@ import {
 export const metadata: Metadata = {
   title: "Age Policy",
   description:
-    "Litsaber is sold only to adults 21 and over, or older where local law requires. How age is certified at purchase and verified on request.",
+    "Litsaber is sold only to adults 18 and over, or older where local law requires. How age is certified at purchase and verified on request.",
 };
 
 const P = "font-body text-body-sm lg:text-body text-text-secondary leading-relaxed";

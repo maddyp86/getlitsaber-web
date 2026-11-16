@@ -11,7 +11,7 @@ export const QUICK_SUMMARY: Para = [
   { t: "b", v: "Quick summary:" },
   {
     t: "txt",
-    v: " Read this before you buy or use a Litsaber. The information on this site is provided as is and can change without notice. Litsaber is for adults 21 and over. Some of the content you see about Litsaber comes from people we have a relationship with, and we say so here. Struck-through prices are the manufacturer's suggested retail price, not a former sale price. The device contains a lithium battery, so handle it as described below. Our liability is limited as set out in our Terms of Service.",
+    v: " Read this before you buy or use a Litsaber. The information on this site is provided as is and can change without notice. Litsaber is for adults 18 and over. Some of the content you see about Litsaber comes from people we have a relationship with, and we say so here. Struck-through prices are the manufacturer's suggested retail price, not a former sale price. The device contains a lithium battery, so handle it as described below. Our liability is limited as set out in our Terms of Service.",
   },
 ];
 
@@ -30,10 +30,10 @@ export const S01_PARA2: Para = [
 ];
 
 export const S02_PARA1: Para = [
-  { t: "b", v: "Litsaber is for adults 21 and over." },
+  { t: "b", v: "Litsaber is for adults 18 and over." },
   {
     t: "txt",
-    v: " Our products are not intended for, marketed to, or sold to anyone under 21. The full rule, including how we handle age verification, is in our ",
+    v: " Our products are not intended for, marketed to, or sold to anyone under 18. The full rule, including how we handle age verification, is in our ",
   },
   { t: "link", v: "Age Policy", href: "/policies/age-policy" },
   {

@@ -1967,6 +1967,21 @@ toggles `has-sticky-buy` on `<body>` while it is showing, and the footer gets
 bottom padding under 1024px when that class is present, so the last line
 scrolls clear of the bar.
 
+### Age rule to 18, and "cartridge-agnostic" retired (2026-11-15)
+
+Owner call: the stated age is 18 (or the local legal age if higher), not 21,
+matching the competitor's age policy and their position that a 510 battery
+sold without nicotine is not a tobacco product. Changed everywhere the site
+said 21: Age Policy, Disclaimer, Terms, Privacy, the PDP safety spec, the
+Contact FAQ, the blog description and the affiliate terms. Note for later:
+federal Tobacco 21 applies to nicotine vaping products, which this device is
+sold as not for; the choice is the owner's.
+
+"Cartridge-agnostic" on the PDP features bullet was engineer-speak. The
+competitor's product page says "Compatible with 1g and 0.5g aroma
+cartridges" and "Fits almost all 0.5g and 1.0g cartridges", so the lead is
+now "Fits almost any 510 cartridge." followed by the compatibility statement.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

@@ -66,7 +66,7 @@ export const S01_PARA3: Para = [
 export const S02_PARA1: Para = [
   {
     t: "txt",
-    v: "Our products are intended for use only by individuals 21 years of age or older (or the legal age in your jurisdiction, whichever is higher).",
+    v: "Our products are intended for use only by individuals 18 years of age or older (or the legal age in your jurisdiction, whichever is higher).",
   },
 ];
 
@@ -75,7 +75,7 @@ export const S02_PARA2: Para = [
 ];
 
 export const S02_BULLETS: string[] = [
-  "You are at least 21 years old.",
+  "You are at least 18 years old.",
   "You are legally permitted to purchase vape-related products in your jurisdiction.",
   "You are using our products in compliance with all applicable laws.",
 ];

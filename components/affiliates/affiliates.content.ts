@@ -88,7 +88,7 @@ export const FIT_ITEMS = [
   "You post about nightlife, festivals, raves, or gear",
   "Your people trust what you recommend",
   "You'd rather earn on what you already post than chase brand deals",
-  "You're 21 or older",
+  "You're 18 or older",
 ] as const;
 
 export const NOFIT_LABEL = "WHAT THIS ISN'T";
@@ -122,7 +122,7 @@ export const TERMS_ROWS = [
 ] as const;
 
 export const TERMS_FINE_PRINT =
-  "Self-purchases and orders shipped to your own address don't count toward bonus milestones. All content must be directed at 21+ audiences and disclose the partnership per FTC guidelines. Full terms at signup.";
+  "Self-purchases and orders shipped to your own address don't count toward bonus milestones. All content must be directed at 18+ audiences and disclose the partnership per FTC guidelines. Full terms at signup.";
 
 // ─── Section 7 — Quick answers ───────────────────────────────────────────────
 export const FAQ_HEADLINE = "Quick Answers";

@@ -29,7 +29,7 @@ import {
 export const metadata: Metadata = {
   title: "Disclaimer",
   description:
-    "Litsaber website and product disclaimer: information provided as is, adults 21 and over, disclosure of paid and affiliate content, MSRP pricing, lithium battery handling, and limitation of liability.",
+    "Litsaber website and product disclaimer: information provided as is, adults 18 and over, disclosure of paid and affiliate content, MSRP pricing, lithium battery handling, and limitation of liability.",
 };
 
 const P = "font-body text-body-sm lg:text-body text-text-secondary leading-relaxed";
