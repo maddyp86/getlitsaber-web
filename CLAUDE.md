@@ -311,7 +311,7 @@ The PDP reviews subsystem is powered by **Judge.me** (https://judge.me), our Sho
 | `/policies/privacy` | Privacy Policy |
 | `/cart` | Full cart page |
 
-Plus global: `<CartDrawer />`, `<MobileNavDrawer />`. (`<AgeGateModal />` and `<FloatingPromoPopup />` are retired.) `/the-tech` is hidden for now (redirect to `/`); the top nav is Shop only, with About and the policies in the footer.
+Plus global: `<CartDrawer />`, `<MobileNavDrawer />`. (`<AgeGateModal />` and `<FloatingPromoPopup />` are retired.) `/the-tech` is hidden for now (redirect to `/`); the top nav is Home, Shop, Contact (in that order), with About and the policies in the footer.
 
 ---
 
