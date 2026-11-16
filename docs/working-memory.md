@@ -1919,7 +1919,9 @@ Four owner decisions in one PR, all for the ad launch and the review that
 comes with it:
 
 - **Top nav is Shop only** (desktop and the mobile drawer). About moved to
-  the footer, where it already was; Home is the logo.
+  the footer, where it already was; Home is the logo. (Revised the same day:
+  Matt asked for Home, Shop, Contact in that order once he saw the lone Shop
+  link live, so both navs now carry the three.)
 - **The Tech page is hidden for now.** A temporary redirect in
   `next.config.mjs` sends `/the-tech` to `/`, the hero spec pills and the
   blog's empty state point at the product page instead, and the sitemap

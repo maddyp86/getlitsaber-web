@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
+  // Meta Business Manager domain verification (added 2026-11-15 for the ad
+  // launch). It renders as a static <meta> in <head> on every page, which is
+  // what Meta's crawler needs; a tag injected by JavaScript fails the check.
+  verification: {
+    other: {
+      "facebook-domain-verification": "god5r5emem549zmxkwfoeqic2xcg90",
+    },
+  },
 };
 
 export default function RootLayout({
