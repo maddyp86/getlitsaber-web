@@ -83,7 +83,7 @@ export const S02_PARA3: Para = [
 ];
 
 export const S02_CALLOUT_LEADIN =
-  "Do not ship cannabis, cannabis concentrates or oils, or nicotine with any return.";
+  "Do not ship any cartridge, its contents, or nicotine with any return.";
 
 export const S02_CALLOUT_BODY =
   " We accept only the device. Returns received without prior contact may be delayed in processing.";

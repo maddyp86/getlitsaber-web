@@ -1982,6 +1982,26 @@ competitor's product page says "Compatible with 1g and 0.5g aroma
 cartridges" and "Fits almost all 0.5g and 1.0g cartridges", so the lead is
 now "Fits almost any 510 cartridge." followed by the compatibility statement.
 
+### Everything a reviewer can click: Shopify listing, blog, legal pages, footer (2026-11-15)
+
+The website copy was clean, but three things outside the page components
+were not. The Shopify product (which feeds the Meta catalog and the Facebook
+Shop) carried tags like "LED vape battery", "light up vape pen battery",
+"lightsaber vape pen" and "cart battery", and a description that said it
+"lights up like a lightsaber". Rewritten through the Shopify connection with
+the site's vocabulary; tags are now 510 battery, aroma cartridge battery,
+festival and rave accessory, and so on. The HubSpot blog had a cannabis
+accessory gift guide (unpublished, with its old URLs redirected to the blog
+index) and two comparison posts that said carts, vape, dispensaries, resin and
+clouds throughout; both were rewritten and republished with cartridges,
+formulas and breath. The Terms said "vape-related products" and "LED vape
+battery device"; Shipping & Returns listed cannabis in its return rules. The
+footer copyright now reads "Litsaber" rather than the LLC name (which has
+"vape" in it); the LLC name stays on the legal pages. The Activate link is
+gone from the footer and the policy pages' related resources, since owners
+reach the guide by QR code. Still open: the visuals (owner is handling them
+separately) and the Meta Business Manager setup, which only the owner can do.
+
 ## Open Questions (rolling)
 
 **Build-Phase-3 remainder — RESOLVED (built in the Commerce phases; Phase 3 handoff verified):**

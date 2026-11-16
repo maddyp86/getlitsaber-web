@@ -17,7 +17,8 @@ const SUPPORT_LINKS = [
 
 const BRAND_LINKS = [
   { label: "About", href: "/about" },
-  { label: "Activate", href: "/activate" },
+  // Activate is reached by the QR code in the box; owners do not need a
+  // footer link, and reviewers do not need to find the setup guide (2026-11-15).
   { label: "Blog", href: "/blog" },
 ] as const;
 
@@ -85,7 +86,7 @@ export default function Footer() {
           {/* Copyright + policy links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-sm">
             <p className="font-label text-[12px] sm:text-[14px] text-text-muted tracking-wide text-center sm:text-left">
-              © 2026 INNOVAPE CONCEPTS · LOS ANGELES
+              © 2026 LITSABER · LOS ANGELES
             </p>
             <div className="flex items-center justify-center sm:justify-end gap-xs flex-wrap">
               {[

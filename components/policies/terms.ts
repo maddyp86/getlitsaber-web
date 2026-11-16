@@ -76,7 +76,7 @@ export const S02_PARA2: Para = [
 
 export const S02_BULLETS: string[] = [
   "You are at least 18 years old.",
-  "You are legally permitted to purchase vape-related products in your jurisdiction.",
+  "You are legally permitted to purchase 510-thread battery products in your jurisdiction.",
   "You are using our products in compliance with all applicable laws.",
 ];
 
@@ -92,7 +92,7 @@ export const S02_PARA3: Para = [
 export const S03_PARA1: Para = [
   {
     t: "txt",
-    v: "Innovape Concepts LLC sells hardware products including, but not limited to, the Litsaber LED vape battery device, which is compatible with 510-thread cartridges.",
+    v: "Innovape Concepts LLC sells hardware products including, but not limited to, the Litsaber LED 510 battery device, which is compatible with 510-thread cartridges.",
   },
 ];
 
@@ -106,7 +106,7 @@ export const S03_PARA2: Para = [
 export const S03_PARA3: Para = [
   {
     t: "txt",
-    v: "Our products are intended for lawful use only. You are responsible for understanding and complying with all local, state, and federal laws regarding vape devices and related products. Improper use may result in injury or damage. Use at your own risk.",
+    v: "Our products are intended for lawful use only. You are responsible for understanding and complying with all local, state, and federal laws regarding 510-thread battery devices and related products. Improper use may result in injury or damage. Use at your own risk.",
   },
 ];
 
@@ -228,7 +228,7 @@ export const S08_PARA2: Para = [
 export const S08_SUBHEAD_2 = "General Returns";
 
 export const S08_PARA3: Para = [
-  { t: "txt", v: "Due to the nature of vape hardware products:" },
+  { t: "txt", v: "Due to the nature of battery hardware products:" },
 ];
 
 export const S08_BULLETS: string[] = [
