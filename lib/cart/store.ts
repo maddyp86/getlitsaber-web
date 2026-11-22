@@ -19,7 +19,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { detectDeviceType } from "@/lib/device";
 import { getCartAnalyticsId } from "@/lib/analytics/identify";
-import { SHIPPING_ATTRIBUTE_VALUE } from "@/lib/shipping";
+import { shippingAttributeValue } from "@/lib/shipping";
 import { getChannelAttribution } from "@/lib/analytics/channel";
 import { isInternalBrowser } from "@/lib/analytics/attribution";
 import { getLinePrice, getDisplayUnitPrice, clampTotalToFloor, isBelowFloor, MAX_QTY, BASE_UNIT_PRICE } from "@/lib/cart/pricing";
@@ -252,7 +252,7 @@ function buildCartAttributes(): AttributeInput[] {
   // UI while visible to the Function and the Order API. The delivery Function
   // charges a single unit $5.99 only when this reads "surcharge" (anything else
   // ships free), so every cart carries it now that the A/B has ended.
-  attributes.push({ key: "_shipping_variant", value: SHIPPING_ATTRIBUTE_VALUE });
+  attributes.push({ key: "_shipping_variant", value: shippingAttributeValue() });
 
   return attributes;
 }
@@ -550,7 +550,7 @@ export const useCartStore = create<CartStore>()(
           // only charges the $5.99 single-unit rate when it reads "surcharge".
           const needsShippingRestamp =
             cart.attributes?.find((a) => a.key === "_shipping_variant")?.value !==
-            SHIPPING_ATTRIBUTE_VALUE;
+            shippingAttributeValue();
 
           // Backfill attribution onto a cart that never got it. Carts are only
           // stamped at cartCreate, so one created before this shipped (or before

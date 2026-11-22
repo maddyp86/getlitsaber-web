@@ -19,6 +19,8 @@ import EmailSignupBanner from "@/components/global/EmailSignupBanner/EmailSignup
 import { getProductByHandle } from "@/lib/shopify/queries";
 import { BASE_UNIT_PRICE } from "@/lib/cart/pricing";
 import LazyMount from "@/components/primitives/LazyMount";
+import HolidayHero from "@/components/home/HolidayHero/HolidayHero";
+import { getActiveCampaign } from "@/lib/campaign/getActiveCampaign";
 
 export const metadata: Metadata = {
   title: "Litsaber — The Interactive 510 Battery",
@@ -28,7 +30,12 @@ const SILVER_SKU = "LTS-OG-SLV";
 const shopifyConfigured = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
 export default async function HomePage() {
-  const product = await getProductByHandle("litsaber-og");
+  // Holiday hero or the regular hero: one switch (lib/campaign). The regular
+  // <Hero /> is untouched and comes back the moment the campaign is off.
+  const [campaign, product] = await Promise.all([
+    getActiveCampaign(),
+    getProductByHandle("litsaber-og"),
+  ]);
   const silverVariant = product?.variants.edges
     .map((e) => e.node)
     .find((v) => v.sku === SILVER_SKU) ?? null;
@@ -46,7 +53,7 @@ export default async function HomePage() {
   return (
     <>
       <HomepageEngagementTracker />
-      <Hero />
+      {campaign ? <HolidayHero /> : <Hero />}
       <StatBar />
       {/* Below-the-fold sections are lazy-mounted: each renders only as it nears
           the viewport and unmounts once well past, so the full heavy DOM never

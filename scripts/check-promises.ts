@@ -5,13 +5,18 @@
 //
 //   pnpm check-promises                          # http://localhost:3000
 //   pnpm check-promises https://<preview>.vercel.app
+//   pnpm check-promises https://<preview>.vercel.app --holiday
+//
+// --holiday checks the Holiday Sale 2026 offer (ADR-012) instead of the
+// regular one: use it while the holiday switch is on for the site under test.
 //
 // Client-only UI (the cart drawer, a cart with items) is not in served HTML;
 // components/storefront-promises.test.ts covers that at the source level.
 
 import { findRetiredClaims } from "../lib/copy/retiredClaims";
 
-const BASE = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
+const HOLIDAY = process.argv.includes("--holiday");
+const BASE = (process.argv.slice(2).find((a) => !a.startsWith("--")) ?? "http://localhost:3000").replace(/\/$/, "");
 
 const PAGES = [
   "/shop/litsaber-og",
@@ -26,13 +31,12 @@ const PAGES = [
 ];
 
 // What the PDP must say (owner-confirmed, roadmap Phase 1 and ADR-009).
+const PDP_OFFER = HOLIDAY
+  ? ["$39.99", "$49.99", "$69.99", "$79.98", "Holiday Sale", "Free US shipping on every order"]
+  : ["$39.99", "$49.99", "$79.98", "$99.98", "+ $5.99 shipping", "Free shipping"];
+
 const PDP_REQUIRED = [
-  "$39.99",
-  "$49.99",
-  "$79.98",
-  "$99.98",
-  "+ $5.99 shipping",
-  "Free shipping",
+  ...PDP_OFFER,
   "SHIPS WITHIN 2 BUSINESS DAYS",
   "Orders ship within 2 business days.",
   "6-month limited warranty against manufacturing defects.",

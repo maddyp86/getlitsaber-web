@@ -7,6 +7,7 @@ import { quoteOffer } from "@/lib/cart/offers";
 import { getDisplayUnitPrice } from "@/lib/cart/pricing";
 import { viewContent, whenMetaPixelReady } from "@/lib/metaPixel";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
+import { useCampaign } from "@/lib/campaign/CampaignProvider";
 import GalleryBlock from "./GalleryBlock";
 import GalleryErrorBoundary from "./GalleryErrorBoundary";
 import StyleSelector from "./StyleSelector";
@@ -26,6 +27,7 @@ interface ProductDisplayProps {
 }
 
 export default function ProductDisplay({ variantId, available, surface, basePrice }: ProductDisplayProps) {
+  const campaign = useCampaign();
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [selectedQty, setSelectedQty] = useState(1);
@@ -104,7 +106,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
         // old 30px the top ~60px of the gallery sat under the navbar, which
         // swallowed clicks on the image, its zoom trigger, and the upper half
         // of the prev/next arrows.
-        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[110px]"
+        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[calc(110px+var(--announce-h))]"
         style={{ gap: "20px" }}
       >
         <GalleryErrorBoundary>
@@ -128,10 +130,19 @@ export default function ProductDisplay({ variantId, available, surface, basePric
               {PRODUCT_SUBTITLE}
             </p>
             {/* Shipping is shown on each offer card below, so it is not repeated here. */}
+            {campaign && (
+              <p
+                data-testid="pdp-sale-label"
+                className="self-start font-label text-[11px] tracking-[1px] uppercase text-text-primary border border-accent-cyan rounded-sm px-2 py-[3px]"
+              >
+                {campaign.saleName} · {campaign.copy.endsLabel}
+              </p>
+            )}
             <p data-testid="pdp-price">
               <MsrpPrice
                 price={quote.price}
                 msrp={quote.msrp}
+                anchorLabel={quote.anchorLabel}
                 msrpClassName="font-label text-[20px] text-text-muted"
                 priceClassName="font-label font-bold text-h3 text-text-primary [text-shadow:0_0_10px_theme(colors.cta.DEFAULT)]"
               />

@@ -59,7 +59,7 @@ export default function HeroMobile({ className }: HeroMobileProps) {
         <h1 className="text-center w-full">
           <span className="block font-display font-bold text-h2 text-text-primary leading-none tracking-tight drop-shadow-[0_0_100px_rgba(240,240,245,1)]">
             {HEADLINE_MOBILE.white}
-          </span>
+          </span>{" "}
           <span className="block font-accent font-normal text-h2 text-accent-cyan leading-none drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
             {HEADLINE_MOBILE.cyan}
           </span>

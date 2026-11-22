@@ -127,7 +127,7 @@ export default function HeroDesktop({ className }: HeroDesktopProps) {
         <h1 className="text-center w-full leading-[120px] tracking-tight">
           <span className="block font-display font-bold text-display-lg text-text-primary drop-shadow-[0_0_100px_rgba(255,255,255,0.75)]">
             {HEADLINE_DESKTOP.white}
-          </span>
+          </span>{" "}
           <span className="block font-accent font-normal text-display-accent text-accent-cyan drop-shadow-[0_0_50px_rgba(0,229,255,0.5)]">
             {HEADLINE_DESKTOP.cyan}
           </span>

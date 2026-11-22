@@ -15,6 +15,7 @@ import WaitlistForm from "@/components/forms/WaitlistForm";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { WAITLIST_SOURCES } from "@/lib/forms/sources";
 import { buildCheckoutHref } from "@/lib/cart/checkoutHref";
+import { useCampaign } from "@/lib/campaign/CampaignProvider";
 
 interface BundleAndCTAProps {
   qty: number;
@@ -52,6 +53,18 @@ export default function BundleAndCTA({
   const addToCart = useAddToCart({ variantId, basePrice, source: surface });
   const { addToast } = useToastActions();
   const [buyNowLoading, setBuyNowLoading] = useState(false);
+  const campaign = useCampaign();
+  const freeShippingLabel = campaign?.pricing.freeShippingAll
+    ? campaign.copy.freeShippingLabel
+    : FREE_SHIPPING_LABEL;
+  // The trust line's shipping promise follows the campaign.
+  const trustLine = campaign?.pricing.freeShippingAll
+    ? TRUST_LINE.map((item) =>
+        item.label === "FREE US SHIPPING ON 2+"
+          ? { ...item, label: campaign.copy.freeShippingLabel.toUpperCase() }
+          : item
+      )
+    : TRUST_LINE;
 
   function selectQty(next: number) {
     if (next === qty) return;
@@ -100,6 +113,7 @@ export default function BundleAndCTA({
 
   const selectedQuote = quoteOffer(qty, basePrice);
   const estimatedTotal = selectedQuote.price + selectedQuote.shipping;
+  const selectedTitle = OFFERS.find((o) => o.qty === qty)?.title ?? `${qty} units`;
 
   return (
     <div className="flex flex-col gap-4">
@@ -138,6 +152,14 @@ export default function BundleAndCTA({
                             {offer.badge}
                           </span>
                         )}
+                        {campaign && quote.discounted && (
+                          <span
+                            data-testid="sale-badge"
+                            className="font-label text-[10.5px] tracking-[0.5px] uppercase text-text-primary border border-accent-cyan rounded-sm px-2 py-[2px]"
+                          >
+                            {campaign.saleName}
+                          </span>
+                        )}
                       </div>
                       <span
                         className={`font-label text-[12px] ${
@@ -145,7 +167,7 @@ export default function BundleAndCTA({
                         }`}
                       >
                         {quote.shipping === 0
-                          ? FREE_SHIPPING_LABEL
+                          ? freeShippingLabel
                           : `+ ${formatDisplayShipping(quote.shipping)} shipping`}
                       </span>
                     </div>
@@ -153,6 +175,7 @@ export default function BundleAndCTA({
                     <MsrpPrice
                       price={quote.price}
                       msrp={quote.msrp}
+                      anchorLabel={quote.anchorLabel}
                       className="flex-shrink-0 justify-end text-right"
                       msrpClassName="font-label text-[12px] text-text-muted"
                       priceClassName="font-body font-bold text-[16px] text-text-primary"
@@ -163,8 +186,16 @@ export default function BundleAndCTA({
             })}
           </div>
 
-          <p data-testid="estimated-total" className="font-label text-[13px] text-text-secondary text-right">
-            {ESTIMATED_TOTAL_LABEL} <span className="font-bold text-text-primary">{formatPrice(estimatedTotal)}</span>{" "}
+          {/* Names the selected offer: the line sits under the last card, so
+              without the name it read as the Two Pack's total even while the
+              Single was selected. */}
+          <p
+            data-testid="estimated-total"
+            aria-live="polite"
+            className="font-label text-[13px] text-text-secondary text-right border-t border-border-pill pt-3"
+          >
+            {ESTIMATED_TOTAL_LABEL}, {selectedTitle}:{" "}
+            <span className="font-bold text-text-primary">{formatPrice(estimatedTotal)}</span>{" "}
             {ESTIMATED_TOTAL_NOTE}
           </p>
         </>
@@ -195,7 +226,7 @@ export default function BundleAndCTA({
 
             {/* Trust line */}
             <p className="font-label text-eyebrow text-text-muted text-center tracking-wider">
-              {TRUST_LINE.map((item, i) => (
+              {trustLine.map((item, i) => (
                 <Fragment key={item.label}>
                   {i > 0 && " · "}
                   {item.href ? (

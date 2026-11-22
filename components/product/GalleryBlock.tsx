@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal, flushSync } from "react-dom";
-import { GALLERY_IMAGES } from "./productdisplay.content";
+import { useGalleryImages } from "./useGalleryImages";
 import { useSwipe } from "@/lib/useSwipe";
 import { usePinch, type PinchView } from "@/lib/usePinch";
 import { dragOrigin, DRAG_SLOP_PX, handoffView, PINCH_COMMIT_ZOOM, type ZoomOrigin } from "@/lib/zoomPan";
@@ -32,6 +32,8 @@ const ARROW_CLASS =
   "absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 text-white opacity-100 pointer-events-auto lg:opacity-0 lg:pointer-events-none lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto lg:focus-visible:opacity-100 lg:focus-visible:pointer-events-auto transition-opacity hover:bg-black/70 z-10 touch-manipulation";
 
 export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlockProps) {
+  // The regular gallery, plus any campaign images (lib/campaign) while one is on.
+  const GALLERY_IMAGES = useGalleryImages();
   const total = GALLERY_IMAGES.length;
   const active = GALLERY_IMAGES[activeThumb] ?? GALLERY_IMAGES[0];
   const activeIsVideo = active.type === "video";

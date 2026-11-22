@@ -66,6 +66,17 @@ describe("storefront copy", () => {
     }
   });
 
+  // The Holiday Sale 2026 config (ADR-012) is the one place "sale" is allowed.
+  // Every other copy rule still applies to it, and it never says Black Friday
+  // or Cyber Monday (owner decision 2026-11-21).
+  it("the holiday campaign copy keeps every other copy rule", () => {
+    const text = read("lib/campaign/holiday2026.ts");
+    const hits = BANNED.filter(([, re]) => re.test(text)).map(([name]) => name);
+    expect(hits).toEqual([]);
+    expect(text).not.toMatch(/black friday|cyber monday|bfcm/i);
+    expect(text).not.toMatch(/!["`']/);
+  });
+
   it("no storefront copy advertises a unit price below $39.99", () => {
     for (const file of STOREFRONT_FILES) {
       for (const literal of read(file).match(/\$\d+\.\d{2}\b/g) ?? []) {

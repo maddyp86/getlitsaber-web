@@ -9,7 +9,11 @@ import {
   getLinePrice,
   getMsrpLinePrice,
   isBelowFloor,
+  getAnchorLabel,
+  getAnchorLinePrice,
+  getCampaignDiscount,
 } from "./pricing";
+import { HOLIDAY_2026 } from "@/lib/campaign/holiday2026";
 
 const cents = (n: number) => Math.round(n * 100);
 
@@ -85,5 +89,46 @@ describe("MSRP anchor", () => {
   it("is $49.99 for a single and $99.98 for two", () => {
     expect(getMsrpLinePrice(1)).toBe(49.99);
     expect(getMsrpLinePrice(2)).toBe(99.98);
+  });
+});
+
+// Holiday Sale 2026 (ADR-012): the floor moves by the campaign discount on
+// orders of two or more, and by nothing else. Every test above runs with no
+// campaign and must keep passing unchanged.
+describe("holiday campaign pricing", () => {
+  it("is off by default", () => {
+    expect(getCampaignDiscount(2)).toBe(0);
+    expect(getLinePrice(2)).toBe(79.98);
+  });
+
+  it("leaves a single at $39.99 and never lets it go lower", () => {
+    expect(getLinePrice(1, 39.99, HOLIDAY_2026)).toBe(39.99);
+    expect(isBelowFloor(39.98, 1, HOLIDAY_2026)).toBe(true);
+    expect(clampTotalToFloor(29.99, 1, HOLIDAY_2026)).toBe(39.99);
+  });
+
+  it("prices the 2-pack at $69.99", () => {
+    expect(getLinePrice(2, 39.99, HOLIDAY_2026)).toBe(69.99);
+    expect(isBelowFloor(69.99, 2, HOLIDAY_2026)).toBe(false);
+  });
+
+  it("still flags and clamps a 2-pack below $69.99", () => {
+    expect(isBelowFloor(69.98, 2, HOLIDAY_2026)).toBe(true);
+    expect(clampTotalToFloor(59.99, 2, HOLIDAY_2026)).toBe(69.99);
+  });
+
+  it("applies the discount once for 3 to 5 units", () => {
+    expect(getLinePrice(3, 39.99, HOLIDAY_2026)).toBe(109.98);
+    expect(getLinePrice(5, 39.99, HOLIDAY_2026)).toBe(189.96);
+    expect(isBelowFloor(109.98, 3, HOLIDAY_2026)).toBe(false);
+    expect(isBelowFloor(99.98, 3, HOLIDAY_2026)).toBe(true);
+  });
+
+  it("anchors a discounted line on its regular price, a single on MSRP", () => {
+    expect(getAnchorLinePrice(1, HOLIDAY_2026)).toBe(49.99);
+    expect(getAnchorLabel(1, HOLIDAY_2026)).toBe("MSRP");
+    expect(getAnchorLinePrice(2, HOLIDAY_2026)).toBe(79.98);
+    expect(getAnchorLabel(2, HOLIDAY_2026)).toBe("was");
+    expect(getAnchorLinePrice(2, null)).toBe(99.98);
   });
 });

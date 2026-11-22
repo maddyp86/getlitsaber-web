@@ -100,6 +100,7 @@ export default function StickyBuyBar({
         <MsrpPrice
           price={quote.price}
           msrp={quote.msrp}
+          anchorLabel={quote.anchorLabel}
           msrpClassName="font-label text-[11px] text-text-muted"
           priceClassName="font-label font-bold text-[18px] text-text-primary"
         />

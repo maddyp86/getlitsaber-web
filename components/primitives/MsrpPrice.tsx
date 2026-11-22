@@ -8,13 +8,20 @@ interface MsrpPriceProps {
   msrpClassName?: string;
   /** Classes for the sell price. */
   priceClassName?: string;
+  /**
+   * What the struck price is, for screen readers. "MSRP" by default; "was"
+   * when a campaign discounts the line and the anchor is the regular price.
+   */
+  anchorLabel?: "MSRP" | "was";
 }
 
 /**
- * Sell price first, then the MSRP anchor struck through after it. The anchor
- * is never labeled "Was" or "Sale", and is hidden entirely when it is not
- * higher than the price. Strikethrough is not announced by screen readers, so
- * the anchor carries its meaning in visually hidden text instead.
+ * Sell price first, then the anchor struck through after it. The anchor has no
+ * visible label and is hidden entirely when it is not higher than the price.
+ * Strikethrough is not announced by screen readers, so the anchor's meaning is
+ * a visually hidden label inside the same element. The amount itself is in the
+ * markup once: it used to be written twice (a hidden copy plus the struck one),
+ * which read as a duplicated price to search engines and text extractors.
  */
 export default function MsrpPrice({
   price,
@@ -22,6 +29,7 @@ export default function MsrpPrice({
   className = "",
   msrpClassName = "",
   priceClassName = "",
+  anchorLabel = "MSRP",
 }: MsrpPriceProps) {
   const showAnchor = msrp > price;
   return (
@@ -30,12 +38,10 @@ export default function MsrpPrice({
         {formatPrice(price)}
       </span>
       {showAnchor && (
-        <>
-          <span className="sr-only">{`, MSRP ${formatPrice(msrp)}`}</span>
-          <s aria-hidden="true" data-testid="msrp" className={msrpClassName}>
-            {formatPrice(msrp)}
-          </s>
-        </>
+        <s data-testid="msrp" className={msrpClassName}>
+          <span className="sr-only">{`${anchorLabel} `}</span>
+          {formatPrice(msrp)}
+        </s>
       )}
     </span>
   );

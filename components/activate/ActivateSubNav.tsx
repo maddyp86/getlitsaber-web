@@ -57,7 +57,7 @@ export default function ActivateSubNav() {
     // Full-bleed sticky bar. Solid #150C2D with cyan/20 top + bottom borders per Figma.
     <div
       className="sticky z-sticky w-full bg-[#150C2D] border-t border-b border-accent-cyan/20"
-      style={{ top: NAVBAR_HEIGHT }}
+      style={{ top: `calc(${NAVBAR_HEIGHT}px + var(--announce-h))` }}
     >
       {/* Inner rail: capped + padded on the SAME element. Centered on desktop
           (gap 35px); left-aligned horizontal scroll on mobile. overflow-x-auto

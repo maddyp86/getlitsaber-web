@@ -232,6 +232,37 @@ Full version in `BRAND.md`. The non-negotiables:
 
 ---
 
+## Active campaign layer (ADR-012): Holiday Sale 2026
+
+A campaign is a switchable variant of the storefront. **With no campaign
+active, every rule in this file applies exactly as written.** While one is
+active, the exceptions below apply and nothing else changes.
+
+- **Switch:** Vercel Edge Config booleans `holidayMode` (production) and
+  `holidayModePreview` (previews). Local dev: run with `HOLIDAY_MODE_FORCE=on`.
+  It also ends itself after Dec 16, 2026, 11:59pm Pacific, and fails closed.
+- **One config file:** `lib/campaign/holiday2026.ts` (dates, bar messages, hero
+  copy, offer). Copy changes go there, not in components.
+- **Pricing exception:** two or more units take $9.99 off once (Two Pack
+  $69.99, struck from $79.98). A single stays $39.99 with the $49.99 MSRP
+  anchor. Mirrors the Shopify automatic discount "Holiday Sale"; change both
+  together. The floor guard still applies at the campaign price.
+- **Shipping exception:** every order ships free; carts are stamped
+  `_shipping_variant=holiday-free`. Outside a campaign the `surcharge` stamp
+  rule below is unchanged.
+- **Copy exception:** "Holiday Sale" wording is allowed in the campaign config
+  and the components that render it. Never "Black Friday" or "Cyber Monday". No
+  countdowns. Every other copy ban still applies.
+- **Never edit the regular hero, offers or shipping rules to build a campaign.**
+  Branch on the campaign (`getActiveCampaign()` on the server, `useCampaign()`
+  in client components, the optional `campaign` argument on the pricing and
+  shipping helpers).
+- The announcement bar's height is the CSS variable `--announce-h` (0 when no
+  bar). Anything positioned under the fixed navbar must add it (`top-navbar`
+  already does).
+
+---
+
 ## Commerce constraints
 
 - **Stripe is prohibited** for this business (vape category). Payment is via Shopify's hosted checkout, which routes to Authorize.net behind the scenes.

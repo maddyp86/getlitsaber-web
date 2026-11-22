@@ -15,7 +15,8 @@ import { track, EVENTS } from "@/lib/analytics/events";
 import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import { buildCheckoutHref } from "@/lib/cart/checkoutHref";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
-import { getMsrpLinePrice } from "@/lib/cart/pricing";
+import { getAnchorLinePrice, getAnchorLabel, getCampaignDiscount } from "@/lib/cart/pricing";
+import { useCampaign } from "@/lib/campaign/CampaignProvider";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
@@ -28,6 +29,7 @@ export default function CartPageBody() {
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
+  const campaign = useCampaign();
   const { removeItem, updateQty } = useCartActions();
 
   // Display-only mirror of the shipping the Shopify Function will charge.
@@ -152,7 +154,10 @@ export default function CartPageBody() {
                             className="font-label font-bold"
                             style={{ fontSize: "14px", color: "#00E5FF" }}
                           >
-                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+                            <MsrpPrice price={line.lineTotal} msrp={getAnchorLinePrice(line.qty)} anchorLabel={getAnchorLabel(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+{campaign && getCampaignDiscount(line.qty) > 0 && line.lineTotal < getAnchorLinePrice(line.qty) && (
+  <span className="block font-label font-normal uppercase tracking-wider text-text-secondary text-[10.5px] mt-0.5">{campaign.saleName}</span>
+)}
                           </span>
                           <button
                             onClick={() => {
@@ -197,7 +202,8 @@ export default function CartPageBody() {
                 <div className="flex flex-col gap-0 w-full">
                   <MobileSummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                   <MobileSummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
-                  <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
+                  {/* Nothing to unlock while a campaign ships every order free. */}
+{!campaign?.pricing.freeShippingAll && <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />}
                   <MobileSummaryRow label="Estimated tax" value="CALCULATED AT CHECKOUT" muted noBorder />
                 </div>
 
@@ -347,7 +353,10 @@ export default function CartPageBody() {
                             className="font-label font-bold text-text-primary text-left"
                             style={{ fontSize: "15px", width: "100px" }}
                           >
-                            <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+                            <MsrpPrice price={line.lineTotal} msrp={getAnchorLinePrice(line.qty)} anchorLabel={getAnchorLabel(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+{campaign && getCampaignDiscount(line.qty) > 0 && line.lineTotal < getAnchorLinePrice(line.qty) && (
+  <span className="block font-label font-normal uppercase tracking-wider text-text-secondary text-[10.5px] mt-0.5">{campaign.saleName}</span>
+)}
                           </span>
 
                           {/* Remove column */}
@@ -407,7 +416,8 @@ export default function CartPageBody() {
                   <div className="flex flex-col gap-2">
                     <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
                     <SummaryRow label="Shipping" value={shippingDisplay} muted={shippingCalcPending} />
-                    <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
+                    {/* Nothing to unlock while a campaign ships every order free. */}
+{!campaign?.pricing.freeShippingAll && <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />}
                     <SummaryRow label="Estimated tax" value="AT CHECKOUT" muted noBorder/>
                   </div>
 

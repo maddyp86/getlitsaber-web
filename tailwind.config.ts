@@ -53,6 +53,17 @@ const config: Config = {
           card: tokens.color.surface.card.value,
           "card-deep": tokens.color.surface["card-deep"].value,
         },
+        // Holiday 2026 hero only (components/home/HolidayHero). The bulb colours
+        // are decorative; site UI stays in the regular palette.
+        holiday: {
+          body: tokens.color.holiday.body.value,
+          "bulb-red": tokens.color.holiday["bulb-red"].value,
+          "bulb-white": tokens.color.holiday["bulb-white"].value,
+          "bulb-green": tokens.color.holiday["bulb-green"].value,
+          wire: tokens.color.holiday.wire.value,
+          socket: tokens.color.holiday.socket.value,
+          scrim: tokens.color.holiday.scrim.value,
+        },
         semantic: {
           verified: tokens.color.semantic.verified.value,
           rating: tokens.color.semantic.rating.value,
@@ -107,6 +118,7 @@ const config: Config = {
       boxShadow: {
         "glow-white": tokens.shadow["glow-white"].value,
         "glow-cyan": tokens.shadow["glow-cyan"].value,
+        "glow-bar": tokens.shadow["glow-bar"].value,
         "glow-purple": tokens.shadow["glow-purple"].value,
         "glow-cta": tokens.shadow["glow-cta"].value,
         "glow-cta-hover": tokens.shadow["glow-cta-hover"].value,
@@ -121,6 +133,11 @@ const config: Config = {
       },
       height: {
         navbar: tokens.component["navbar-height"].value,
+      },
+      // top-navbar: just under the fixed navbar, which itself sits under the
+      // campaign bar when one is showing (--announce-h, app/globals.css).
+      inset: {
+        navbar: `calc(${tokens.component["navbar-height"].value} + var(--announce-h))`,
       },
       maxWidth: {
         container: tokens.component["container-max-width"].value,
