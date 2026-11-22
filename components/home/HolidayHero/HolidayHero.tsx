@@ -107,11 +107,11 @@ export default function HolidayHero() {
     <section
       ref={ref}
       aria-label="Holiday Sale"
-      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:block lg:min-h-[774px]"
+      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:block lg:min-h-[clamp(600px,calc(100svh-var(--announce-h)),774px)]"
     >
       {/* Text. First in the DOM and on screen; the image follows on mobile and
           sits behind on desktop. */}
-      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:pl-[6%] lg:pt-[calc(theme(spacing.navbar)+70px)] lg:pb-20 lg:max-w-[760px]">
+      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:pl-[6%] lg:pt-[calc(theme(spacing.navbar)+clamp(20px,6svh,70px))] lg:pb-10 lg:max-w-[760px]">
         <h1 className="relative w-fit flex flex-col gap-[5px] lg:gap-2">
           <span className="relative block w-fit">
             <span className="holiday-lightup block font-display font-bold text-[min(98px,25vw)] lg:text-[116px] leading-none text-text-primary">
@@ -146,14 +146,20 @@ export default function HolidayHero() {
         </Link>
       </div>
 
-      {/* Image: square and in flow below lg, full-bleed background from lg. */}
+      {/* Image: square and in flow below lg. From lg it is sized by the hero's
+          HEIGHT, never its width, so the whole product always fits the first
+          screen (a width-fitted cover image put the product below the fold on
+          short, wide windows). The products' centre (69.5% across the file)
+          is pinned at 75% of the hero (79% below xl, to clear the headline);
+          the side edges fade out so no seam
+          shows where the image is narrower than the window. */}
       <picture className="relative z-0 block w-full lg:absolute lg:inset-0">
         <source media="(min-width: 1024px)" srcSet={desktopSrcSet} sizes="100vw" />
         {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
         <img
           {...img}
           srcSet={mobileSrcSet}
-          className="block w-full h-auto lg:h-full lg:object-cover lg:object-center"
+          className="block w-full h-auto lg:absolute lg:top-0 lg:left-[79%] xl:left-[75%] lg:h-full lg:w-auto lg:max-w-none lg:aspect-[16/9] lg:-translate-x-[69.5%] lg:[mask-image:linear-gradient(to_right,transparent,black_14%,black_90%,transparent)]"
         />
       </picture>
 
