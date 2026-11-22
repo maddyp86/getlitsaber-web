@@ -142,7 +142,8 @@ describe("offer rendering during the holiday campaign", () => {
     expect(single.getByTestId("price").textContent).toBe("$39.99");
     expect(single.getByTestId("msrp").textContent).toBe("MSRP $49.99");
     expect(single.getByText("Free US shipping on every order")).toBeTruthy();
-    expect(single.queryByTestId("sale-badge")).toBeNull();
+    // Both offers carry the tag: the whole store is on sale.
+    expect(single.getByTestId("sale-badge").textContent).toBe("Holiday Sale");
   });
 
   it("marks the 2-pack as Holiday Sale at $69.99, struck from $79.98", () => {

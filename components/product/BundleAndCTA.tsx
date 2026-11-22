@@ -136,10 +136,22 @@ export default function BundleAndCTA({
                     role="radio"
                     aria-checked={isChecked}
                     onClick={() => selectQty(offer.qty)}
-                    className={`bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors touch-manipulation active:opacity-90 w-full rounded-selector ${
+                    className={`relative bg-surface-card-deep p-3 flex flex-row items-center gap-4 cursor-pointer border text-left transition-colors touch-manipulation active:opacity-90 w-full rounded-selector ${
                       isChecked ? "border-accent-cyan" : "border-border-inactive"
                     }`}
                   >
+                    {/* Campaign tag: a filled tab on the card's top edge, above
+                        the price it explains. On EVERY offer, since the whole
+                        store is on sale; an inline outline tag on one card
+                        went unnoticed (Matt, 2026-11-22). */}
+                    {campaign && (
+                      <span
+                        data-testid="sale-badge"
+                        className="absolute -top-[10px] right-3 font-label font-bold text-[11px] leading-none tracking-[1px] uppercase text-background-primary bg-accent-cyan rounded-sm px-2 py-1 shadow-glow-bar"
+                      >
+                        {campaign.saleName}
+                      </span>
+                    )}
                     <RadioIndicator checked={isChecked} />
 
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
@@ -150,14 +162,6 @@ export default function BundleAndCTA({
                         {offer.badge && (
                           <span className="font-label text-[10.5px] tracking-[0.5px] uppercase text-accent-cyan bg-surface-tint-cyan rounded-sm px-2 py-[3px]">
                             {offer.badge}
-                          </span>
-                        )}
-                        {campaign && quote.discounted && (
-                          <span
-                            data-testid="sale-badge"
-                            className="font-label text-[10.5px] tracking-[0.5px] uppercase text-text-primary border border-accent-cyan rounded-sm px-2 py-[2px]"
-                          >
-                            {campaign.saleName}
                           </span>
                         )}
                       </div>

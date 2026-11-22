@@ -133,9 +133,14 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             {campaign && (
               <p
                 data-testid="pdp-sale-label"
-                className="self-start font-label text-[11px] tracking-[1px] uppercase text-text-primary border border-accent-cyan rounded-sm px-2 py-[3px]"
+                className="self-start flex items-center gap-3 mt-2 font-label uppercase"
               >
-                {campaign.saleName} · {campaign.copy.endsLabel}
+                <span className="font-bold text-[13px] leading-none tracking-[1.5px] text-background-primary bg-accent-cyan rounded-sm px-3 py-2 shadow-glow-bar">
+                  {campaign.saleName}
+                </span>
+                <span className="text-[13px] tracking-[1px] text-accent-cyan">
+                  {campaign.copy.endsLabel}
+                </span>
               </p>
             )}
             <p data-testid="pdp-price">
