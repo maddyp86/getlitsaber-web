@@ -244,8 +244,10 @@ active, the exceptions below apply and nothing else changes.
 - **One config file:** `lib/campaign/holiday2026.ts` (dates, bar messages, hero
   copy, offer). Copy changes go there, not in components.
 - **Pricing exception:** two or more units take $9.99 off once (Two Pack
-  $69.99, struck from $79.98). A single stays $39.99 with the $49.99 MSRP
-  anchor. Mirrors the Shopify automatic discount "Holiday Sale"; change both
+  $69.99, struck from $79.99: the sale price plus the config's `multiUnitSaving`,
+  a cent above the real $79.98, by Matt's call). A single stays $39.99 with the
+  $49.99 MSRP anchor. The PDP states the saving once ("Save $10" beside the
+  main price, computed) and shows a per-unit note on the Two Pack ("$35 each"). Mirrors the Shopify automatic discount "Holiday Sale"; change both
   together. The floor guard still applies at the campaign price.
 - **Shipping exception:** every order ships free; carts are stamped
   `_shipping_variant=holiday-free`. Outside a campaign the `surcharge` stamp

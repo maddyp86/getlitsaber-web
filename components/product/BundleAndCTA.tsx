@@ -3,7 +3,7 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import { OFFERS, TRUST_LINE, FREE_SHIPPING_LABEL, ESTIMATED_TOTAL_LABEL, ESTIMATED_TOTAL_NOTE } from "./productdisplay.content";
-import { getLinePrice, formatPrice } from "@/lib/cart/pricing";
+import { getLinePrice, formatPrice, formatAmountShort } from "@/lib/cart/pricing";
 import { quoteOffer, offerForQty } from "@/lib/cart/offers";
 import { formatDisplayShipping } from "@/lib/shipping";
 import { useCartActions } from "@/lib/cart/store";
@@ -57,14 +57,18 @@ export default function BundleAndCTA({
   const freeShippingLabel = campaign?.pricing.freeShippingAll
     ? campaign.copy.freeShippingLabel
     : FREE_SHIPPING_LABEL;
-  // The trust line's shipping promise follows the campaign.
-  const trustLine = campaign?.pricing.freeShippingAll
-    ? TRUST_LINE.map((item) =>
-        item.label === "FREE US SHIPPING ON 2+"
-          ? { ...item, label: campaign.copy.freeShippingLabel.toUpperCase() }
-          : item
-      )
-    : TRUST_LINE;
+  // During a campaign the shipping promise is one line under Add to Cart, so
+  // the trust line keeps only its linked item (the warranty).
+  const trustLine = campaign ? TRUST_LINE.filter((item) => item.href) : TRUST_LINE;
+
+  /** Campaign rows say what is in the box; multi-unit rows add the per-unit price. */
+  function campaignSubline(offerQty: number, price: number): string | null {
+    const contents = campaign?.copy.offerContents[offerQty];
+    if (!contents) return null;
+    if (offerQty < 2) return contents;
+    // Whole dollars: $69.99 for two reads "$35 each".
+    return `${contents} · ${formatAmountShort(Math.round(price / offerQty))} each`;
+  }
 
   function selectQty(next: number) {
     if (next === qty) return;
@@ -128,6 +132,7 @@ export default function BundleAndCTA({
             {OFFERS.map((offer) => {
               const isChecked = qty === offer.qty;
               const quote = quoteOffer(offer.qty, basePrice);
+              const subline = campaignSubline(offer.qty, quote.price);
 
               return (
                 <div key={offer.qty} data-testid={`offer-${quote.id}`}>
@@ -140,18 +145,8 @@ export default function BundleAndCTA({
                       isChecked ? "border-accent-cyan" : "border-border-inactive"
                     }`}
                   >
-                    {/* Campaign tag: a filled tab on the card's top edge, above
-                        the price it explains. On EVERY offer, since the whole
-                        store is on sale; an inline outline tag on one card
-                        went unnoticed (Matt, 2026-11-22). */}
-                    {campaign && (
-                      <span
-                        data-testid="sale-badge"
-                        className="absolute -top-[10px] right-3 font-label font-bold text-[11px] leading-none tracking-[1px] uppercase text-background-primary bg-accent-cyan rounded-sm px-2 py-1 shadow-glow-bar"
-                      >
-                        {campaign.saleName}
-                      </span>
-                    )}
+                    {/* No sale tag on the rows: during a campaign the sale is
+                        stated once, in the banner and Save tag above. */}
                     <RadioIndicator checked={isChecked} />
 
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
@@ -165,15 +160,21 @@ export default function BundleAndCTA({
                           </span>
                         )}
                       </div>
-                      <span
-                        className={`font-label text-[12px] ${
-                          quote.shipping === 0 ? "text-accent-cyan" : "text-text-muted"
-                        }`}
-                      >
-                        {quote.shipping === 0
-                          ? freeShippingLabel
-                          : `+ ${formatDisplayShipping(quote.shipping)} shipping`}
-                      </span>
+                      {subline ? (
+                        <span data-testid="offer-contents" className="font-body text-[13px] text-text-secondary">
+                          {subline}
+                        </span>
+                      ) : (
+                        <span
+                          className={`font-label text-[12px] ${
+                            quote.shipping === 0 ? "text-accent-cyan" : "text-text-muted"
+                          }`}
+                        >
+                          {quote.shipping === 0
+                            ? freeShippingLabel
+                            : `+ ${formatDisplayShipping(quote.shipping)} shipping`}
+                        </span>
+                      )}
                     </div>
 
                     <MsrpPrice
@@ -215,8 +216,13 @@ export default function BundleAndCTA({
               className="w-full bg-cta font-label font-bold text-[16px] text-text-primary rounded-md py-4 px-4 cursor-pointer transition-opacity active:opacity-80"
               style={{ textShadow: "0 0 10px rgba(236, 87, 147, 0.7)" }}
             >
-              + ADD TO CART
+              {campaign ? `ADD TO CART · ${formatPrice(selectedQuote.price)}` : "+ ADD TO CART"}
             </button>
+            {campaign && (
+              <p data-testid="campaign-shipping-line" className="font-body text-[13px] text-text-secondary text-center">
+                {campaign.copy.shippingLine}
+              </p>
+            )}
 
             <button
               type="button"

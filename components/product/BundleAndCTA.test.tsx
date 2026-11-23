@@ -141,17 +141,26 @@ describe("offer rendering during the holiday campaign", () => {
     const single = within(screen.getByTestId("offer-single"));
     expect(single.getByTestId("price").textContent).toBe("$39.99");
     expect(single.getByTestId("msrp").textContent).toBe("MSRP $49.99");
-    expect(single.getByText("Free US shipping on every order")).toBeTruthy();
-    // Both offers carry the tag: the whole store is on sale.
-    expect(single.getByTestId("sale-badge").textContent).toBe("Holiday Sale");
+    expect(single.getByTestId("offer-contents").textContent).toBe("One Litsaber OG");
+    // The sale is stated once, above the rows: no tag on either row.
+    expect(single.queryByTestId("sale-badge")).toBeNull();
   });
 
-  it("marks the 2-pack as Holiday Sale at $69.99, struck from $79.98", () => {
+  it("shows the 2-pack at $69.99 struck from $79.99, $35 each, with no sale tag", () => {
     render(<HolidayHarness />);
     const pack = within(screen.getByTestId("offer-two_pack"));
     expect(pack.getByTestId("price").textContent).toBe("$69.99");
-    expect(pack.getByTestId("msrp").textContent).toBe("was $79.98");
-    expect(pack.getByTestId("sale-badge").textContent).toBe("Holiday Sale");
+    expect(pack.getByTestId("msrp").textContent).toBe("was $79.99");
+    expect(pack.getByTestId("offer-contents").textContent).toBe("Two Litsabers · $35 each");
+    expect(pack.getByText("Most popular")).toBeTruthy();
+    expect(pack.queryByTestId("sale-badge")).toBeNull();
+  });
+
+  it("puts the selected offer's price on the Add to Cart button", () => {
+    render(<HolidayHarness />);
+    expect(screen.getByRole("button", { name: "ADD TO CART · $39.99" })).toBeTruthy();
+    fireEvent.click(within(screen.getByTestId("offer-two_pack")).getByRole("radio"));
+    expect(screen.getByRole("button", { name: "ADD TO CART · $69.99" })).toBeTruthy();
   });
 
   it("totals the selected offer with no shipping charge", () => {
@@ -161,9 +170,12 @@ describe("offer rendering during the holiday campaign", () => {
     expect(screen.getByTestId("estimated-total").textContent).toContain("$69.99");
   });
 
-  it("promises free US shipping on every order in the trust line", () => {
+  it("states free US shipping once, under Add to Cart", () => {
     const { container } = render(<HolidayHarness />);
-    expect(container.textContent).toContain("FREE US SHIPPING ON EVERY ORDER");
+    expect(screen.getByTestId("campaign-shipping-line").textContent).toBe(
+      "Free US shipping · Ships within 2 business days"
+    );
+    expect(container.textContent?.match(/free us shipping/gi)).toHaveLength(1);
     expect(container.textContent).not.toContain("ON 2+");
   });
 });

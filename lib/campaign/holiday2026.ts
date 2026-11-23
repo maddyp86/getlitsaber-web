@@ -17,6 +17,10 @@ export const HOLIDAY_2026: Campaign = {
     // Two Pack: 2 x $39.99 = $79.98, less $9.99 = $69.99. Mirrors the Shopify
     // automatic discount "Holiday Sale"; the two must change together.
     multiUnitDiscount: 9.99,
+    // Shown saving. One cent over the charged discount, so the Two Pack is
+    // struck from $79.99 and both offers read "Save $10" (Matt, 2026-11-22).
+    // Shopify's checkout shows the true original, $79.98.
+    multiUnitSaving: 10,
     freeShippingAll: true,
     shippingAttribute: "holiday-free",
   },
@@ -120,7 +124,10 @@ export const HOLIDAY_2026: Campaign = {
   },
   copy: {
     freeShippingLabel: "Free US shipping on every order",
-    endsLabel: "ends Dec 16",
+    endsLabel: "Ends Dec 16",
+    offerLine: "$10 off every Litsaber, plus free US shipping",
+    shippingLine: "Free US shipping · Ships within 2 business days",
+    offerContents: { 1: "One Litsaber OG", 2: "Two Litsabers" },
     pdpDescription:
       "Litsaber OG, the interactive 510 battery. 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery, aluminum and brass build, 6-month limited warranty. $39.99, MSRP $49.99. Holiday Sale through Dec 16: Two Pack $69.99, free US shipping on every order.",
   },

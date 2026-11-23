@@ -26,6 +26,12 @@ export interface BarPhase {
 export interface CampaignPricing {
   /** Dollars taken off once per order when the cart holds two or more units. */
   multiUnitDiscount: number;
+  /**
+   * The saving a multi-unit order is SHOWN as having: its struck price is the
+   * sale price plus this. May differ from multiUnitDiscount by a cent so the
+   * anchor is a round number (Holiday 2026: $79.99, not 2 x $39.99 = $79.98).
+   */
+  multiUnitSaving: number;
   /** Every order ships free, including a single unit. */
   freeShippingAll: boolean;
   /**
@@ -51,8 +57,14 @@ export interface Campaign {
   bar: { phases: BarPhase[] };
   copy: {
     freeShippingLabel: string;
-    /** Shown beside the sale name on the PDP, e.g. "ends Dec 16". */
+    /** Shown beside the sale name on the PDP, e.g. "Ends Dec 16". */
     endsLabel: string;
+    /** Second line of the PDP sale banner: what the offer is. */
+    offerLine: string;
+    /** The one shipping line under the PDP Add to Cart button. */
+    shippingLine: string;
+    /** What each PDP quantity row contains, keyed by quantity. */
+    offerContents: Record<number, string>;
     pdpDescription: string;
   };
   gallery: GalleryExtra[];

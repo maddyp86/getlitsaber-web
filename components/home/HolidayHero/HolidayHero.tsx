@@ -112,7 +112,7 @@ export default function HolidayHero() {
       {/* Text. First in the DOM and on screen; the image follows on mobile and
           sits behind on desktop. */}
       <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:pl-[6%] lg:pt-[calc(theme(spacing.navbar)+clamp(20px,6svh,70px))] lg:pb-10 lg:max-w-[760px]">
-        <h1 className="relative w-fit flex flex-col gap-[5px] lg:gap-2">
+        <h1 className="relative w-fit flex flex-col items-center gap-[5px] lg:gap-2">
           <span className="relative block w-fit">
             <span className="holiday-lightup block font-display font-bold text-[min(98px,25vw)] lg:text-[116px] leading-none text-text-primary">
               {HOLIDAY_HERO.line1}

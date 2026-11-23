@@ -38,9 +38,9 @@ describe("quoteOffer during the holiday campaign", () => {
     });
   });
 
-  it("quotes the 2-pack at $69.99 against its regular $79.98, shipping free", () => {
+  it("quotes the 2-pack at $69.99 against the campaign anchor $79.99, shipping free", () => {
     expect(quoteOffer(2, 39.99, HOLIDAY_2026)).toEqual({
-      id: "two_pack", qty: 2, price: 69.99, msrp: 79.98, anchorLabel: "was", shipping: 0, discounted: true,
+      id: "two_pack", qty: 2, price: 69.99, msrp: 79.99, anchorLabel: "was", shipping: 0, discounted: true,
     });
   });
 

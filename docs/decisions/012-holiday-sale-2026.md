@@ -56,7 +56,11 @@ off once (2 x $39.99 = $79.98, less $9.99 = $69.99). The floor in
 `lib/cart/pricing.ts` moves by exactly that amount on those orders and by
 nothing else: a single is still floored at $39.99, a Two Pack at $69.99, and
 `price_floor_violation` still fires below either. The struck-through anchor on
-a discounted line is its regular price ($79.98), not MSRP, per Matt. In Shopify
+a discounted line is not MSRP: it is the sale price plus the campaign's stated
+saving (`multiUnitSaving`, $10), so the Two Pack strikes $79.99 and both offers
+read "Save $10". That is one cent above the real regular price of $79.98, which
+is what Shopify's checkout shows as the original; Matt asked for $79.99 on
+2026-11-22, reversing his earlier $79.98 choice. In Shopify
 this is one automatic discount, "Holiday Sale", with the same end time. The
 storefront and the discount must change together.
 
@@ -79,7 +83,9 @@ sticky offsets read, so the regular site's layout is byte-for-byte unaffected.
 ## Deviations from the requirements doc
 
 - Images live in Vercel Blob, not a repo static folder (ADR-007).
-- The Two Pack strikes through $79.98, the real regular price, not $79.99.
+- The Two Pack's struck $79.99 is a display value from the campaign config, not
+  a Shopify price: two units have no compare-at price of their own, and the
+  real regular price is $79.98.
 - 3 to 5 units (reachable by adding again) take the $9.99 once. No 3+ price is
   advertised anywhere.
 - Mobile headline sizes are capped by viewport width: at the specified 48px,

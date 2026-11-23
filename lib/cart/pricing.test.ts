@@ -127,7 +127,7 @@ describe("holiday campaign pricing", () => {
   it("anchors a discounted line on its regular price, a single on MSRP", () => {
     expect(getAnchorLinePrice(1, HOLIDAY_2026)).toBe(49.99);
     expect(getAnchorLabel(1, HOLIDAY_2026)).toBe("MSRP");
-    expect(getAnchorLinePrice(2, HOLIDAY_2026)).toBe(79.98);
+    expect(getAnchorLinePrice(2, HOLIDAY_2026)).toBe(79.99);
     expect(getAnchorLabel(2, HOLIDAY_2026)).toBe("was");
     expect(getAnchorLinePrice(2, null)).toBe(99.98);
   });

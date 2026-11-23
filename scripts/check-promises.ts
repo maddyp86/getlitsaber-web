@@ -32,7 +32,7 @@ const PAGES = [
 
 // What the PDP must say (owner-confirmed, roadmap Phase 1 and ADR-009).
 const PDP_OFFER = HOLIDAY
-  ? ["$39.99", "$49.99", "$69.99", "$79.98", "Holiday Sale", "Free US shipping on every order"]
+  ? ["$39.99", "$49.99", "$69.99", "$79.99", "Holiday Sale", "Save $10", "Free US shipping · Ships within 2 business days"]
   : ["$39.99", "$49.99", "$79.98", "$99.98", "+ $5.99 shipping", "Free shipping"];
 
 const PDP_REQUIRED = [

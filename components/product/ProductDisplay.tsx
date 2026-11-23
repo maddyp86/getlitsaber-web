@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, OFFERS } from "./productdisplay.content";
 import { quoteOffer } from "@/lib/cart/offers";
-import { getDisplayUnitPrice } from "@/lib/cart/pricing";
+import { getDisplayUnitPrice, formatAmountShort } from "@/lib/cart/pricing";
 import { viewContent, whenMetaPixelReady } from "@/lib/metaPixel";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import { useCampaign } from "@/lib/campaign/CampaignProvider";
@@ -131,19 +131,26 @@ export default function ProductDisplay({ variantId, available, surface, basePric
             </p>
             {/* Shipping is shown on each offer card below, so it is not repeated here. */}
             {campaign && (
-              <p
+              /* Sale banner: states the offer and the end date before the
+                 price. Plain text in a box: not a link, no hover. */
+              <div
                 data-testid="pdp-sale-label"
-                className="self-start flex items-center gap-3 mt-2 font-label uppercase"
+                className="w-full my-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 bg-holiday-sale-surface border border-cta rounded-md px-[18px] py-[14px] text-left"
               >
-                <span className="font-bold text-[13px] leading-none tracking-[1.5px] text-background-primary bg-accent-cyan rounded-sm px-3 py-2 shadow-glow-bar">
-                  {campaign.saleName}
-                </span>
-                <span className="text-[13px] tracking-[1px] text-accent-cyan">
+                <div className="flex flex-col gap-1">
+                  <p className="font-label font-bold text-[15px] leading-tight tracking-[2px] uppercase text-white">
+                    {campaign.saleName}
+                  </p>
+                  <p className="font-body text-[15px] leading-snug text-holiday-sale-text">
+                    {campaign.copy.offerLine}
+                  </p>
+                </div>
+                <p className="font-label text-[12px] tracking-[2px] uppercase text-holiday-sale-accent sm:flex-shrink-0">
                   {campaign.copy.endsLabel}
-                </span>
-              </p>
+                </p>
+              </div>
             )}
-            <p data-testid="pdp-price">
+            <p data-testid="pdp-price" className="flex items-center flex-wrap gap-x-4 gap-y-1">
               <MsrpPrice
                 price={quote.price}
                 msrp={quote.msrp}
@@ -151,6 +158,16 @@ export default function ProductDisplay({ variantId, available, surface, basePric
                 msrpClassName="font-label text-[20px] text-text-muted"
                 priceClassName="font-label font-bold text-h3 text-text-primary [text-shadow:0_0_10px_theme(colors.cta.DEFAULT)]"
               />
+              {/* The saving, stated once on the page and computed from the
+                  selected offer's two prices. */}
+              {campaign && quote.msrp > quote.price && (
+                <span
+                  data-testid="pdp-save-tag"
+                  className="font-label font-bold text-[13px] leading-none tracking-[1.5px] uppercase text-holiday-sale-ink bg-holiday-sale-accent rounded-sm px-[10px] py-2"
+                >
+                  Save {formatAmountShort(quote.msrp - quote.price)}
+                </span>
+              )}
             </p>
           </div>
 

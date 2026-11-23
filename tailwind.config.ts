@@ -63,6 +63,10 @@ const config: Config = {
           wire: tokens.color.holiday.wire.value,
           socket: tokens.color.holiday.socket.value,
           scrim: tokens.color.holiday.scrim.value,
+          "sale-surface": tokens.color.holiday["sale-surface"].value,
+          "sale-text": tokens.color.holiday["sale-text"].value,
+          "sale-accent": tokens.color.holiday["sale-accent"].value,
+          "sale-ink": tokens.color.holiday["sale-ink"].value,
         },
         semantic: {
           verified: tokens.color.semantic.verified.value,

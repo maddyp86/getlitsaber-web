@@ -90,8 +90,13 @@ export function getAnchorLinePrice(
   qty: number,
   campaign: Campaign | null = currentCampaign()
 ): number {
-  if (getCampaignDiscount(clampQty(qty), campaign) > 0) return getRegularLinePrice(qty);
-  return getMsrpLinePrice(qty);
+  const q = clampQty(qty);
+  const discount = getCampaignDiscount(q, campaign);
+  if (campaign && discount > 0) {
+    // Sale price plus the saving the campaign states for it.
+    return round2(getRegularLinePrice(q) - discount + campaign.pricing.multiUnitSaving);
+  }
+  return getMsrpLinePrice(q);
 }
 
 /** "MSRP" normally; "was" when the anchor is the regular price of a discounted line. */
@@ -135,4 +140,10 @@ export function clampTotalToFloor(
 /** Format dollars for display: 39.99 -> "$39.99". */
 export function formatPrice(amount: number): string {
   return `$${amount.toFixed(2)}`;
+}
+
+/** "$10" for whole dollars, "$9.99" otherwise. For savings and per-unit notes. */
+export function formatAmountShort(amount: number): string {
+  const cents = Math.round(amount * 100);
+  return cents % 100 === 0 ? `$${cents / 100}` : formatPrice(cents / 100);
 }
