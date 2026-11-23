@@ -25,9 +25,10 @@ import { track, EVENTS } from "@/lib/analytics/events";
 // the column). The negative margin removes each face's left side bearing, so
 // the ink, not the glyph box, starts on the column edge. Copy changes in
 // HOLIDAY_HERO need these re-measured.
-// From lg "LIGHT UP" is half that (Matt, 2026-11-22: full column width read as
-// too big on desktop), so it is half the column wide there.
-const LINE1_FIT = "text-[length:29.7cqw] lg:text-[length:14.85cqw] -ml-[0.02em] -mr-[0.07em]";
+// From lg "LIGHT UP" is a fixed 120px (Matt, 2026-11-22: full column width read
+// as too big on desktop, half of it as too small). At 120px it is 404px wide,
+// inside the column's 420px minimum.
+const LINE1_FIT = "text-[length:29.7cqw] lg:text-[120px] -ml-[0.02em] -mr-[0.07em]";
 const LINE2_FIT = "text-[length:12.07cqw] -ml-[0.03em]";
 
 const BULB_COLORS = ["red", "white", "green"] as const;
