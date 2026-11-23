@@ -107,12 +107,14 @@ export default function HolidayHero() {
     <section
       ref={ref}
       aria-label="Holiday Sale"
-      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:block lg:min-h-[clamp(600px,calc(100svh-var(--announce-h)),774px)]"
+      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:justify-center lg:min-h-[clamp(600px,calc(100svh-var(--announce-h)),774px)]"
     >
       {/* Text. First in the DOM and on screen; the image follows on mobile and
-          sits behind on desktop. */}
-      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:pl-[6%] lg:pt-[calc(theme(spacing.navbar)+clamp(20px,6svh,70px))] lg:pb-10 lg:max-w-[760px]">
-        <h1 className="relative w-fit flex flex-col items-center gap-[5px] lg:gap-2">
+          sits behind on desktop. From lg the block is centred top to bottom in
+          the hero: equal padding (the navbar's height, so it can never slide
+          under the fixed navbar) and the section centres it. */}
+      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:pl-[6%] lg:py-[theme(spacing.navbar)] lg:max-w-[760px]">
+        <h1 className="relative w-fit flex flex-col gap-[5px] lg:gap-2">
           <span className="relative block w-fit">
             <span className="holiday-lightup block font-display font-bold text-[min(98px,25vw)] lg:text-[116px] leading-none text-text-primary">
               {HOLIDAY_HERO.line1}
