@@ -106,7 +106,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
         // old 30px the top ~60px of the gallery sat under the navbar, which
         // swallowed clicks on the image, its zoom trigger, and the upper half
         // of the prev/next arrows.
-        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[calc(110px+var(--announce-h))]"
+        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] xl:w-[603px] xl:max-w-[603px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[calc(110px+var(--announce-h))]"
         style={{ gap: "20px" }}
       >
         <GalleryErrorBoundary>
