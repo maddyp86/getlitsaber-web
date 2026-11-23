@@ -91,6 +91,11 @@ sticky offsets read, so the regular site's layout is byte-for-byte unaffected.
 - Mobile headline sizes are capped by viewport width: at the specified 48px,
   "THE HOLIDAYS" in the site's real Monoton is 400px wide and overflowed a 390px
   phone.
+- Mobile and desktop headline sizes are derived from the text column's width
+  (both lines exactly as wide as the column), not the fixed 116/69px in the
+  first requirements doc (Matt's follow-up spec, 2026-11-22).
+- The bar is solid cyan with dark bold text and no accent-coloured spans
+  (same follow-up), not the original dark bar with a cyan underline.
 - Section 4 (Key Features graphic) is not built; its placement is still open.
 
 ## Consequences

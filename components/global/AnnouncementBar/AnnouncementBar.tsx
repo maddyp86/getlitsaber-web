@@ -7,20 +7,9 @@ import type { BarMessage, BarSegment } from "@/lib/campaign/types";
 
 const ROTATE_MS = 5000;
 
-function Segments({ segments }: { segments: BarSegment[] }) {
-  return (
-    <>
-      {segments.map((s, i) =>
-        s.accent ? (
-          <span key={i} className="text-accent-cyan">
-            {s.text}
-          </span>
-        ) : (
-          <span key={i}>{s.text}</span>
-        )
-      )}
-    </>
-  );
+// The whole line is one colour: accent flags in the config are not styled.
+function lineText(segments: BarSegment[]): string {
+  return segments.map((s) => s.text).join("");
 }
 
 interface AnnouncementBarProps {
@@ -59,7 +48,7 @@ export default function AnnouncementBar({ phaseId, messages, href }: Announcemen
       onClick={() =>
         track(EVENTS.announcement_bar_click, { phase: phaseId, message_id: current.id })
       }
-      className="fixed top-0 inset-x-0 z-navbar h-[var(--announce-h)] bg-background-primary border-b border-accent-cyan shadow-glow-bar font-label uppercase text-text-primary text-[11px] sm:text-[13px] tracking-[0.14em] overflow-hidden"
+      className="fixed top-0 inset-x-0 z-navbar h-[var(--announce-h)] bg-holiday-bar font-label font-bold uppercase text-holiday-bar-ink text-[12px] sm:text-[15px] tracking-[0.12em] overflow-hidden"
     >
       {messages.map((m, i) => (
         <span
@@ -70,10 +59,10 @@ export default function AnnouncementBar({ phaseId, messages, href }: Announcemen
           }`}
         >
           <span className="sm:hidden">
-            <Segments segments={m.mobile ?? m.desktop} />
+            {lineText(m.mobile ?? m.desktop)}
           </span>
           <span className="hidden sm:inline">
-            <Segments segments={m.desktop} />
+            {lineText(m.desktop)}
           </span>
         </span>
       ))}

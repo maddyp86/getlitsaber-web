@@ -19,11 +19,11 @@
   --announce-h: 0px;
 }
 body[data-announce] {
-  --announce-h: 32px;
+  --announce-h: 38px;
 }
 @media (min-width: 640px) {
   body[data-announce] {
-    --announce-h: 36px;
+    --announce-h: 44px;
   }
 }
 

@@ -63,6 +63,8 @@ const config: Config = {
           wire: tokens.color.holiday.wire.value,
           socket: tokens.color.holiday.socket.value,
           scrim: tokens.color.holiday.scrim.value,
+          bar: tokens.color.holiday.bar.value,
+          "bar-ink": tokens.color.holiday["bar-ink"].value,
           "sale-surface": tokens.color.holiday["sale-surface"].value,
           "sale-text": tokens.color.holiday["sale-text"].value,
           "sale-accent": tokens.color.holiday["sale-accent"].value,
@@ -122,7 +124,6 @@ const config: Config = {
       boxShadow: {
         "glow-white": tokens.shadow["glow-white"].value,
         "glow-cyan": tokens.shadow["glow-cyan"].value,
-        "glow-bar": tokens.shadow["glow-bar"].value,
         "glow-purple": tokens.shadow["glow-purple"].value,
         "glow-cta": tokens.shadow["glow-cta"].value,
         "glow-cta-hover": tokens.shadow["glow-cta-hover"].value,

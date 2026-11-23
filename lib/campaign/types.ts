@@ -4,7 +4,7 @@
 
 export interface BarSegment {
   text: string;
-  /** Rendered in the cyan accent (prices and dates only). */
+  /** Marks a price or date. Not styled: the bar is one colour (2026-11-22). */
   accent?: boolean;
 }
 

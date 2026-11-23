@@ -10,14 +10,23 @@ import { track, EVENTS } from "@/lib/analytics/events";
 // app/page.tsx in place of <Hero /> only while the campaign is active; the
 // regular hero is untouched. Copy and images come from lib/campaign/holiday2026.
 //
-// Type sizes follow the requirements (116/98px and 69/48px). Below lg they are
-// capped by viewport width, because the site's real headline faces are wider
-// than the reference's stand-ins: at 48px "THE HOLIDAYS" is 400px wide and ran
-// off a 390px phone.
+// Headline, offer line and button share one column: 6% in from the left and
+// clamp(420px, 34vw, 620px) wide from lg, the full content width below it. Both
+// headline lines are fitted to that column (see LINE1_FIT), so they share the
+// same left and right edges at every width.
 //
 // Desktop: live text on the left over a full-bleed image whose products sit in
 // its right half. Below lg: text first, then the square image. One <picture>
 // serves both, so each device downloads exactly one file.
+
+// Fit each headline line to the column. Measured from the site's real faces
+// (Stellar Bold, Monoton) at 1000px: the inked width of "LIGHT UP" is 3.365em
+// and of "THE HOLIDAYS" 8.278em, so font-size = column width / that (100cqw is
+// the column). The negative margin removes each face's left side bearing, so
+// the ink, not the glyph box, starts on the column edge. Copy changes in
+// HOLIDAY_HERO need these re-measured.
+const LINE1_FIT = "text-[length:29.7cqw] -ml-[0.02em]";
+const LINE2_FIT = "text-[length:12.07cqw] -ml-[0.03em]";
 
 const BULB_COLORS = ["red", "white", "green"] as const;
 const BULB_CLASS: Record<(typeof BULB_COLORS)[number], string> = {
@@ -61,7 +70,7 @@ function StringLights() {
       className="absolute left-0 -top-px w-full h-auto overflow-visible pointer-events-none"
     >
       <path
-        d="M-6,13 Q62,40 125,16 Q187,42 250,16 Q312,42 375,16 Q437,40 506,13"
+        d="M0,13 Q62,40 125,16 Q187,42 250,16 Q312,42 375,16 Q437,40 500,13"
         fill="none"
         strokeWidth="1.6"
         className="stroke-holiday-wire"
@@ -107,26 +116,28 @@ export default function HolidayHero() {
     <section
       ref={ref}
       aria-label="Holiday Sale"
-      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:justify-center lg:min-h-[clamp(600px,calc(100svh-var(--announce-h)),774px)]"
+      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:justify-center lg:min-h-[clamp(620px,calc(100svh-var(--announce-h)),820px)]"
     >
       {/* Text. First in the DOM and on screen; the image follows on mobile and
           sits behind on desktop. From lg the block is centred top to bottom in
           the hero: equal padding (the navbar's height, so it can never slide
           under the fixed navbar) and the section centres it. */}
-      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:pl-[6%] lg:py-[theme(spacing.navbar)] lg:max-w-[760px]">
-        <h1 className="relative w-fit flex flex-col gap-[5px] lg:gap-2">
-          <span className="relative block w-fit">
-            <span className="holiday-lightup block font-display font-bold text-[min(98px,25vw)] lg:text-[116px] leading-none text-text-primary">
+      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:ml-[6%] lg:py-[theme(spacing.navbar)] lg:w-[clamp(420px,34vw,620px)]">
+        {/* The h1 is a size container: each line's font-size is a share of the
+            column width, so both lines run exactly edge to edge. */}
+        <h1 className="relative w-full flex flex-col gap-[5px] lg:gap-2 [container-type:inline-size]">
+          <span className="relative block w-full">
+            <span className={`holiday-lightup block font-display font-bold leading-none text-text-primary whitespace-nowrap ${LINE1_FIT}`}>
               {HOLIDAY_HERO.line1}
             </span>
             <StringLights />
           </span>{" "}
-          <span className="holiday-neon block font-accent font-normal text-[min(48px,10.7vw)] lg:text-[69px] leading-[1.05] text-accent-cyan whitespace-nowrap">
+          <span className={`holiday-neon block font-accent font-normal leading-[1.05] text-accent-cyan whitespace-nowrap ${LINE2_FIT}`}>
             {HOLIDAY_HERO.line2}
           </span>
         </h1>
 
-        <p className="font-body text-[18px] lg:text-[24px] leading-[1.45] text-holiday-body max-w-[560px]">
+        <p className="font-body text-[clamp(18px,1.55vw,24px)] leading-[1.45] text-holiday-body">
           {HOLIDAY_HERO.body.map((part, i) =>
             part.style === "sale" ? (
               <strong key={i} className="font-semibold text-accent-cyan">{part.text}</strong>
