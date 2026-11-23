@@ -25,7 +25,9 @@ import { track, EVENTS } from "@/lib/analytics/events";
 // the column). The negative margin removes each face's left side bearing, so
 // the ink, not the glyph box, starts on the column edge. Copy changes in
 // HOLIDAY_HERO need these re-measured.
-const LINE1_FIT = "text-[length:29.7cqw] -ml-[0.02em]";
+// From lg "LIGHT UP" is half that (Matt, 2026-11-22: full column width read as
+// too big on desktop), so it is half the column wide there.
+const LINE1_FIT = "text-[length:29.7cqw] lg:text-[length:14.85cqw] -ml-[0.02em] -mr-[0.07em]";
 const LINE2_FIT = "text-[length:12.07cqw] -ml-[0.03em]";
 
 const BULB_COLORS = ["red", "white", "green"] as const;
@@ -121,12 +123,13 @@ export default function HolidayHero() {
       {/* Text. First in the DOM and on screen; the image follows on mobile and
           sits behind on desktop. From lg the block is centred top to bottom in
           the hero: equal padding (the navbar's height, so it can never slide
-          under the fixed navbar) and the section centres it. */}
-      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:ml-[6%] lg:py-[theme(spacing.navbar)] lg:w-[clamp(420px,34vw,620px)]">
+          under the fixed navbar) and the section centres it; it then sits
+          50px below centre (Matt, 2026-11-22). */}
+      <div className="relative z-20 flex flex-col gap-[18px] lg:gap-7 px-container-mobile pt-[calc(theme(spacing.navbar)+26px)] pb-7 lg:px-0 lg:ml-[6%] lg:py-[theme(spacing.navbar)] lg:w-[clamp(420px,34vw,620px)] lg:translate-y-[50px]">
         {/* The h1 is a size container: each line's font-size is a share of the
             column width, so both lines run exactly edge to edge. */}
         <h1 className="relative w-full flex flex-col gap-[5px] lg:gap-2 [container-type:inline-size]">
-          <span className="relative block w-full">
+          <span className="relative block w-fit">
             <span className={`holiday-lightup block font-display font-bold leading-none text-text-primary whitespace-nowrap ${LINE1_FIT}`}>
               {HOLIDAY_HERO.line1}
             </span>
