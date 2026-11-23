@@ -363,7 +363,32 @@ body[data-announce] {
   0%, 100% { text-shadow: 0 0 10px theme(colors.accent.cyan / 55%), 0 0 28px theme(colors.accent.cyan / 35%); }
   50%      { text-shadow: 0 0 14px theme(colors.accent.cyan / 85%), 0 0 44px theme(colors.accent.cyan / 55%); }
 }
-.holiday-hero { --holiday-fall: 1100px; }
+.holiday-hero {
+  --holiday-fall: 1100px;
+  /* Desktop hero height: the first screen, between 620 and 820px. */
+  --holiday-hero-h: clamp(620px, calc(100svh - var(--announce-h)), 820px);
+}
+/* Desktop hero image (3960x1800, products in its right third). Its height is
+   the hero's, so its width is 2.2 x that. It sits flush right, unless that
+   would bring the red Litsaber (its left edge is 64% across the file) within
+   6% of the text column (6% in, clamp(420px, 34vw, 620px) wide); then it
+   slides right just far enough. Where it is narrower than the window its
+   left edge fades out. */
+@media (min-width: 1024px) {
+  .holiday-hero-img {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: auto;
+    max-width: none;
+    aspect-ratio: 3960 / 1800;
+    left: max(
+      calc(100% - var(--holiday-hero-h) * 2.2),
+      calc(12% + clamp(420px, 34vw, 620px) - var(--holiday-hero-h) * 2.2 * 0.64)
+    );
+    mask-image: linear-gradient(to right, transparent, black 12%);
+  }
+}
 @media (min-width: 1024px) {
   .holiday-hero { --holiday-fall: 860px; }
 }

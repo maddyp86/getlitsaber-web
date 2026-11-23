@@ -107,7 +107,7 @@ export default function HolidayHero() {
   const common = { alt: HOLIDAY_HERO.alt, sizes: "100vw", priority: true };
   const {
     props: { srcSet: desktopSrcSet },
-  } = getImageProps({ ...common, src: HOLIDAY_HERO.desktopImage, width: 3200, height: 1800 });
+  } = getImageProps({ ...common, src: HOLIDAY_HERO.desktopImage, width: 3960, height: 1800 });
   const {
     props: { srcSet: mobileSrcSet, ...img },
   } = getImageProps({ ...common, src: HOLIDAY_HERO.mobileImage, width: 1400, height: 1400 });
@@ -116,7 +116,7 @@ export default function HolidayHero() {
     <section
       ref={ref}
       aria-label="Holiday Sale"
-      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:justify-center lg:min-h-[clamp(620px,calc(100svh-var(--announce-h)),820px)]"
+      className="holiday-hero relative w-full overflow-hidden bg-background-primary flex flex-col lg:justify-center lg:min-h-[var(--holiday-hero-h)]"
     >
       {/* Text. First in the DOM and on screen; the image follows on mobile and
           sits behind on desktop. From lg the block is centred top to bottom in
@@ -159,21 +159,16 @@ export default function HolidayHero() {
         </Link>
       </div>
 
-      {/* Image: square and in flow below lg. From lg it is sized by the hero's
-          HEIGHT, never its width, so the whole product always fits the first
-          screen (a width-fitted cover image put the product below the fold on
-          short, wide windows). The products' centre (69.5% across the file)
-          is pinned at 75% of the hero (79% below xl, to clear the headline);
-          the side edges fade out so no seam
-          shows where the image is narrower than the window. */}
+      {/* Image: square and in flow below lg. From lg it is the wide file,
+          sized by the hero's HEIGHT and anchored right (.holiday-hero-img in
+          app/globals.css), so the box and bow are always about two thirds of
+          the hero and clear of the header. Plain `cover` scaled it by width
+          on very wide windows and pushed the bow under the header. */}
       <picture className="relative z-0 block w-full lg:absolute lg:inset-0">
-        <source media="(min-width: 1024px)" srcSet={desktopSrcSet} sizes="100vw" />
+        {/* The image is at most 1804px wide on screen (2.2 x the 820px cap). */}
+        <source media="(min-width: 1024px)" srcSet={desktopSrcSet} sizes="1804px" />
         {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-        <img
-          {...img}
-          srcSet={mobileSrcSet}
-          className="block w-full h-auto lg:absolute lg:top-0 lg:left-[79%] xl:left-[75%] lg:h-full lg:w-auto lg:max-w-none lg:aspect-[16/9] lg:-translate-x-[69.5%] lg:[mask-image:linear-gradient(to_right,transparent,black_14%,black_90%,transparent)]"
-        />
+        <img {...img} srcSet={mobileSrcSet} className="holiday-hero-img block w-full h-auto" />
       </picture>
 
       {/* Desktop legibility gradient behind the text. */}

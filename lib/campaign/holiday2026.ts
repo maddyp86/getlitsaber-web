@@ -153,7 +153,7 @@ export const HOLIDAY_HERO = {
     { text: " on every order. Ends Dec 16." },
   ] as ReadonlyArray<{ text: string; style?: "sale" | "strong" }>,
   cta: { label: "SHOP NOW", href: "/shop/litsaber-og" },
-  desktopImage: mediaUrl("home/holiday-hero-desktop.jpg"),
+  desktopImage: mediaUrl("home/holiday-hero-desktop-wide.jpg"),
   mobileImage: mediaUrl("home/holiday-hero-mobile.jpg"),
   alt: "Litsaber gift box with a red bow between two Litsabers glowing red and green, against a starry sky.",
 } as const;
