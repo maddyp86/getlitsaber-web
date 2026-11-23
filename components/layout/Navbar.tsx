@@ -44,7 +44,7 @@ export default function Navbar() {
         // controls below opt back in with `pointer-events-auto`. Once scrolled
         // the bar is opaque, so it correctly blocks clicks again.
         className={[
-          "fixed top-0 left-0 right-0 z-navbar h-navbar transition-colors duration-300",
+          "fixed top-[var(--announce-h)] left-0 right-0 z-navbar h-navbar transition-colors duration-300",
           scrolled ? "bg-background-primary" : "bg-transparent pointer-events-none",
         ].join(" ")}
       >

@@ -18,7 +18,8 @@ import { track, EVENTS } from "@/lib/analytics/events";
 import { trackCheckoutHandoff } from "@/lib/analytics/checkout";
 import { buildCheckoutHref } from "@/lib/cart/checkoutHref";
 import { getDisplayShipping, formatDisplayShipping } from "@/lib/shipping";
-import { getMsrpLinePrice } from "@/lib/cart/pricing";
+import { getAnchorLinePrice, getAnchorLabel, getCampaignDiscount } from "@/lib/cart/pricing";
+import { useCampaign } from "@/lib/campaign/CampaignProvider";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
 import ShippingUnlockMeter from "@/components/product/ShippingUnlockMeter";
 
@@ -33,6 +34,7 @@ export default function CartDrawer() {
   const itemCount = useItemCount();
   const subtotal = useSubtotal();
   const checkoutUrl = useCheckoutUrl();
+  const campaign = useCampaign();
   const { removeItem, updateQty } = useCartActions();
   const capReached = useCapReached();
 
@@ -255,7 +257,10 @@ export default function CartDrawer() {
                           className="font-label font-bold text-accent-cyan"
                           style={{ fontSize: "16px" }}
                         >
-                          <MsrpPrice price={line.lineTotal} msrp={getMsrpLinePrice(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+                          <MsrpPrice price={line.lineTotal} msrp={getAnchorLinePrice(line.qty)} anchorLabel={getAnchorLabel(line.qty)} msrpClassName="font-normal text-text-muted text-[0.85em]" />
+{campaign && getCampaignDiscount(line.qty) > 0 && line.lineTotal < getAnchorLinePrice(line.qty) && (
+  <span className="block font-label font-normal uppercase tracking-wider text-text-secondary text-[10.5px] mt-0.5">{campaign.saleName}</span>
+)}
                         </span>
                         {/* Remove */}
                         <button
@@ -313,7 +318,8 @@ export default function CartDrawer() {
               </div>
 
               {/* Surcharge single-unit: tap to bump to the free-shipping two-pack */}
-              <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />
+              {/* Nothing to unlock while a campaign ships every order free. */}
+{!campaign?.pricing.freeShippingAll && <ShippingUnlockMeter itemCount={itemCount} onUnlock={unlockFreeShipping} />}
 
               {/* Total */}
               <div

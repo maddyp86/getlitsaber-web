@@ -7,24 +7,32 @@ import SeeItWork from "@/components/product/SeeItWork";
 import JudgemeReviewWidget from "@/components/reviews/JudgemeReviewWidget";
 import { REVIEWS_ENABLED } from "@/lib/reviews";
 {/*import WriteReviewButton from "@/components/reviews/WriteReviewButton";*/}
+import { getActiveCampaign } from "@/lib/campaign/getActiveCampaign";
 
 const PDP_DESCRIPTION =
   "Litsaber OG, the interactive 510 battery. 41 addressable LEDs, 10 selectable colors, 3 interactive modes, 800 mAh battery, aluminum and brass build, 6-month limited warranty. $39.99, MSRP $49.99. Free shipping on 2+.";
 
-export const metadata: Metadata = {
-  title: "Litsaber OG — The Interactive 510 Battery",
-  description: PDP_DESCRIPTION,
-  openGraph: {
+// The description names the shipping offer, which a campaign changes
+// (lib/campaign), so metadata is resolved per request.
+export async function generateMetadata(): Promise<Metadata> {
+  const campaign = await getActiveCampaign();
+  const description = campaign?.copy.pdpDescription ?? PDP_DESCRIPTION;
+  return {
     title: "Litsaber OG — The Interactive 510 Battery",
-    description: PDP_DESCRIPTION,
-    url: "/shop/litsaber-og",
-  },
-};
+    description,
+    openGraph: {
+      title: "Litsaber OG — The Interactive 510 Battery",
+      description,
+      url: "/shop/litsaber-og",
+    },
+  };
+}
 
 const SILVER_SKU = "LTS-OG-SLV";
 const shopifyConfigured = Boolean(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
 export default async function PDPPage() {
+  const campaign = await getActiveCampaign();
   const product = await getProductByHandle("litsaber-og");
   const silverVariant = product?.variants.edges
     .map((e) => e.node)
@@ -41,7 +49,7 @@ export default async function PDPPage() {
     "@context": "https://schema.org",
     "@type": "Product",
     name: "Litsaber OG",
-    description: PDP_DESCRIPTION,
+    description: campaign?.copy.pdpDescription ?? PDP_DESCRIPTION,
     sku: SILVER_SKU,
     brand: { "@type": "Brand", name: "Litsaber" },
     offers: {

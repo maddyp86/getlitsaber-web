@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { trackWhenReady, EVENTS } from "@/lib/analytics/events";
 import { PRODUCT_TITLE, PRODUCT_SUBTITLE, SPEC_PILLS, OFFERS } from "./productdisplay.content";
 import { quoteOffer } from "@/lib/cart/offers";
-import { getDisplayUnitPrice } from "@/lib/cart/pricing";
+import { getDisplayUnitPrice, formatAmountShort } from "@/lib/cart/pricing";
 import { viewContent, whenMetaPixelReady } from "@/lib/metaPixel";
 import MsrpPrice from "@/components/primitives/MsrpPrice";
+import { useCampaign } from "@/lib/campaign/CampaignProvider";
 import GalleryBlock from "./GalleryBlock";
 import GalleryErrorBoundary from "./GalleryErrorBoundary";
 import StyleSelector from "./StyleSelector";
@@ -26,6 +27,7 @@ interface ProductDisplayProps {
 }
 
 export default function ProductDisplay({ variantId, available, surface, basePrice }: ProductDisplayProps) {
+  const campaign = useCampaign();
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeStyle, setActiveStyle] = useState<"silver" | "gold">("silver");
   const [selectedQty, setSelectedQty] = useState(1);
@@ -104,7 +106,7 @@ export default function ProductDisplay({ variantId, available, surface, basePric
         // old 30px the top ~60px of the gallery sat under the navbar, which
         // swallowed clicks on the image, its zoom trigger, and the upper half
         // of the prev/next arrows.
-        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[110px]"
+        className="flex flex-col items-start w-full lg:w-[525px] lg:max-w-[525px] xl:w-[603px] xl:max-w-[603px] lg:flex-shrink-0 min-w-0 lg:sticky lg:self-start lg:top-[calc(110px+var(--announce-h))]"
         style={{ gap: "20px" }}
       >
         <GalleryErrorBoundary>
@@ -128,13 +130,44 @@ export default function ProductDisplay({ variantId, available, surface, basePric
               {PRODUCT_SUBTITLE}
             </p>
             {/* Shipping is shown on each offer card below, so it is not repeated here. */}
-            <p data-testid="pdp-price">
+            {campaign && (
+              /* Sale banner: states the offer and the end date before the
+                 price. Plain text in a box: not a link, no hover. */
+              <div
+                data-testid="pdp-sale-label"
+                className="w-full my-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4 bg-holiday-sale-surface border border-cta rounded-md px-[18px] py-[14px] text-left"
+              >
+                <div className="flex flex-col gap-1">
+                  <p className="font-label font-bold text-[15px] leading-tight tracking-[2px] uppercase text-white">
+                    {campaign.saleName}
+                  </p>
+                  <p className="font-body text-[15px] leading-snug text-holiday-sale-text">
+                    {campaign.copy.offerLine}
+                  </p>
+                </div>
+                <p className="font-label text-[12px] tracking-[2px] uppercase text-holiday-sale-accent sm:flex-shrink-0">
+                  {campaign.copy.endsLabel}
+                </p>
+              </div>
+            )}
+            <p data-testid="pdp-price" className="flex items-center flex-wrap gap-x-4 gap-y-1">
               <MsrpPrice
                 price={quote.price}
                 msrp={quote.msrp}
+                anchorLabel={quote.anchorLabel}
                 msrpClassName="font-label text-[20px] text-text-muted"
                 priceClassName="font-label font-bold text-h3 text-text-primary [text-shadow:0_0_10px_theme(colors.cta.DEFAULT)]"
               />
+              {/* The saving, stated once on the page and computed from the
+                  selected offer's two prices. */}
+              {campaign && quote.msrp > quote.price && (
+                <span
+                  data-testid="pdp-save-tag"
+                  className="font-label font-bold text-[13px] leading-none tracking-[1.5px] uppercase text-holiday-sale-ink bg-holiday-sale-accent rounded-sm px-[10px] py-2"
+                >
+                  Save {formatAmountShort(quote.msrp - quote.price)}
+                </span>
+              )}
             </p>
           </div>
 

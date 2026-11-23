@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal, flushSync } from "react-dom";
-import { GALLERY_IMAGES } from "./productdisplay.content";
+import { useGalleryImages } from "./useGalleryImages";
 import { useSwipe } from "@/lib/useSwipe";
 import { usePinch, type PinchView } from "@/lib/usePinch";
 import { dragOrigin, DRAG_SLOP_PX, handoffView, PINCH_COMMIT_ZOOM, type ZoomOrigin } from "@/lib/zoomPan";
@@ -32,6 +32,8 @@ const ARROW_CLASS =
   "absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 text-white opacity-100 pointer-events-auto lg:opacity-0 lg:pointer-events-none lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto lg:focus-visible:opacity-100 lg:focus-visible:pointer-events-auto transition-opacity hover:bg-black/70 z-10 touch-manipulation";
 
 export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlockProps) {
+  // The regular gallery, plus any campaign images (lib/campaign) while one is on.
+  const GALLERY_IMAGES = useGalleryImages();
   const total = GALLERY_IMAGES.length;
   const active = GALLERY_IMAGES[activeThumb] ?? GALLERY_IMAGES[0];
   const activeIsVideo = active.type === "video";
@@ -134,7 +136,9 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
             return nextSet;
           });
       },
-      { root: strip, rootMargin: "0px 68px" }
+      // One tile of margin on every side: the strip is a row below lg and a
+      // column from lg.
+      { root: strip, rootMargin: "68px" }
     );
     strip.querySelectorAll("[data-thumb]").forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -175,8 +179,13 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
     if (!strip || !thumb) return;
     const s = strip.getBoundingClientRect();
     const t = thumb.getBoundingClientRect();
-    if (t.left >= s.left && t.right <= s.right) return;
-    strip.scrollTo({ left: strip.scrollLeft + (t.left - s.left) - (s.width - t.width) / 2, behavior: "smooth" });
+    // Both axes: the strip scrolls sideways below lg and vertically from lg.
+    if (t.left >= s.left && t.right <= s.right && t.top >= s.top && t.bottom <= s.bottom) return;
+    strip.scrollTo({
+      left: strip.scrollLeft + (t.left - s.left) - (s.width - t.width) / 2,
+      top: strip.scrollTop + (t.top - s.top) - (s.height - t.height) / 2,
+      behavior: "smooth",
+    });
   }, [activeThumb]);
 
   // ─── Lightbox ──────────────────────────────────────────────────────────────
@@ -371,7 +380,11 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
 
   return (
     <>
-    <div className="flex flex-col gap-3 w-full">
+    {/* Below lg the thumbnails are a row under the photo. From lg they are a
+        column to its LEFT, exactly as tall as the photo (the rail is absolutely
+        positioned in the padding, so the photo alone sets the height): a row
+        underneath sat below the fold on laptop screens. */}
+    <div className="relative flex flex-col gap-3 w-full lg:pl-[78px]">
       {/* Main viewer: only the active image (plus hidden neighbour preloads) is
           mounted. Rendering all 28 full-size images at once used to crash
           mobile Safari (OOM). */}
@@ -502,7 +515,7 @@ export default function GalleryBlock({ activeThumb, onThumbClick }: GalleryBlock
           selects AND plays the clip. */}
       <div
         ref={stripRef}
-        className="flex flex-row gap-2 overflow-x-auto pb-1"
+        className="flex flex-row gap-2 overflow-x-auto pb-1 lg:absolute lg:left-0 lg:inset-y-0 lg:w-[68px] lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:pb-0"
         style={{ scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,0.2) transparent" }}
       >
         {GALLERY_IMAGES.map((img, i) => (

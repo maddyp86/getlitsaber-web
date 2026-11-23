@@ -77,6 +77,12 @@ type FunnelEvents = {
     line_total: number;
     source: "shopify_cart";
   };
+  // Click on the sitewide campaign bar (lib/campaign). `phase` and
+  // `message_id` are the ids from the campaign config.
+  announcement_bar_click: {
+    phase: string;
+    message_id: string;
+  };
   contact_form_submitted: {
     reason: string;
     source: string;
@@ -110,6 +116,7 @@ export type AddSource = "homepage_buy" | "pdp" | "home_strip" | "pdp_sticky";
 /** Buy-path CTAs, tracked on click so homepage -> PDP reach is measurable. */
 export type CtaId =
   | "hero_get_yours"
+  | "hero_holiday_shop_now"
   | "hero_see_motion"
   | "hero_spec_pill"
   | "home_strip_details"
@@ -132,6 +139,7 @@ export const EVENTS = {
   cart_remove_item: "cart_remove_item",
   promo_code_captured: "promo_code_captured",
   price_floor_violation: "price_floor_violation",
+  announcement_bar_click: "announcement_bar_click",
   contact_form_submitted: "contact_form_submitted",
   festival_droplist_signup: "festival_droplist_signup",
   device_activated: "device_activated",

@@ -10,6 +10,14 @@
 // price and compare-at price). This file mirrors it so the storefront never
 // quotes a price checkout does not honor. If the Shopify variant price changes,
 // update BASE_UNIT_PRICE to match.
+//
+// Campaign exception (ADR-012): while a campaign is active (lib/campaign), an
+// order of two or more takes the campaign's multi-unit discount once, mirroring
+// a Shopify automatic discount. The floor moves by exactly that amount and no
+// further. With no campaign active every function below behaves as ADR-009.
+
+import { currentCampaign } from "@/lib/campaign/runtime";
+import type { Campaign } from "@/lib/campaign/types";
 
 export const MAX_QTY = 5;
 
@@ -44,9 +52,28 @@ export function getDisplayUnitPrice(base: number = BASE_UNIT_PRICE): number {
   return round2(Math.max(base, PRICE_FLOOR));
 }
 
+/** Dollars a campaign takes off an order of `qty` units. 0 with no campaign. */
+export function getCampaignDiscount(
+  qty: number,
+  campaign: Campaign | null = currentCampaign()
+): number {
+  if (!campaign || qty < 2) return 0;
+  return campaign.pricing.multiUnitDiscount;
+}
+
 /** Total line price for the given quantity: unit price x qty, never below the floor. */
-export function getLinePrice(qty: number, base: number = BASE_UNIT_PRICE): number {
-  return round2(getDisplayUnitPrice(base) * clampQty(qty));
+export function getLinePrice(
+  qty: number,
+  base: number = BASE_UNIT_PRICE,
+  campaign: Campaign | null = currentCampaign()
+): number {
+  const q = clampQty(qty);
+  return round2(getDisplayUnitPrice(base) * q - getCampaignDiscount(q, campaign));
+}
+
+/** Regular (non-campaign) total for the given quantity. */
+export function getRegularLinePrice(qty: number, base: number = BASE_UNIT_PRICE): number {
+  return getLinePrice(qty, base, null);
 }
 
 /** MSRP total for the given quantity, for the struck-through anchor. */
@@ -54,11 +81,46 @@ export function getMsrpLinePrice(qty: number): number {
   return round2(MSRP_UNIT_PRICE * clampQty(qty));
 }
 
-/** True when a total for qty units works out below the per-unit floor. */
-export function isBelowFloor(total: number, qty: number): boolean {
+/**
+ * The struck-through anchor for a line. Normally MSRP x qty. On a line a
+ * campaign discounts, it is the regular price instead, so the anchor is what
+ * the shopper would have paid last week.
+ */
+export function getAnchorLinePrice(
+  qty: number,
+  campaign: Campaign | null = currentCampaign()
+): number {
+  const q = clampQty(qty);
+  const discount = getCampaignDiscount(q, campaign);
+  if (campaign && discount > 0) {
+    // Sale price plus the saving the campaign states for it.
+    return round2(getRegularLinePrice(q) - discount + campaign.pricing.multiUnitSaving);
+  }
+  return getMsrpLinePrice(q);
+}
+
+/** "MSRP" normally; "was" when the anchor is the regular price of a discounted line. */
+export function getAnchorLabel(
+  qty: number,
+  campaign: Campaign | null = currentCampaign()
+): "MSRP" | "was" {
+  return getCampaignDiscount(clampQty(qty), campaign) > 0 ? "was" : "MSRP";
+}
+
+/** Lowest total, in cents, the storefront will display for qty units. */
+function floorCents(qty: number, campaign: Campaign | null): number {
+  return Math.round(PRICE_FLOOR * 100) * qty - Math.round(getCampaignDiscount(qty, campaign) * 100);
+}
+
+/** True when a total for qty units works out below the floor. */
+export function isBelowFloor(
+  total: number,
+  qty: number,
+  campaign: Campaign | null = currentCampaign()
+): boolean {
   if (qty <= 0) return false;
   // Compare in cents so float noise (79.97999…) cannot trip the guard.
-  return Math.round(total * 100) < Math.round(PRICE_FLOOR * 100) * qty;
+  return Math.round(total * 100) < floorCents(qty, campaign);
 }
 
 /**
@@ -66,12 +128,22 @@ export function isBelowFloor(total: number, qty: number): boolean {
  * Shopify-provided cart totals: the storefront never displays a sub-floor
  * price, and the caller reports the violation so the Shopify config gets fixed.
  */
-export function clampTotalToFloor(total: number, qty: number): number {
-  if (!isBelowFloor(total, qty)) return round2(total);
-  return round2(PRICE_FLOOR * qty);
+export function clampTotalToFloor(
+  total: number,
+  qty: number,
+  campaign: Campaign | null = currentCampaign()
+): number {
+  if (!isBelowFloor(total, qty, campaign)) return round2(total);
+  return round2(floorCents(qty, campaign) / 100);
 }
 
 /** Format dollars for display: 39.99 -> "$39.99". */
 export function formatPrice(amount: number): string {
   return `$${amount.toFixed(2)}`;
+}
+
+/** "$10" for whole dollars, "$9.99" otherwise. For savings and per-unit notes. */
+export function formatAmountShort(amount: number): string {
+  const cents = Math.round(amount * 100);
+  return cents % 100 === 0 ? `$${cents / 100}` : formatPrice(cents / 100);
 }

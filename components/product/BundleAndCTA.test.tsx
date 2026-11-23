@@ -24,6 +24,8 @@ vi.mock("@/lib/toast/store", () => ({ useToastActions: () => ({ addToast: vi.fn(
 vi.mock("@/components/forms/WaitlistForm", () => ({ default: () => null }));
 
 import BundleAndCTA from "./BundleAndCTA";
+import CampaignProvider from "@/lib/campaign/CampaignProvider";
+import { setCurrentCampaign } from "@/lib/campaign/runtime";
 
 function Harness({ basePrice }: { basePrice?: number }) {
   const [qty, setQty] = useState(1);
@@ -40,7 +42,10 @@ function Harness({ basePrice }: { basePrice?: number }) {
 }
 
 beforeEach(() => trackMock.mockClear());
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  setCurrentCampaign(null);
+});
 
 describe("offer rendering", () => {
   it("renders the single at $39.99 followed by the struck $49.99 MSRP, plus $5.99 shipping", () => {
@@ -49,7 +54,8 @@ describe("offer rendering", () => {
     const price = single.getByTestId("price");
     const msrp = single.getByTestId("msrp");
     expect(price.textContent).toBe("$39.99");
-    expect(msrp.textContent).toBe("$49.99");
+    // The label is visually hidden; the amount is in the markup once (B1).
+    expect(msrp.textContent).toBe("MSRP $49.99");
     expect(msrp.tagName).toBe("S");
     // Sell price comes first, the struck anchor after it.
     expect(price.compareDocumentPosition(msrp) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -60,7 +66,7 @@ describe("offer rendering", () => {
     render(<Harness basePrice={39.99} />);
     const pack = within(screen.getByTestId("offer-two_pack"));
     expect(pack.getByText("Most popular")).toBeTruthy();
-    expect(pack.getByTestId("msrp").textContent).toBe("$99.98");
+    expect(pack.getByTestId("msrp").textContent).toBe("MSRP $99.98");
     expect(pack.getByTestId("price").textContent).toBe("$79.98");
     expect(pack.getByText("Free shipping")).toBeTruthy();
   });
@@ -102,9 +108,9 @@ describe("offer selection", () => {
 describe("estimated total", () => {
   it("shows product plus shipping before tax for the selected offer", () => {
     render(<Harness basePrice={39.99} />);
-    expect(screen.getByTestId("estimated-total").textContent).toBe("Est. total $45.98 before tax");
+    expect(screen.getByTestId("estimated-total").textContent).toBe("Est. total, Single: $45.98 before tax");
     fireEvent.click(screen.getAllByRole("radio")[1]);
-    expect(screen.getByTestId("estimated-total").textContent).toBe("Est. total $79.98 before tax");
+    expect(screen.getByTestId("estimated-total").textContent).toBe("Est. total, Two Pack: $79.98 before tax");
   });
 });
 
@@ -117,5 +123,59 @@ describe("Buy Now", () => {
     await waitFor(() => expect(appendDiscountMock).toHaveBeenCalledWith("https://checkout.example/c/1"));
     expect(buyNowMock).toHaveBeenCalledWith("gid://shopify/ProductVariant/1", 2);
     expect(trackMock).toHaveBeenCalledWith("checkout_started", expect.objectContaining({ route: "buy_now", item_count: 2, cart_value: 79.98 }));
+  });
+});
+
+// Holiday Sale 2026 (ADR-012). Everything above renders with no campaign.
+describe("offer rendering during the holiday campaign", () => {
+  function HolidayHarness() {
+    return (
+      <CampaignProvider campaignId="holiday-2026">
+        <Harness basePrice={39.99} />
+      </CampaignProvider>
+    );
+  }
+
+  it("keeps the single at $39.99 with the $49.99 MSRP and ships it free", () => {
+    render(<HolidayHarness />);
+    const single = within(screen.getByTestId("offer-single"));
+    expect(single.getByTestId("price").textContent).toBe("$39.99");
+    expect(single.getByTestId("msrp").textContent).toBe("MSRP $49.99");
+    expect(single.getByTestId("offer-contents").textContent).toBe("One Litsaber OG");
+    // The sale is stated once, above the rows: no tag on either row.
+    expect(single.queryByTestId("sale-badge")).toBeNull();
+  });
+
+  it("shows the 2-pack at $69.99 struck from $79.99, $35 each, with no sale tag", () => {
+    render(<HolidayHarness />);
+    const pack = within(screen.getByTestId("offer-two_pack"));
+    expect(pack.getByTestId("price").textContent).toBe("$69.99");
+    expect(pack.getByTestId("msrp").textContent).toBe("was $79.99");
+    expect(pack.getByTestId("offer-contents").textContent).toBe("Two Litsabers · $35 each");
+    expect(pack.getByText("Most popular")).toBeTruthy();
+    expect(pack.queryByTestId("sale-badge")).toBeNull();
+  });
+
+  it("puts the selected offer's price on the Add to Cart button", () => {
+    render(<HolidayHarness />);
+    expect(screen.getByRole("button", { name: "ADD TO CART · $39.99" })).toBeTruthy();
+    fireEvent.click(within(screen.getByTestId("offer-two_pack")).getByRole("radio"));
+    expect(screen.getByRole("button", { name: "ADD TO CART · $69.99" })).toBeTruthy();
+  });
+
+  it("totals the selected offer with no shipping charge", () => {
+    render(<HolidayHarness />);
+    expect(screen.getByTestId("estimated-total").textContent).toContain("$39.99");
+    fireEvent.click(within(screen.getByTestId("offer-two_pack")).getByRole("radio"));
+    expect(screen.getByTestId("estimated-total").textContent).toContain("$69.99");
+  });
+
+  it("states free US shipping once, under Add to Cart", () => {
+    const { container } = render(<HolidayHarness />);
+    expect(screen.getByTestId("campaign-shipping-line").textContent).toBe(
+      "Free US shipping · Ships within 2 business days"
+    );
+    expect(container.textContent?.match(/free us shipping/gi)).toHaveLength(1);
+    expect(container.textContent).not.toContain("ON 2+");
   });
 });

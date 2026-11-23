@@ -12,6 +12,21 @@
   }
 }
 
+/* Campaign announcement bar (components/global/AnnouncementBar). The layout
+   sets data-announce on <body> only while a bar is showing; everywhere else
+   the height is 0, so the regular site is laid out exactly as before. */
+:root {
+  --announce-h: 0px;
+}
+body[data-announce] {
+  --announce-h: 38px;
+}
+@media (min-width: 640px) {
+  body[data-announce] {
+    --announce-h: 44px;
+  }
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -318,4 +333,89 @@
   .blog-prose code {
     @apply font-label text-accent-cyan;
   }
+}
+
+/* ── Holiday 2026 hero (components/home/HolidayHero) ─────────────────────────
+   CSS-only motion. Only opacity, transform, filter and text-shadow animate.
+   Everything pauses while the hero is off-screen (data-offscreen, set by an
+   IntersectionObserver) and is static under prefers-reduced-motion. */
+@keyframes holiday-snowfall {
+  0%   { transform: translate3d(0, -20px, 0); }
+  100% { transform: translate3d(24px, var(--holiday-fall, 860px), 0); }
+}
+@keyframes holiday-twinkle {
+  0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 1px currentColor); }
+  45%, 60% { opacity: 1; filter: drop-shadow(0 0 7px currentColor) drop-shadow(0 0 14px currentColor); }
+}
+@keyframes holiday-star {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50%      { opacity: 1; transform: scale(1.25); }
+}
+@keyframes holiday-poweron {
+  0%   { opacity: 0.12; }
+  8%   { opacity: 0.9; }
+  12%  { opacity: 0.2; }
+  20%  { opacity: 0.95; }
+  26%  { opacity: 0.35; }
+  34%, 100% { opacity: 1; }
+}
+@keyframes holiday-neon {
+  0%, 100% { text-shadow: 0 0 10px theme(colors.accent.cyan / 55%), 0 0 28px theme(colors.accent.cyan / 35%); }
+  50%      { text-shadow: 0 0 14px theme(colors.accent.cyan / 85%), 0 0 44px theme(colors.accent.cyan / 55%); }
+}
+.holiday-hero {
+  --holiday-fall: 1100px;
+  /* Desktop hero height: the first screen, between 620 and 820px. */
+  --holiday-hero-h: clamp(620px, calc(100svh - var(--announce-h)), 820px);
+}
+/* Desktop hero image (3960x1800, products in its right third). Its height is
+   the hero's, so its width is 2.2 x that. It sits flush right, unless that
+   would bring the red Litsaber (its left edge is 64% across the file) within
+   6% of the text column (6% in, clamp(420px, 34vw, 620px) wide); then it
+   slides right just far enough. Where it is narrower than the window its
+   left edge fades out. */
+@media (min-width: 1024px) {
+  .holiday-hero-img {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: auto;
+    max-width: none;
+    aspect-ratio: 3960 / 1800;
+    left: max(
+      calc(100% - var(--holiday-hero-h) * 2.2),
+      calc(12% + clamp(420px, 34vw, 620px) - var(--holiday-hero-h) * 2.2 * 0.64)
+    );
+    mask-image: linear-gradient(to right, transparent, black 12%);
+  }
+}
+@media (min-width: 1024px) {
+  .holiday-hero { --holiday-fall: 860px; }
+}
+.holiday-flake  { animation: holiday-snowfall linear infinite; }
+.holiday-bulb   { animation: holiday-twinkle ease-in-out infinite; }
+.holiday-star   { animation: holiday-star 3.2s ease-in-out infinite; }
+.holiday-lightup {
+  text-shadow: 0 0 26px rgb(255 255 255 / 22%);
+  animation: holiday-poweron 1.8s linear 1 both;
+}
+.holiday-neon {
+  text-shadow: 0 0 10px theme(colors.accent.cyan / 55%), 0 0 28px theme(colors.accent.cyan / 35%);
+  animation: holiday-neon 3.6s ease-in-out infinite;
+}
+.holiday-hero[data-offscreen] .holiday-flake,
+.holiday-hero[data-offscreen] .holiday-bulb,
+.holiday-hero[data-offscreen] .holiday-star,
+.holiday-hero[data-offscreen] .holiday-neon {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .holiday-bulb,
+  .holiday-star,
+  .holiday-lightup,
+  .holiday-neon {
+    animation: none;
+  }
+  .holiday-bulb { opacity: 1; }
+  .holiday-snow { display: none; }
 }

@@ -4,7 +4,9 @@ import {
   SHIPPING_ATTRIBUTE_VALUE,
   getDisplayShipping,
   formatDisplayShipping,
+  shippingAttributeValue,
 } from "./shipping";
+import { HOLIDAY_2026 } from "@/lib/campaign/holiday2026";
 
 describe("shipping rules", () => {
   it("charges $5.99 flat for a single unit", () => {
@@ -25,5 +27,21 @@ describe("shipping rules", () => {
 
   it("stamps carts with the value the delivery Function charges singles on", () => {
     expect(SHIPPING_ATTRIBUTE_VALUE).toBe("surcharge");
+  });
+});
+
+describe("shipping during the holiday campaign", () => {
+  it.each([1, 2, 5])("ships %i units free", (units) => {
+    expect(getDisplayShipping(units, HOLIDAY_2026)).toBe(0);
+  });
+
+  it("stamps a value the delivery Function does not surcharge", () => {
+    expect(shippingAttributeValue(HOLIDAY_2026)).toBe("holiday-free");
+    expect(shippingAttributeValue(HOLIDAY_2026)).not.toBe(SHIPPING_ATTRIBUTE_VALUE);
+  });
+
+  it("goes back to the surcharge stamp with no campaign", () => {
+    expect(shippingAttributeValue(null)).toBe("surcharge");
+    expect(getDisplayShipping(1, null)).toBe(5.99);
   });
 });

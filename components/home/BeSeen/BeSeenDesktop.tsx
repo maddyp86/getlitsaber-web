@@ -82,7 +82,7 @@ export default function BeSeenDesktop({ className }: BeSeenDesktopProps) {
       aria-label="Be Seen Across The Crowd"
     >
       {/* Sticky viewport-height container */}
-      <div className="sticky w-full overflow-hidden" style={{ top: "90px", height: "calc(100vh - 90px)" }}>
+      <div className="sticky w-full overflow-hidden" style={{ top: "calc(90px + var(--announce-h))", height: "calc(100vh - 90px - var(--announce-h))" }}>
         {/* Stage images — crossfade layer */}
         <div className="absolute inset-0">
           <AnimatePresence mode="sync">

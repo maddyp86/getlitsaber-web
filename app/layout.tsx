@@ -10,6 +10,9 @@ import MetaPixel from "@/components/analytics/MetaPixel";
 import { headers } from "next/headers";
 import { HYDRATION_ERROR_HEAD_SCRIPT } from "@/lib/analytics/hydration";
 import { REVIEWS_ENABLED } from "@/lib/reviews";
+import { getActiveCampaign } from "@/lib/campaign/getActiveCampaign";
+import { activeBarPhase } from "@/lib/campaign/runtime";
+import CampaignProvider from "@/lib/campaign/CampaignProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +44,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -52,6 +55,10 @@ export default function RootLayout({
   } catch {
     suppressChrome = false;
   }
+  // Holiday (or regular) site: one decision per request, shared with every
+  // client component through CampaignProvider. Null renders the regular site.
+  const campaign = suppressChrome ? null : await getActiveCampaign();
+  const barPhase = campaign ? activeBarPhase(campaign) : null;
   return (
     <html
       lang="en"
@@ -74,13 +81,25 @@ export default function RootLayout({
             settles (app/providers.tsx), so an early connection sat unused and
             PageSpeed flagged it. */}
       </head>
-      <body className="font-body bg-background-primary text-text-primary antialiased">
+      <body
+        className="font-body bg-background-primary text-text-primary antialiased"
+        // Reserves the campaign bar's height (app/globals.css) before paint.
+        data-announce={barPhase ? "" : undefined}
+      >
         {/* Meta Pixel: renders nothing unless NEXT_PUBLIC_META_PIXEL_ID is set. */}
         <MetaPixel />
         {/* Judge.me only loads while reviews are shown (lib/reviews.ts). */}
         {REVIEWS_ENABLED && <JudgemeScripts />}
         <PostHogProvider>
-          <SiteChrome suppressChrome={suppressChrome}>{children}</SiteChrome>
+          <CampaignProvider campaignId={campaign?.id ?? null}>
+            <SiteChrome
+              suppressChrome={suppressChrome}
+              barPhase={barPhase}
+              barHref={campaign?.href}
+            >
+              {children}
+            </SiteChrome>
+          </CampaignProvider>
         </PostHogProvider>
            <Analytics />
         <SpeedInsights />
