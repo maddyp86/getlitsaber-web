@@ -53,9 +53,15 @@ const BANNED: Array<[string, RegExp]> = [
 
 const read = (file: string) => readFileSync(join(ROOT, file), "utf8");
 
+// Asset paths are file names, not copy: a Blob file may be called
+// "litsaber-holiday-deal.jpg" without the storefront ever saying "deal". Drop
+// the argument of mediaUrl()/videoUrl() before scanning for banned words.
+const copyOnly = (text: string) =>
+  text.replace(/\b(?:mediaUrl|videoUrl)\(\s*(["'`])[^"'`]*\1\s*\)/g, "");
+
 describe("storefront copy", () => {
   it.each(STOREFRONT_FILES)("%s has no banned words or retired offers", (file) => {
-    const text = read(file);
+    const text = copyOnly(read(file));
     const hits = BANNED.filter(([, re]) => re.test(text)).map(([name]) => name);
     expect(hits).toEqual([]);
   });
@@ -71,10 +77,16 @@ describe("storefront copy", () => {
   // or Cyber Monday (owner decision 2026-11-21).
   it("the holiday campaign copy keeps every other copy rule", () => {
     const text = read("lib/campaign/holiday2026.ts");
-    const hits = BANNED.filter(([, re]) => re.test(text)).map(([name]) => name);
+    const hits = BANNED.filter(([, re]) => re.test(copyOnly(text))).map(([name]) => name);
     expect(hits).toEqual([]);
     expect(text).not.toMatch(/black friday|cyber monday|bfcm/i);
     expect(text).not.toMatch(/!["`']/);
+  });
+
+  it("asset paths are exempt from the word bans, copy beside them is not", () => {
+    const sample = 'src: mediaUrl("product/litsaber-holiday-deal.jpg"), alt: "A great deal"';
+    expect(copyOnly(sample)).not.toMatch(/litsaber-holiday-deal/);
+    expect(copyOnly(sample)).toMatch(/A great deal/);
   });
 
   it("no storefront copy advertises a unit price below $39.99", () => {
