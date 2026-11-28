@@ -133,11 +133,11 @@ export const HOLIDAY_2026: Campaign = {
   },
   gallery: [
     {
-      src: mediaUrl("product/litsaber-holiday-deal-centered-2000x2000.jpg"),
+      src: mediaUrl("product/litsaber-holiday-sale.jpg"),
       alt: "Holiday Sale: $10 off plus free US shipping. Litsaber gift box with a red bow between two Litsabers glowing red and green.",
     },
     {
-      src: mediaUrl("product/litsaber-key-features-2000x2000.jpg"),
+      src: mediaUrl("product/litsaber-key-features-v2-2000x2000.jpg"),
       alt: "Litsaber key features: 510 thread, USB-C charging, dual activation, 41 addressable LEDs and an 800 mAh battery.",
     },
   ],
