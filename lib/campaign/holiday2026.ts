@@ -125,7 +125,7 @@ export const HOLIDAY_2026: Campaign = {
   copy: {
     freeShippingLabel: "Free US shipping on every order",
     endsLabel: "Ends Dec 16",
-    offerLine: "$10 off every Litsaber, plus free US shipping",
+    offerLine: "$10 off a single or a 2-pack, plus free US shipping",
     shippingLine: "Free US shipping · Ships within 2 business days",
     offerContents: { 1: "One Litsaber OG", 2: "Two Litsabers" },
     pdpDescription:
