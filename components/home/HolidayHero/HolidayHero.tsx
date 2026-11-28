@@ -31,6 +31,8 @@ import { track, EVENTS } from "@/lib/analytics/events";
 const LINE1_FIT = "text-[length:29.7cqw] lg:text-[120px] -ml-[0.02em] -mr-[0.07em]";
 const LINE2_FIT = "text-[length:12.07cqw] -ml-[0.03em]";
 
+const LIGHT_UP_REPLAY_MS = 45_000;
+
 const BULB_COLORS = ["red", "white", "green"] as const;
 const BULB_CLASS: Record<(typeof BULB_COLORS)[number], string> = {
   red: "text-holiday-bulb-red fill-holiday-bulb-red",
@@ -107,6 +109,23 @@ export default function HolidayHero() {
     return () => observer.disconnect();
   }, []);
 
+  // Replay the "LIGHT UP" power-on flicker every 45s, exactly as it runs on
+  // page load: drop the CSS animation, force a reflow, and let it start again.
+  // Skipped while the hero is off screen, the tab is hidden, or the visitor
+  // asked for reduced motion.
+  const lightUpRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      const el = lightUpRef.current;
+      if (!el || document.hidden || ref.current?.hasAttribute("data-offscreen")) return;
+      el.style.animation = "none";
+      void el.offsetWidth;
+      el.style.animation = "";
+    }, LIGHT_UP_REPLAY_MS);
+    return () => window.clearInterval(id);
+  }, []);
+
   const common = { alt: HOLIDAY_HERO.alt, sizes: "100vw", priority: true };
   const {
     props: { srcSet: desktopSrcSet },
@@ -131,7 +150,7 @@ export default function HolidayHero() {
             column width, so both lines run exactly edge to edge. */}
         <h1 className="relative w-full flex flex-col gap-[5px] lg:gap-2 [container-type:inline-size]">
           <span className="relative block w-fit">
-            <span className={`holiday-lightup block font-display font-bold leading-none text-text-primary whitespace-nowrap ${LINE1_FIT}`}>
+            <span ref={lightUpRef} className={`holiday-lightup block font-display font-bold leading-none text-text-primary whitespace-nowrap ${LINE1_FIT}`}>
               {HOLIDAY_HERO.line1}
             </span>
             <StringLights />
