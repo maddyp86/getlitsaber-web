@@ -125,7 +125,7 @@ export const HOLIDAY_2026: Campaign = {
   copy: {
     freeShippingLabel: "Free US shipping on every order",
     endsLabel: "Ends Dec 16",
-    offerLine: "$10 off every Litsaber, plus free US shipping",
+    offerLine: "$10 off a single or a 2-pack, plus free US shipping",
     shippingLine: "Free US shipping · Ships within 2 business days",
     offerContents: { 1: "One Litsaber OG", 2: "Two Litsabers" },
     pdpDescription:
@@ -135,10 +135,12 @@ export const HOLIDAY_2026: Campaign = {
     {
       src: mediaUrl("product/litsaber-holiday-deal.jpg"),
       alt: "Holiday Sale: $10 off plus free US shipping. Litsaber gift box with a red bow between two Litsabers glowing red and green.",
+      slot: 1,
     },
     {
       src: mediaUrl("product/litsaber-key-features.jpg"),
       alt: "Litsaber key features: 510 thread, USB-C charging, dual activation, 41 addressable LEDs and an 800 mAh battery.",
+      slot: 3,
     },
   ],
 };
