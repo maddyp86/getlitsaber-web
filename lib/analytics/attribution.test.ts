@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   activationSource,
   applyAttributionRules,
+  applyInternalParam,
+  isFlaggedInternalBrowser,
+  isInternalBrowser,
   isInternalReferrer,
   scrubUrl,
   touchFromLanding,
@@ -17,7 +20,10 @@ const touch: Touch = {
   at: 0,
 };
 
-beforeEach(() => sessionStorage.clear());
+beforeEach(() => {
+  sessionStorage.clear();
+  localStorage.clear();
+});
 
 describe("one site: storefront and checkout", () => {
   it("treats our own domains and Shopify checkout hops as internal", () => {
@@ -102,5 +108,37 @@ describe("owner visits", () => {
     expect(activationSource("?utm_source=packaging&utm_medium=qr&utm_campaign=activation_insert")).toBe("packaging_qr");
     expect(activationSource("?utm_source=insert&utm_medium=qr&utm_campaign=activation")).toBe("insert_qr");
     expect(activationSource("")).toBe("direct");
+  });
+});
+
+describe("team browsers: ?internal=<token>", () => {
+  const TOKEN = "lts_team_test";
+
+  it("flags the browser on the right token, and it stays flagged on later visits", () => {
+    expect(isFlaggedInternalBrowser()).toBe(false);
+    expect(applyInternalParam(`?internal=${TOKEN}`, TOKEN)).toBe("on");
+    expect(isFlaggedInternalBrowser()).toBe(true);
+    expect(applyInternalParam("", TOKEN)).toBeNull();
+    expect(applyInternalParam("?utm_source=tiktok", TOKEN)).toBeNull();
+    expect(isFlaggedInternalBrowser()).toBe(true);
+    expect(isInternalBrowser("www.getlitsaber.com")).toBe(true);
+  });
+
+  it("ignores a wrong token, and any token when none is configured", () => {
+    expect(applyInternalParam("?internal=lts_team_wrong", TOKEN)).toBeNull();
+    expect(applyInternalParam("?internal=", "")).toBeNull();
+    expect(applyInternalParam("?internal=undefined", undefined)).toBeNull();
+    expect(isFlaggedInternalBrowser()).toBe(false);
+  });
+
+  it("?internal=off unflags the browser", () => {
+    applyInternalParam(`?internal=${TOKEN}`, TOKEN);
+    expect(applyInternalParam("?internal=off", TOKEN)).toBe("off");
+    expect(isFlaggedInternalBrowser()).toBe(false);
+  });
+
+  it("a preview host is internal for carts but is still tracked", () => {
+    expect(isInternalBrowser("getlitsaber-web-git-x.vercel.app")).toBe(true);
+    expect(isFlaggedInternalBrowser()).toBe(false);
   });
 });

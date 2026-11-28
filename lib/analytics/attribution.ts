@@ -10,7 +10,8 @@
 //  - Owner visits (packaging QR, activation and rebate pages) are marked with
 //    is_owner_visit for the rest of the browser session.
 //  - Internal and test browsers are remembered so their carts and orders can
-//    be marked internal too.
+//    be marked internal too. A browser flagged with ?internal=<token> is not
+//    tracked at all.
 
 const OWN_DOMAIN = /(^|\.)getlitsaber\.com$/i;
 // Shopify-hosted checkout and Shop Pay redirect hops can also be the referrer
@@ -185,6 +186,36 @@ export function setInternalBrowser(on: boolean): void {
     if (on) localStorage.setItem(INTERNAL_KEY, "1");
     else localStorage.removeItem(INTERNAL_KEY);
   } catch {}
+}
+
+/**
+ * Applies ?internal=<token> (flag this browser) or ?internal=off (unflag it)
+ * and returns the change it made, if any. A wrong or missing value is ignored.
+ */
+export function applyInternalParam(search: string, token: string | undefined): "on" | "off" | null {
+  const param = new URLSearchParams(search).get("internal");
+  if (token && param === token) {
+    setInternalBrowser(true);
+    return "on";
+  }
+  if (param === "off") {
+    setInternalBrowser(false);
+    return "off";
+  }
+  return null;
+}
+
+/**
+ * True once this browser was flagged with ?internal=<token>. A flagged browser
+ * sends nothing to PostHog (app/providers.tsx): no events, no recordings.
+ * Preview and dev hosts are not covered; they report to the test project.
+ */
+export function isFlaggedInternalBrowser(): boolean {
+  try {
+    return localStorage.getItem(INTERNAL_KEY) === "1";
+  } catch {
+    return false;
+  }
 }
 
 /** Internal or test browser: a preview/dev host, or flagged with ?internal=<token>. */

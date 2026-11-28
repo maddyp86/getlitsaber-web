@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import type { CaptureResult, PostHog } from "posthog-js";
 import {
   applyAttributionRules,
+  applyInternalParam,
   INTERNAL_HOSTNAME,
+  isFlaggedInternalBrowser,
   readTouch,
   rememberLandingTouch,
-  setInternalBrowser,
 } from "@/lib/analytics/attribution";
 import { setPosthog } from "@/lib/analytics/posthogClient";
 
@@ -190,6 +191,20 @@ export default function PostHogProvider({
     const token = process.env.NEXT_PUBLIC_POSTHOG_TOKEN;
     if (typeof window === "undefined" || !token) return;
 
+    // Team browsers, flagged once with ?internal=<token>, send nothing to
+    // PostHog: the library is never loaded, so there are no events and no
+    // session recording. Decided here, before anything loads. Marking the
+    // person internal after init (the earlier approach) still recorded the
+    // whole visit, and the landing pageview went out before the mark applied.
+    // ?internal=off turns tracking back on. Carts from a flagged browser are
+    // still stamped _internal (lib/cart/store.ts), so its test orders stay
+    // marked internal by the orders webhook.
+    const internalChange = applyInternalParam(
+      window.location.search,
+      process.env.NEXT_PUBLIC_INTERNAL_FLAG_TOKEN
+    );
+    if (isFlaggedInternalBrowser()) return;
+
     // Before init, so the first pageview of an external landing already has
     // a stored touch to carry through a later return from checkout.
     rememberLandingTouch();
@@ -225,23 +240,14 @@ export default function PostHogProvider({
         before_send: beforeSend,
       });
 
-      if (typeof window !== "undefined") {
-        window.posthog = posthog;
-        const INTERNAL_FLAG_TOKEN = process.env.NEXT_PUBLIC_INTERNAL_FLAG_TOKEN;
-        const internalParam = new URLSearchParams(window.location.search).get("internal");
-        if (INTERNAL_FLAG_TOKEN && internalParam === INTERNAL_FLAG_TOKEN) {
-          posthog.setInternalOrTestUser();
-          // Remembered so this browser's carts, and so its orders, are marked
-          // internal too (lib/cart/store.ts stamps _internal on the cart).
-          setInternalBrowser(true);
-        } else if (internalParam === "off") {
-          posthog.setPersonProperties({ $internal_or_test_user: false });
-          setInternalBrowser(false);
-        }
+      window.posthog = posthog;
+      // A browser that was flagged before and has just been unflagged: clear
+      // the mark on its PostHog person so its visits count again.
+      if (internalChange === "off") {
+        posthog.setPersonProperties({ $internal_or_test_user: false });
       }
 
-      // Last, so events queued by trackWhenReady() go out after the
-      // internal flag above is applied.
+      // Last, so events queued by trackWhenReady() go out after init.
       setPosthog(posthog);
     }));
     return () => {
