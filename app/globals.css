@@ -351,13 +351,15 @@ body[data-announce] {
   0%, 100% { opacity: 0.15; transform: scale(0.7); }
   50%      { opacity: 1; transform: scale(1.25); }
 }
+/* "LIGHT UP" flickers on, holds, then starts over every 45s. The flicker is
+   the first 1.8s of the loop (4%); the jump from 100% back to 0% is the reset. */
 @keyframes holiday-poweron {
-  0%   { opacity: 0.12; }
-  8%   { opacity: 0.9; }
-  12%  { opacity: 0.2; }
-  20%  { opacity: 0.95; }
-  26%  { opacity: 0.35; }
-  34%, 100% { opacity: 1; }
+  0%    { opacity: 0.12; }
+  0.32% { opacity: 0.9; }
+  0.48% { opacity: 0.2; }
+  0.8%  { opacity: 0.95; }
+  1.04% { opacity: 0.35; }
+  1.36%, 100% { opacity: 1; }
 }
 @keyframes holiday-neon {
   0%, 100% { text-shadow: 0 0 10px theme(colors.accent.cyan / 55%), 0 0 28px theme(colors.accent.cyan / 35%); }
@@ -397,7 +399,7 @@ body[data-announce] {
 .holiday-star   { animation: holiday-star 3.2s ease-in-out infinite; }
 .holiday-lightup {
   text-shadow: 0 0 26px rgb(255 255 255 / 22%);
-  animation: holiday-poweron 1.8s linear 1 both;
+  animation: holiday-poweron 45s linear infinite both;
 }
 .holiday-neon {
   text-shadow: 0 0 10px theme(colors.accent.cyan / 55%), 0 0 28px theme(colors.accent.cyan / 35%);
@@ -406,6 +408,7 @@ body[data-announce] {
 .holiday-hero[data-offscreen] .holiday-flake,
 .holiday-hero[data-offscreen] .holiday-bulb,
 .holiday-hero[data-offscreen] .holiday-star,
+.holiday-hero[data-offscreen] .holiday-lightup,
 .holiday-hero[data-offscreen] .holiday-neon {
   animation-play-state: paused;
 }
