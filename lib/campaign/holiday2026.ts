@@ -135,10 +135,12 @@ export const HOLIDAY_2026: Campaign = {
     {
       src: mediaUrl("product/litsaber-holiday-deal.jpg"),
       alt: "Holiday Sale: $10 off plus free US shipping. Litsaber gift box with a red bow between two Litsabers glowing red and green.",
+      slot: 1,
     },
     {
       src: mediaUrl("product/litsaber-key-features.jpg"),
       alt: "Litsaber key features: 510 thread, USB-C charging, dual activation, 41 addressable LEDs and an 800 mAh battery.",
+      slot: 3,
     },
   ],
 };

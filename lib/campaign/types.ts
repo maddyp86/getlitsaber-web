@@ -44,6 +44,11 @@ export interface CampaignPricing {
 export interface GalleryExtra {
   src: string;
   alt: string;
+  /**
+   * Gallery slot this image takes while the campaign is live, counting from 1.
+   * Omit to place it at the front, in the order listed.
+   */
+  slot?: number;
 }
 
 export interface Campaign {
