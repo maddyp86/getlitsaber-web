@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { GALLERY_IMAGES, type GalleryImage } from "./productdisplay.content";
 import { useCampaign } from "@/lib/campaign/CampaignProvider";
 
-// Campaign images go in as ordinary thumbnails after the first two slides, so
-// the lead image and the light-show clip keep their places.
-const CAMPAIGN_INSERT_AT = 2;
+// Campaign images lead the gallery (slots 1 and 2) while a campaign is live;
+// the regular lead image and the light-show clip follow them.
+const CAMPAIGN_INSERT_AT = 0;
 
 /** The PDP gallery: the regular images, plus the active campaign's extras. */
 export function useGalleryImages(): GalleryImage[] {
